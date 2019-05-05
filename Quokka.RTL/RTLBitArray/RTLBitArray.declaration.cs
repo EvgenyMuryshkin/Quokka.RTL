@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Quokka.RTL
+{
+    public sealed partial class RTLBitArray
+    {
+    }
+}
