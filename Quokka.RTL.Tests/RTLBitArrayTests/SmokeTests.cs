@@ -82,5 +82,23 @@ namespace Quokka.RTL.RTLBitArrayTests
                 Assert.AreEqual((ulong)result, (ulong)rtlResult, "ulong: " + message);
             }
         }
+
+        [TestMethod]
+        public void RangeTest()
+        {
+            var source = new RTLBitArray(0x0BU);
+            var high = source[3, 2];
+            var low = source[1, 0];
+            Assert.AreEqual(2U, (uint)high);
+            Assert.AreEqual(3U, (uint)low);
+        }
+
+        [TestMethod]
+        public void ReverseTest()
+        {
+            var source = new RTLBitArray((byte)0x8BU);
+            var reversed = source.Reversed();
+            Assert.AreEqual(0xD1U, (byte)reversed);
+        }
     }
 }

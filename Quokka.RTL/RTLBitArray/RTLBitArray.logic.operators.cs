@@ -19,8 +19,8 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size) + 1;
             var type = op1._dataType == op2._dataType ? op1._dataType : RTLBitArrayType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resize(size).ChangeType(type);
-            var rhs = new RTLBitArray(op2).Resize(size).ChangeType(type);
+            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
+            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
 
             lhs.internalAnd(rhs);
             return lhs;
@@ -31,8 +31,8 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size) + 1;
             var type = op1._dataType == op2._dataType ? op1._dataType : RTLBitArrayType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resize(size).ChangeType(type);
-            var rhs = new RTLBitArray(op2).Resize(size).ChangeType(type);
+            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
+            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
 
             lhs.internalOr(rhs);
             return lhs;
@@ -43,8 +43,8 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size) + 1;
             var type = op1._dataType == op2._dataType ? op1._dataType : RTLBitArrayType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resize(size).ChangeType(type);
-            var rhs = new RTLBitArray(op2).Resize(size).ChangeType(type);
+            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
+            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
 
             lhs.internalXor(rhs);
             return lhs;

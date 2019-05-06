@@ -36,6 +36,12 @@ namespace Quokka.RTL
         {
         }
 
+        public RTLBitArray(IEnumerable<bool> source, RTLBitArrayType type)
+        {
+            var bits = string.Join("", source.Reverse().Select(b => b ? "1" : "0"));
+            FromBinaryString(bits, bits.Length, type);
+        }
+
         public RTLBitArray(string binaryString, int size, RTLBitArrayType type)
         {
             FromBinaryString(binaryString, size, type);
