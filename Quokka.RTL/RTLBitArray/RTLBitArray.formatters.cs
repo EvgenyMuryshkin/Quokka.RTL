@@ -15,6 +15,16 @@ namespace Quokka.RTL
             return v.Bits.Reverse().Aggregate(0UL, (acc, bit) => (acc << 1) | (bit ? 1UL : 0UL));
         }
 
+        public string AsBinaryString()
+        {
+            return string.Join("", Bits.Select(b => b ? "1" : "0").Reverse());
+        }
+
+        public string AsJSONValue()
+        {
+            return $"{(_dataType == RTLBitArrayType.Signed ? "S" : "U")}:{AsBinaryString()}";
+        }
+
         public override string ToString()
         {
             List<List<bool>> parts = new List<List<bool>>();

@@ -9,6 +9,9 @@ namespace Quokka.RTL
     {
         public static bool operator ==(RTLBitArray op1, RTLBitArray op2)
         {
+            if (op1 == null || op2 == null)
+                return false;
+
             var size = Math.Max(op1.Size, op2.Size) + 1;
 
             var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLBitArrayType.Signed);
@@ -19,6 +22,9 @@ namespace Quokka.RTL
 
         public static bool operator >(RTLBitArray op1, RTLBitArray op2)
         {
+            if (op1 == null || op2 == null)
+                return false;
+
             var size = Math.Max(op1.Size, op2.Size) + 1;
 
             var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLBitArrayType.Signed);

@@ -12,6 +12,7 @@ namespace Quokka.RTL
         RTLBitArrayType _dataType { get; set; } = RTLBitArrayType.Unsigned;
 
         public int Size => _data.Count;
+        public RTLBitArrayType DataType => _dataType;
 
         public IEnumerable<bool> Bits => _data.OfType<bool>();
 
