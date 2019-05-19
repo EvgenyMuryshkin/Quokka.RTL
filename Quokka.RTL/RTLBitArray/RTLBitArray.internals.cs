@@ -14,8 +14,11 @@ namespace Quokka.RTL
 
         internal void internalResize(int newSize)
         {
-            if (newSize < 1)
-                throw new ArgumentOutOfRangeException(nameof(newSize), "Should be >= 1");
+            if (newSize < 0)
+                throw new ArgumentOutOfRangeException(nameof(newSize), "Should be >= 0");
+
+            if (newSize == 0)
+                _data = new BitArray(0);
 
             if (newSize == Size)
             {
