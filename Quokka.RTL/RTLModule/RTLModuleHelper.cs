@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace System.Reflection
 {
@@ -28,6 +29,16 @@ namespace System.Reflection
                 default: throw new InvalidOperationException();
             }
         }
+
+        public static bool IsPublic(this MemberInfo member)
+        {
+            switch (member)
+            {
+                case PropertyInfo p: return p.GetGetMethod()?.IsPublic ?? false;
+                case FieldInfo f: return f.IsPublic;
+                default: throw new InvalidOperationException();
+            }
+        }
     }
 }
 
@@ -40,7 +51,7 @@ namespace Quokka.RTL
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
 
-            return props.Concat(fields);
+            return props.Concat(fields).Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
         public static List<MemberInfo> ModuleProperties(Type type)
@@ -49,12 +60,29 @@ namespace Quokka.RTL
                 .Where(m => typeof(IRTLCombinationalModule).IsAssignableFrom(m.GetMemberType()))
                 .ToList();
         }
+        public static bool IsInternalProperty(MemberInfo memberInfo)
+        {
+            var isPublic = memberInfo.IsPublic();
+            var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
+            var isDecaledOnBaseModue = memberInfo.DeclaringType.IsConstructedGenericType && (memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLCombinationalModule<>) || memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLSynchronousModule<,>));
+            return !isPublic && isPropertyOrField && !isDecaledOnBaseModue;
+        }
 
         public static List<MemberInfo> SignalProperties(Type type)
         {
             return SynthesizableMembers(type)
                 .Where(m => m.GetMemberType().IsValueType || m.GetMemberType() == typeof(RTLBitArray))
                 .ToList();
+        }
+
+        public static List<MemberInfo> OutputProperties(Type type)
+        {
+            return SignalProperties(type).Where(p => !IsInternalProperty(p)).ToList();
+        }
+
+        public static List<MemberInfo> InternalProperties(Type type)
+        {
+            return SignalProperties(type).Where(p => IsInternalProperty(p)).ToList();
         }
 
         public static int SizeOfEnum(Type enumType)

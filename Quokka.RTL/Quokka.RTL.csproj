@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.0.10</Version>
+    <Version>0.1.0.17</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <PackageReleaseNotes>RTLModule, VCD generator</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>
     <Company>Quokka Robotics</Company>
     <Description>Class to work with large unbounded array of bits as part of Quokka.FPGA toolkit</Description>
-    <Copyright>Evgeny Muryshkin (c) 2019</Copyright>
+    <Copyright>Evgeny Muryshkin (c) 2019-2020</Copyright>
     <RepositoryUrl>https://github.com/EvgenyMuryshkin/Quokka.RTL</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EvgenyMuryshkin/Quokka.RTL</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>

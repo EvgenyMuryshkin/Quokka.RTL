@@ -10,10 +10,11 @@ namespace Quokka.RTL
         Type InputsType { get; }
         object Inputs { get; }
 
-        List<MemberInfo> InputProps { get; }
-        List<MemberInfo> OutputProps { get; }
-        List<MemberInfo> ModuleProps { get; }
-        List<IRTLCombinationalModule> Modules { get; }
+        IEnumerable<MemberInfo> InputProps { get; }
+        IEnumerable<MemberInfo> OutputProps { get; }
+        IEnumerable<MemberInfo> InternalProps { get; }
+        IEnumerable<MemberInfo> ModuleProps { get; }
+        IEnumerable<IRTLCombinationalModule> Modules { get; }
 
         bool Stage(int iteration);
         void Commit();

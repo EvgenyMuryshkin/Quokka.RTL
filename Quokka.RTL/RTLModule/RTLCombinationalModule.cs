@@ -10,15 +10,17 @@ namespace Quokka.RTL
         where TInput : new()
     {
         public Type InputsType { get; } = typeof(TInput);
-        public List<MemberInfo> InputProps { get; }
-        public List<MemberInfo> OutputProps { get; }
-        public List<MemberInfo> ModuleProps { get; }
-        public List<IRTLCombinationalModule> Modules { get; }
+        public virtual IEnumerable<MemberInfo> InputProps { get; }
+        public virtual IEnumerable<MemberInfo> OutputProps { get; }
+        public virtual IEnumerable<MemberInfo> InternalProps { get; }
+        public virtual IEnumerable<MemberInfo> ModuleProps { get; }
+        public virtual IEnumerable<IRTLCombinationalModule> Modules { get; }
 
         public RTLCombinationalModule()
         {
             InputProps = RTLModuleHelper.SignalProperties(InputsType);
-            OutputProps = RTLModuleHelper.SignalProperties(GetType());
+            OutputProps = RTLModuleHelper.OutputProperties(GetType());
+            InternalProps = RTLModuleHelper.InternalProperties(GetType());
             ModuleProps = RTLModuleHelper.ModuleProperties(GetType());
             Modules = ModuleProps.Select(m => (IRTLCombinationalModule)m.GetValue(this)).ToList();
         }
