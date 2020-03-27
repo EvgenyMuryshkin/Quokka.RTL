@@ -12,12 +12,12 @@ namespace Quokka.RTL
             var v = new RTLBitArray(this);
             v.internalResize(64);
 
-            return v.Bits.Reverse().Aggregate(0UL, (acc, bit) => (acc << 1) | (bit ? 1UL : 0UL));
+            return v.MSB.Aggregate(0UL, (acc, bit) => (acc << 1) | (bit ? 1UL : 0UL));
         }
 
         public string AsBinaryString()
         {
-            return string.Join("", Bits.Select(b => b ? "1" : "0").Reverse());
+            return string.Join("", MSB.Select(b => b ? "1" : "0"));
         }
 
         public string AsJSONValue()
@@ -28,7 +28,7 @@ namespace Quokka.RTL
         public override string ToString()
         {
             List<List<bool>> parts = new List<List<bool>>();
-            IEnumerable<bool> source = Bits.Reverse();
+            IEnumerable<bool> source = MSB;
 
             while(source.Any())
             {

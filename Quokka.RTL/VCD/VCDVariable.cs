@@ -38,6 +38,12 @@ namespace Quokka.VCD
             }
         }
 
+        public VCDVariable SetValue(object value)
+        {
+            Value = value;
+            return this;
+        }
+
         public override string ToString()
         {
             return $"{Name} = {Value}, {Type}, {Size} bits";

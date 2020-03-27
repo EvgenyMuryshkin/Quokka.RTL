@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0.17</Version>
+    <Version>0.1.0.20</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
-    <PackageReleaseNotes>RTLModule, VCD generator</PackageReleaseNotes>
+    <PackageReleaseNotes>Explicit MSB initialization</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>
     <Company>Quokka Robotics</Company>
     <Description>Class to work with large unbounded array of bits as part of Quokka.FPGA toolkit</Description>

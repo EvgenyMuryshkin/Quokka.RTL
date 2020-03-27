@@ -14,18 +14,18 @@ namespace Quokka.RTL
                 _data[idx] = source[idx];
         }
 
-        internal void FromBinaryString(string value, int size, RTLBitArrayType dataType)
+        internal void FromBinaryString(string msbBitString, int size, RTLBitArrayType dataType)
         {
-            value = value.PadLeft(size, '0');
+            msbBitString = msbBitString.PadLeft(size, '0');
 
             _dataType = dataType;
-            internalResize(value.Length);
+            internalResize(msbBitString.Length);
 
-            value = string.Join("", value.Reverse());
+            msbBitString = string.Join("", msbBitString.Reverse());
 
-            for (var idx = 0; idx < value.Length; idx++)
+            for (var idx = 0; idx < msbBitString.Length; idx++)
             {
-                _data[idx] = value[idx] == '0' ? false : true;
+                _data[idx] = msbBitString[idx] == '0' ? false : true;
             }
         }
 
@@ -36,15 +36,35 @@ namespace Quokka.RTL
         {
         }
 
-        public RTLBitArray(IEnumerable<bool> source, RTLBitArrayType type)
+        public RTLBitArray(RTLBitArrayType type, params bool[] msbBits)
         {
-            var bits = string.Join("", source.Reverse().Select(b => b ? "1" : "0"));
-            FromBinaryString(bits, bits.Length, type);
+            var msbString = string.Join("", msbBits.Select(b => b ? "1" : "0"));
+            FromBinaryString(msbString, msbString.Length, type);
         }
 
-        public RTLBitArray(string binaryString, int size, RTLBitArrayType type)
+        public RTLBitArray(params bool[] msbBits)
+            : this(RTLBitArrayType.Unsigned, msbBits)
         {
-            FromBinaryString(binaryString, size, type);
+        }
+
+        public RTLBitArray(params RTLBitArray[] msbSources)
+            : this(msbSources.SelectMany(source => source.MSB).ToArray())
+        {
+        }
+
+        public RTLBitArray(string msbBitString, int size, RTLBitArrayType type)
+        {
+            FromBinaryString(msbBitString, size, type);
+        }
+
+        public RTLBitArray(string msbBitString, RTLBitArrayType type)
+        {
+            FromBinaryString(msbBitString, msbBitString.Length, type);
+        }
+
+        public RTLBitArray(string msbBitString)
+        {
+            FromBinaryString(msbBitString, msbBitString.Length, RTLBitArrayType.Unsigned);
         }
 
         /// <summary>

@@ -84,13 +84,71 @@ namespace Quokka.RTL.RTLBitArrayTests
         }
 
         [TestMethod]
+        public void StringCtorTest()
+        {
+            var source = new RTLBitArray("10000000");
+
+            Assert.AreEqual((byte)0x80, (byte)source);
+        }
+
+        [TestMethod]
+        public void BitsCtorTest()
+        {
+            var source = new RTLBitArray(true, true, false, false, true, false, false, false);
+
+            Assert.AreEqual((byte)0xC8, (byte)source);
+            Assert.AreEqual((short)0xC8, (short)source);
+        }
+
+        [TestMethod]
+        public void ByteCtorTest()
+        {
+            var init = (byte)0xC2;
+            var source = new RTLBitArray(init);
+
+            Assert.AreEqual(init, (byte)source);
+        }
+
+        [TestMethod]
+        public void ArrayCtorTest()
+        {
+            var high = (byte)0xC0;
+            var low = (byte)0x0E;
+
+            var source = new RTLBitArray(high, low);
+
+            Assert.AreEqual(0xC00E, (ushort)source);
+        }
+
+        [TestMethod]
         public void RangeTest()
         {
+            // 00001011
             var source = new RTLBitArray(0x0BU);
-            var high = source[3, 2];
-            var low = source[1, 0];
+
+            var high = source[3, 2]; // 10
             Assert.AreEqual(2U, (uint)high);
+
+            var low = source[1, 0]; // 11
             Assert.AreEqual(3U, (uint)low);
+
+            var highRev = source[2, 3]; // 01
+            Assert.AreEqual(1U, (uint)highRev);
+
+            var rev = source[0, 7]; // 11010000
+            Assert.AreEqual(0xD0U, (uint)rev);
+
+            var part = source[6, 0]; // 0001011
+            Assert.AreEqual(0x0BU, (uint)part);
+
+            var part2 = source[7, 1]; // 0000101
+            Assert.AreEqual(0x05U, (uint)part2);
+
+            var partRev = source[0, 6]; // 1101000
+            Assert.AreEqual(0x68U, (uint)partRev);
+
+            var partRev2 = source[1, 7]; // 1010000
+            Assert.AreEqual(0x50U, (uint)partRev2);
         }
 
         [TestMethod]
@@ -99,6 +157,36 @@ namespace Quokka.RTL.RTLBitArrayTests
             var source = new RTLBitArray((byte)0x8BU);
             var reversed = source.Reversed();
             Assert.AreEqual(0xD1U, (byte)reversed);
+        }
+
+        [TestMethod]
+        public void UnsignedResizedTest()
+        {
+            var source = new RTLBitArray((byte)0x8BU);
+            var resized = source.Resized(16);
+            Assert.AreEqual(0x8BU, (ushort)resized);
+        }
+
+        [TestMethod]
+        public void SignedResizedTest()
+        {
+            var source = new RTLBitArray((sbyte)-10);
+            var resized = source.Resized(16);
+            Assert.AreEqual(-10, (sbyte)resized);
+            Assert.AreEqual(-10, (short)resized);
+            Assert.AreEqual(-10, (int)resized);
+        }
+
+        [TestMethod]
+        public void TypeChangedTest()
+        {
+            var source = new RTLBitArray((byte)0x8BU);
+            var typeChanged = source.TypeChanged(RTLBitArrayType.Signed).Resized(16);
+
+            Assert.AreEqual("1111111110001011", typeChanged.AsBinaryString());
+
+            Assert.AreEqual(-117, (sbyte)typeChanged);
+            Assert.AreEqual(-117, (short)typeChanged);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Quokka.RTL
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value), "Should not be negative");
 
-            var list = Bits.ToList();
+            var list = LSB.ToList();
 
             while (value-- != 0)
             {
@@ -27,7 +27,7 @@ namespace Quokka.RTL
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value), "Should not be negative");
 
-            var list = Bits.ToList();
+            var list = LSB.ToList();
             var remaining = list.Skip(value).ToArray();
 
             // keep original size of bit array

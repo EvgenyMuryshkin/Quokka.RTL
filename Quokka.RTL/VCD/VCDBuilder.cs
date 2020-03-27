@@ -60,13 +60,15 @@ namespace Quokka.VCD
             {
                 modified.ForEach(m => lastValues[m.Name] = m);
             }
-
-            using (var sw = new StringWriter())
+            if (modified.Any())
             {
-                var vcdStream = new VCDStreamBuilder(sw);
-                vcdStream.SetTime(time);
-                vcdStream.Snapshot(modified);
-                File.AppendAllText(FileName, sw.ToString());
+                using (var sw = new StringWriter())
+                {
+                    var vcdStream = new VCDStreamBuilder(sw);
+                    vcdStream.SetTime(time);
+                    vcdStream.Snapshot(modified);
+                    File.AppendAllText(FileName, sw.ToString());
+                }
             }
         }
     }

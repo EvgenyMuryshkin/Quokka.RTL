@@ -103,7 +103,7 @@ namespace Quokka.RTL
             if (Size != value.Size)
                 throw new Exception($"Sizes should be same");
 
-            var newData = Bits.Zip(value.Bits, (l, r) => logic(l, r)).ToArray();
+            var newData = LSB.Zip(value.LSB, (l, r) => logic(l, r)).ToArray();
             _data = new BitArray(newData);
         }
 
