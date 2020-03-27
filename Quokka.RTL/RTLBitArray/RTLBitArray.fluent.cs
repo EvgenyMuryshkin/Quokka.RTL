@@ -23,7 +23,7 @@ namespace Quokka.RTL
 
         public RTLBitArray Reversed()
         {
-            return new RTLBitArray(_dataType, LSB.ToArray());
+            return new RTLBitArray(DataType, LSB.ToArray());
         }
     }
 }

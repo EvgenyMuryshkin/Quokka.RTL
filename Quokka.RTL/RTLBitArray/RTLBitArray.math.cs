@@ -12,7 +12,7 @@ namespace Quokka.RTL
             var size = Math.Max(Size, value.Size) + 1;
             internalResize(size);
 
-            if (_dataType != value._dataType)
+            if (DataType != value.DataType)
             {
                 internalToSigned();
             }
@@ -22,13 +22,13 @@ namespace Quokka.RTL
 
         internal void Subtract(RTLBitArray value)
         {
-            if (_dataType != RTLBitArrayType.Signed)
+            if (DataType != RTLBitArrayType.Signed)
             {
                 internalToSigned();
             }
 
             var copy = new RTLBitArray(value);
-            if (copy._dataType != RTLBitArrayType.Signed)
+            if (copy.DataType != RTLBitArrayType.Signed)
             {
                 copy.internalToSigned();
             }
@@ -47,14 +47,14 @@ namespace Quokka.RTL
             var valueOp = new RTLBitArray(value);
 
             var isResultNegative = false;
-            if (thisOp._dataType == RTLBitArrayType.Signed && thisOp[thisOp.Size - 1] == true)
+            if (thisOp.DataType == RTLBitArrayType.Signed && thisOp[thisOp.Size - 1] == true)
             {
                 isResultNegative = !isResultNegative;
                 thisOp.internal2SComplement();
                 thisOp.internalChangeType(RTLBitArrayType.Unsigned);
             }
 
-            if (valueOp._dataType == RTLBitArrayType.Signed && valueOp[valueOp.Size - 1] == true)
+            if (valueOp.DataType == RTLBitArrayType.Signed && valueOp[valueOp.Size - 1] == true)
             {
                 isResultNegative = !isResultNegative;
                 valueOp.internal2SComplement();
@@ -82,7 +82,7 @@ namespace Quokka.RTL
             }
 
             _data = result._data;
-            _dataType = result._dataType;
+            DataType = result.DataType;
         }
     }
 }

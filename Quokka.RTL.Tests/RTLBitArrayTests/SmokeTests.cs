@@ -34,8 +34,8 @@ namespace Quokka.RTL.RTLBitArrayTests
             {
                 // multiple F...F to itself
                 var op = string.Join("", Enumerable.Range(0, bytes).Select(b => Convert.ToString(0xFF, 2)));
-                var op1 = new RTLBitArray(op, bytes * 8, RTLBitArrayType.Unsigned);
-                var op2 = new RTLBitArray(op, bytes * 8, RTLBitArrayType.Unsigned);
+                var op1 = new RTLBitArray(RTLBitArrayType.Unsigned, op, bytes * 8);
+                var op2 = new RTLBitArray(RTLBitArrayType.Unsigned, op, bytes * 8);
 
                 var repeats = bytes * 2 - 1;
 

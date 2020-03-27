@@ -23,9 +23,9 @@ namespace Quokka.RTL
             switch(parts[0])
             {
                 case "U":
-                    return new RTLBitArray(parts[1], parts[1].Length, RTLBitArrayType.Unsigned);
+                    return new RTLBitArray(RTLBitArrayType.Unsigned, parts[1], parts[1].Length);
                 case "S":
-                    return new RTLBitArray(parts[1], parts[1].Length, RTLBitArrayType.Signed);
+                    return new RTLBitArray(RTLBitArrayType.Signed, parts[1], parts[1].Length);
                 default:
                     return null;
             }

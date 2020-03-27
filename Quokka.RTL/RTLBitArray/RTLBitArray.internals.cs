@@ -7,9 +7,22 @@ namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
+        internal void internalInit(RTLBitArrayType dataType, params bool[] lsbSource)
+        {
+            _data = new BitArray(lsbSource);
+            DataType = dataType;
+        }
+
+        internal void FromBinaryString(RTLBitArrayType dataType, string msbBitString, int size)
+        {
+            msbBitString = msbBitString.PadLeft(size, '0');
+
+            internalInit(dataType, msbBitString.Reverse().Select(b => b == '0' ? false : true).ToArray());
+        }
+
         internal void internalChangeType(RTLBitArrayType dataType)
         {
-            _dataType = dataType;
+            DataType = dataType;
         }
 
         internal void internalResize(int newSize)
@@ -35,7 +48,7 @@ namespace Quokka.RTL
                 // keep value
                 newData.AddRange(Enumerable.Range(0, Size).Select(idx => _data[idx]));
 
-                switch (_dataType)
+                switch (DataType)
                 {
                     case RTLBitArrayType.Signed:
                         {
@@ -50,20 +63,20 @@ namespace Quokka.RTL
                         }
                         break;
                     default:
-                        throw new Exception($"No rules to expand {_dataType}");
+                        throw new Exception($"No rules to expand {DataType}");
                 }
             }
             else
             {
                 // truncate
-                switch (_dataType)
+                switch (DataType)
                 {
                     case RTLBitArrayType.Signed:
                     case RTLBitArrayType.Unsigned:
                         newData.AddRange(Enumerable.Range(0, newSize).Select(idx => _data[idx]));
                         break;
                     default:
-                        throw new Exception($"No rules to truncate {_dataType}");
+                        throw new Exception($"No rules to truncate {DataType}");
                 }
             }
 

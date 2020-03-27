@@ -22,7 +22,7 @@ namespace Quokka.RTL
 
         public string AsJSONValue()
         {
-            return $"{(_dataType == RTLBitArrayType.Signed ? "S" : "U")}:{AsBinaryString()}";
+            return $"{(DataType == RTLBitArrayType.Signed ? "S" : "U")}:{AsBinaryString()}";
         }
 
         public override string ToString()

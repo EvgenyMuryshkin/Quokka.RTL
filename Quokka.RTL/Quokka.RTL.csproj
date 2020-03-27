@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0.20</Version>
+    <Version>0.1.0.21</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
-    <PackageReleaseNotes>Explicit MSB initialization</PackageReleaseNotes>
+    <PackageReleaseNotes>Explicit MSB initialization, cleanup ctor usage</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>
     <Company>Quokka Robotics</Company>
     <Description>Class to work with large unbounded array of bits as part of Quokka.FPGA toolkit</Description>
