@@ -20,6 +20,21 @@ namespace System.Reflection
             }
         }
 
+        public static void SetValue(this MemberInfo member, object target, object value)
+        {
+            switch (member)
+            {
+                case PropertyInfo p: 
+                    p.SetValue(target, value); 
+                    break;
+                case FieldInfo f: 
+                    f.SetValue(target, value); 
+                    break;
+                default: 
+                    throw new InvalidOperationException();
+            }
+        }
+
         public static Type GetMemberType(this MemberInfo member)
         {
             switch (member)
@@ -65,13 +80,20 @@ namespace Quokka.RTL
             var isPublic = memberInfo.IsPublic();
             var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
             var isDecaledOnBaseModue = memberInfo.DeclaringType.IsConstructedGenericType && (memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLCombinationalModule<>) || memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLSynchronousModule<,>));
-            return !isPublic && isPropertyOrField && !isDecaledOnBaseModue;
+            var isArray = memberInfo.GetMemberType().IsArray;
+
+            return isArray || !isPublic && isPropertyOrField && !isDecaledOnBaseModue;
+        }
+
+        public static bool IsSynthesizableSignalType(Type type)
+        {
+            return type.IsValueType || type == typeof(RTLBitArray);
         }
 
         public static List<MemberInfo> SignalProperties(Type type)
         {
             return SynthesizableMembers(type)
-                .Where(m => m.GetMemberType().IsValueType || m.GetMemberType() == typeof(RTLBitArray))
+                .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || (m.GetMemberType().IsArray && IsSynthesizableSignalType(m.GetMemberType().GetElementType())) )
                 .ToList();
         }
 

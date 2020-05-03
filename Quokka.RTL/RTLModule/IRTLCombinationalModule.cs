@@ -21,5 +21,9 @@ namespace Quokka.RTL
 
         void PopulateSnapshot(VCDSignalsSnapshot snapshot);
         void Setup();
+
+        void Reset();
+
+        event EventHandler Scheduled;
     }
 }

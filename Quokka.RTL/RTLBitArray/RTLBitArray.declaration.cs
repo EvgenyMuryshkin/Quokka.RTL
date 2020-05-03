@@ -7,7 +7,7 @@ using System.Linq;
 namespace Quokka.RTL
 {
     [JsonConverter(typeof(RTLBitArrayConverter))]
-    public sealed partial class RTLBitArray
+    public partial class RTLBitArray
     {
     }
 }

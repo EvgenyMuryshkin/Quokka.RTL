@@ -16,6 +16,8 @@ namespace Quokka.RTL
         public virtual IEnumerable<MemberInfo> ModuleProps { get; }
         public virtual IEnumerable<IRTLCombinationalModule> Modules { get; }
 
+        public event EventHandler Scheduled;
+
         public RTLCombinationalModule()
         {
             InputProps = RTLModuleHelper.SignalProperties(InputsType);
@@ -25,9 +27,14 @@ namespace Quokka.RTL
             Modules = ModuleProps.Select(m => (IRTLCombinationalModule)m.GetValue(this)).ToList();
         }
 
-        public void Setup()
+        public virtual void Setup()
         {
             Schedule(() => new TInput());
+
+            foreach (var child in Modules)
+            {
+                child.Setup();
+            }
         }
 
         protected TInput Inputs = new TInput();
@@ -38,6 +45,8 @@ namespace Quokka.RTL
         public virtual void Schedule(Func<TInput> inputsFactory)
         {
             InputsFactory = inputsFactory;
+
+            Scheduled?.Invoke(this, new EventArgs());
         }
 
         protected virtual bool ShouldStage(TInput nextInputs)
@@ -73,6 +82,14 @@ namespace Quokka.RTL
         }
 
         public virtual void Commit()
+        {
+            foreach (var child in Modules)
+            {
+                child.Commit();
+            }
+        }
+
+        public virtual void Reset()
         {
             foreach (var child in Modules)
             {
@@ -132,6 +149,13 @@ namespace Quokka.RTL
 
                 module.PopulateSnapshot(moduleScope);
             }
+        }
+
+        public void Cycle(TInput inputs)
+        {
+            Schedule(() => inputs);
+            Stage(0);
+            Commit();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Quokka.RTL
 {
-    public sealed partial class RTLBitArray
+    public partial class RTLBitArray
     {
         private BitArray _data = new BitArray(1);
         public RTLBitArrayType DataType { get; private set; } = RTLBitArrayType.Unsigned;
