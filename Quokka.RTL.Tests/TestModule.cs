@@ -25,7 +25,7 @@ namespace Quokka.RTL.Tests
         public bool WillWrite => IsWriting;
 
         // internal signal;
-        bool IsWriting => Inputs.WE;
+        bool IsWriting => !Inputs.WE;
 
         protected override void OnStage()
         {
@@ -58,7 +58,6 @@ namespace Quokka.RTL.Tests
     }
     class KeepTestModule : TestModule<KeepBuffState>
     {
-
     }
 
     class ResetBuffState : ITestState

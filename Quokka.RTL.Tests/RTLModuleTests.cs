@@ -20,16 +20,20 @@ namespace Quokka.RTL.Tests
         }
     }
 
-    public class MembersTestClass
+    public class BaseMembersTestClass
     {
-        public int V1;
-        public bool V2 { get; set; }
-        public byte[] V3;
-        public byte[] V4 { get; set; }
+        public int BasePublic1;
+        RTLBitArray BasePrivate1;
+        byte[] BasePrivate2 = new byte[256];
+    }
 
-        RTLBitArray V5;
-        RTLBitArray V6 { get; set; }
-        RTLBitArray V7 => V2;
+    public class DerivedTestClass : BaseMembersTestClass
+    {
+        public bool DerivedPublic1;
+        byte[] DerivedPrivate1 = new byte[256];
+
+        RTLBitArray DerivedPrivate2;
+        RTLBitArray DerivedPrivate3 => DerivedPublic1;
     }
 
     [TestClass]
@@ -38,13 +42,14 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void SynthesizableMembersTest()
         {
-            Assert.AreEqual(7, RTLModuleHelper.SynthesizableMembers(typeof(MembersTestClass)).Count());
+            Assert.AreEqual(3, RTLModuleHelper.SynthesizableMembers(typeof(BaseMembersTestClass)).Count());
+            Assert.AreEqual(7, RTLModuleHelper.SynthesizableMembers(typeof(DerivedTestClass)).Count());
         }
 
         [TestMethod]
         public void IsInternalPropertyTest()
         {
-            var props = RTLModuleHelper.SynthesizableMembers(typeof(MembersTestClass));
+            var props = RTLModuleHelper.SynthesizableMembers(typeof(DerivedTestClass));
             var internals = props.Where(p => RTLModuleHelper.IsInternalProperty(p));
 
             // arrays and private\protected members are considered internals 
@@ -54,9 +59,8 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void IsInternalTest()
         {
-            var type = typeof(KeepTestModule);
-            var member = type.GetMember("IsWriting");
-            //Assert.IsTrue(RTLModuleHelper.IsSynthesizableSignalType(member.GetMemberType()))
+            var type = typeof(DerivedTestClass);
+            var member = type.GetMember("V5");
         }
 
         [TestMethod]

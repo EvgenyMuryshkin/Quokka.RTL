@@ -61,12 +61,25 @@ namespace Quokka.RTL
 {
     public static class RTLModuleHelper
     {
+        public static bool IsToolkitType(Type type)
+        {
+            if (type.IsConstructedGenericType)
+                return IsToolkitType(type.GetGenericTypeDefinition());
+
+            return type == typeof(RTLCombinationalModule<>) || type == typeof(RTLSynchronousModule<,>);
+        }
+
         public static IEnumerable<MemberInfo> SynthesizableMembers(Type type)
         {
-            var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
-            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
+            if (type == null || type == typeof(object) || IsToolkitType(type)) 
+                return Enumerable.Empty<MemberInfo>();
 
-            return props.Concat(fields).Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
+            var baseMembers = SynthesizableMembers(type.BaseType);
+
+            var props = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
+            var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
+
+            return baseMembers.Concat(props).Concat(fields).Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
         public static List<MemberInfo> ModuleProperties(Type type)
@@ -79,10 +92,10 @@ namespace Quokka.RTL
         {
             var isPublic = memberInfo.IsPublic();
             var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
-            var isDecaledOnBaseModue = memberInfo.DeclaringType.IsConstructedGenericType && (memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLCombinationalModule<>) || memberInfo.DeclaringType.GetGenericTypeDefinition() == typeof(RTLSynchronousModule<,>));
+            var isToolkitType = IsToolkitType(memberInfo.DeclaringType);
             var isArray = memberInfo.GetMemberType().IsArray;
 
-            return isArray || !isPublic && isPropertyOrField && !isDecaledOnBaseModue;
+            return isArray || !isPublic && isPropertyOrField && !isToolkitType;
         }
 
         public static bool IsSynthesizableSignalType(Type type)
@@ -90,10 +103,15 @@ namespace Quokka.RTL
             return type.IsValueType || type == typeof(RTLBitArray);
         }
 
+        public static bool IsSynthesizableArrayType(Type type)
+        {
+            return type.IsArray && IsSynthesizableSignalType(type.GetElementType());
+        }
+
         public static List<MemberInfo> SignalProperties(Type type)
         {
             return SynthesizableMembers(type)
-                .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || (m.GetMemberType().IsArray && IsSynthesizableSignalType(m.GetMemberType().GetElementType())) )
+                .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
                 .ToList();
         }
 
