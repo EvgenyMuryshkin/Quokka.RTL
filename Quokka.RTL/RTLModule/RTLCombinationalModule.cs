@@ -29,12 +29,12 @@ namespace Quokka.RTL
 
         public virtual void Setup()
         {
-            Schedule(() => new TInput());
-
             foreach (var child in Modules)
             {
                 child.Setup();
             }
+
+            Schedule(() => new TInput());
         }
 
         protected TInput Inputs = new TInput();
@@ -42,9 +42,14 @@ namespace Quokka.RTL
 
         object IRTLCombinationalModule.Inputs => Inputs;
 
-        public virtual void Schedule(Func<TInput> inputsFactory)
+        protected virtual void OnSchedule(Func<TInput> inputsFactory)
         {
             InputsFactory = inputsFactory;
+        }
+
+        public void Schedule(Func<TInput> inputsFactory)
+        {
+            OnSchedule(inputsFactory);
 
             Scheduled?.Invoke(this, new EventArgs());
         }
@@ -66,6 +71,9 @@ namespace Quokka.RTL
 
         public virtual bool Stage(int iteration)
         {
+            if (InputsFactory == null)
+                throw new InvalidOperationException($"InputsFactory is not specified. Did you setup module?");
+
             var nextInputs = InputsFactory();
 
             bool selfModified = iteration == 0 || ShouldStage(nextInputs);

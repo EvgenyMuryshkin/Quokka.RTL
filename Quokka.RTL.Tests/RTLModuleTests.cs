@@ -12,9 +12,9 @@ namespace Quokka.RTL.Tests
 
         public byte Data => SingleChild.Data;
 
-        public override void Schedule(Func<TestInputs> inputsFactory)
+        protected override void OnSchedule(Func<TestInputs> inputsFactory)
         {
-            base.Schedule(inputsFactory);
+            base.OnSchedule(inputsFactory);
 
             SingleChild.Schedule(inputsFactory);
         }
@@ -144,7 +144,16 @@ namespace Quokka.RTL.Tests
             Assert.AreEqual(10, module.State.Buff[10]);
             module.Reset();
             Assert.AreEqual(10, module.State.Buff[10]);
+        }
 
+        [TestMethod]
+        public void FeedbackTest()
+        {
+            var module = new NotGateFeedbackModule();
+            module.Setup();
+
+            Assert.IsTrue(module.Stage(0));
+            Assert.IsTrue(module.Stage(1));
         }
     }
 }
