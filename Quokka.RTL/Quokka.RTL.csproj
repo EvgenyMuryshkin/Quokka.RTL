@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0.30</Version>
+    <Version>0.1.0.38</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <PackageReleaseNotes>Explicit MSB initialization, cleanup ctor usage, memory buffers export as state and internals</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>

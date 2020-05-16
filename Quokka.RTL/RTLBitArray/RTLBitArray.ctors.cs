@@ -14,15 +14,14 @@ namespace Quokka.RTL
         {
             internalInit(RTLBitArrayType.Unsigned, false);
         }
-
-        public RTLBitArray(params bool[] msbBits)
+        private RTLBitArray(params bool[] msbBits)
         {
             internalInit(RTLBitArrayType.Unsigned, msbBits.Reverse().ToArray());
         }
 
         public RTLBitArray(params RTLBitArray[] msbSources)
         {
-            var type = msbSources.Length == 1 ? msbSources[0].DataType : RTLBitArrayType.Unsigned;
+            var type = msbSources[0].DataType;
             var msbBits = msbSources.SelectMany(source => source.MSB).ToArray();
 
             internalInit(type, msbBits.Reverse().ToArray());

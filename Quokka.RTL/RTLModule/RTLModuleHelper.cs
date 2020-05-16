@@ -54,6 +54,16 @@ namespace System.Reflection
                 default: throw new InvalidOperationException();
             }
         }
+
+        public static bool IsAbstract(this MemberInfo member)
+        {
+            switch (member)
+            {
+                case PropertyInfo p: return (p.GetGetMethod()?.IsAbstract ?? false) || (p.GetSetMethod()?.IsAbstract ?? false);
+                case FieldInfo f: return false;
+                default: throw new InvalidOperationException();
+            }
+        }
     }
 }
 
@@ -79,7 +89,11 @@ namespace Quokka.RTL
             var props = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
             var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
 
-            return baseMembers.Concat(props).Concat(fields).Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
+            return baseMembers
+                .Concat(props)
+                .Concat(fields)
+                .Where(p => !p.IsAbstract())
+                .Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
         public static List<MemberInfo> ModuleProperties(Type type)

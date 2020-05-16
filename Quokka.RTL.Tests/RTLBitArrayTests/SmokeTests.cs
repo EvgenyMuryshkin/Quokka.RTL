@@ -121,6 +121,30 @@ namespace Quokka.RTL.RTLBitArrayTests
         }
 
         [TestMethod]
+        public void TypedCtor()
+        {
+            var signed = new RTLBitArray(RTLBitArrayType.Signed, "11111111");
+            Assert.AreEqual((short)-1, (short)signed.Resized(16));
+
+            var unsigned = new RTLBitArray(RTLBitArrayType.Unsigned, "11111111");
+            Assert.AreEqual((short)255, (short)unsigned.Resized(16));
+        }
+
+        [TestMethod]
+        public void ByteMinValueCtor()
+        {
+            var unsigned = new RTLBitArray(byte.MinValue);
+            Assert.AreEqual((short)byte.MinValue, (short)unsigned);
+        }
+
+        [TestMethod]
+        public void CharMinValueCtor()
+        {
+            var signed = new RTLBitArray(char.MinValue);
+            Assert.AreEqual((short)char.MinValue, (short)signed);
+        }
+
+        [TestMethod]
         public void RangeTest()
         {
             // 00001011

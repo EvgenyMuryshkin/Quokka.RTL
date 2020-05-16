@@ -21,6 +21,19 @@ namespace Quokka.RTL
             return result;
         }
 
+        public RTLBitArray Signed()
+        {
+            var result = new RTLBitArray(this);
+            result.internalChangeType(RTLBitArrayType.Signed);
+            return result;
+        }
+        public RTLBitArray Unsigned()
+        {
+            var result = new RTLBitArray(this);
+            result.internalChangeType(RTLBitArrayType.Unsigned);
+            return result;
+        }
+
         public RTLBitArray Reversed()
         {
             return new RTLBitArray(LSB.ToArray()).TypeChanged(DataType);

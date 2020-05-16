@@ -36,9 +36,26 @@ namespace Quokka.RTL.Tests
         RTLBitArray DerivedPrivate3 => DerivedPublic1;
     }
 
+    public abstract class AbstractBaseClass
+    {
+        public abstract bool Value { get; }
+    }
+
+    public class ImplementationClass : AbstractBaseClass
+    {
+        public override bool Value => true;
+    }
+
     [TestClass]
     public class RTLModuleTests
     {
+        [TestMethod]
+        public void AbstractImplementationTest()
+        {
+            var outputProps = RTLModuleHelper.OutputProperties(typeof(ImplementationClass));
+            Assert.AreEqual(1, outputProps.Count);
+        }
+
         [TestMethod]
         public void SynthesizableMembersTest()
         {
