@@ -8,7 +8,7 @@ namespace Quokka.RTL
     public interface IRTLCombinationalModule
     {
         Type InputsType { get; }
-        object Inputs { get; }
+        object RawInputs { get; }
 
         IEnumerable<MemberInfo> InputProps { get; }
         IEnumerable<MemberInfo> OutputProps { get; }
@@ -25,5 +25,12 @@ namespace Quokka.RTL
         void Reset();
 
         event EventHandler Scheduled;
+    }
+
+    public interface IRTLCombinationalModule<TInput> : IRTLCombinationalModule
+    {
+        TInput Inputs { get; }
+
+        void Schedule(Func<TInput> inputsFactory);
     }
 }

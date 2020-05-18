@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public abstract class RTLCombinationalModule<TInput> : IRTLCombinationalModule
+    public abstract class RTLCombinationalModule<TInput> : IRTLCombinationalModule<TInput>
         where TInput : new()
     {
         public Type InputsType { get; } = typeof(TInput);
@@ -37,10 +37,9 @@ namespace Quokka.RTL
             Schedule(() => new TInput());
         }
 
-        protected TInput Inputs = new TInput();
+        public TInput Inputs { get; private set; } = new TInput();
+        object IRTLCombinationalModule.RawInputs => Inputs;
         protected Func<TInput> InputsFactory;
-
-        object IRTLCombinationalModule.Inputs => Inputs;
 
         protected virtual void OnSchedule(Func<TInput> inputsFactory)
         {

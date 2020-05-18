@@ -17,15 +17,16 @@ namespace Quokka.RTL
     /// </summary>
     /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TState"></typeparam>
-    public abstract class RTLSynchronousModule<TInput, TState> : RTLCombinationalModule<TInput>, IRTLSynchronousModule
+    public abstract class RTLSynchronousModule<TInput, TState> : RTLCombinationalModule<TInput>, IRTLSynchronousModule<TInput, TState>
         where TInput : new()
-        where TState : class, new()
+        where TState : new()
     {
         public Type StateType { get; } = typeof(TState);
         public List<MemberInfo> StateProps { get; } = RTLModuleHelper.SignalProperties(typeof(TState));
 
         TState DefaultState;
-        public TState State = new TState();
+        public TState State { get; private set; } = new TState();
+        object IRTLSynchronousModule.RawState => State;
         public TState NextState = new TState();
 
         public RTLSynchronousModule()
@@ -39,8 +40,6 @@ namespace Quokka.RTL
             // store default state for reset logic
             DefaultState = CopyState();
         }
-
-        object IRTLSynchronousModule.State => State;
 
         public override void PopulateSnapshot(VCDSignalsSnapshot snapshot)
         {
@@ -97,8 +96,8 @@ namespace Quokka.RTL
         public override void Reset()
         {
             base.Reset();
-
-            if (DefaultState == default(TState))
+            
+            if (object.Equals(DefaultState, default(TState)))
             {
                 throw new Exception($"Default state is null. Did you call Setup()?");
             }
@@ -144,7 +143,7 @@ namespace Quokka.RTL
         {
             base.Commit();
             State = NextState;
-            NextState = null;
+            NextState = default;
         }
     }
 }
