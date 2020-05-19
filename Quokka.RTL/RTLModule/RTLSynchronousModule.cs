@@ -64,21 +64,7 @@ namespace Quokka.RTL
 
         protected TState CopyState()
         {
-            using (var ms = new MemoryStream())
-            {
-                using (var writer = new BsonWriter(ms))
-                {
-                    var serializer = new JsonSerializer();
-                    serializer.Serialize(writer, State);
-
-                    ms.Seek(0, SeekOrigin.Begin);
-
-                    using (var reader = new BsonReader(ms))
-                    {
-                        return serializer.Deserialize<TState>(reader);
-                    }
-                }
-            }
+            return RTLModuleHelper.DeepCopy(State);
         }
 
         public override bool Stage(int iteration)

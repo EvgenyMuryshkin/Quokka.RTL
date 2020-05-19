@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Quokka.RTL;
 using System;
 using System.Collections.Generic;
@@ -211,6 +212,53 @@ namespace Quokka.RTL.RTLBitArrayTests
 
             Assert.AreEqual(-117, (sbyte)typeChanged);
             Assert.AreEqual(-117, (short)typeChanged);
+        }
+
+        class SerializeContainer
+        {
+            public uint UINTValue;
+            public RTLBitArray Value;
+            public bool BoolValue;
+            public RTLBitArray SmallValue;
+        }
+
+        [TestMethod]
+        public void SerializePerf()
+        {
+            var c = new SerializeContainer()
+            {
+                UINTValue = int.MaxValue,
+                Value = ulong.MaxValue,
+                BoolValue = true,
+                SmallValue = -10,
+            };
+
+            var iterations = 300000;
+
+            var sw = new Stopwatch();
+            sw.Start();
+            foreach (var idx in Enumerable.Range(0, iterations))
+            {
+                c.SmallValue = idx;
+                var copy = RTLModuleHelper.BSONCopy(c);
+                Assert.AreEqual(idx, (int)copy.SmallValue);
+            }
+
+            var bson = sw.ElapsedMilliseconds;
+            sw.Restart();
+
+            var jsonSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
+            foreach (var idx in Enumerable.Range(0, iterations))
+            {
+                c.SmallValue = idx;
+                var copy = RTLModuleHelper.JSONCopy(c);
+                Assert.AreEqual(idx, (int)copy.SmallValue);
+            }
+
+            var json = sw.ElapsedMilliseconds;
+
+            // BSON is slightly better, but does not support unsigned types.
+            Trace.WriteLine($"JSON: {json}, BSON: {bson}");
         }
     }
 }

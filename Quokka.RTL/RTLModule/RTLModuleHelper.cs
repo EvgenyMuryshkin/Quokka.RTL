@@ -1,7 +1,10 @@
-﻿using Quokka.RTL;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
+using Quokka.RTL;
 using Quokka.VCD;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -153,6 +156,45 @@ namespace Quokka.RTL
                 .Max();
 
             return (int)Math.Max(1, Math.Ceiling(Math.Log(maxValue + 1, 2)));
+        }
+
+        public static T BSONCopy<T>(T source)
+        {
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    using (var writer = new BsonWriter(ms))
+                    {
+                        var serializer = new JsonSerializer();
+                        serializer.Serialize(writer, source);
+
+                        ms.Seek(0, SeekOrigin.Begin);
+
+                        using (var reader = new BsonReader(ms))
+                        {
+                            return serializer.Deserialize<T>(reader);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var json = JsonConvert.SerializeObject(source, Formatting.Indented);
+                throw new Exception($"Failed to make a copy of {source.GetType().Name}: {json}", ex);
+            }
+        }
+
+        static JsonSerializerSettings typeSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
+        public static T JSONCopy<T>(T source)
+        {
+            var str = JsonConvert.SerializeObject(source, typeSettings);
+            return JsonConvert.DeserializeObject<T>(str);
+        }
+
+        public static T DeepCopy<T>(T source)
+        {
+            return JSONCopy(source);
         }
     }
 }
