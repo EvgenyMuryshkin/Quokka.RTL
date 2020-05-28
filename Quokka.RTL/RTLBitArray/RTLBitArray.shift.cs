@@ -36,5 +36,18 @@ namespace Quokka.RTL
                 .Select(idx => DataType == RTLBitArrayType.Signed ? list[Size - 1] : false);
             _data = new BitArray(remaining.Concat(padding).ToArray());
         }
+
+        public RTLBitArray ShiftLeft(RTLBitArray by)
+        {
+            var shifted = this << by;
+            var totalLength = Size + (1 << by.Size) - 1;
+
+            return shifted.Resized(totalLength);
+        }
+
+        public RTLBitArray ShiftRight(RTLBitArray by)
+        {
+            return this >> by;
+        }
     }
 }

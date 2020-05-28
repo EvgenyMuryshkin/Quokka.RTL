@@ -193,6 +193,22 @@ namespace Quokka.RTL.RTLBitArrayTests
         }
 
         [TestMethod]
+        public void ShiftTest()
+        {
+            var shiftBy = new RTLBitArray(3).Resized(5);
+            var r = new RTLBitArray(byte.MaxValue);
+            var sll = r.ShiftLeft(shiftBy);
+            var expectedSLLLength = 39;
+
+            var srl = r.Unsigned().ShiftRight(shiftBy);
+            var sra = r.Signed().ShiftRight(shiftBy);
+
+            Assert.AreEqual("11111111000".PadLeft(expectedSLLLength, '0'), sll.AsBinaryString());
+            Assert.AreEqual("00011111", srl.AsBinaryString());
+            Assert.AreEqual("11111111", sra.AsBinaryString());
+        }
+
+        [TestMethod]
         public void SignedResizedTest()
         {
             var source = new RTLBitArray((sbyte)-10);
