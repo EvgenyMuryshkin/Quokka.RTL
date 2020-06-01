@@ -64,7 +64,7 @@ namespace Quokka.RTL.RTLBitArrayTests
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            while(stopWatch.ElapsedMilliseconds < TimeSpan.FromSeconds(5).TotalMilliseconds)
+            while (stopWatch.ElapsedMilliseconds < TimeSpan.FromSeconds(5).TotalMilliseconds)
             {
                 var op1 = rnd.Next();
                 var op2 = rnd.Next();
@@ -190,6 +190,14 @@ namespace Quokka.RTL.RTLBitArrayTests
             var source = new RTLBitArray((byte)0x8BU);
             var resized = source.Resized(16);
             Assert.AreEqual(0x8BU, (ushort)resized);
+        }
+
+        [TestMethod]
+        public void LogicTest()
+        {
+            var data = new RTLBitArray(0xBADC0FFE);
+            var mask = new RTLBitArray(byte.MaxValue).Resized(32);
+            var res = data & mask;
         }
 
         [TestMethod]

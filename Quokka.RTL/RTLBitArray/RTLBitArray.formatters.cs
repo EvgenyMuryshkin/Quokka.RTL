@@ -28,15 +28,17 @@ namespace Quokka.RTL
         public override string ToString()
         {
             List<List<bool>> parts = new List<List<bool>>();
-            IEnumerable<bool> source = MSB;
+            IEnumerable<bool> source = LSB;
 
             while(source.Any())
             {
-                parts.Add(source.Take(8).ToList());
+                parts.Add(source.Take(8).Reverse().ToList());
                 source = source.Skip(8);
             }
 
             var byteParts = parts
+                .AsEnumerable()
+                .Reverse()
                 .Select(p => string.Join("", p.Select(b => b ? "1" : "0")))
                 .Select(p => Convert.ToByte(p, 2))
                 .ToList();

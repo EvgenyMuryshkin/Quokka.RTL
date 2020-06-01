@@ -16,7 +16,7 @@ namespace Quokka.RTL
 
         public static RTLBitArray operator &(RTLBitArray op1, RTLBitArray op2)
         {
-            var size = Math.Max(op1.Size, op2.Size) + 1;
+            var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLBitArrayType.Signed;
 
             var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
@@ -28,7 +28,7 @@ namespace Quokka.RTL
 
         public static RTLBitArray operator |(RTLBitArray op1, RTLBitArray op2)
         {
-            var size = Math.Max(op1.Size, op2.Size) + 1;
+            var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLBitArrayType.Signed;
 
             var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
@@ -40,7 +40,7 @@ namespace Quokka.RTL
 
         public static RTLBitArray operator ^(RTLBitArray op1, RTLBitArray op2)
         {
-            var size = Math.Max(op1.Size, op2.Size) + 1;
+            var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLBitArrayType.Signed;
 
             var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
