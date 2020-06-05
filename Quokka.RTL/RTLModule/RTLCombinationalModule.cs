@@ -10,21 +10,38 @@ namespace Quokka.RTL
         where TInput : new()
     {
         public Type InputsType { get; } = typeof(TInput);
-        public virtual IEnumerable<MemberInfo> InputProps { get; }
-        public virtual IEnumerable<MemberInfo> OutputProps { get; }
-        public virtual IEnumerable<MemberInfo> InternalProps { get; }
-        public virtual IEnumerable<MemberInfo> ModuleProps { get; }
-        public virtual IEnumerable<IRTLCombinationalModule> Modules { get; }
+        public virtual IEnumerable<MemberInfo> InputProps { get; private set; }
+        public virtual IEnumerable<MemberInfo> OutputProps { get; private set; }
+        public virtual IEnumerable<MemberInfo> InternalProps { get; private set; }
+        public virtual IEnumerable<MemberInfo> ModuleProps { get; private set; }
+        public virtual IEnumerable<IRTLCombinationalModule> Modules { get; private set; }
 
         public event EventHandler Scheduled;
 
-        public RTLCombinationalModule()
+        public RTLCombinationalModule(bool autoInitialize = true)
+        {
+            if (autoInitialize)
+            {
+                Initialize();
+            }
+        }
+
+        protected void Initialize()
         {
             InputProps = RTLModuleHelper.SignalProperties(InputsType);
             OutputProps = RTLModuleHelper.OutputProperties(GetType());
             InternalProps = RTLModuleHelper.InternalProperties(GetType());
             ModuleProps = RTLModuleHelper.ModuleProperties(GetType());
-            Modules = ModuleProps.Select(m => (IRTLCombinationalModule)m.GetValue(this)).ToList();
+            Modules = ModuleProps.Select(m =>
+            {
+                var value = m.GetValue(this);
+                if (!(value is IRTLCombinationalModule))
+                {
+                    throw new Exception($"Property {m.Name} is not a module. Actual type is {(value?.GetType()?.Name ?? "null")}");
+                }
+
+                return (IRTLCombinationalModule)m.GetValue(this);
+            }).ToList();
         }
 
         public virtual void Setup()

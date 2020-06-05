@@ -29,7 +29,7 @@ namespace Quokka.RTL
         object IRTLSynchronousModule.RawState => State;
         public TState NextState = new TState();
 
-        public RTLSynchronousModule()
+        public RTLSynchronousModule(bool autoInitialize = true) : base(autoInitialize)
         {
         }
 
