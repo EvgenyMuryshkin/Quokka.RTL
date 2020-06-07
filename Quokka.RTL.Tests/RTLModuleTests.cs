@@ -84,6 +84,8 @@ namespace Quokka.RTL.Tests
         public void TestModuleMembersTests()
         {
             var module = new KeepTestModule();
+            module.Setup();
+
             Assert.AreEqual(4, module.InputProps.Count());
             Assert.AreEqual(2, module.OutputProps.Count());
             Assert.AreEqual(2, module.StateProps.Count());
@@ -94,6 +96,8 @@ namespace Quokka.RTL.Tests
         public void ParentModuleMembersTests()
         {
             var module = new ParentModule();
+            module.Setup();
+
             Assert.AreEqual(4, module.InputProps.Count());
             Assert.AreEqual(1, module.OutputProps.Count());
             Assert.AreEqual(1, module.ModuleProps.Count());
@@ -104,6 +108,8 @@ namespace Quokka.RTL.Tests
         public void CycleTest()
         {
             var module = new ParentModule();
+            module.Setup();
+
             module.Cycle(new TestInputs()
             {
                 WE = true,

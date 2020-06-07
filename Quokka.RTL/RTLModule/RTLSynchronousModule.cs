@@ -29,10 +29,6 @@ namespace Quokka.RTL
         object IRTLSynchronousModule.RawState => State;
         public TState NextState = new TState();
 
-        public RTLSynchronousModule(bool autoInitialize = true) : base(autoInitialize)
-        {
-        }
-
         public override void Setup()
         {
             base.Setup();
@@ -83,9 +79,9 @@ namespace Quokka.RTL
         {
             base.Reset();
             
-            if (object.Equals(DefaultState, default(TState)))
+            if (Equals(DefaultState, default(TState)))
             {
-                throw new Exception($"Default state is null. Did you call Setup()?");
+                ThrowNotSetup();
             }
 
             foreach (var prop in StateProps)

@@ -18,15 +18,16 @@ namespace Quokka.RTL
 
         public event EventHandler Scheduled;
 
-        public RTLCombinationalModule(bool autoInitialize = true)
+        public RTLCombinationalModule()
         {
-            if (autoInitialize)
-            {
-                Initialize();
-            }
         }
 
-        protected void Initialize()
+        protected void ThrowNotSetup()
+        {
+            throw new InvalidOperationException($"Module '{GetType().Name}' is not initialized. Please call .Setup() on module instance or top of the hierarchy.");
+        }
+
+        void Initialize()
         {
             InputProps = RTLModuleHelper.SignalProperties(InputsType);
             OutputProps = RTLModuleHelper.OutputProperties(GetType());
@@ -46,6 +47,8 @@ namespace Quokka.RTL
 
         public virtual void Setup()
         {
+            Initialize();
+
             foreach (var child in Modules)
             {
                 child.Setup();
@@ -72,6 +75,9 @@ namespace Quokka.RTL
 
         protected virtual bool ShouldStage(TInput nextInputs)
         {
+            if (InputProps == null)
+                ThrowNotSetup();
+
             // check if given set of inputs was already processed on previous iteration
             foreach (var prop in InputProps)
             {
@@ -88,7 +94,7 @@ namespace Quokka.RTL
         public virtual bool Stage(int iteration)
         {
             if (InputsFactory == null)
-                throw new InvalidOperationException($"InputsFactory is not specified. Did you setup module?");
+                throw new InvalidOperationException($"InputsFactory is not specified. Did you forget to schedule module?");
 
             var nextInputs = InputsFactory();
 
