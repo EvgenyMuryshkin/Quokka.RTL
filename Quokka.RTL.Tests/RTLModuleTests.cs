@@ -8,15 +8,24 @@ namespace Quokka.RTL.Tests
 {
     class ParentModule : RTLCombinationalModule<TestInputs>
     {
-        public KeepTestModule SingleChild = new KeepTestModule();
+        public KeepTestModule SingleChild1 = new KeepTestModule();
+        public KeepTestModule SingleChild2 = new KeepTestModule();
+        byte internalData => SingleChild1.Data;
 
-        public byte Data => SingleChild.Data;
+        public byte Data => internalData;
+
+        KeepTestModule[] children => new[]
+        {
+            SingleChild1,
+            SingleChild2
+        };
 
         protected override void OnSchedule(Func<TestInputs> inputsFactory)
         {
             base.OnSchedule(inputsFactory);
 
-            SingleChild.Schedule(inputsFactory);
+            SingleChild1.Schedule(inputsFactory);
+            SingleChild2.Schedule(inputsFactory);
         }
     }
 
@@ -100,8 +109,9 @@ namespace Quokka.RTL.Tests
 
             Assert.AreEqual(4, module.InputProps.Count());
             Assert.AreEqual(1, module.OutputProps.Count());
-            Assert.AreEqual(1, module.ModuleProps.Count());
-            Assert.AreEqual(1, module.Modules.Count());
+            Assert.AreEqual(3, module.ModuleProps.Count());
+            Assert.AreEqual(2, module.Modules.Count());
+            Assert.AreEqual(1, module.InternalProps.Count());
         }
 
         [TestMethod]

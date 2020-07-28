@@ -39,20 +39,41 @@ namespace Quokka.RTL
 
         public override void PopulateSnapshot(VCDSignalsSnapshot snapshot)
         {
-            base.PopulateSnapshot(snapshot);
-
-            var state = snapshot.Scope("State");
-            foreach (var prop in StateProps)
+            try
             {
-                var value = prop.GetValue(State);
-                state.SetVariables(ToVCDVariables(prop, value));
+                base.PopulateSnapshot(snapshot);
+
+                currentSnapshot = snapshot.Scope("State");
+                if (State == null)
+                    throw new NullReferenceException("State is not initialized");
+
+                foreach (var prop in StateProps)
+                {
+                    currentMember = prop;
+                    var value = currentMember.GetValue(State);
+                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                }
+
+                currentSnapshot = snapshot.Scope("NextState");
+                if (State == null)
+                    throw new NullReferenceException("NextState is not initialized");
+
+                foreach (var prop in StateProps)
+                {
+                    currentMember = prop;
+                    var value = currentMember.GetValue(NextState);
+                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                }
+
+                currentSnapshot = null;
             }
-
-            var nextState = snapshot.Scope("NextState");
-            foreach (var prop in StateProps)
+            catch (VCDSnapshotException)
             {
-                var value = prop.GetValue(NextState);
-                nextState.SetVariables(ToVCDVariables(prop, value));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                ThrowVCDException(ex);
             }
         }
 
@@ -125,7 +146,7 @@ namespace Quokka.RTL
         {
             base.Commit();
             State = NextState;
-            NextState = default;
+            NextState = CopyState();
         }
     }
 }

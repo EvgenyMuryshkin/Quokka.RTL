@@ -8,6 +8,16 @@ namespace Quokka.VCD.Tests
     public class VCDTests
     {
         [TestMethod]
+        public void ModuleWrite()
+        {
+            var snapshot = new VCDSignalsSnapshot("TOP");
+
+            var module = new VCDModule();
+            module.Setup();
+            module.PopulateSnapshot(snapshot);
+        }
+
+        [TestMethod]
         public void ImmediateWrite()
         {
             var builder = new VCDBuilder("test.vcd");

@@ -1,5 +1,6 @@
 ﻿using Quokka.VCD;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,16 +34,34 @@ namespace Quokka.RTL
             OutputProps = RTLModuleHelper.OutputProperties(GetType());
             InternalProps = RTLModuleHelper.InternalProperties(GetType());
             ModuleProps = RTLModuleHelper.ModuleProperties(GetType());
-            Modules = ModuleProps.Select(m =>
-            {
-                var value = m.GetValue(this);
-                if (!(value is IRTLCombinationalModule))
+            Modules = ModuleProps
+                .Where(m => RTLModuleHelper.IsField(m))
+                .SelectMany(m =>
                 {
-                    throw new Exception($"Property {m.Name} is not a module. Actual type is {(value?.GetType()?.Name ?? "null")}");
-                }
+                    var value = m.GetValue(this);
 
-                return (IRTLCombinationalModule)m.GetValue(this);
-            }).ToList();
+                    if (value == null)
+                    {
+                        throw new Exception($"Field {m.Name} returns null. Module should have an instance.");
+                    }
+
+                    var valueType = value.GetType();
+                    if (value is IRTLCombinationalModule module)
+                    {
+                        return new[] { module };
+                    }
+
+                    if (valueType.IsArray)
+                    {
+                        var elementType = valueType.GetElementType();
+                        if (typeof(IRTLCombinationalModule).IsAssignableFrom(elementType))
+                        {
+                            return (value as IEnumerable).OfType<IRTLCombinationalModule>().ToArray();
+                        }
+                    }
+
+                    throw new Exception($"Field {m.Name} is not a module. Actual type is {(value?.GetType()?.Name ?? "null")}");
+                }).ToList();
         }
 
         public virtual void Setup()
@@ -156,28 +175,51 @@ namespace Quokka.RTL
             }
         }
 
+        protected VCDSignalsSnapshot currentSnapshot = null;
+        protected MemberInfo currentMember = null;
+
+        protected void ThrowVCDException(Exception ex)
+        {
+            throw new Exception($"Failed to save snapshot of {GetType().Name}.{(currentSnapshot?.Name ?? "null")}.{(currentMember?.Name ?? "null")}", ex);
+        }
+
         public virtual void PopulateSnapshot(VCDSignalsSnapshot snapshot)
         {
-            var inputs = snapshot.Scope("Inputs");
-            foreach (var prop in InputProps)
+            try
             {
-                var value = prop.GetValue(Inputs);
-                inputs.SetVariables(ToVCDVariables(prop, value));
+                currentSnapshot = snapshot.Scope("Inputs");
+                foreach (var prop in InputProps)
+                {
+                    currentMember = prop;
+                    var value = currentMember.GetValue(Inputs);
+                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                }
+
+                currentSnapshot = snapshot.Scope("Outputs");
+                foreach (var prop in OutputProps)
+                {
+                    currentMember = prop;
+                    var value = currentMember.GetValue(this);
+                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                }
+
+                currentSnapshot = null;
+                foreach (var m in ModuleProps)
+                {
+                    currentMember = m;
+                    var module = (IRTLCombinationalModule)m.GetValue(this);
+                    var moduleScope = snapshot.Scope(m.Name);
+
+                    module.PopulateSnapshot(moduleScope);
+                }
             }
-
-            var outputs = snapshot.Scope("Outputs");
-            foreach (var prop in OutputProps)
+            catch (VCDSnapshotException)
             {
-                var value = prop.GetValue(this);
-                outputs.SetVariables(ToVCDVariables(prop, value));
+                throw;
             }
-
-            foreach (var m in ModuleProps)
+            catch (Exception ex)
             {
-                var module = (IRTLCombinationalModule)m.GetValue(this);
-                var moduleScope = snapshot.Scope(m.Name);
-
-                module.PopulateSnapshot(moduleScope);
+                ThrowVCDException(ex);
             }
         }
 

@@ -99,12 +99,35 @@ namespace Quokka.RTL
                 .Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
+        public static bool IsModuleTypeMember(Type member)
+        {
+            if (member == null)
+                return false;
+
+            if (member.IsArray)
+                return IsModuleTypeMember(member.GetElementType());
+
+            return typeof(IRTLCombinationalModule).IsAssignableFrom(member);
+        }
+
         public static List<MemberInfo> ModuleProperties(Type type)
         {
             return SynthesizableMembers(type)
-                .Where(m => typeof(IRTLCombinationalModule).IsAssignableFrom(m.GetMemberType()))
+                .Where(m => IsModuleTypeMember(m.GetMemberType()))
                 .ToList();
         }
+
+        public static bool IsField(MemberInfo memberInfo) => memberInfo is FieldInfo;
+        public static bool IsGetProperty(MemberInfo memberInfo)
+        {
+            if (memberInfo is PropertyInfo pi)
+            {
+                return pi.GetSetMethod() == null;
+            }
+
+            return false;
+        }
+
         public static bool IsInternalProperty(MemberInfo memberInfo)
         {
             var isPublic = memberInfo.IsPublic();
