@@ -27,6 +27,11 @@ namespace Quokka.RTL
             internalInit(type, msbBits.Reverse().ToArray());
         }
 
+        public RTLBitArray(IEnumerable<bool> msbBits)
+        {
+            internalInit(RTLBitArrayType.Unsigned, msbBits.Reverse().ToArray());
+        }
+
         public RTLBitArray(RTLBitArrayType type, string msbBitString, int size)
         {
             FromBinaryString(type, msbBitString, size);

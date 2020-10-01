@@ -7,6 +7,13 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
+    public class RTLModuleDetails
+    {
+        public IRTLCombinationalModule Module;
+        public string Name;
+        public MemberInfo Member;
+    }
+
     public abstract class RTLCombinationalModule<TInput> : IRTLCombinationalModule<TInput>
         where TInput : new()
     {
@@ -15,7 +22,8 @@ namespace Quokka.RTL
         public virtual IEnumerable<MemberInfo> OutputProps { get; private set; }
         public virtual IEnumerable<MemberInfo> InternalProps { get; private set; }
         public virtual IEnumerable<MemberInfo> ModuleProps { get; private set; }
-        public virtual IEnumerable<IRTLCombinationalModule> Modules { get; private set; }
+        public virtual List<RTLModuleDetails> ModuleDetails { get; private set; } = new List<RTLModuleDetails>();
+        public virtual IEnumerable<IRTLCombinationalModule> Modules => ModuleDetails.Select(m => m.Module);
 
         public event EventHandler Scheduled;
 
@@ -34,34 +42,50 @@ namespace Quokka.RTL
             OutputProps = RTLModuleHelper.OutputProperties(GetType());
             InternalProps = RTLModuleHelper.InternalProperties(GetType());
             ModuleProps = RTLModuleHelper.ModuleProperties(GetType());
-            Modules = ModuleProps
-                .Where(m => RTLModuleHelper.IsField(m))
-                .SelectMany(m =>
+
+            foreach (var m in ModuleProps.Where(m => RTLModuleHelper.IsField(m)))
+            {
+                var value = m.GetValue(this);
+
+                if (value == null)
                 {
-                    var value = m.GetValue(this);
+                    throw new Exception($"Field {m.Name} returns null. Module should have an instance.");
+                }
 
-                    if (value == null)
+                var valueType = value.GetType();
+                if (value is IRTLCombinationalModule module)
+                {
+                    ModuleDetails.Add(new RTLModuleDetails()
                     {
-                        throw new Exception($"Field {m.Name} returns null. Module should have an instance.");
-                    }
+                        Module = module,
+                        Member = m,
+                        Name = m.Name
+                    });
+                    continue;
+                }
 
-                    var valueType = value.GetType();
-                    if (value is IRTLCombinationalModule module)
+                if (valueType.IsArray)
+                {
+                    var elementType = valueType.GetElementType();
+                    if (typeof(IRTLCombinationalModule).IsAssignableFrom(elementType))
                     {
-                        return new[] { module };
+                        ModuleDetails.AddRange(
+                            (value as IEnumerable).OfType<IRTLCombinationalModule>()
+                            .Select((iteration, idx) =>
+                            {
+                                return new RTLModuleDetails()
+                                {
+                                    Module = iteration,
+                                    Member = m,
+                                    Name = $"{m.Name}{idx}"
+                                };
+                            }));
+                        continue;
                     }
+                }
 
-                    if (valueType.IsArray)
-                    {
-                        var elementType = valueType.GetElementType();
-                        if (typeof(IRTLCombinationalModule).IsAssignableFrom(elementType))
-                        {
-                            return (value as IEnumerable).OfType<IRTLCombinationalModule>().ToArray();
-                        }
-                    }
-
-                    throw new Exception($"Field {m.Name} is not a module. Actual type is {(value?.GetType()?.Name ?? "null")}");
-                }).ToList();
+                throw new Exception($"Field {m.Name} is not a module. Actual type is {(value?.GetType()?.Name ?? "null")}");
+            }
         }
 
         public virtual void Setup()

@@ -122,6 +122,34 @@ namespace Quokka.RTL.RTLBitArrayTests
         }
 
         [TestMethod]
+        public void EnumerableCtorTest()
+        {
+            var source = new RTLBitArray(Enumerable.Range(0, 8).Select(s => s % 2 == 0));
+
+            Assert.AreEqual((byte)0xAA, (byte)source);
+        }
+
+        [TestMethod]
+        public void ReductionTest()
+        {
+            var source1 = new RTLBitArray((byte)0x81);
+            Assert.IsFalse(source1.And());
+            Assert.IsTrue(source1.Or());
+            Assert.IsFalse(source1.Xor());
+
+            var source2 = new RTLBitArray((byte)0x80);
+            Assert.IsFalse(source2.And());
+            Assert.IsTrue(source2.Or());
+            Assert.IsTrue(source2.Xor());
+
+            var source3 = new RTLBitArray((byte)0xff);
+            Assert.IsTrue(source3.And());
+            Assert.IsTrue(source3.Or());
+            Assert.IsFalse(source3.Xor());
+        }
+
+
+        [TestMethod]
         public void TypedCtor()
         {
             var signed = new RTLBitArray(RTLBitArrayType.Signed, "11111111");

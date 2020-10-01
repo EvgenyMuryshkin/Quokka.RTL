@@ -38,5 +38,18 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(LSB.ToArray()).TypeChanged(DataType);
         }
+
+        public bool And()
+        {
+            return LSB.All(b => b);
+        }
+        public bool Or()
+        {
+            return LSB.Any(b => b);
+        }
+        public bool Xor()
+        {
+            return LSB.Where(b => b).Count() % 2 != 0;
+        }
     }
 }

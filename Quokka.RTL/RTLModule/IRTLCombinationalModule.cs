@@ -15,6 +15,7 @@ namespace Quokka.RTL
         IEnumerable<MemberInfo> InternalProps { get; }
         IEnumerable<MemberInfo> ModuleProps { get; }
         IEnumerable<IRTLCombinationalModule> Modules { get; }
+        List<RTLModuleDetails> ModuleDetails { get; }
 
         bool Stage(int iteration);
         void Commit();

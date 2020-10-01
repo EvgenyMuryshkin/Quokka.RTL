@@ -6,6 +6,82 @@ using System.Text;
 
 namespace Quokka.RTL.Tests
 {
+    struct SynthesizableStruct
+    {
+        public int Value;
+        public bool Flag { get; set; }
+        public RTLBitArray Array { get; set; }
+
+        public SynthesizableStruct(int size)
+        {
+            Value = 10;
+            Flag = true;
+            Array = new RTLBitArray(size);
+        }
+    }
+
+    class SynthesizableClass1
+    {
+        public int Value;
+        public bool Flag { get; set; }
+        public RTLBitArray Array { get; set; } = new RTLBitArray(8);
+
+        public SynthesizableClass1(int size)
+        {
+            Array = new RTLBitArray(size);
+        }
+    }
+
+    class SynthesizableClass2
+    {
+        public int Size = 8;
+        public SynthesizableStruct Struct { get; set; }
+
+        public SynthesizableClass2()
+        {
+            Struct = new SynthesizableStruct();
+        }
+
+        public SynthesizableClass2(int size)
+        {
+            Struct = new SynthesizableStruct(size);
+            Size = size;
+        }
+    }
+
+    struct NonSynthesizableStruct
+    {
+        public void Method()
+        {
+
+        }
+    }
+
+    class NonSynthesizableClass1
+    {
+        public NonSynthesizableStruct Struct = new NonSynthesizableStruct();
+    }
+
+    class NonSynthesizableClass2
+    {
+        public void Method()
+        {
+
+        }
+    }
+
+    class BaseOverrideModule : RTLCombinationalModule<TestInputs>
+    {
+        public virtual bool OutValue => Inputs.WE;
+        protected virtual bool InternalValue => Inputs.WE;
+    }
+
+    class InheritedModule : BaseOverrideModule
+    {
+        public override bool OutValue => false;
+        protected override bool InternalValue => false;
+    }
+
     class ParentModule : RTLCombinationalModule<TestInputs>
     {
         public KeepTestModule SingleChild1 = new KeepTestModule();
@@ -59,6 +135,29 @@ namespace Quokka.RTL.Tests
     public class RTLModuleTests
     {
         [TestMethod]
+        public void SynthesizableStructTest()
+        {
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableStruct)));
+        }
+        [TestMethod]
+        public void SynthesizableClassTest()
+        {
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass1)));
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass2)));
+        }
+        [TestMethod]
+        public void NonSynthesizableStructTest()
+        {
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableStruct)));
+        }
+        [TestMethod]
+        public void NonSynthesizableClassTest()
+        {
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass1)));
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass2)));
+        }
+
+        [TestMethod]
         public void AbstractImplementationTest()
         {
             var outputProps = RTLModuleHelper.OutputProperties(typeof(ImplementationClass));
@@ -87,6 +186,23 @@ namespace Quokka.RTL.Tests
         {
             var type = typeof(DerivedTestClass);
             var member = type.GetMember("V5");
+        }
+
+        [TestMethod]
+        public void OverrideOutputTest()
+        {
+            var outputProps = RTLModuleHelper.OutputProperties(typeof(InheritedModule));
+            Assert.AreEqual(1, outputProps.Count);
+            Assert.AreEqual(typeof(InheritedModule), outputProps[0].DeclaringType);
+        }
+
+
+        [TestMethod]
+        public void OverrideInputsTest()
+        {
+            var internalProps = RTLModuleHelper.InternalProperties(typeof(InheritedModule));
+            Assert.AreEqual(1, internalProps.Count);
+            Assert.AreEqual(typeof(InheritedModule), internalProps[0].DeclaringType);
         }
 
         [TestMethod]

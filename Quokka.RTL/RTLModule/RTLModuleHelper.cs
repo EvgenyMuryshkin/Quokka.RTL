@@ -138,8 +138,46 @@ namespace Quokka.RTL
             return isArray || !isPublic && isPropertyOrField && !isToolkitType;
         }
 
+        internal static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
+
+        public static bool IsSynthesizableObject(Type type)
+        {
+            if (!type.IsClass && !type.IsStruct())
+                return false;
+
+            foreach (var m in type.GetMembers())
+            {
+                switch(m)
+                {
+                    case FieldInfo fi:
+                        if (!IsSynthesizableSignalType(fi.FieldType))
+                            return false;
+                        break;
+                    case PropertyInfo pi:
+                        if (!IsSynthesizableSignalType(pi.PropertyType))
+                            return false;
+                        break;
+                    case MethodInfo mi:
+                        // methods on data classes\structs are not synthesizable yet
+                        var baseType = mi.DeclaringType.BaseType ?? mi.DeclaringType;
+                        if (baseType == typeof(object) || baseType == typeof(ValueType))
+                            continue;
+
+                        return false;
+                    case ConstructorInfo ci:
+                        // constructors are allwowed, but they are not translated into HDL
+                        break;
+                }
+            }
+
+            return true;
+        }
+
         public static bool IsSynthesizableSignalType(Type type)
         {
+            if (IsSynthesizableObject(type))
+                return true;
+
             return type.IsValueType || type == typeof(RTLBitArray);
         }
 
@@ -157,12 +195,50 @@ namespace Quokka.RTL
 
         public static List<MemberInfo> OutputProperties(Type type)
         {
-            return SignalProperties(type).Where(p => !IsInternalProperty(p)).ToList();
+            return SignalProperties(type)
+                .Where(p => !IsInternalProperty(p))
+                .GroupBy(p => p.Name)
+                .Select(g =>
+                {
+                    if (g.Count() == 1)
+                        return g.First();
+
+                    return g.OrderByDescending(t => InheritanceLevel(t.DeclaringType)).First();
+                })
+                .ToList();
+        }
+
+        public static int InheritanceLevel(Type t)
+        {
+            if (t.IsInterface)
+            {
+                return 1 + (t.GetInterfaces().Any() ? t.GetInterfaces().Max(i => InheritanceLevel(i)) : 0);
+            }
+
+            if (t.IsClass)
+            {
+                if (t.BaseType == typeof(object))
+                    return 0;
+
+                return 1 + InheritanceLevel(t.BaseType);
+            }
+
+            return 0;
         }
 
         public static List<MemberInfo> InternalProperties(Type type)
         {
-            return SignalProperties(type).Where(p => IsInternalProperty(p)).ToList();
+            return SignalProperties(type)
+                .Where(p => IsInternalProperty(p))
+                .GroupBy(p => p.Name)
+                .Select(g =>
+                {
+                    if (g.Count() == 1)
+                        return g.First();
+
+                    return g.OrderByDescending(t => InheritanceLevel(t.DeclaringType)).First();
+                })
+                .ToList();
         }
 
         public static int SizeOfEnum(Type enumType)
