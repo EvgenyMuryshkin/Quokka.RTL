@@ -18,6 +18,7 @@ namespace Quokka.RTL
         where TInput : new()
     {
         public Type InputsType { get; } = typeof(TInput);
+        public virtual string ModuleName => GetType().Name;
         public virtual IEnumerable<MemberInfo> InputProps { get; private set; }
         public virtual IEnumerable<MemberInfo> OutputProps { get; private set; }
         public virtual IEnumerable<MemberInfo> InternalProps { get; private set; }
