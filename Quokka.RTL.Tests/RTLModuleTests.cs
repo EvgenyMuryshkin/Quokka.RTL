@@ -70,7 +70,7 @@ namespace Quokka.RTL.Tests
         }
     }
 
-    class BaseOverrideModule : RTLCombinationalModule<TestInputs>
+    class BaseOverrideModule : DefaultRTLCombinationalModule<TestInputs>
     {
         public virtual bool OutValue => Inputs.WE;
         protected virtual bool InternalValue => Inputs.WE;
@@ -82,7 +82,7 @@ namespace Quokka.RTL.Tests
         protected override bool InternalValue => false;
     }
 
-    class ParentModule : RTLCombinationalModule<TestInputs>
+    class ParentModule : DefaultRTLCombinationalModule<TestInputs>
     {
         public KeepTestModule SingleChild1 = new KeepTestModule();
         public KeepTestModule SingleChild2 = new KeepTestModule();

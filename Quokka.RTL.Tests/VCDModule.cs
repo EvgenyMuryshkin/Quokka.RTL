@@ -17,7 +17,7 @@ namespace Quokka.VCD.Tests
         public RTLBitArray PC = new RTLBitArray(uint.MinValue);
     }
 
-    public class VCDModule : RTLSynchronousModule<VCDModuleInputs, VCDModuleState>
+    public class VCDModule : DefaultRTLSynchronousModule<VCDModuleInputs, VCDModuleState>
     {
         RTLBitArray internalNextPC => Inputs.Overwrite ? Inputs.Offset : State.PC + Inputs.Offset;
         public bool PCMisaligned => new RTLBitArray(internalNextPC[1, 0]) != 0;

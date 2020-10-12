@@ -18,7 +18,7 @@ namespace Quokka.RTL.Tests
         byte[] Buff { get; set; }
     }
 
-    abstract class TestModule<TState> : RTLSynchronousModule<TestInputs, TState>
+    abstract class TestModule<TState> : DefaultRTLSynchronousModule<TestInputs, TState>
         where TState : class, ITestState, new()
     {
         // output signals

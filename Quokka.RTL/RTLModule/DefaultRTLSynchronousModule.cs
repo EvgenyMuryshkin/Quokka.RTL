@@ -8,16 +8,12 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public class RTLModuleTrace<TState, TInput>
-    {
-    }
-
     /// <summary>
     /// Base class for hardware state machine module, will be in toolkit
     /// </summary>
     /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TState"></typeparam>
-    public abstract class RTLSynchronousModule<TInput, TState> : RTLCombinationalModule<TInput>, IRTLSynchronousModule<TInput, TState>
+    public abstract class DefaultRTLSynchronousModule<TInput, TState> : DefaultRTLCombinationalModule<TInput>, IRTLSynchronousModule<TInput, TState>
         where TInput : new()
         where TState : new()
     {

@@ -7,14 +7,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public class RTLModuleDetails
-    {
-        public IRTLCombinationalModule Module;
-        public string Name;
-        public MemberInfo Member;
-    }
-
-    public abstract class RTLCombinationalModule<TInput> : IRTLCombinationalModule<TInput>
+    public abstract class DefaultRTLCombinationalModule<TInput> : IRTLCombinationalModule<TInput>
         where TInput : new()
     {
         public Type InputsType { get; } = typeof(TInput);
@@ -28,7 +21,7 @@ namespace Quokka.RTL
 
         public event EventHandler Scheduled;
 
-        public RTLCombinationalModule()
+        public DefaultRTLCombinationalModule()
         {
         }
 

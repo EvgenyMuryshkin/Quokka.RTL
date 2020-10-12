@@ -9,7 +9,7 @@ namespace Quokka.RTL.Tests
         public bool Input = false;
     }
 
-    public class NotGateModule : RTLCombinationalModule<NotGateInputs>
+    public class NotGateModule : DefaultRTLCombinationalModule<NotGateInputs>
     {
         public bool Output => !Inputs.Input;
     }
@@ -19,7 +19,7 @@ namespace Quokka.RTL.Tests
 
     }
 
-    class NotGateFeedbackModule : RTLCombinationalModule<NotGateFeedbackInputs>
+    class NotGateFeedbackModule : DefaultRTLCombinationalModule<NotGateFeedbackInputs>
     {
         NotGateModule Inverter = new NotGateModule();
 

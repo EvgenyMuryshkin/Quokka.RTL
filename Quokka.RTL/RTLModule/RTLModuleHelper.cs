@@ -79,7 +79,7 @@ namespace Quokka.RTL
             if (type.IsConstructedGenericType)
                 return IsToolkitType(type.GetGenericTypeDefinition());
 
-            return type == typeof(RTLCombinationalModule<>) || type == typeof(RTLSynchronousModule<,>);
+            return type == typeof(DefaultRTLCombinationalModule<>) || type == typeof(DefaultRTLSynchronousModule<,>);
         }
 
         public static IEnumerable<MemberInfo> SynthesizableMembers(Type type)
