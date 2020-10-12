@@ -16,7 +16,7 @@ namespace Quokka.RTL
             if (type.IsConstructedGenericType)
                 return IsToolkitType(type.GetGenericTypeDefinition());
 
-            return typeof(IRTLCombinationalModule).IsAssignableFrom(type) || typeof(IRTLSynchronousModule).IsAssignableFrom(type);
+            return type.GetCustomAttribute<RTLToolkitTypeAttribute>(false) != null;
         }
 
         public static IEnumerable<MemberInfo> SynthesizableMembers(Type type)

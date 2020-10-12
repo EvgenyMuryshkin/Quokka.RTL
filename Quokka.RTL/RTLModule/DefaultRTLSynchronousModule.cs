@@ -13,6 +13,7 @@ namespace Quokka.RTL
     /// </summary>
     /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TState"></typeparam>
+    [RTLToolkitType]
     public abstract class DefaultRTLSynchronousModule<TInput, TState> : DefaultRTLCombinationalModule<TInput>, IRTLSynchronousModule<TInput, TState>
         where TInput : new()
         where TState : new()

@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
+    [RTLToolkitType]
     public abstract class DefaultRTLCombinationalModule<TInput> : IRTLCombinationalModule<TInput>
         where TInput : new()
     {
