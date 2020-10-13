@@ -232,5 +232,36 @@ namespace Quokka.RTL
         {
             return JSONCopy(source);
         }
+
+        public static bool DeepEquals(object lhs, object rhs)
+        {
+            if (lhs == null) throw new NullReferenceException(nameof(lhs));
+            if (rhs == null) throw new NullReferenceException(nameof(rhs));
+
+            if (lhs.GetType() != rhs.GetType()) throw new Exception($"lhs type {lhs.GetType()} is not equal to rhs type {rhs.GetType()}");
+
+            foreach (var prop in SignalProperties(lhs.GetType()))
+            {
+                var lhsValue = prop.GetValue(lhs);
+                var rhsVaue = prop.GetValue(rhs);
+                if (lhsValue is RTLBitArray)
+                {
+                    if (!lhsValue.Equals(rhsVaue))
+                        return false;
+                }
+                else if (prop.GetMemberType().IsClass)
+                {
+                    if (!DeepEquals(lhsValue, rhsVaue))
+                        return false;
+                }
+                else
+                {
+                    if (!lhsValue.Equals(rhsVaue))
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

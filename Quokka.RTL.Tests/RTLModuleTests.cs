@@ -70,6 +70,12 @@ namespace Quokka.RTL.Tests
         }
     }
 
+    class SynthesizableStructWithClass
+    {
+        public int Value;
+        public SynthesizableClass1 Class = new SynthesizableClass1(1);
+    }
+
     class BaseOverrideModule : DefaultRTLCombinationalModule<TestInputs>
     {
         public virtual bool OutValue => Inputs.WE;
@@ -134,6 +140,45 @@ namespace Quokka.RTL.Tests
     [TestClass]
     public class RTLModuleTests
     {
+        [TestMethod]
+        public void SynthesizableStructWithClassTest()
+        {
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(new SynthesizableStructWithClass(), new SynthesizableStructWithClass()));
+
+            var c1 = new SynthesizableStructWithClass()
+            {
+                Value = 10
+            };
+            var c2 = new SynthesizableStructWithClass()
+            {
+                Value = 20
+            };
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(c1, c2));
+
+            var c3 = new SynthesizableStructWithClass()
+            {
+                Class = new SynthesizableClass1(8)
+            };
+            var c4 = new SynthesizableStructWithClass()
+            {
+                Class = new SynthesizableClass1(8)
+            };
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(c3, c4));
+
+            var c5 = new SynthesizableStructWithClass()
+            {
+                Class = new SynthesizableClass1(8),
+                Value = 10
+            };
+            var c6 = new SynthesizableStructWithClass()
+            {
+                Value = 20,
+                Class = new SynthesizableClass1(8)
+            };
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(c5, c6));
+
+        }
+
         [TestMethod]
         public void SynthesizableStructTest()
         {
