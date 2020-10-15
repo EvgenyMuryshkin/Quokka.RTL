@@ -46,6 +46,10 @@ namespace Quokka.RTL
 
                 foreach (var prop in StateProps)
                 {
+                    // TODO: support arrays in VCD
+                    if (prop.GetMemberType().IsArray)
+                        continue;
+
                     currentMember = prop;
                     var value = currentMember.GetValue(State);
                     currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
@@ -57,6 +61,10 @@ namespace Quokka.RTL
 
                 foreach (var prop in StateProps)
                 {
+                    // TODO: support arrays in VCD
+                    if (prop.GetMemberType().IsArray)
+                        continue;
+
                     currentMember = prop;
                     var value = currentMember.GetValue(NextState);
                     currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
@@ -96,7 +104,7 @@ namespace Quokka.RTL
         public override void Reset()
         {
             base.Reset();
-            
+
             if (Equals(DefaultState, default(TState)))
             {
                 ThrowNotSetup();
@@ -116,7 +124,7 @@ namespace Quokka.RTL
                         throw new Exception($"No reset type is defined for {StateType.Name}.{prop.Name}. Use [MemoryBlockResetType] on property to declare behavious");
                     }
 
-                    switch(resetTypeAttribute.ResetType)
+                    switch (resetTypeAttribute.ResetType)
                     {
                         case rtlMemoryBlockResetType.Keep:
                             break;
