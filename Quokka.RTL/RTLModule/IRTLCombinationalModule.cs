@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public interface IRTLCombinationalModule
+    public interface IRTLCombinationalModule : IRTLControlFlow
     {
         Type InputsType { get; }
         object RawInputs { get; }
@@ -17,13 +17,8 @@ namespace Quokka.RTL
         IEnumerable<IRTLCombinationalModule> Modules { get; }
         List<RTLModuleDetails> ModuleDetails { get; }
 
-        bool Stage(int iteration);
-        void Commit();
-
         void PopulateSnapshot(VCDSignalsSnapshot snapshot);
         void Setup();
-
-        void Reset();
 
         event EventHandler Scheduled;
     }

@@ -9,6 +9,7 @@ namespace Quokka.RTL
         Type StateType { get; }
         object RawState { get; }
         List<MemberInfo> StateProps { get; }
+        List<MemberInfo> PipelineProps { get; }
     }
 
     public interface IRTLSynchronousModule<TInput, TState> : IRTLSynchronousModule, IRTLCombinationalModule<TInput>

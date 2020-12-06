@@ -47,6 +47,14 @@ namespace Quokka.RTL
             return typeof(IRTLCombinationalModule).IsAssignableFrom(member);
         }
 
+        public static bool IsPipelineTypeMember(Type member)
+        {
+            if (member == null)
+                return false;
+
+            return typeof(IRTLPipeline).IsAssignableFrom(member);
+        }
+
         public static List<MemberInfo> ModuleProperties(Type type)
         {
             return SynthesizableMembers(type)
@@ -127,6 +135,13 @@ namespace Quokka.RTL
         {
             return SynthesizableMembers(type)
                 .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
+                .ToList();
+        }
+
+        public static List<MemberInfo> PipelineProperties(Type type)
+        {
+            return SynthesizableMembers(type)
+                .Where(m => IsPipelineTypeMember(m.GetMemberType()))
                 .ToList();
         }
 
@@ -262,6 +277,35 @@ namespace Quokka.RTL
             }
 
             return true;
+        }
+        public static object Activate(Type type)
+        {
+            if (type.IsValueType)
+                return Activator.CreateInstance(type);
+
+            if (type.IsClass)
+            {
+                var defaultCtor = type.GetConstructors().Where(c => c.GetParameters().Length == 0 && c.IsPublic).FirstOrDefault();
+                if (defaultCtor != null)
+                    return Activator.CreateInstance(type);
+
+                // looks like anonymous type
+                if (type.GetConstructors().Length != 1)
+                    throw new Exception($"Cannot create instance of type '{type}', found multiple constructors");
+
+                var typeCtor = type.GetConstructors()[0];
+                var defaultValues = typeCtor.GetParameters().Select(p => Activate(p.ParameterType));
+
+                return Activator.CreateInstance(type, defaultValues.ToArray());
+            }
+
+            throw new Exception($"Type '{type}' should have public parameterless constructor to be activated");
+        }
+
+        public static T Activate<T>()
+        {
+            var type = typeof(T);
+            return (T)Activate(type);
         }
     }
 }
