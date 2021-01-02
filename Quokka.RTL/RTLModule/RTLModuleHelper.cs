@@ -95,11 +95,11 @@ namespace Quokka.RTL
                 switch(m)
                 {
                     case FieldInfo fi:
-                        if (!IsSynthesizableSignalType(fi.FieldType))
+                        if (!IsSynthesizableSignalType(fi.FieldType) && !IsSynthesizableArrayType(fi.FieldType))
                             return false;
                         break;
                     case PropertyInfo pi:
-                        if (!IsSynthesizableSignalType(pi.PropertyType))
+                        if (!IsSynthesizableSignalType(pi.PropertyType) && !IsSynthesizableArrayType(pi.PropertyType))
                             return false;
                         break;
                     case MethodInfo mi:
@@ -141,7 +141,7 @@ namespace Quokka.RTL
         public static List<MemberInfo> PipelineProperties(Type type)
         {
             return SynthesizableMembers(type)
-                .Where(m => IsPipelineTypeMember(m.GetMemberType()))
+                .Where(m => IsPipelineTypeMember(m.GetMemberType()) && IsField(m))
                 .ToList();
         }
 

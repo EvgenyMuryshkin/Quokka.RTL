@@ -34,6 +34,9 @@ namespace Quokka.RTL
 
     public interface IRTLPipelineStage : IRTLPipeline, IRTLPipelineControlFlow
     {
+        Type StateType { get; }
+        object StateValue { get; }
+        object NextStateValue { get; }
     }
 
     public interface IRTLPipelineStage<TInput> : IRTLPipelineStage
@@ -59,5 +62,7 @@ namespace Quokka.RTL
         IRTLPipelineHead Head { get; }
         IRTLPipelineStage NextStage { get; }
         List<IRTLPipelineStage> Stages { get; }
+        Type SourceType { get; }
+        Type ResultType { get; }
     }
 }

@@ -16,7 +16,7 @@ namespace Quokka.RTL.Tests
     class ClassWithPipelines
     {
         IRTLPipeline P1;
-        IRTLPipeline P2 { get; }
+        IRTLPipeline NotAPipiline { get; }
     }
 
     [TestClass]
@@ -31,7 +31,7 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void PipelinePropertiesTest()
         {
-            Assert.AreEqual(2, RTLModuleHelper.PipelineProperties(typeof(ClassWithPipelines)).Count);
+            Assert.AreEqual(1, RTLModuleHelper.PipelineProperties(typeof(ClassWithPipelines)).Count);
         }
         [TestMethod]
         public void SynthesizableStructWithClassTest()
