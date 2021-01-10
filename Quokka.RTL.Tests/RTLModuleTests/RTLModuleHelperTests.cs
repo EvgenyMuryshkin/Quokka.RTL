@@ -88,11 +88,18 @@ namespace Quokka.RTL.Tests
         {
             Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableStruct)));
         }
+
         [TestMethod]
         public void NonSynthesizableClassTest()
         {
             Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass1)));
             Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass2)));
+        }
+
+        [TestMethod]
+        public void SynthesizableNullableType()
+        {
+            Assert.IsFalse(RTLModuleHelper.IsSynthesizableObject(typeof(bool?)));
         }
 
         [TestMethod]

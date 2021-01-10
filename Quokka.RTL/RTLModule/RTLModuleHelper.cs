@@ -85,9 +85,21 @@ namespace Quokka.RTL
 
         internal static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
 
+        public static bool TryGetNullableType(Type type, out Type actualType)
+        {
+            actualType = null;
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                actualType = type.GetGenericArguments()[0];
+
+            return actualType != null;
+        }
+
         public static bool IsSynthesizableObject(Type type)
         {
             if (!type.IsClass && !type.IsStruct())
+                return false;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return false;
 
             foreach (var m in type.GetMembers())
