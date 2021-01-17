@@ -7,7 +7,14 @@ namespace Quokka.RTL
     {
         void Setup();
         IRTLPipelineDiagnostics Diag { get; }
+        IRTLPipelinePeek<TState> Peek<TState>();
     }
+
+    public interface IRTLPipelinePeek<TState>
+    {
+        TState State { get; }
+    }
+
 
     public interface IRTLPipelineHead : IRTLPipeline, IRTLControlFlow
     {
@@ -34,6 +41,7 @@ namespace Quokka.RTL
 
     public interface IRTLPipelineStage : IRTLPipeline, IRTLPipelineControlFlow
     {
+        Type InputsType { get; }
         Type StateType { get; }
         object StateValue { get; }
         object NextStateValue { get; }
