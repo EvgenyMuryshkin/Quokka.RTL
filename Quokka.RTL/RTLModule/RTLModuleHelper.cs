@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("publish")]
+
 namespace Quokka.RTL
 {
     public static class RTLModuleHelper
@@ -102,6 +104,12 @@ namespace Quokka.RTL
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return false;
 
+            var getSetMembers = new HashSet<MethodInfo>(
+                SynthesizableMembers(type)
+                .OfType<PropertyInfo>()
+                .SelectMany(p => new[] { p.GetGetMethod(), p.GetSetMethod() })
+                .Where(m => m != null));
+
             foreach (var m in type.GetMembers())
             {
                 switch(m)
@@ -115,6 +123,9 @@ namespace Quokka.RTL
                             return false;
                         break;
                     case MethodInfo mi:
+                        if (getSetMembers.Contains(mi))
+                            continue;
+
                         // methods on data classes\structs are not synthesizable yet
                         var baseType = mi.DeclaringType.BaseType ?? mi.DeclaringType;
                         if (baseType == typeof(object) || baseType == typeof(ValueType))
@@ -318,6 +329,18 @@ namespace Quokka.RTL
         {
             var type = typeof(T);
             return (T)Activate(type);
+        }
+
+        internal static string SolutionLocation(string current = null)
+        {
+            if (current == "")
+                return "";
+
+            current = current ?? Directory.GetCurrentDirectory();
+            if (Directory.EnumerateFiles(current, "*.sln").Any())
+                return current;
+
+            return SolutionLocation(Path.GetDirectoryName(current));
         }
     }
 }

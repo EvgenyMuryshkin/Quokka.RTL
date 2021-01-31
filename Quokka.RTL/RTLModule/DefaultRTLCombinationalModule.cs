@@ -27,6 +27,14 @@ namespace Quokka.RTL
             throw new InvalidOperationException($"Module '{GetType().Name}' is not initialized. Please call .Setup() on module instance or top of the hierarchy.");
         }
 
+        /// <summary>
+        /// Method is called every time a new object inside module is created
+        /// E.g. state, inputs, pipeilne stages etc
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public virtual bool OnRelatedObjectCreating(object data) => false;
+
         void Initialize()
         {
             InputProps = RTLModuleHelper.SignalProperties(InputsType);

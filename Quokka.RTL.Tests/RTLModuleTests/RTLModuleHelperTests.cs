@@ -7,7 +7,12 @@ namespace Quokka.RTL.Tests
     class DefaultPipline : IRTLPipeline
     {
         public IRTLPipelineDiagnostics Diag => throw new NotImplementedException();
-        public void Setup()
+        public void Setup(IRTLCombinationalModule module)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRTLPipelinePeek<TState> Peek<TState>()
         {
             throw new NotImplementedException();
         }
@@ -82,7 +87,10 @@ namespace Quokka.RTL.Tests
         {
             Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass1)));
             Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass2)));
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClassWithNullables)));
+            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(Stage0PipelineState)));            
         }
+
         [TestMethod]
         public void NonSynthesizableStructTest()
         {
