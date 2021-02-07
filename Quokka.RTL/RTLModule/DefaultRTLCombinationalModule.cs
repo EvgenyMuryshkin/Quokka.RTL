@@ -115,7 +115,7 @@ namespace Quokka.RTL
             Scheduled?.Invoke(this, new EventArgs());
         }
 
-        protected virtual bool DeepEquals(object lhs, object rhs) => RTLModuleHelper.DeepEquals(lhs, rhs);
+        public virtual bool DeepEquals(object lhs, object rhs) => RTLModuleHelper.DeepEquals(lhs, rhs);
         protected virtual bool ShouldStage(TInput nextInputs)
         {
             if (InputProps == null)
@@ -125,7 +125,7 @@ namespace Quokka.RTL
             return !DeepEquals(Inputs, nextInputs);
         }
 
-        public virtual bool Stage(int iteration)
+        public virtual RTLModuleStageResult Stage(int iteration)
         {
             if (InputsFactory == null)
                 throw new InvalidOperationException($"InputsFactory is not specified. Did you forget to schedule module?");
@@ -139,10 +139,10 @@ namespace Quokka.RTL
 
             foreach (var child in Modules)
             {
-                childrenModified |= child.Stage(iteration);
+                childrenModified |= child.Stage(iteration) == RTLModuleStageResult.Unstable;
             }
 
-            return selfModified | childrenModified;
+            return (selfModified | childrenModified) ? RTLModuleStageResult.Unstable : RTLModuleStageResult.Stable;
         }
 
         public virtual void Commit()

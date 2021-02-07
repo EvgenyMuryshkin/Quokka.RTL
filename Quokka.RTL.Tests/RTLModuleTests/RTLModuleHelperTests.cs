@@ -4,6 +4,17 @@ using System.Linq;
 
 namespace Quokka.RTL.Tests
 {
+    public abstract class AutoPropagatePipelineModuleStage
+    {
+        // nullable signals will be propagated through pipeline
+        public bool? ready;
+    }
+
+    public class AutoPropagatePipelineModuleStage0 : AutoPropagatePipelineModuleStage
+    {
+        public ushort[] sums = new ushort[5];
+    }
+
     class DefaultPipline : IRTLPipeline
     {
         public IRTLPipelineDiagnostics Diag => throw new NotImplementedException();
@@ -27,6 +38,37 @@ namespace Quokka.RTL.Tests
     [TestClass]
     public class RTLModuleHelperTests
     {
+        [TestMethod]
+        public void NullsDeepEquals()
+        {
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(null, null));
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(true, null));
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(true, true));
+        }
+
+        [TestMethod]
+        public void ArrayDeepEquals()
+        {
+            var s1 = new AutoPropagatePipelineModuleStage0();
+            var s2 = new AutoPropagatePipelineModuleStage0();
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+            s1.ready = true;
+            s2.ready = true;
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+
+            s1.sums = new ushort[] { 1, 2 };
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+
+            s2.sums = new ushort[] { 1, 2 };
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+
+            s2.sums = new ushort[] { 1, 2, 3 };
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+
+            s2.sums = null;
+            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+        }
+
         [TestMethod]
         public void IsPipelineTypeMemberTest()
         {

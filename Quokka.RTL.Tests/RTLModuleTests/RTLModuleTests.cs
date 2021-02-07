@@ -112,8 +112,8 @@ namespace Quokka.RTL.Tests
             var module = new NotGateFeedbackModule();
             module.Setup();
 
-            Assert.IsTrue(module.Stage(0));
-            Assert.IsTrue(module.Stage(1));
+            Assert.AreEqual(RTLModuleStageResult.Unstable, module.Stage(0));
+            Assert.AreEqual(RTLModuleStageResult.Unstable, module.Stage(1));
         }
     }
 }

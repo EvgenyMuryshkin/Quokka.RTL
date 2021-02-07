@@ -2,7 +2,7 @@
 
 namespace Quokka.RTL
 {
-    public interface IRTLPipelineStage : IRTLPipeline, IRTLPipelineControlFlow
+    public interface IRTLPipelineStage : IRTLPipeline, IRTLPipelineControl
     {
         Type InputsType { get; }
         Type StateType { get; }
@@ -21,6 +21,7 @@ namespace Quokka.RTL
         TOutput NextState { get; }
         IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap> map);
         IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, TMap> map);
+        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, IRTLPipelineStageContol, TMap> map);
     }
 
     public interface IRTLPipelineStage<TSource, TInput, TOutput> :

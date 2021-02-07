@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.RTL.SourceGenerators
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quokka.RTL.Tests", "Quokka.RTL.Tests\Quokka.RTL.Tests.csproj", "{05617F30-4709-4BC8-A9ED-F471EBAD4D97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "publish", "publish\publish.csproj", "{EB3ED7E9-7A39-459F-BE1D-C72DCE3B547C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rollout", "Rollout\Rollout.csproj", "{EB3ED7E9-7A39-459F-BE1D-C72DCE3B547C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

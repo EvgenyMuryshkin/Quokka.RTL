@@ -21,6 +21,7 @@ namespace Quokka.RTL
         void Setup();
 
         bool OnRelatedObjectCreating(object data);
+        bool DeepEquals(object lhs, object rhs);
 
         event EventHandler Scheduled;
     }

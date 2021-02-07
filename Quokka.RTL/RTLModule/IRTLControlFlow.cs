@@ -1,8 +1,14 @@
 ﻿namespace Quokka.RTL
 {
+    public enum RTLModuleStageResult
+    {
+        Stable,
+        Unstable
+    }
+
     public interface IRTLControlFlow
     {
-        bool Stage(int iteration);
+        RTLModuleStageResult Stage(int iteration);
         void Commit();
         void Reset();
     }

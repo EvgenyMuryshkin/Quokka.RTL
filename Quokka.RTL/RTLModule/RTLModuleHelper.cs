@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("publish")]
+[assembly: InternalsVisibleTo("Rollout")]
 
 namespace Quokka.RTL
 {
@@ -273,16 +273,45 @@ namespace Quokka.RTL
 
         public static bool DeepEquals(object lhs, object rhs)
         {
-            if (lhs == null) throw new NullReferenceException(nameof(lhs));
-            if (rhs == null) throw new NullReferenceException(nameof(rhs));
+            if (lhs == null && rhs == null) return true;
+            if (lhs == null || rhs == null) return false;
 
-            if (lhs.GetType() != rhs.GetType()) throw new Exception($"lhs type {lhs.GetType()} is not equal to rhs type {rhs.GetType()}");
+            var lhsType = lhs.GetType();
+            var rhsType = rhs.GetType();
+
+            if (lhsType != rhsType) throw new Exception($"lhs type {lhsType} is not equal to rhs type {rhsType}");
 
             foreach (var prop in SignalProperties(lhs.GetType()))
             {
                 var lhsValue = prop.GetValue(lhs);
                 var rhsVaue = prop.GetValue(rhs);
-                if (lhsValue is RTLBitArray)
+
+                if (lhsValue == null && rhsVaue == null)
+                    continue;
+
+                if (IsSynthesizableArrayType(prop.GetMemberType()))
+                {
+                    if (lhsType.GetElementType() != rhsType.GetElementType()) throw new Exception($"lhs array type {lhsType} is not equal to rhs array type {rhsType}");
+
+                    var lhsArray = lhsValue as Array;
+                    var rhsArray = rhsVaue as Array;
+
+                    if (lhsArray == null && rhsArray == null)
+                        continue;
+
+                    if (lhsArray == null || rhsArray == null) 
+                        return false;
+
+                    if (lhsArray.Length != rhsArray.Length)
+                        return false;
+
+                    for (var idx = 0; idx < lhsArray.Length; idx++)
+                    {
+                        if (!DeepEquals(lhsArray.GetValue(idx), rhsArray.GetValue(idx)))
+                            return false;
+                    }
+                }
+                else if (lhsValue is RTLBitArray)
                 {
                     if (!lhsValue.Equals(rhsVaue))
                         return false;
