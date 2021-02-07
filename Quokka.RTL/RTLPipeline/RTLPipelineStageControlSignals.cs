@@ -1,16 +1,13 @@
 ﻿namespace Quokka.RTL
 {
     [RTLToolkitType]
-    public class RTLPipelineStageControl : IRTLPipelineStageContol
+    public class RTLPipelineStageControlSignals : IRTLPipelineStageControlSignals
     {
         public bool? StallPipeline { get; set; }
         public bool? StallSelf { get; set; }
         public bool? StallPrev { get; set; }
-
-        public bool StageStalled { get; set; }
-
-        public bool PipelineStalled { get; set; }
-
+        public bool PrevStageWillStall { get; set; }
         public bool StageWillStall { get; set; }
+        public bool StageStalled { get; set; }
     }
 }

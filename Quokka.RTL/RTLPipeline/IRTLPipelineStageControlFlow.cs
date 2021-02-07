@@ -1,6 +1,6 @@
 ﻿namespace Quokka.RTL
 {
-    public interface IRTLPipelineControl
+    public interface IRTLPipelineStageControlFlow
     {
         void StageSetup(IRTLCombinationalModule module);
         void StageCommit();
