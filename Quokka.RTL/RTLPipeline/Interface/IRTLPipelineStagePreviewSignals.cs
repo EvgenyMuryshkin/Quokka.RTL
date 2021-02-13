@@ -1,6 +1,6 @@
 ﻿namespace Quokka.RTL
 {
-    public interface IRTLPipelineStageManagedSignals
+    public interface IRTLPipelineStagePreviewSignals
     {
         /// <summary>
         /// Flag indicates that previous stage was requested to stall
@@ -13,8 +13,8 @@
         bool StageWillStall { get; }
 
         /// <summary>
-        /// Flag indicates that current stage has stalled
+        /// Flag indicates that pipeline will stall during current clock cycle
         /// </summary>
-        bool StageStalled { get; }
+        bool PipelineWillStall { get; }
     }
 }

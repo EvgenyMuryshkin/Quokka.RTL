@@ -125,21 +125,21 @@ namespace Quokka.RTL
             return !DeepEquals(Inputs, nextInputs);
         }
 
-        public virtual RTLModuleStageResult Stage(int iteration)
+        public virtual RTLModuleStageResult DeltaCycle(int deltaCycle)
         {
             if (InputsFactory == null)
                 throw new InvalidOperationException($"InputsFactory is not specified. Did you forget to schedule module?");
 
             var nextInputs = InputsFactory();
 
-            bool selfModified = iteration == 0 || ShouldStage(nextInputs);
+            bool selfModified = deltaCycle == 0 || ShouldStage(nextInputs);
             bool childrenModified = false;
 
             Inputs = nextInputs;
 
             foreach (var child in Modules)
             {
-                childrenModified |= child.Stage(iteration) == RTLModuleStageResult.Unstable;
+                childrenModified |= child.DeltaCycle(deltaCycle) == RTLModuleStageResult.Unstable;
             }
 
             return (selfModified | childrenModified) ? RTLModuleStageResult.Unstable : RTLModuleStageResult.Stable;
@@ -267,7 +267,7 @@ namespace Quokka.RTL
         public void Cycle(TInput inputs)
         {
             Schedule(() => inputs);
-            Stage(0);
+            DeltaCycle(0);
             Commit();
         }
     }

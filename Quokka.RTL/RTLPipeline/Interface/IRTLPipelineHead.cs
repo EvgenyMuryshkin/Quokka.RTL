@@ -2,10 +2,10 @@
 
 namespace Quokka.RTL
 {
-    public interface IRTLPipelineHead : IRTLPipeline, IRTLControlFlow
+    public interface IRTLPipelineHead : IRTLPipeline, IRTLModuleControlFlow
     {
-        bool PipelineWillStall { get; }
-        bool PipelineStalled { get; }
+        IRTLPipelinePreviewSignals PipelinePreview { get; }
+        IRTLPipelineControlSignals PipelineControl { get; }
     }
 
     public interface IRTLPipelineHead<TSource> : IRTLPipelineHead

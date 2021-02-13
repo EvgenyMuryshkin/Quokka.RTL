@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public interface IRTLCombinationalModule : IRTLControlFlow
+    public interface IRTLCombinationalModule : IRTLModuleControlFlow
     {
         Type InputsType { get; }
         object RawInputs { get; }

@@ -4,14 +4,17 @@ namespace Quokka.RTL
 {
     public interface IRTLPipelineStage : 
         IRTLPipeline, 
-        IRTLPipelineStageControlFlow, 
-        IRTLPipelineStageManagedSignals, 
-        IRTLPipelineManagedSignals
+        IRTLPipelineStageControlFlow
     {
         Type InputsType { get; }
         Type StateType { get; }
         object StateValue { get; }
         object NextStateValue { get; }
+
+        IRTLPipelineStageManagedSignals ManagedSignals { get; }
+
+        IRTLPipelinePreviewSignals PipelinePreview { get; }
+        IRTLPipelineControlSignals PipelineControl { get; }
     }
 
     public interface IRTLPipelineStage<TInput> : IRTLPipelineStage
@@ -25,7 +28,7 @@ namespace Quokka.RTL
         TOutput NextState { get; }
         IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap> map);
         IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, TMap> map);
-        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, IRTLPipelineStageControlSignals, TMap> map);
+        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, IRTLPipelineStageManagedSignals, TMap> map);
     }
 
     public interface IRTLPipelineStage<TSource, TInput, TOutput> :

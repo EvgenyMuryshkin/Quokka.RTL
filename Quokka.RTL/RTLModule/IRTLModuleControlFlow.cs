@@ -6,9 +6,9 @@
         Unstable
     }
 
-    public interface IRTLControlFlow
+    public interface IRTLModuleControlFlow
     {
-        RTLModuleStageResult Stage(int iteration);
+        RTLModuleStageResult DeltaCycle(int deltaCycle);
         void Commit();
         void Reset();
     }

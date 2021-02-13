@@ -1,6 +1,6 @@
 ﻿namespace Quokka.RTL
 {
-    public interface IRTLPipelineStageControlSignals : IRTLPipelineStageManagedSignals
+    public interface IRTLPipelineStageRequestSignals
     {
         /// <summary>
         /// Flag indicates that whole pipeline needs to stall 

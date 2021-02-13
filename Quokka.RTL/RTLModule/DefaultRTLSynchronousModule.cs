@@ -91,9 +91,9 @@ namespace Quokka.RTL
             return RTLModuleHelper.DeepCopy(State);
         }
 
-        public override RTLModuleStageResult Stage(int iteration)
+        public override RTLModuleStageResult DeltaCycle(int deltaCycle)
         {
-            if (base.Stage(iteration) == RTLModuleStageResult.Stable)
+            if (base.DeltaCycle(deltaCycle) == RTLModuleStageResult.Stable)
                 return RTLModuleStageResult.Stable;
 
             NextState = CopyState();

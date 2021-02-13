@@ -5,6 +5,6 @@
         void StageSetup(IRTLCombinationalModule module);
         void StageCommit();
         void StageReset();
-        RTLModuleStageResult StageStage(int iteration);
+        RTLModuleStageResult StageDeltaCycle(int deltaCycle);
     }
 }
