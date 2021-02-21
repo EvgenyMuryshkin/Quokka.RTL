@@ -289,17 +289,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 
             var sw = new Stopwatch();
             sw.Start();
-            foreach (var idx in Enumerable.Range(0, iterations))
-            {
-                c.SmallValue = idx;
-                var copy = RTLModuleHelper.BSONCopy(c);
-                Assert.AreEqual(idx, (int)copy.SmallValue);
-            }
 
-            var bson = sw.ElapsedMilliseconds;
-            sw.Restart();
-
-            var jsonSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
             foreach (var idx in Enumerable.Range(0, iterations))
             {
                 c.SmallValue = idx;
@@ -309,8 +299,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 
             var json = sw.ElapsedMilliseconds;
 
-            // BSON is slightly better, but does not support unsigned types.
-            Trace.WriteLine($"JSON: {json}, BSON: {bson}");
+            Trace.WriteLine($"JSON Copy: {json}");
         }
     }
 }

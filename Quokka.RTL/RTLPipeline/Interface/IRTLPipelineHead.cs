@@ -13,5 +13,6 @@ namespace Quokka.RTL
         void Schedule(Func<TSource> inputsFactory);
         IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult> map);
         IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult, TResult> map);
+        IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult, IRTLPipelineStageManagedSignals, TResult> map);
     }
 }

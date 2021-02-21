@@ -4,7 +4,8 @@ namespace Quokka.RTL
 {
     public interface IRTLPipelineStage : 
         IRTLPipeline, 
-        IRTLPipelineStageControlFlow
+        IRTLPipelineStageControlFlow,
+        IRTLPipelineStageHardwareSignals
     {
         Type InputsType { get; }
         Type StateType { get; }

@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
+using Quokka.RTL.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,33 +11,32 @@ using System.Runtime.CompilerServices;
 
 namespace Quokka.RTL
 {
+    public class DeepCompareItem
+    {
+        public DeepCompareItem(IEnumerable<MemberInfo> path, object lhs, object rhs, params string[] messages)
+        {
+            Path = path ?? Enumerable.Empty<MemberInfo>();
+            this.lhs = lhs;
+            this.rhs = rhs;
+            Messages = messages.Where(s => !string.IsNullOrEmpty(s)).ToArray();
+        }
+
+        public DeepCompareItem(IEnumerable<MemberInfo> path, object lhs, object rhs, IEnumerable<string> messages, params string[] extra)
+        {
+            Path = path ?? Enumerable.Empty<MemberInfo>();
+            this.lhs = lhs;
+            this.rhs = rhs;
+            Messages = (messages ?? Enumerable.Empty<string>()).Concat(extra).Where(s => !string.IsNullOrEmpty(s)).ToList();
+        }
+
+        public IEnumerable<MemberInfo> Path { get; private set; }
+        public object lhs { get; private set; }
+        public object rhs { get; private set; }
+        public IEnumerable<string> Messages { get; private set; }
+    }
+
     public static class RTLModuleHelper
     {
-        public static bool IsToolkitType(Type type)
-        {
-            if (type.IsConstructedGenericType)
-                return IsToolkitType(type.GetGenericTypeDefinition());
-
-            return type.GetCustomAttribute<RTLToolkitTypeAttribute>(false) != null;
-        }
-
-        public static IEnumerable<MemberInfo> SynthesizableMembers(Type type)
-        {
-            if (type == null || type == typeof(object) || IsToolkitType(type)) 
-                return Enumerable.Empty<MemberInfo>();
-
-            var baseMembers = SynthesizableMembers(type.BaseType);
-
-            var props = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
-            var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
-
-            return baseMembers
-                .Concat(props)
-                .Concat(fields)
-                .Where(p => !p.IsAbstract())
-                .Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
-        }
-
         public static bool IsModuleTypeMember(Type member)
         {
             if (member == null)
@@ -59,7 +58,7 @@ namespace Quokka.RTL
 
         public static List<MemberInfo> ModuleProperties(Type type)
         {
-            return SynthesizableMembers(type)
+            return RTLReflectionTools.SynthesizableMembers(type)
                 .Where(m => IsModuleTypeMember(m.GetMemberType()))
                 .ToList();
         }
@@ -79,7 +78,7 @@ namespace Quokka.RTL
         {
             var isPublic = memberInfo.IsPublic();
             var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
-            var isToolkitType = IsToolkitType(memberInfo.DeclaringType);
+            var isToolkitType = RTLReflectionTools.IsToolkitType(memberInfo.DeclaringType);
             var isArray = memberInfo.GetMemberType().IsArray;
 
             return isArray || !isPublic && isPropertyOrField && !isToolkitType;
@@ -105,7 +104,7 @@ namespace Quokka.RTL
                 return false;
 
             var getSetMembers = new HashSet<MethodInfo>(
-                SynthesizableMembers(type)
+                RTLReflectionTools.SynthesizableMembers(type)
                 .OfType<PropertyInfo>()
                 .SelectMany(p => new[] { p.GetGetMethod(), p.GetSetMethod() })
                 .Where(m => m != null));
@@ -133,7 +132,7 @@ namespace Quokka.RTL
 
                         return false;
                     case ConstructorInfo ci:
-                        // constructors are allwowed, but they are not translated into HDL
+                        // constructors are allowed, but they are not translated into HDL
                         break;
                 }
             }
@@ -156,14 +155,16 @@ namespace Quokka.RTL
 
         public static List<MemberInfo> SignalProperties(Type type)
         {
-            return SynthesizableMembers(type)
+            return RTLReflectionTools
+                .SynthesizableMembers(type)
                 .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
                 .ToList();
         }
 
         public static List<MemberInfo> PipelineProperties(Type type)
         {
-            return SynthesizableMembers(type)
+            return RTLReflectionTools
+                .SynthesizableMembers(type)
                 .Where(m => IsPipelineTypeMember(m.GetMemberType()) && IsField(m))
                 .ToList();
         }
@@ -232,33 +233,6 @@ namespace Quokka.RTL
             return (int)Math.Max(1, Math.Ceiling(Math.Log(maxValue + 1, 2)));
         }
 
-        public static T BSONCopy<T>(T source)
-        {
-            try
-            {
-                using (var ms = new MemoryStream())
-                {
-                    using (var writer = new BsonWriter(ms))
-                    {
-                        var serializer = new JsonSerializer();
-                        serializer.Serialize(writer, source);
-
-                        ms.Seek(0, SeekOrigin.Begin);
-
-                        using (var reader = new BsonReader(ms))
-                        {
-                            return serializer.Deserialize<T>(reader);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                var json = JsonConvert.SerializeObject(source, Formatting.Indented);
-                throw new Exception($"Failed to make a copy of {source.GetType().Name}: {json}", ex);
-            }
-        }
-
         static JsonSerializerSettings typeSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
         public static T JSONCopy<T>(T source)
         {
@@ -271,8 +245,82 @@ namespace Quokka.RTL
             return JSONCopy(source);
         }
 
+        public static DeepCompareItem DeepCompare(object lhs, object rhs, List<MemberInfo> path = null)
+        {
+            path = path ?? new List<MemberInfo>();
+
+            if (lhs == null && rhs == null) return null;
+            if (lhs == null || rhs == null) return new DeepCompareItem(path, lhs, rhs);
+
+            var lhsType = lhs.GetType();
+            var rhsType = rhs.GetType();
+
+            if (lhsType != rhsType) 
+                return new DeepCompareItem(path, lhs, rhs, $"lhs type {lhsType} is not equal to rhs type {rhsType}");
+
+            foreach (var prop in SignalProperties(lhs.GetType()))
+            {
+                var propPath = path.ToList();
+                propPath.Add(prop);
+
+                var lhsValue = prop.GetValue(lhs);
+                var rhsValue = prop.GetValue(rhs);
+
+                if (lhsValue == null && rhsValue == null)
+                    continue;
+
+                if (IsSynthesizableArrayType(prop.GetMemberType()))
+                {
+                    if (lhsType.GetElementType() != rhsType.GetElementType())
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue, $"lhs array type {lhsType} is not equal to rhs array type {rhsType}");
+
+                    var lhsArray = lhsValue as Array;
+                    var rhsArray = rhsValue as Array;
+
+                    if (lhsArray == null && rhsArray == null)
+                        continue;
+
+                    if (lhsArray == null || rhsArray == null)
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
+
+                    if (lhsArray.Length != rhsArray.Length)
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue, $"Array length does not match");
+
+                    for (var idx = 0; idx < lhsArray.Length; idx++)
+                    {
+                        var lhsArrayItem = lhsArray.GetValue(idx);
+                        var rhsArrayItem = rhsArray.GetValue(idx);
+
+                        var arrayItemCompare = DeepCompare(lhsArrayItem, rhsArrayItem, propPath);
+                        if (arrayItemCompare != null)
+                            return new DeepCompareItem(propPath, lhsArrayItem, rhsArrayItem, arrayItemCompare.Messages, $"Element at index {idx} does not match");
+                    }
+                }
+                else if (lhsValue is RTLBitArray)
+                {
+                    if (!lhsValue.Equals(rhsValue))
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
+                }
+                else if (prop.GetMemberType().IsClass)
+                {
+                    var classCompare = DeepCompare(lhsValue, rhsValue, propPath);
+                    if (classCompare != null)
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue, classCompare.Messages);
+                }
+                else
+                {
+                    if (!lhsValue.Equals(rhsValue))
+                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
+                }
+            }
+
+            return null;
+        }
+
         public static bool DeepEquals(object lhs, object rhs)
         {
+            return DeepCompare(lhs, rhs) == null;
+            /*
             if (lhs == null && rhs == null) return true;
             if (lhs == null || rhs == null) return false;
 
@@ -329,9 +377,14 @@ namespace Quokka.RTL
             }
 
             return true;
+            */
         }
+
         public static object Activate(Type type)
         {
+            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return Activate(type.GetGenericArguments()[0]);
+
             if (type.IsValueType)
                 return Activator.CreateInstance(type);
 

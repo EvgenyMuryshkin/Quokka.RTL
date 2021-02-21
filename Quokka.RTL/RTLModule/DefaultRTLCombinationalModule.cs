@@ -1,4 +1,5 @@
-﻿using Quokka.VCD;
+﻿using Quokka.RTL.Tools;
+using Quokka.VCD;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -193,7 +194,7 @@ namespace Quokka.RTL
                     {
                         var result = new List<VCDVariable>();
 
-                        var props = RTLModuleHelper.SynthesizableMembers(valueType);
+                        var props = RTLReflectionTools.SynthesizableMembers(valueType);
                         foreach (var m in props)
                         {
                             result.AddRange(ToVCDVariables(m, m.GetValue(value), $"{namePrefix}{memberInfo.Name}_"));

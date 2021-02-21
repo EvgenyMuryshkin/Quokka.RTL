@@ -1,9 +1,19 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace Quokka.RTL.Tests
 {
+    abstract class StallControlBaseType
+    {
+        public bool? ready { get; set; }
+    }
+
+    class StallControlStage1 : StallControlBaseType
+    {
+        public byte data;
+        public byte counter;
+    }
+
     public abstract class AutoPropagatePipelineModuleStage
     {
         // nullable signals will be propagated through pipeline
@@ -44,6 +54,15 @@ namespace Quokka.RTL.Tests
             Assert.IsTrue(RTLModuleHelper.DeepEquals(null, null));
             Assert.IsFalse(RTLModuleHelper.DeepEquals(true, null));
             Assert.IsTrue(RTLModuleHelper.DeepEquals(true, true));
+        }
+
+        [TestMethod]
+        public void StallTestCase()
+        {
+            Assert.IsTrue(RTLModuleHelper.DeepEquals(
+                new StallControlStage1() { ready = true, counter = 1, data = 2 },
+                new StallControlStage1() { ready = true, counter = 1, data = 2 }
+            ));
         }
 
         [TestMethod]
@@ -160,23 +179,6 @@ namespace Quokka.RTL.Tests
         }
 
         [TestMethod]
-        public void SynthesizableMembersTest()
-        {
-            Assert.AreEqual(3, RTLModuleHelper.SynthesizableMembers(typeof(BaseMembersTestClass)).Count());
-            Assert.AreEqual(7, RTLModuleHelper.SynthesizableMembers(typeof(DerivedTestClass)).Count());
-        }
-
-        [TestMethod]
-        public void IsInternalPropertyTest()
-        {
-            var props = RTLModuleHelper.SynthesizableMembers(typeof(DerivedTestClass));
-            var internals = props.Where(p => RTLModuleHelper.IsInternalProperty(p));
-
-            // arrays and private\protected members are considered internals 
-            Assert.AreEqual(5, internals.Count());
-        }
-
-        [TestMethod]
         public void OverrideOutputTest()
         {
             var outputProps = RTLModuleHelper.OutputProperties(typeof(InheritedModule));
@@ -197,6 +199,13 @@ namespace Quokka.RTL.Tests
         {
             Assert.AreEqual(false, RTLModuleHelper.Activate<bool>());
             Assert.AreEqual(0, RTLModuleHelper.Activate<int>());
+        }
+
+        [TestMethod]
+        public void ActivateNullable()
+        {
+            Assert.AreEqual(false, RTLModuleHelper.Activate<bool?>());
+            Assert.AreEqual(0, RTLModuleHelper.Activate<int?>());
         }
 
         [TestMethod]
