@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL;
+using System;
 
 namespace Quokka.VCD
 {

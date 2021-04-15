@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +23,13 @@ namespace Quokka.RTL
 
         internal void Subtract(RTLBitArray value)
         {
-            if (DataType != RTLBitArrayType.Signed)
+            if (DataType != RTLSignalType.Signed)
             {
                 internalToSigned();
             }
 
             var copy = new RTLBitArray(value);
-            if (copy.DataType != RTLBitArrayType.Signed)
+            if (copy.DataType != RTLSignalType.Signed)
             {
                 copy.internalToSigned();
             }
@@ -47,18 +48,18 @@ namespace Quokka.RTL
             var valueOp = new RTLBitArray(value);
 
             var isResultNegative = false;
-            if (thisOp.DataType == RTLBitArrayType.Signed && thisOp[thisOp.Size - 1] == true)
+            if (thisOp.DataType == RTLSignalType.Signed && thisOp[thisOp.Size - 1] == true)
             {
                 isResultNegative = !isResultNegative;
                 thisOp.internal2SComplement();
-                thisOp.internalChangeType(RTLBitArrayType.Unsigned);
+                thisOp.internalChangeType(RTLSignalType.Unsigned);
             }
 
-            if (valueOp.DataType == RTLBitArrayType.Signed && valueOp[valueOp.Size - 1] == true)
+            if (valueOp.DataType == RTLSignalType.Signed && valueOp[valueOp.Size - 1] == true)
             {
                 isResultNegative = !isResultNegative;
                 valueOp.internal2SComplement();
-                valueOp.internalChangeType(RTLBitArrayType.Unsigned);
+                valueOp.internalChangeType(RTLSignalType.Unsigned);
             }
 
             var result = new RTLBitArray();

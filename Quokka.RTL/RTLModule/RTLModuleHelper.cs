@@ -78,22 +78,13 @@ namespace Quokka.RTL
         {
             var isPublic = memberInfo.IsPublic();
             var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
-            var isToolkitType = RTLReflectionTools.IsToolkitType(memberInfo.DeclaringType);
+            var isToolkitType = RTLTypeCheck.IsToolkitType(memberInfo.DeclaringType);
             var isArray = memberInfo.GetMemberType().IsArray;
 
             return isArray || !isPublic && isPropertyOrField && !isToolkitType;
         }
 
         internal static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
-
-        public static bool TryGetNullableType(Type type, out Type actualType)
-        {
-            actualType = null;
-            if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                actualType = type.GetGenericArguments()[0];
-
-            return actualType != null;
-        }
 
         public static bool IsSynthesizableObject(Type type)
         {
@@ -217,22 +208,6 @@ namespace Quokka.RTL
                 .ToList();
         }
 
-        public static int SizeOfEnum(Type enumType)
-        {
-            var values = Enum.GetValues(enumType);
-
-            // defaults to single bit variable
-            if (values.Length == 0)
-                return 1;
-
-            var maxValue = Enumerable
-                .Range(0, values.Length)
-                .Select(idx => (uint)Convert.ChangeType(values.GetValue(idx), typeof(uint)))
-                .Max();
-
-            return (int)Math.Max(1, Math.Ceiling(Math.Log(maxValue + 1, 2)));
-        }
-
         static JsonSerializerSettings typeSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
         public static T JSONCopy<T>(T source)
         {
@@ -320,64 +295,6 @@ namespace Quokka.RTL
         public static bool DeepEquals(object lhs, object rhs)
         {
             return DeepCompare(lhs, rhs) == null;
-            /*
-            if (lhs == null && rhs == null) return true;
-            if (lhs == null || rhs == null) return false;
-
-            var lhsType = lhs.GetType();
-            var rhsType = rhs.GetType();
-
-            if (lhsType != rhsType) throw new Exception($"lhs type {lhsType} is not equal to rhs type {rhsType}");
-
-            foreach (var prop in SignalProperties(lhs.GetType()))
-            {
-                var lhsValue = prop.GetValue(lhs);
-                var rhsVaue = prop.GetValue(rhs);
-
-                if (lhsValue == null && rhsVaue == null)
-                    continue;
-
-                if (IsSynthesizableArrayType(prop.GetMemberType()))
-                {
-                    if (lhsType.GetElementType() != rhsType.GetElementType()) throw new Exception($"lhs array type {lhsType} is not equal to rhs array type {rhsType}");
-
-                    var lhsArray = lhsValue as Array;
-                    var rhsArray = rhsVaue as Array;
-
-                    if (lhsArray == null && rhsArray == null)
-                        continue;
-
-                    if (lhsArray == null || rhsArray == null) 
-                        return false;
-
-                    if (lhsArray.Length != rhsArray.Length)
-                        return false;
-
-                    for (var idx = 0; idx < lhsArray.Length; idx++)
-                    {
-                        if (!DeepEquals(lhsArray.GetValue(idx), rhsArray.GetValue(idx)))
-                            return false;
-                    }
-                }
-                else if (lhsValue is RTLBitArray)
-                {
-                    if (!lhsValue.Equals(rhsVaue))
-                        return false;
-                }
-                else if (prop.GetMemberType().IsClass)
-                {
-                    if (!DeepEquals(lhsValue, rhsVaue))
-                        return false;
-                }
-                else
-                {
-                    if (!lhsValue.Equals(rhsVaue))
-                        return false;
-                }
-            }
-
-            return true;
-            */
         }
 
         public static object Activate(Type type)

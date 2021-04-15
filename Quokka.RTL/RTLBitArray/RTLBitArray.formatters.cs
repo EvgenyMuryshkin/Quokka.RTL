@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Quokka.RTL
 
         public string AsJSONValue()
         {
-            return $"{(DataType == RTLBitArrayType.Signed ? "S" : "U")}:{AsBinaryString()}";
+            return $"{(DataType == RTLSignalType.Signed ? "S" : "U")}:{AsBinaryString()}";
         }
 
         public override string ToString()

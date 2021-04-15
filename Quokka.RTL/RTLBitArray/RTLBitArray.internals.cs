@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,20 @@ namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
-        internal void internalInit(RTLBitArrayType dataType, params bool[] lsbSource)
+        internal void internalInit(RTLSignalType dataType, params bool[] lsbSource)
         {
             _data = new BitArray(lsbSource);
             DataType = dataType;
         }
 
-        internal void FromBinaryString(RTLBitArrayType dataType, string msbBitString, int size)
+        internal void FromBinaryString(RTLSignalType dataType, string msbBitString, int size)
         {
             msbBitString = msbBitString.PadLeft(size, '0');
 
             internalInit(dataType, msbBitString.Reverse().Select(b => b == '0' ? false : true).ToArray());
         }
 
-        internal void internalChangeType(RTLBitArrayType dataType)
+        internal void internalChangeType(RTLSignalType dataType)
         {
             DataType = dataType;
         }
@@ -50,13 +51,13 @@ namespace Quokka.RTL
 
                 switch (DataType)
                 {
-                    case RTLBitArrayType.Signed:
+                    case RTLSignalType.Signed:
                         {
                             // expand with sign
                             newData.AddRange(Enumerable.Range(0, delta).Select(_ => Size > 0 ? _data[Size - 1] : false));
                         }
                         break;
-                    case RTLBitArrayType.Unsigned:
+                    case RTLSignalType.Unsigned:
                         {
                             // expand with zeros
                             newData.AddRange(Enumerable.Range(0, delta).Select(_ => false));
@@ -71,8 +72,8 @@ namespace Quokka.RTL
                 // truncate
                 switch (DataType)
                 {
-                    case RTLBitArrayType.Signed:
-                    case RTLBitArrayType.Unsigned:
+                    case RTLSignalType.Signed:
+                    case RTLSignalType.Unsigned:
                         newData.AddRange(Enumerable.Range(0, newSize).Select(idx => _data[idx]));
                         break;
                     default:
@@ -123,7 +124,7 @@ namespace Quokka.RTL
         internal void internalToSigned()
         {
             internalResize(Size + 1);
-            internalChangeType(RTLBitArrayType.Signed);
+            internalChangeType(RTLSignalType.Signed);
         }
     }
 }

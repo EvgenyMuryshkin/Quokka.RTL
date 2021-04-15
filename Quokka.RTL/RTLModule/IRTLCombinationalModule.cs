@@ -1,4 +1,5 @@
-﻿using Quokka.VCD;
+﻿using Quokka.RTL.Tools;
+using Quokka.VCD;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,6 +23,8 @@ namespace Quokka.RTL
 
         bool OnRelatedObjectCreating(object data);
         bool DeepEquals(object lhs, object rhs);
+
+        RTLSignalInfo SizeOfValue(object value);
 
         event EventHandler Scheduled;
     }

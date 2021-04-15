@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace Quokka.RTL
         /// </summary>
         public RTLBitArray()
         {
-            internalInit(RTLBitArrayType.Unsigned, false);
+            internalInit(RTLSignalType.Unsigned, false);
         }
         private RTLBitArray(params bool[] msbBits)
         {
-            internalInit(RTLBitArrayType.Unsigned, msbBits.Reverse().ToArray());
+            internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());
         }
 
         public RTLBitArray(params RTLBitArray[] msbSources)
@@ -29,21 +30,21 @@ namespace Quokka.RTL
 
         public RTLBitArray(IEnumerable<bool> msbBits)
         {
-            internalInit(RTLBitArrayType.Unsigned, msbBits.Reverse().ToArray());
+            internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());
         }
 
-        public RTLBitArray(RTLBitArrayType type, string msbBitString, int size)
+        public RTLBitArray(RTLSignalType type, string msbBitString, int size)
         {
             FromBinaryString(type, msbBitString, size);
         }
 
-        public RTLBitArray(RTLBitArrayType type, string msbBitString)
+        public RTLBitArray(RTLSignalType type, string msbBitString)
             : this(type, msbBitString, msbBitString.Length)
         {
         }
 
         public RTLBitArray(string msbBitString) 
-            : this(RTLBitArrayType.Unsigned, msbBitString, msbBitString.Length)
+            : this(RTLSignalType.Unsigned, msbBitString, msbBitString.Length)
         {
         }
     }

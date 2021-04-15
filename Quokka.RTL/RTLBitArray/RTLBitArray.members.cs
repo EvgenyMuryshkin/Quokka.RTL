@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Quokka.RTL
     public partial class RTLBitArray
     {
         private BitArray _data = new BitArray(1);
-        public RTLBitArrayType DataType { get; private set; } = RTLBitArrayType.Unsigned;
+        public RTLSignalType DataType { get; private set; } = RTLSignalType.Unsigned;
 
         public int Size => _data.Count;
         public IEnumerable<bool> MSB => LSB.Reverse();

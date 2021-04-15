@@ -8,6 +8,12 @@ namespace Quokka.VCD.Tests
     public class VCDTests
     {
         [TestMethod]
+        public void VCDSizeOf()
+        {
+            Assert.AreEqual(1, VCDInteraction.SizeOf(""));
+        }
+
+        [TestMethod]
         public void ModuleWrite()
         {
             var snapshot = new VCDSignalsSnapshot("TOP");

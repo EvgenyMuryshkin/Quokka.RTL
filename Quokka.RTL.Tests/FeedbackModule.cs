@@ -30,4 +30,15 @@ namespace Quokka.RTL.Tests
             Inverter.Schedule(() => new NotGateInputs() { Input = Inverter.Output });
         }
     }
+
+    public class FactoryCreatedModule : DefaultRTLCombinationalModule<NotGateInputs>
+    {
+        public delegate FactoryCreatedModule Factory(int value);
+        public FactoryCreatedModule(int value)
+        {
+
+        }
+
+        public bool Output => !Inputs.Input;
+    }
 }

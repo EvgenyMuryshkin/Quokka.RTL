@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,12 @@ namespace Quokka.RTL
             return result;
         }
 
-        public RTLBitArray TypeChanged(RTLBitArrayType dataType)
+        public RTLBitArray Resized(uint newSize)
+        {
+            return Resized((int)newSize);
+        }
+
+        public RTLBitArray TypeChanged(RTLSignalType dataType)
         {
             var result = new RTLBitArray(this);
             result.internalChangeType(dataType);
@@ -24,13 +30,13 @@ namespace Quokka.RTL
         public RTLBitArray Signed()
         {
             var result = new RTLBitArray(this);
-            result.internalChangeType(RTLBitArrayType.Signed);
+            result.internalChangeType(RTLSignalType.Signed);
             return result;
         }
         public RTLBitArray Unsigned()
         {
             var result = new RTLBitArray(this);
-            result.internalChangeType(RTLBitArrayType.Unsigned);
+            result.internalChangeType(RTLSignalType.Unsigned);
             return result;
         }
 

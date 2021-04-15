@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Quokka.RTL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,9 +24,9 @@ namespace Quokka.RTL
             switch(parts[0])
             {
                 case "U":
-                    return new RTLBitArray(RTLBitArrayType.Unsigned, parts[1], parts[1].Length);
+                    return new RTLBitArray(RTLSignalType.Unsigned, parts[1], parts[1].Length);
                 case "S":
-                    return new RTLBitArray(RTLBitArrayType.Signed, parts[1], parts[1].Length);
+                    return new RTLBitArray(RTLSignalType.Signed, parts[1], parts[1].Length);
                 default:
                     return null;
             }

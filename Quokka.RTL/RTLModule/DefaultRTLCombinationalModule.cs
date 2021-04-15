@@ -162,16 +162,7 @@ namespace Quokka.RTL
             }
         }
 
-        protected virtual int SizeOf(object value)
-        {
-            switch (value)
-            {
-                case Enum v:
-                    return RTLModuleHelper.SizeOfEnum(value.GetType());
-                default:
-                    return VCDInteraction.SizeOf(value);
-            }
-        }
+        public virtual RTLSignalInfo SizeOfValue(object value) => RTLSignalTools.SizeOfValue(value);
 
         protected virtual IEnumerable<VCDVariable> ToVCDVariables(MemberInfo memberInfo, object value, string namePrefix = "")
         {
@@ -180,13 +171,13 @@ namespace Quokka.RTL
                 case Enum v:
                     return new[]
                     {
-                        new VCDVariable($"{namePrefix}{memberInfo.Name}ToString", value.ToString(), SizeOf("")),
-                        new VCDVariable($"{namePrefix}{memberInfo.Name}", value, SizeOf(value))
+                        new VCDVariable($"{namePrefix}{memberInfo.Name}ToString", value.ToString(), SizeOfValue("").Size),
+                        new VCDVariable($"{namePrefix}{memberInfo.Name}", value, SizeOfValue(value).Size)
                     };
                 case RTLBitArray b:
                     return new[]
                     {
-                        new VCDVariable(memberInfo.Name, value, SizeOf(value))
+                        new VCDVariable(memberInfo.Name, value, SizeOfValue(value).Size)
                     };
                 default:
                     var valueType = value.GetType();
@@ -205,7 +196,7 @@ namespace Quokka.RTL
 
                     return new[]
                     {
-                        new VCDVariable($"{namePrefix}{memberInfo.Name}", value, SizeOf(value))
+                        new VCDVariable($"{namePrefix}{memberInfo.Name}", value, SizeOfValue(value).Size)
                     };
             }
         }

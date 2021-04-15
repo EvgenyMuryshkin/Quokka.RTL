@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Quokka.Rollout" Version="1.0.0.21" />
+    <PackageReference Include="Quokka.Rollout" Version="1.0.2.29" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Quokka.RTL\Quokka.RTL.csproj" />

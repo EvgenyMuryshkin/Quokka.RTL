@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace Quokka.RTL
 
             var size = Math.Max(op1.Size, op2.Size) + 1;
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLBitArrayType.Signed);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLBitArrayType.Signed);
+            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLSignalType.Signed);
+            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLSignalType.Signed);
 
             return lhs.ToString() == rhs.ToString();
         }
@@ -27,8 +28,8 @@ namespace Quokka.RTL
 
             var size = Math.Max(op1.Size, op2.Size) + 1;
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLBitArrayType.Signed);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLBitArrayType.Signed);
+            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLSignalType.Signed);
+            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLSignalType.Signed);
 
             var lhsSig = lhs[size - 1];
             var rhsSig = rhs[size - 1];
