@@ -8,12 +8,27 @@ namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
-        private BitArray _data = new BitArray(1);
+        //private BitArray _data = new BitArray(1);
+        internal bool[] _data = new bool[1];
+        internal bool _fromCast;
+
         public RTLSignalType DataType { get; private set; } = RTLSignalType.Unsigned;
 
-        public int Size => _data.Count;
+        public int Size => _data.Length;
         public IEnumerable<bool> MSB => LSB.Reverse();
-        public IEnumerable<bool> LSB => _data.OfType<bool>();
+        public bool[] LSB
+        {
+            get
+            {
+                var size = _data.Length;
+                var result = new bool[size];
+
+                for (var i = 0; i < size; i++)
+                    result[i] = _data[i];
+
+                return result;
+            }
+        }
 
         void AssertIndex(int idx)
         {

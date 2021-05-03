@@ -13,12 +13,30 @@ namespace Quokka.RTL
             if (object.Equals(op1, null) || object.Equals(op2, null))
                 return false;
 
-            var size = Math.Max(op1.Size, op2.Size) + 1;
+            var maxSize = Math.Max(op1.Size, op2.Size);
+            for (int i = 0; i < maxSize; i++)
+            {
+                if (op1.VirtualBit(i) != op2.VirtualBit(i))
+                    return false;
+            }
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLSignalType.Signed);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLSignalType.Signed);
+            if (op1.DataType == op2.DataType)
+                return true;
 
-            return lhs.ToString() == rhs.ToString();
+            return op1.VirtualBit(maxSize) == op2.VirtualBit(maxSize);
+        }
+
+        static bool BitCompare_Op1_GT_Op2(RTLBitArray op1, RTLBitArray op2, int maxSize)
+        {
+            for (int i = maxSize - 1; i >= 0; i--)
+            {
+                var op1Bit = op1.VirtualBit(i);
+                var op2Bit = op2.VirtualBit(i);
+                if (op1Bit != op2Bit)
+                    return op1Bit;
+            }
+
+            return false;
         }
 
         public static bool operator >(RTLBitArray op1, RTLBitArray op2)
@@ -26,37 +44,16 @@ namespace Quokka.RTL
             if (object.Equals(op1, null) || object.Equals(op2, null))
                 return false;
 
-            var size = Math.Max(op1.Size, op2.Size) + 1;
+            var maxSize = Math.Max(op1.Size, op2.Size);
+            var op1Sig = op1.VirtualBit(maxSize);
+            var op2Sig = op2.VirtualBit(maxSize);
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(RTLSignalType.Signed);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(RTLSignalType.Signed);
-
-            var lhsSig = lhs[size - 1];
-            var rhsSig = rhs[size - 1];
-
-            if (lhsSig != rhsSig)
+            if (op1Sig == op2Sig)
             {
-                return (lhsSig ? 0 : 1) > (rhsSig ? 0 : 1);
+                return BitCompare_Op1_GT_Op2(op1, op2, maxSize);
             }
 
-            if (!lhsSig)
-            {
-                // both positive, compare string represenation
-                var lhsString = lhs.ToString();
-                var rhsString = rhs.ToString();
-                var stringLength = Math.Max(lhsString.Length, rhsString.Length);
-                lhsString = lhsString.PadLeft(stringLength, '0');
-                rhsString = rhsString.PadLeft(stringLength, '0');
-
-                return lhsString.CompareTo(rhsString) > 0;
-            }
-            else
-            {
-                // both negative
-                lhs.internal2SComplement();
-                rhs.internal2SComplement();
-                return rhs > lhs;
-            }
+            return op2Sig;
         }
 
         public static bool operator !=(RTLBitArray op1, RTLBitArray op2)

@@ -209,41 +209,51 @@ namespace Quokka.RTL
             throw new VCDSnapshotException($"Failed to save snapshot of {GetType().Name}.{(currentSnapshot?.Name ?? "null")}.{(currentMember?.Name ?? "null")}", ex);
         }
 
-        public virtual void PopulateSnapshot(VCDSignalsSnapshot snapshot)
+        public virtual void PopulateSnapshot(VCDSignalsSnapshot snapshot, RTLModuleSnapshotConfig config = null)
         {
+            config = config ?? RTLModuleSnapshotConfig.Default;
             try
             {
-                currentSnapshot = snapshot.Scope("Inputs");
-                foreach (var prop in InputProps)
+                if (config.IsIncluded(RTLModuleSnapshotConfigInclude.Inputs))
                 {
-                    currentMember = prop;
-                    var value = currentMember.GetValue(Inputs);
-                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
-                }
-
-                currentSnapshot = snapshot.Scope("Outputs");
-                foreach (var prop in OutputProps)
-                {
-                    currentMember = prop;
-                    var value = currentMember.GetValue(this);
-                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
-                }
-
-                currentSnapshot = null;
-                foreach (var m in ModuleProps.Where(m => RTLModuleHelper.IsField(m)))
-                {
-                    var value = m.GetValue(this);
-                    currentMember = m;
-
-                    if (value is IRTLCombinationalModule module)
+                    currentSnapshot = snapshot.Scope("Inputs");
+                    foreach (var prop in InputProps)
                     {
-                        var moduleScope = snapshot.Scope(m.Name);
-
-                        module.PopulateSnapshot(moduleScope);
-                        continue;
+                        currentMember = prop;
+                        var value = currentMember.GetValue(Inputs);
+                        currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
                     }
+                }
 
-                    // TODO: support for modules array
+                if (config.IsIncluded(RTLModuleSnapshotConfigInclude.Outputs))
+                {
+                    currentSnapshot = snapshot.Scope("Outputs");
+                    foreach (var prop in OutputProps)
+                    {
+                        currentMember = prop;
+                        var value = currentMember.GetValue(this);
+                        currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                    }
+                }
+
+                if (config.IsIncluded(RTLModuleSnapshotConfigInclude.Modules))
+                {
+                    currentSnapshot = null;
+                    foreach (var m in ModuleProps.Where(m => RTLModuleHelper.IsField(m)))
+                    {
+                        var value = m.GetValue(this);
+                        currentMember = m;
+
+                        if (value is IRTLCombinationalModule module)
+                        {
+                            var moduleScope = snapshot.Scope(m.Name);
+
+                            module.PopulateSnapshot(moduleScope, config.Nested);
+                            continue;
+                        }
+
+                        // TODO: support for modules array
+                    }
                 }
             }
             catch (VCDSnapshotException)

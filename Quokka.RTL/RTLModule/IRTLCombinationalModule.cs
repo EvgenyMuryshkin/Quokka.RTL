@@ -18,7 +18,7 @@ namespace Quokka.RTL
         IEnumerable<IRTLCombinationalModule> Modules { get; }
         List<RTLModuleDetails> ModuleDetails { get; }
 
-        void PopulateSnapshot(VCDSignalsSnapshot snapshot);
+        void PopulateSnapshot(VCDSignalsSnapshot snapshot, RTLModuleSnapshotConfig config = null);
         void Setup();
 
         bool OnRelatedObjectCreating(object data);

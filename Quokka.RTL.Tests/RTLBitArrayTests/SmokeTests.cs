@@ -44,6 +44,9 @@ namespace Quokka.RTL.RTLBitArrayTests
                 var result = (op1 * op2);
                 var multPattern = $"[F]{{{repeats}}}E[0]{{{repeats}}}1";
 
+                if (bytes == 17)
+                    Debugger.Break();
+
                 Assert.IsTrue(Regex.IsMatch(result.ToString(), multPattern), $"Failed for {op1} * {op2}");
 
                 var complement = !result + 1;
@@ -112,6 +115,21 @@ namespace Quokka.RTL.RTLBitArrayTests
         }
 
         [TestMethod]
+        public void CompareTest()
+        {
+            var u32 = new RTLBitArray(uint.MaxValue);
+            var s32 = new RTLBitArray(-1);
+            var s16 = s32.Resized(16);
+            var s8 = s16.Resized(8);
+
+            Assert.IsFalse(s32 == u32);
+            Assert.IsTrue(s32 == s32);
+            Assert.IsTrue(s32 == s16);
+            Assert.IsTrue(s32 == s8);
+            Assert.IsTrue(s16 == s8);
+        }
+
+        [TestMethod]
         public void ArrayCtorTest()
         {
             var high = (byte)0xC0;
@@ -149,6 +167,44 @@ namespace Quokka.RTL.RTLBitArrayTests
             Assert.IsFalse(source3.Xor());
         }
 
+        [TestMethod]
+        public void SizeTest()
+        {
+            var op1 = new RTLBitArray(byte.MaxValue);
+            var op2 = new RTLBitArray(byte.MaxValue);
+
+            var sum = op1 + op2;
+            Assert.AreEqual(9, sum.Size, "sum");
+            /*
+            var sub = op1 - op2;
+            Assert.AreEqual(8, sub.Size, "sub");
+
+            var mul = op1 * op2;
+            Assert.AreEqual(16, mul.Size, "mul");
+
+            // shift by constant
+
+            var lsh2 = op1 << op2;
+            Assert.AreEqual(263, lsh2.Size, "mul");
+            */
+        }
+
+
+        [TestMethod]
+        public void ImmutabilityTest()
+        {
+            var source = new RTLBitArray(42);
+            var copy1 = new RTLBitArray(source);
+            var copy2 = source.Unsigned();
+            var copy3 = source.Resized(16);
+            var copy4 = source + 1;
+
+            source[0] = true;
+            Assert.IsTrue(source != copy1);
+            Assert.IsTrue(source != copy2);
+            Assert.IsTrue(source != copy3);
+            Assert.IsTrue(source == copy4);
+        }
 
         [TestMethod]
         public void TypedCtor()

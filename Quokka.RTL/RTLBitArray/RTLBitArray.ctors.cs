@@ -15,6 +15,7 @@ namespace Quokka.RTL
         {
             internalInit(RTLSignalType.Unsigned, false);
         }
+
         private RTLBitArray(params bool[] msbBits)
         {
             internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());
@@ -22,10 +23,28 @@ namespace Quokka.RTL
 
         public RTLBitArray(params RTLBitArray[] msbSources)
         {
-            var type = msbSources[0].DataType;
-            var msbBits = msbSources.SelectMany(source => source.MSB).ToArray();
+            if (msbSources.Length == 1)
+            {
+                var source = msbSources[0];
+                if (source._fromCast)
+                {
+                    internalInitFromArray(source.DataType, source._data);
+                }
+                else
+                {
+                    internalInit(source.DataType, source.LSB);
+                }
+            }
+            else
+            {
+                var type = msbSources[0].DataType;
+                var lsbBits = msbSources
+                    .SelectMany(source => source.MSB)
+                    .Reverse()
+                    .ToArray();
 
-            internalInit(type, msbBits.Reverse().ToArray());
+                internalInit(type, lsbBits);
+            }
         }
 
         public RTLBitArray(IEnumerable<bool> msbBits)
@@ -36,6 +55,18 @@ namespace Quokka.RTL
         public RTLBitArray(RTLSignalType type, string msbBitString, int size)
         {
             FromBinaryString(type, msbBitString, size);
+        }
+
+        internal RTLBitArray(RTLSignalType type, bool[] lsb, bool fromCast)
+        {
+            internalInitWithBuffer(type, lsb);
+            _fromCast = fromCast;
+        }
+
+        internal RTLBitArray(RTLSignalType type, string msbBitString, int size, bool fromCast)
+        {
+            FromBinaryString(type, msbBitString, size);
+            _fromCast = fromCast;
         }
 
         public RTLBitArray(RTLSignalType type, string msbBitString)

@@ -8,11 +8,22 @@ namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
+        internal RTLBitArray Resized(int newSize, RTLSignalType dataType)
+        {
+            var result = this.Resized(newSize);
+            result.internalChangeType(dataType);
+            return result;
+        }
+
         public RTLBitArray Resized(int newSize)
         {
-            var result = new RTLBitArray(this);
-            result.internalResize(newSize);
-            return result;
+            var buff = new bool[newSize];
+            for (int i = 0; i < newSize; i++)
+            {
+                buff[i] = VirtualBit(i);
+            }
+
+            return new RTLBitArray(DataType, buff, true);
         }
 
         public RTLBitArray Resized(uint newSize)
@@ -42,7 +53,7 @@ namespace Quokka.RTL
 
         public RTLBitArray Reversed()
         {
-            return new RTLBitArray(LSB.ToArray()).TypeChanged(DataType);
+            return new RTLBitArray(LSB).TypeChanged(DataType);
         }
 
         public bool And()

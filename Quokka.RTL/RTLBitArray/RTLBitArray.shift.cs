@@ -20,7 +20,8 @@ namespace Quokka.RTL
                 list.Insert(0, false);
             }
 
-            _data = new BitArray(list.ToArray());
+            //_data = new BitArray(list.ToArray());
+            _data = list.ToArray();
         }
 
         internal void internalShiftRight(int value)
@@ -35,7 +36,9 @@ namespace Quokka.RTL
             var padding = Enumerable
                 .Range(0, Size - remaining.Length)
                 .Select(idx => DataType == RTLSignalType.Signed ? list[Size - 1] : false);
-            _data = new BitArray(remaining.Concat(padding).ToArray());
+
+            //_data = new BitArray(remaining.Concat(padding).ToArray());
+            _data = remaining.Concat(padding).ToArray();
         }
 
         public RTLBitArray ShiftLeft(RTLBitArray by)

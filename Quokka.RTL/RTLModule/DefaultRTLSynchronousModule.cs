@@ -36,43 +36,52 @@ namespace Quokka.RTL
             DefaultState = CopyState();
         }
 
-        public override void PopulateSnapshot(VCDSignalsSnapshot snapshot)
+        public override void PopulateSnapshot(VCDSignalsSnapshot snapshot, RTLModuleSnapshotConfig config = null)
         {
+            config = config ?? RTLModuleSnapshotConfig.Default;
+
             try
             {
-                base.PopulateSnapshot(snapshot);
+                base.PopulateSnapshot(snapshot, config);
 
-                currentSnapshot = snapshot.Scope("State");
-                if (State == null)
-                    throw new NullReferenceException("State is not initialized");
-
-                foreach (var prop in StateProps)
+                if (config.IsIncluded(RTLModuleSnapshotConfigInclude.State))
                 {
-                    // TODO: support arrays in VCD
-                    if (prop.GetMemberType().IsArray)
-                        continue;
+                    currentSnapshot = snapshot.Scope("State");
+                    if (State == null)
+                        throw new NullReferenceException("State is not initialized");
 
-                    currentMember = prop;
-                    var value = currentMember.GetValue(State);
-                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                    foreach (var prop in StateProps)
+                    {
+                        // TODO: support arrays in VCD
+                        if (prop.GetMemberType().IsArray)
+                            continue;
+
+                        currentMember = prop;
+                        var value = currentMember.GetValue(State);
+                        currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                    }
                 }
 
-                currentSnapshot = snapshot.Scope("NextState");
-                if (State == null)
-                    throw new NullReferenceException("NextState is not initialized");
 
-                foreach (var prop in StateProps)
+                if (config.IsIncluded(RTLModuleSnapshotConfigInclude.NextState))
                 {
-                    // TODO: support arrays in VCD
-                    if (prop.GetMemberType().IsArray)
-                        continue;
+                    currentSnapshot = snapshot.Scope("NextState");
+                    if (State == null)
+                        throw new NullReferenceException("NextState is not initialized");
 
-                    currentMember = prop;
-                    var value = currentMember.GetValue(NextState);
-                    currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                    foreach (var prop in StateProps)
+                    {
+                        // TODO: support arrays in VCD
+                        if (prop.GetMemberType().IsArray)
+                            continue;
+
+                        currentMember = prop;
+                        var value = currentMember.GetValue(NextState);
+                        currentSnapshot.SetVariables(ToVCDVariables(currentMember, value));
+                    }
+
+                    currentSnapshot = null;
                 }
-
-                currentSnapshot = null;
             }
             catch (VCDSnapshotException)
             {

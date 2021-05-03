@@ -10,9 +10,15 @@ namespace Quokka.RTL
     {
         public static RTLBitArray operator !(RTLBitArray source)
         {
-            var ret = new RTLBitArray(source);
-            ret.internalInvert();
-            return ret;
+            var size = source.Size;
+            var buff = new bool[source.Size];
+
+            for (var i = 0; i < size; i++)
+            {
+                buff[i] = !source.VirtualBit(i);
+            }
+
+            return new RTLBitArray(source.DataType, buff, true);
         }
 
         public static RTLBitArray operator &(RTLBitArray op1, RTLBitArray op2)
@@ -20,11 +26,16 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLSignalType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
+            var buff = new bool[size];
 
-            lhs.internalAnd(rhs);
-            return lhs;
+            for (var i = 0; i < size; i++)
+            {
+                var op1Bit = op1.VirtualBit(i);
+                var op2Bit = op2.VirtualBit(i);
+                buff[i] = op1Bit & op2Bit;
+            }
+
+            return new RTLBitArray(type, buff, true);
         }
 
         public static RTLBitArray operator |(RTLBitArray op1, RTLBitArray op2)
@@ -32,11 +43,16 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLSignalType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
+            var buff = new bool[size];
 
-            lhs.internalOr(rhs);
-            return lhs;
+            for (var i = 0; i < size; i++)
+            {
+                var op1Bit = op1.VirtualBit(i);
+                var op2Bit = op2.VirtualBit(i);
+                buff[i] = op1Bit | op2Bit;
+            }
+
+            return new RTLBitArray(type, buff, true);
         }
 
         public static RTLBitArray operator ^(RTLBitArray op1, RTLBitArray op2)
@@ -44,11 +60,16 @@ namespace Quokka.RTL
             var size = Math.Max(op1.Size, op2.Size);
             var type = op1.DataType == op2.DataType ? op1.DataType : RTLSignalType.Signed;
 
-            var lhs = new RTLBitArray(op1).Resized(size).TypeChanged(type);
-            var rhs = new RTLBitArray(op2).Resized(size).TypeChanged(type);
+            var buff = new bool[size];
 
-            lhs.internalXor(rhs);
-            return lhs;
+            for (var i = 0; i < size; i++)
+            {
+                var op1Bit = op1.VirtualBit(i);
+                var op2Bit = op2.VirtualBit(i);
+                buff[i] = op1Bit ^ op2Bit;
+            }
+
+            return new RTLBitArray(type, buff, true);
         }
     }
 }

@@ -27,7 +27,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Unsigned,
                 Convert.ToString(value, 2),
-                8);
+                8,
+                true);
         }
 
         public static implicit operator sbyte(RTLBitArray value)
@@ -39,7 +40,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Signed,
                 Convert.ToString((byte)value, 2),
-                8);
+                8,
+                true);
         }
 
         public static implicit operator ushort(RTLBitArray value)
@@ -51,7 +53,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Unsigned,
                 Convert.ToString((short)value, 2),
-                16);
+                16,
+                true);
         }
 
 
@@ -64,7 +67,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Signed,
                 Convert.ToString(value, 2),
-                16);
+                16,
+                true);
         }
 
 
@@ -77,7 +81,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Unsigned,
                 Convert.ToString((int)value, 2),
-                32);
+                32,
+                true);
         }
 
 
@@ -90,7 +95,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Signed,
                 Convert.ToString(value, 2),
-                32);
+                32,
+                true);
         }
 
 
@@ -103,7 +109,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Unsigned,
                 Convert.ToString((long)value, 2),
-                64);
+                64,
+                true);
         }
 
 
@@ -116,7 +123,8 @@ namespace Quokka.RTL
             return new RTLBitArray(
                 RTLSignalType.Signed,
                 Convert.ToString(value, 2),
-                64);
+                64,
+                true);
         }
     }
 }
