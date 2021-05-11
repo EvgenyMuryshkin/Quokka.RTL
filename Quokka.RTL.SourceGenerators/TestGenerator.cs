@@ -400,11 +400,12 @@ namespace Quokka.RTL.SourceGenerators
                 methodBody.AppendLine("\tvar o1 = new RTLBitArray(v1);");
                 if (from == "bool")
                 {
-                    methodBody.AppendLine($"\tAssert.AreEqual((v1 ? 1 : 0).ToString(\"X\"), o1.ToString(), $\"{{v1}}\");");
+                    methodBody.AppendLine($"\tAssert.AreEqual($\"0x{{(v1 ? 1 : 0):X}}\", o1.ToString(), $\"{{v1}}\");");
                 }
                 else
                 {
-                    methodBody.AppendLine($"\tAssert.AreEqual(v1.ToString(\"X\"), o1.ToString(), $\"{{v1}}\");");
+                    methodBody.AppendLine($"\tAssert.AreEqual($\"0x{{v1:X}}\", o1.ToString(), $\"{{v1}}\");");
+                    // v1.ToString(\"X\")
                 }
                 methodBody.AppendLine("}");
 

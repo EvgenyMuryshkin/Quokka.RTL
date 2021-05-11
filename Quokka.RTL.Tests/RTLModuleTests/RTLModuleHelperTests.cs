@@ -51,15 +51,15 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void NullsDeepEquals()
         {
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(null, null));
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(true, null));
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(true, true));
+            Assert.IsTrue(DeepDiff.DeepEquals(null, null));
+            Assert.IsFalse(DeepDiff.DeepEquals(true, null));
+            Assert.IsTrue(DeepDiff.DeepEquals(true, true));
         }
 
         [TestMethod]
         public void StallTestCase()
         {
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(
+            Assert.IsTrue(DeepDiff.DeepEquals(
                 new StallControlStage1() { ready = true, counter = 1, data = 2 },
                 new StallControlStage1() { ready = true, counter = 1, data = 2 }
             ));
@@ -70,22 +70,22 @@ namespace Quokka.RTL.Tests
         {
             var s1 = new AutoPropagatePipelineModuleStage0();
             var s2 = new AutoPropagatePipelineModuleStage0();
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsTrue(DeepDiff.DeepEquals(s1, s2));
             s1.ready = true;
             s2.ready = true;
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsTrue(DeepDiff.DeepEquals(s1, s2));
 
             s1.sums = new ushort[] { 1, 2 };
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsFalse(DeepDiff.DeepEquals(s1, s2));
 
             s2.sums = new ushort[] { 1, 2 };
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsTrue(DeepDiff.DeepEquals(s1, s2));
 
             s2.sums = new ushort[] { 1, 2, 3 };
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsFalse(DeepDiff.DeepEquals(s1, s2));
 
             s2.sums = null;
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(s1, s2));
+            Assert.IsFalse(DeepDiff.DeepEquals(s1, s2));
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void SynthesizableStructWithClassTest()
         {
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(new SynthesizableClassWithClass(), new SynthesizableClassWithClass()));
+            Assert.IsTrue(DeepDiff.DeepEquals(new SynthesizableClassWithClass(), new SynthesizableClassWithClass()));
 
             var c1 = new SynthesizableClassWithClass()
             {
@@ -112,7 +112,7 @@ namespace Quokka.RTL.Tests
             {
                 Value = 20
             };
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(c1, c2));
+            Assert.IsFalse(DeepDiff.DeepEquals(c1, c2));
 
             var c3 = new SynthesizableClassWithClass()
             {
@@ -122,7 +122,7 @@ namespace Quokka.RTL.Tests
             {
                 Class = new SynthesizableClass1(8)
             };
-            Assert.IsTrue(RTLModuleHelper.DeepEquals(c3, c4));
+            Assert.IsTrue(DeepDiff.DeepEquals(c3, c4));
 
             var c5 = new SynthesizableClassWithClass()
             {
@@ -134,7 +134,7 @@ namespace Quokka.RTL.Tests
                 Value = 20,
                 Class = new SynthesizableClass1(8)
             };
-            Assert.IsFalse(RTLModuleHelper.DeepEquals(c5, c6));
+            Assert.IsFalse(DeepDiff.DeepEquals(c5, c6));
 
         }
 

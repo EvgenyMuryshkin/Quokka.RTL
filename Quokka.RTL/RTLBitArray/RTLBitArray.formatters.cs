@@ -31,7 +31,7 @@ namespace Quokka.RTL
             List<List<bool>> parts = new List<List<bool>>();
             IEnumerable<bool> source = LSB;
 
-            while(source.Any())
+            while (source.Any())
             {
                 parts.Add(source.Take(8).Reverse().ToList());
                 source = source.Skip(8);
@@ -45,8 +45,10 @@ namespace Quokka.RTL
                 .ToList();
 
             var result = string.Join("", byteParts.Select(p => p.ToString("X02"))).TrimStart(new[] { '0' });
+            if (result == "")
+                result = "0";
 
-            return result == "" ? "0" : result;
+            return $"0x{result}";
         }
 
         public override int GetHashCode()

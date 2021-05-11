@@ -11,30 +11,6 @@ using System.Runtime.CompilerServices;
 
 namespace Quokka.RTL
 {
-    public class DeepCompareItem
-    {
-        public DeepCompareItem(IEnumerable<MemberInfo> path, object lhs, object rhs, params string[] messages)
-        {
-            Path = path ?? Enumerable.Empty<MemberInfo>();
-            this.lhs = lhs;
-            this.rhs = rhs;
-            Messages = messages.Where(s => !string.IsNullOrEmpty(s)).ToArray();
-        }
-
-        public DeepCompareItem(IEnumerable<MemberInfo> path, object lhs, object rhs, IEnumerable<string> messages, params string[] extra)
-        {
-            Path = path ?? Enumerable.Empty<MemberInfo>();
-            this.lhs = lhs;
-            this.rhs = rhs;
-            Messages = (messages ?? Enumerable.Empty<string>()).Concat(extra).Where(s => !string.IsNullOrEmpty(s)).ToList();
-        }
-
-        public IEnumerable<MemberInfo> Path { get; private set; }
-        public object lhs { get; private set; }
-        public object rhs { get; private set; }
-        public IEnumerable<string> Messages { get; private set; }
-    }
-
     public static class RTLModuleHelper
     {
         public static bool IsModuleTypeMember(Type member)
@@ -83,8 +59,6 @@ namespace Quokka.RTL
 
             return isArray || !isPublic && isPropertyOrField && !isToolkitType;
         }
-
-        internal static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
 
         public static bool IsSynthesizableObject(Type type)
         {
@@ -139,26 +113,53 @@ namespace Quokka.RTL
             return type.IsValueType || type == typeof(RTLBitArray);
         }
 
-        public static bool IsSynthesizableArrayType(Type type)
-        {
-            return type.IsArray && IsSynthesizableSignalType(type.GetElementType());
-        }
+        static TypeCache<bool> IsSynthesizableArrayTypeCache = new TypeCache<bool>(
+            (type) =>
+            {
+                return type.IsArray && IsSynthesizableSignalType(type.GetElementType());
+            });
+        public static bool IsSynthesizableArrayType(Type type) => IsSynthesizableArrayTypeCache[type];
 
-        public static List<MemberInfo> SignalProperties(Type type)
-        {
-            return RTLReflectionTools
-                .SynthesizableMembers(type)
-                .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
-                .ToList();
-        }
+        static TypeCache<List<MemberInfo>> signalPropertiesCache = new TypeCache<List<MemberInfo>>(
+            (type) =>
+            {
+                return RTLReflectionTools
+                    .SynthesizableMembers(type)
+                    .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
+                    .ToList();
+            });
 
-        public static List<MemberInfo> PipelineProperties(Type type)
-        {
-            return RTLReflectionTools
-                .SynthesizableMembers(type)
-                .Where(m => IsPipelineTypeMember(m.GetMemberType()) && IsField(m))
-                .ToList();
-        }
+        public static List<MemberInfo> SignalProperties(Type type) => signalPropertiesCache[type];
+
+        static TypeCache<List<MemberInfo>> pipelinePropertiesCache = new TypeCache<List<MemberInfo>>(
+            (type) =>
+            {
+                return RTLReflectionTools
+                    .SynthesizableMembers(type)
+                    .Where(m => IsPipelineTypeMember(m.GetMemberType()) && IsField(m))
+                    .ToList();
+            });
+
+        public static List<MemberInfo> RecursiveMembers(Type type) => RecursiveMembersCache[type];
+
+        static TypeCache<List<MemberInfo>> RecursiveMembersCache = new TypeCache<List<MemberInfo>>(
+            (type) =>
+            {
+                return RTLReflectionTools.RecursiveMembers(type).ToList();
+            });
+
+        public static List<MemberInfo> RecursiveWritableMembers(Type type) => RecursiveWritableMembersCache[type];
+
+        static TypeCache<List<MemberInfo>> RecursiveWritableMembersCache = new TypeCache<List<MemberInfo>>(
+            (type) =>
+            {
+                var member = RecursiveMembers(type);
+
+                return member.Where(m => m.HasSetter()).ToList();
+            });
+        
+
+        public static List<MemberInfo> PipelineProperties(Type type) => pipelinePropertiesCache[type];
 
         public static List<MemberInfo> OutputProperties(Type type)
         {
@@ -208,95 +209,6 @@ namespace Quokka.RTL
                 .ToList();
         }
 
-        static JsonSerializerSettings typeSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects };
-        public static T JSONCopy<T>(T source)
-        {
-            var str = JsonConvert.SerializeObject(source, typeSettings);
-            return JsonConvert.DeserializeObject<T>(str);
-        }
-
-        public static T DeepCopy<T>(T source)
-        {
-            return JSONCopy(source);
-        }
-
-        public static DeepCompareItem DeepCompare(object lhs, object rhs, List<MemberInfo> path = null)
-        {
-            path = path ?? new List<MemberInfo>();
-
-            if (lhs == null && rhs == null) return null;
-            if (lhs == null || rhs == null) return new DeepCompareItem(path, lhs, rhs);
-
-            var lhsType = lhs.GetType();
-            var rhsType = rhs.GetType();
-
-            if (lhsType != rhsType) 
-                return new DeepCompareItem(path, lhs, rhs, $"lhs type {lhsType} is not equal to rhs type {rhsType}");
-
-            foreach (var prop in SignalProperties(lhs.GetType()))
-            {
-                var propPath = path.ToList();
-                propPath.Add(prop);
-
-                var lhsValue = prop.GetValue(lhs);
-                var rhsValue = prop.GetValue(rhs);
-
-                if (lhsValue == null && rhsValue == null)
-                    continue;
-
-                if (IsSynthesizableArrayType(prop.GetMemberType()))
-                {
-                    if (lhsType.GetElementType() != rhsType.GetElementType())
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue, $"lhs array type {lhsType} is not equal to rhs array type {rhsType}");
-
-                    var lhsArray = lhsValue as Array;
-                    var rhsArray = rhsValue as Array;
-
-                    if (lhsArray == null && rhsArray == null)
-                        continue;
-
-                    if (lhsArray == null || rhsArray == null)
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
-
-                    if (lhsArray.Length != rhsArray.Length)
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue, $"Array length does not match");
-
-                    for (var idx = 0; idx < lhsArray.Length; idx++)
-                    {
-                        var lhsArrayItem = lhsArray.GetValue(idx);
-                        var rhsArrayItem = rhsArray.GetValue(idx);
-
-                        var arrayItemCompare = DeepCompare(lhsArrayItem, rhsArrayItem, propPath);
-                        if (arrayItemCompare != null)
-                            return new DeepCompareItem(propPath, lhsArrayItem, rhsArrayItem, arrayItemCompare.Messages, $"Element at index {idx} does not match");
-                    }
-                }
-                else if (lhsValue is RTLBitArray)
-                {
-                    if (!lhsValue.Equals(rhsValue))
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
-                }
-                else if (prop.GetMemberType().IsClass)
-                {
-                    var classCompare = DeepCompare(lhsValue, rhsValue, propPath);
-                    if (classCompare != null)
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue, classCompare.Messages);
-                }
-                else
-                {
-                    if (!lhsValue.Equals(rhsValue))
-                        return new DeepCompareItem(propPath, lhsValue, rhsValue);
-                }
-            }
-
-            return null;
-        }
-
-        public static bool DeepEquals(object lhs, object rhs)
-        {
-            return DeepCompare(lhs, rhs) == null;
-        }
-
         public static object Activate(Type type)
         {
             if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -327,6 +239,11 @@ namespace Quokka.RTL
         public static T Activate<T>()
         {
             var type = typeof(T);
+            return (T)Activate(type);
+        }
+
+        public static T Activate<T>(Type type)
+        {
             return (T)Activate(type);
         }
 

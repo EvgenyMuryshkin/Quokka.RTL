@@ -13,7 +13,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual((v1 ? 1 : 0).ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{(v1 ? 1 : 0):X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -23,7 +23,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -33,7 +33,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -43,7 +43,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -53,7 +53,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -63,7 +63,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -73,7 +73,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -83,7 +83,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 		[TestMethod]
@@ -93,7 +93,7 @@ namespace Quokka.RTL.RTLBitArrayTests
 			foreach (var v1 in op1)
 			{
 				var o1 = new RTLBitArray(v1);
-				Assert.AreEqual(v1.ToString("X"), o1.ToString(), $"{v1}");
+				Assert.AreEqual($"0x{v1:X}", o1.ToString(), $"{v1}");
 			}
 		}
 	}

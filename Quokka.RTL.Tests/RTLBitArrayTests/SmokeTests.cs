@@ -350,7 +350,7 @@ namespace Quokka.RTL.RTLBitArrayTests
             foreach (var idx in Enumerable.Range(0, iterations))
             {
                 c.SmallValue = idx;
-                var copy = RTLModuleHelper.JSONCopy(c);
+                var copy = DeepJSONCopy.DeepCopy(c);
                 Assert.AreEqual(idx, (int)copy.SmallValue);
             }
 

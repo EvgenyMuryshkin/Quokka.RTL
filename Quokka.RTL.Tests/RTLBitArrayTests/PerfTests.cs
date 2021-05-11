@@ -8,19 +8,76 @@ using System.Linq;
 
 namespace Quokka.RTL.RTLBitArrayTests
 {
+    class DeepComparePerfClass
+    {
+        public bool Enabled;
+        public RTLBitArray Bits;
+    }
+
+    class DeepComparePerfClassWithInit
+    {
+        public bool Enabled;
+        public RTLBitArray Bits = new RTLBitArray(int.MaxValue);
+    }
+
+    class DeepComparePerfClassWithCompare : IRTLComparable
+    {
+        public bool Enabled;
+        public RTLBitArray Bits = new RTLBitArray(int.MaxValue);
+
+        public bool IsEqual(object rhs)
+        {
+            if (rhs is DeepComparePerfClassWithCompare typed)
+            {
+                return Enabled == typed.Enabled && Bits == typed.Bits;
+            }
+
+            return false;
+        }
+    }
+
+    class DeepComparePerfClassWithClonable : IRTLClonable
+    {
+        public bool Enabled;
+        public RTLBitArray Bits;
+
+        public object Clone()
+        {
+            return new DeepComparePerfClassWithClonable()
+            {
+                Enabled = Enabled,
+                Bits = new RTLBitArray(Bits)
+            };
+        }
+
+        public bool IsEqual(object rhs)
+        {
+            if (rhs is DeepComparePerfClassWithCompare typed)
+            {
+                return Enabled == typed.Enabled && Bits == typed.Bits;
+            }
+
+            return false;
+        }
+    }
+
     [TestClass]
 	public class PerfTests
     {
-        static int Tier1Size = 1000000;
-
+        const int Tier1Size = 1000000;
+        const int Tier2Size = Tier1Size / 2;
+        const int Tier3Size = Tier1Size / 3;
+        const int Tier10Size = Tier1Size / 10;
+        const int Tier20Size = Tier1Size / 20;
         RTLBitArray[] TierValues(int size) => Enumerable.Range(0, size).Select(v => new RTLBitArray(int.MaxValue - size / 2 + v)).ToArray();
 
         RTLBitArray[] Tier1Values => TierValues(Tier1Size);
-        RTLBitArray[] Tier2Values => TierValues(Tier1Size / 2);
-        RTLBitArray[] Tier3Values => TierValues(Tier1Size / 3);
+        RTLBitArray[] Tier2Values => TierValues(Tier2Size);
+        RTLBitArray[] Tier3Values => TierValues(Tier3Size);
         RTLBitArray[] Tier4Values => TierValues(Tier1Size / 4);
         RTLBitArray[] Tier5Values => TierValues(Tier1Size / 5);
         RTLBitArray[] Tier6Values => TierValues(Tier1Size / 6);
+        RTLBitArray[] Tier10Values => TierValues(Tier10Size);
 
         void Measure(Action f, int max)
         {
@@ -30,6 +87,101 @@ namespace Quokka.RTL.RTLBitArrayTests
             var time = sw.ElapsedMilliseconds;
             Trace.WriteLine($"Completed in {time} ms");
             Assert.IsTrue(time < max, $"Measure failed: {time} < {max}");
+        }
+
+        [TestMethod]
+        public void DeepCompare()
+        {
+            var lhs = new DeepComparePerfClassWithInit() { Enabled = false };
+            var rhs = new DeepComparePerfClassWithInit() { Enabled = true };
+
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier1Size))
+                {
+                    DeepDiff.DeepEquals(lhs, rhs);
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void DeepCompareWithComparable()
+        {
+            var lhs = new DeepComparePerfClassWithCompare() { Enabled = false, Bits = new RTLBitArray(byte.MaxValue) };
+            var rhs = new DeepComparePerfClassWithCompare() { Enabled = true, Bits = new RTLBitArray(ushort.MaxValue) };
+
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier1Size))
+                {
+                    DeepDiff.DeepEquals(lhs, rhs);
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void DeepJSONCopyTest()
+        {
+            var source = new DeepComparePerfClassWithInit() { Enabled = true };
+
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier20Size))
+                {
+                    var r = DeepJSONCopy.DeepCopy(source);
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void DeepReflectionCopyTest()
+        {
+            var source = new DeepComparePerfClass() { Enabled = true, Bits = new RTLBitArray(int.MaxValue) };
+
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier3Size))
+                {
+                    var r = DeepReflectionCopy.DeepCopy(source);
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void DeepReflectionCopyTestWithClonable()
+        {
+            var source = new DeepComparePerfClassWithClonable() { Enabled = true, Bits = new RTLBitArray(uint.MaxValue) };
+
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier1Size))
+                {
+                    var r = DeepReflectionCopy.DeepCopy(source);
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void Tier1Enumeration()
+        {
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier2Size))
+                {
+                }
+            }, 1000);
+        }
+
+        [TestMethod]
+        public void Activate()
+        {
+            Measure(() =>
+            {
+                foreach (var idx in Enumerable.Range(0, Tier3Size))
+                {
+                    var r = RTLModuleHelper.Activate<DeepComparePerfClassWithInit>();
+                }
+            }, 1000);
         }
 
         [TestMethod]

@@ -2,6 +2,16 @@
 {
     public static class MemberExtensions
     {
+        public static bool HasSetter(this MemberInfo member)
+        {
+            switch (member)
+            {
+                case PropertyInfo p: return p.GetSetMethod() != null;
+                case FieldInfo f: return true;
+                default: throw new InvalidOperationException();
+            }
+        }
+
         public static object GetValue(this MemberInfo member, object target)
         {
             switch (member)

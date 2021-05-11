@@ -116,7 +116,7 @@ namespace Quokka.RTL
             Scheduled?.Invoke(this, new EventArgs());
         }
 
-        public virtual bool DeepEquals(object lhs, object rhs) => RTLModuleHelper.DeepEquals(lhs, rhs);
+        public virtual bool DeepEquals(object lhs, object rhs) => DeepDiff.DeepEquals(lhs, rhs);
         protected virtual bool ShouldStage(TInput nextInputs)
         {
             if (InputProps == null)

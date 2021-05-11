@@ -97,7 +97,7 @@ namespace Quokka.RTL
 
         protected TState CopyState()
         {
-            return RTLModuleHelper.DeepCopy(State);
+            return DeepJSONCopy.DeepCopy(State);
         }
 
         public override RTLModuleStageResult DeltaCycle(int deltaCycle)

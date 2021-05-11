@@ -119,6 +119,8 @@ namespace Quokka.RTL.Tools
             return signedTypes.Contains(type);
         }
 
+        public static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
+
         public static bool IsNative(Type type)
         {
             return type.IsEnum || signedTypes.Contains(type) || unsignedTypes.Contains(type) || type == typeof(float) || type == typeof(RTLBitArray);
@@ -136,10 +138,8 @@ namespace Quokka.RTL.Tools
                 .ToList();
 
             var invokes = delegates.Select(d => d.GetMethod("Invoke")).Where(m => m.ReturnType == type).ToList();
-            if (!invokes.Any())
-                return false;
-            
-            return true;
+
+            return invokes.Any();
         }
     }
 }
