@@ -141,5 +141,32 @@ namespace Quokka.RTL.Tools
 
             return invokes.Any();
         }
+
+        public static bool HasInjectableCtorArguments(Type rtlModuleType)
+        {
+            // TODO: empty ctor only at this stage
+            return rtlModuleType.GetConstructors().Any(c => c.GetParameters().Count() == 0);
+        }
+
+        public static bool HasNonInjectableCtorArguments(Type rtlModuleType)
+        {
+            // types with multiple constructors is not a top-level
+            if (rtlModuleType.GetConstructors().Count() != 1)
+                return true;
+
+            var ctor = rtlModuleType.GetConstructors().Single();
+            return ctor.GetParameters().Any(p => IsNative(p.ParameterType) || IsStruct(p.ParameterType));
+        }
+
+        public static bool CanCreateWithDI(Type rtlModuleType)
+        {
+            if (HasInjectableCtorArguments(rtlModuleType))
+                return true;
+
+            if (IsFactoryCreatedModule(rtlModuleType) || HasNonInjectableCtorArguments(rtlModuleType))
+                return false;
+
+            return true;
+        }
     }
 }

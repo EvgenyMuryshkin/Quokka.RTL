@@ -23,13 +23,11 @@ namespace Quokka.RTL
         void StageSchedule(Func<TInput> inputsFactory);
     }
 
-    public interface IRTLPipelineStage<TSource, TOutput> : IRTLPipelineStage, IRTLPipeline<TSource>
+    public interface IRTLPipelineStage<TSource, TOutput> : IRTLPipelineStage, IRTLPipeline<TSource>, IRTLPipelineConfig<TSource, TOutput>
     {
         TOutput State { get; }
         TOutput NextState { get; }
-        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap> map);
-        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, TMap> map);
-        IRTLPipelineStage<TSource, TMap> Stage<TMap>(Func<TOutput, TMap, IRTLPipelineStageManagedSignals, TMap> map);
+        IRTLPipelineStage<TSource, TOutput> Generate(int range, Func<int, TOutput, TOutput> map);
     }
 
     public interface IRTLPipelineStage<TSource, TInput, TOutput> :

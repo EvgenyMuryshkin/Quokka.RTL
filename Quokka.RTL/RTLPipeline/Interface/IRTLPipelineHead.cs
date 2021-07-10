@@ -8,11 +8,9 @@ namespace Quokka.RTL
         IRTLPipelineControlSignals PipelineControl { get; }
     }
 
-    public interface IRTLPipelineHead<TSource> : IRTLPipelineHead
+    public interface IRTLPipelineHead<TSource> : IRTLPipelineHead, IRTLPipelineConfig<TSource, TSource>
     {
         void Schedule(Func<TSource> inputsFactory);
-        IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult> map);
-        IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult, TResult> map);
-        IRTLPipelineStage<TSource, TResult> Stage<TResult>(Func<TSource, TResult, IRTLPipelineStageManagedSignals, TResult> map);
+        IRTLPipelineStage<TSource, TSource> Generate(int range, Func<int, TSource, TSource> map);
     }
 }
