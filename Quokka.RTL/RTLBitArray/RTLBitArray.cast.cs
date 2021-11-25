@@ -126,5 +126,23 @@ namespace Quokka.RTL
                 64,
                 true);
         }
+
+        public static implicit operator byte[](RTLBitArray value)
+        {
+            var aligned = value.Size >> 3;
+            if ((value.Size & 0x7) != 0)
+                aligned++;
+
+            IEnumerable<bool> bits = value.Resized(aligned << 3).LSB;
+
+            var result = new byte[aligned];
+            for (int i = 0; i < aligned; i++)
+            {
+                result[i] = new RTLBitArray(bits.Take(8).Reverse());
+                bits = bits.Skip(8);
+            }
+
+            return result;
+        }
     }
 }

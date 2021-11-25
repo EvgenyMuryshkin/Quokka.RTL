@@ -33,9 +33,35 @@ namespace Quokka.RTL.Tests
         public int Getter => Field + Property;
     }
 
+
+    class ArrayOfArraysClass
+    {
+        public ArrayOfArraysClass()
+        {
+            Data = Enumerable.Range(0, 255).Select(i => new byte[] { (byte)i, 1, 2, 3 }).ToArray();
+        }
+
+        public byte[][] Data;
+    }
+
     [TestClass]
     public class DeepReflectionCopyTests
     {
+        [TestMethod]
+        public void ArrayOfArrays()
+        {
+            var source = new ArrayOfArraysClass();
+            var jsonCopy = DeepJSONCopy.DeepCopy(source);
+            var reflCopy = DeepReflectionCopy.DeepCopy(source);
+
+            var sourcePayload = DeepJSONCopy.Serialize(source);
+            var jsonCopyPayload = DeepJSONCopy.Serialize(jsonCopy);
+            var reflCopyPayload = DeepJSONCopy.Serialize(reflCopy);
+
+            Assert.AreEqual(sourcePayload, jsonCopyPayload, "JSON payload does not match for json copy");
+            Assert.AreEqual(sourcePayload, reflCopyPayload, "JSON payload does not match for reflection copy");
+        }
+
         [TestMethod]
         public void Test()
         {

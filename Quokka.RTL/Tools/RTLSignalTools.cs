@@ -44,9 +44,18 @@ namespace Quokka.RTL.Tools
             }
         }
 
-        public static RTLSignalInfo SizeOf(Type sourceType)
+        public static RTLSignalInfo SizeOf(MemberInfo member)
+        {
+            var type = member.GetMemberType();
+            return SizeOf(type, () => new Exception($"Cannot calculate sizeof {type.Name}: {member.Name}"));
+        }
+
+        public static RTLSignalInfo SizeOf(Type sourceType, Func<Exception> exceptionFormatter = null)
         {
             var type = sourceType.IsByRef ? sourceType.GetElementType() : sourceType;
+
+            if (exceptionFormatter == null)
+                exceptionFormatter = () => new Exception($"Cannot calculate sizeof {type.Name}");
 
             if (type.IsConstructedGenericType)
             {
@@ -94,7 +103,7 @@ namespace Quokka.RTL.Tools
                 return new RTLSignalInfo()
                 {
                     Type = type,
-                    Size = RTLReflectionTools.SerializableMembers(type).Sum(m => SizeOf(m.GetMemberType()).Size),
+                    Size = RTLReflectionTools.SerializableMembers(type).Sum(m => SizeOf(m).Size),
                     SignalType = RTLSignalType.Unsigned
                 };
             }
@@ -106,7 +115,7 @@ namespace Quokka.RTL.Tools
             if (RTLReflectionTools.TryGetNullableType(type, out var actualType))
                 return SizeOf(actualType);
 
-            throw new Exception($"Cannot calculate sizeof {type.Name}");
+            throw exceptionFormatter();
         }
     }
 }

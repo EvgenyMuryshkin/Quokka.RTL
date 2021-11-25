@@ -11,4 +11,9 @@
             Array = new RTLBitArray().Resized(size);
         }
     }
+
+    class ArrayOutputClass
+    {
+        public byte[] OutArray = new byte[2];
+    }
 }

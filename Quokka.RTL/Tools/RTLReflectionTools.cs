@@ -32,6 +32,8 @@ namespace Quokka.RTL.Tools
                 return Enumerable.Empty<MemberInfo>();
 
             return RecursiveMembers(type)
+                .Where(p => p.GetCustomAttribute<NonSerializedAttribute>() == null)
+                .Where(p => p.GetMemberType().GetCustomAttribute<NonSerializedAttribute>() == null)
                 .Where(p => !p.IsAbstract());
         }
 
