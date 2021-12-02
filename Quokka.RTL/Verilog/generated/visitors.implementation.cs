@@ -53,9 +53,9 @@ public abstract class vlgCustomDeclarationVisitorGeneratedImplementation : vlgVi
 {
 	public vlgCustomDeclarationVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
-public abstract class vlgCustomModulePortVisitorGeneratedImplementation : vlgVisitorImplementation<vlgCustomModulePort>, vlgCustomModulePortVisitorInterface
+public abstract class vlgCustomModulePortDeclarationVisitorGeneratedImplementation : vlgVisitorImplementation<vlgCustomModulePortDeclaration>, vlgCustomModulePortDeclarationVisitorInterface
 {
-	public vlgCustomModulePortVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+	public vlgCustomModulePortDeclarationVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public abstract class vlgFileVisitorGeneratedImplementation : vlgVisitorImplementation<vlgFile>, vlgFileVisitorInterface
 {
@@ -65,9 +65,17 @@ public abstract class vlgForLoopVisitorGeneratedImplementation : vlgVisitorImple
 {
 	public vlgForLoopVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vlgGenerateVisitorGeneratedImplementation : vlgVisitorImplementation<vlgGenerate>, vlgGenerateVisitorInterface
+{
+	public vlgGenerateVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgGenericBlockVisitorGeneratedImplementation : vlgVisitorImplementation<vlgGenericBlock>, vlgGenericBlockVisitorInterface
 {
 	public vlgGenericBlockVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vlgGenvarVisitorGeneratedImplementation : vlgVisitorImplementation<vlgGenvar>, vlgGenvarVisitorInterface
+{
+	public vlgGenvarVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public abstract class vlgIdentifierVisitorGeneratedImplementation : vlgVisitorImplementation<vlgIdentifier>, vlgIdentifierVisitorInterface
 {
@@ -161,9 +169,17 @@ public abstract class vlgPlaceholderModulePortVisitorGeneratedImplementation : v
 {
 	public vlgPlaceholderModulePortVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vlgProceduceCallVisitorGeneratedImplementation : vlgVisitorImplementation<vlgProceduceCall>, vlgProceduceCallVisitorInterface
+{
+	public vlgProceduceCallVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgRangeVisitorGeneratedImplementation : vlgVisitorImplementation<vlgRange>, vlgRangeVisitorInterface
 {
 	public vlgRangeVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vlgShiftExpressionVisitorGeneratedImplementation : vlgVisitorImplementation<vlgShiftExpression>, vlgShiftExpressionVisitorInterface
+{
+	public vlgShiftExpressionVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public abstract class vlgSimpleForLoopVisitorGeneratedImplementation : vlgVisitorImplementation<vlgSimpleForLoop>, vlgSimpleForLoopVisitorInterface
 {
@@ -246,9 +262,9 @@ public partial class vlgCustomDeclarationVisitorImplementation : vlgCustomDeclar
 {
 	public vlgCustomDeclarationVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
-public partial class vlgCustomModulePortVisitorImplementation : vlgCustomModulePortVisitorGeneratedImplementation
+public partial class vlgCustomModulePortDeclarationVisitorImplementation : vlgCustomModulePortDeclarationVisitorGeneratedImplementation
 {
-	public vlgCustomModulePortVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+	public vlgCustomModulePortDeclarationVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public partial class vlgFileVisitorImplementation : vlgFileVisitorGeneratedImplementation
 {
@@ -258,9 +274,17 @@ public partial class vlgForLoopVisitorImplementation : vlgForLoopVisitorGenerate
 {
 	public vlgForLoopVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vlgGenerateVisitorImplementation : vlgGenerateVisitorGeneratedImplementation
+{
+	public vlgGenerateVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgGenericBlockVisitorImplementation : vlgGenericBlockVisitorGeneratedImplementation
 {
 	public vlgGenericBlockVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vlgGenvarVisitorImplementation : vlgGenvarVisitorGeneratedImplementation
+{
+	public vlgGenvarVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public partial class vlgIdentifierVisitorImplementation : vlgIdentifierVisitorGeneratedImplementation
 {
@@ -354,9 +378,17 @@ public partial class vlgPlaceholderModulePortVisitorImplementation : vlgPlacehol
 {
 	public vlgPlaceholderModulePortVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vlgProceduceCallVisitorImplementation : vlgProceduceCallVisitorGeneratedImplementation
+{
+	public vlgProceduceCallVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgRangeVisitorImplementation : vlgRangeVisitorGeneratedImplementation
 {
 	public vlgRangeVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vlgShiftExpressionVisitorImplementation : vlgShiftExpressionVisitorGeneratedImplementation
+{
+	public vlgShiftExpressionVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public partial class vlgSimpleForLoopVisitorImplementation : vlgSimpleForLoopVisitorGeneratedImplementation
 {
@@ -409,10 +441,12 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgCompareExpression o: return vlgCompareExpressionVisitor(o);
 			case vlgConditionalStatement o: return vlgConditionalStatementVisitor(o);
 			case vlgCustomDeclaration o: return vlgCustomDeclarationVisitor(o);
-			case vlgCustomModulePort o: return vlgCustomModulePortVisitor(o);
+			case vlgCustomModulePortDeclaration o: return vlgCustomModulePortDeclarationVisitor(o);
 			case vlgFile o: return vlgFileVisitor(o);
 			case vlgForLoop o: return vlgForLoopVisitor(o);
+			case vlgGenerate o: return vlgGenerateVisitor(o);
 			case vlgGenericBlock o: return vlgGenericBlockVisitor(o);
+			case vlgGenvar o: return vlgGenvarVisitor(o);
 			case vlgIdentifier o: return vlgIdentifierVisitor(o);
 			case vlgIdentifierExpression o: return vlgIdentifierExpressionVisitor(o);
 			case vlgIf o: return vlgIfVisitor(o);
@@ -436,7 +470,9 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgModuleParameterDeclaration o: return vlgModuleParameterDeclarationVisitor(o);
 			case vlgModuleParameters o: return vlgModuleParametersVisitor(o);
 			case vlgPlaceholderModulePort o: return vlgPlaceholderModulePortVisitor(o);
+			case vlgProceduceCall o: return vlgProceduceCallVisitor(o);
 			case vlgRange o: return vlgRangeVisitor(o);
+			case vlgShiftExpression o: return vlgShiftExpressionVisitor(o);
 			case vlgSimpleForLoop o: return vlgSimpleForLoopVisitor(o);
 			case vlgStandardModulePortDeclaration o: return vlgStandardModulePortDeclarationVisitor(o);
 			case vlgStandardModulePortImplementation o: return vlgStandardModulePortImplementationVisitor(o);
@@ -500,9 +536,9 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgCustomDeclarationVisitor(_deps, obj);
 	}
-	private vlgCustomModulePortVisitorInterface vlgCustomModulePortVisitor(vlgCustomModulePort obj)
+	private vlgCustomModulePortDeclarationVisitorInterface vlgCustomModulePortDeclarationVisitor(vlgCustomModulePortDeclaration obj)
 	{
-		return vlgCustomModulePortVisitor(_deps, obj);
+		return vlgCustomModulePortDeclarationVisitor(_deps, obj);
 	}
 	private vlgFileVisitorInterface vlgFileVisitor(vlgFile obj)
 	{
@@ -512,9 +548,17 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgForLoopVisitor(_deps, obj);
 	}
+	private vlgGenerateVisitorInterface vlgGenerateVisitor(vlgGenerate obj)
+	{
+		return vlgGenerateVisitor(_deps, obj);
+	}
 	private vlgGenericBlockVisitorInterface vlgGenericBlockVisitor(vlgGenericBlock obj)
 	{
 		return vlgGenericBlockVisitor(_deps, obj);
+	}
+	private vlgGenvarVisitorInterface vlgGenvarVisitor(vlgGenvar obj)
+	{
+		return vlgGenvarVisitor(_deps, obj);
 	}
 	private vlgIdentifierVisitorInterface vlgIdentifierVisitor(vlgIdentifier obj)
 	{
@@ -608,9 +652,17 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgPlaceholderModulePortVisitor(_deps, obj);
 	}
+	private vlgProceduceCallVisitorInterface vlgProceduceCallVisitor(vlgProceduceCall obj)
+	{
+		return vlgProceduceCallVisitor(_deps, obj);
+	}
 	private vlgRangeVisitorInterface vlgRangeVisitor(vlgRange obj)
 	{
 		return vlgRangeVisitor(_deps, obj);
+	}
+	private vlgShiftExpressionVisitorInterface vlgShiftExpressionVisitor(vlgShiftExpression obj)
+	{
+		return vlgShiftExpressionVisitor(_deps, obj);
 	}
 	private vlgSimpleForLoopVisitorInterface vlgSimpleForLoopVisitor(vlgSimpleForLoop obj)
 	{
@@ -668,14 +720,18 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgConditionalStatementVisitorImplementation(deps);
 	protected virtual vlgCustomDeclarationVisitorInterface vlgCustomDeclarationVisitor(vlgVisitorImplementationDeps deps, vlgCustomDeclaration obj)
 		=> new vlgCustomDeclarationVisitorImplementation(deps);
-	protected virtual vlgCustomModulePortVisitorInterface vlgCustomModulePortVisitor(vlgVisitorImplementationDeps deps, vlgCustomModulePort obj)
-		=> new vlgCustomModulePortVisitorImplementation(deps);
+	protected virtual vlgCustomModulePortDeclarationVisitorInterface vlgCustomModulePortDeclarationVisitor(vlgVisitorImplementationDeps deps, vlgCustomModulePortDeclaration obj)
+		=> new vlgCustomModulePortDeclarationVisitorImplementation(deps);
 	protected virtual vlgFileVisitorInterface vlgFileVisitor(vlgVisitorImplementationDeps deps, vlgFile obj)
 		=> new vlgFileVisitorImplementation(deps);
 	protected virtual vlgForLoopVisitorInterface vlgForLoopVisitor(vlgVisitorImplementationDeps deps, vlgForLoop obj)
 		=> new vlgForLoopVisitorImplementation(deps);
+	protected virtual vlgGenerateVisitorInterface vlgGenerateVisitor(vlgVisitorImplementationDeps deps, vlgGenerate obj)
+		=> new vlgGenerateVisitorImplementation(deps);
 	protected virtual vlgGenericBlockVisitorInterface vlgGenericBlockVisitor(vlgVisitorImplementationDeps deps, vlgGenericBlock obj)
 		=> new vlgGenericBlockVisitorImplementation(deps);
+	protected virtual vlgGenvarVisitorInterface vlgGenvarVisitor(vlgVisitorImplementationDeps deps, vlgGenvar obj)
+		=> new vlgGenvarVisitorImplementation(deps);
 	protected virtual vlgIdentifierVisitorInterface vlgIdentifierVisitor(vlgVisitorImplementationDeps deps, vlgIdentifier obj)
 		=> new vlgIdentifierVisitorImplementation(deps);
 	protected virtual vlgIdentifierExpressionVisitorInterface vlgIdentifierExpressionVisitor(vlgVisitorImplementationDeps deps, vlgIdentifierExpression obj)
@@ -722,8 +778,12 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgModuleParametersVisitorImplementation(deps);
 	protected virtual vlgPlaceholderModulePortVisitorInterface vlgPlaceholderModulePortVisitor(vlgVisitorImplementationDeps deps, vlgPlaceholderModulePort obj)
 		=> new vlgPlaceholderModulePortVisitorImplementation(deps);
+	protected virtual vlgProceduceCallVisitorInterface vlgProceduceCallVisitor(vlgVisitorImplementationDeps deps, vlgProceduceCall obj)
+		=> new vlgProceduceCallVisitorImplementation(deps);
 	protected virtual vlgRangeVisitorInterface vlgRangeVisitor(vlgVisitorImplementationDeps deps, vlgRange obj)
 		=> new vlgRangeVisitorImplementation(deps);
+	protected virtual vlgShiftExpressionVisitorInterface vlgShiftExpressionVisitor(vlgVisitorImplementationDeps deps, vlgShiftExpression obj)
+		=> new vlgShiftExpressionVisitorImplementation(deps);
 	protected virtual vlgSimpleForLoopVisitorInterface vlgSimpleForLoopVisitor(vlgVisitorImplementationDeps deps, vlgSimpleForLoop obj)
 		=> new vlgSimpleForLoopVisitorImplementation(deps);
 	protected virtual vlgStandardModulePortDeclarationVisitorInterface vlgStandardModulePortDeclarationVisitor(vlgVisitorImplementationDeps deps, vlgStandardModulePortDeclaration obj)

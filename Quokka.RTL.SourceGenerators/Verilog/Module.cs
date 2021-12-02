@@ -44,6 +44,7 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgModuleInstance : vlgAbstractObject
         , vlgIModuleImplementationChild
+        , vlgIBlockChild
     {
         public string Type { get; set; }
         public string Name { get; set; }
@@ -55,11 +56,11 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     }
 
     public abstract class vlgModulePort : vlgAbstractObject
-        , vlgIModuleInterfaceChild
     {
     }
 
     public class vlgPlaceholderModulePort : vlgModulePort
+        , vlgIModuleInterfaceChild
     {
         public string Name { get; set; }
     }
@@ -70,7 +71,8 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         public vlgNetType NetType { get; set; }
     }
 
-    public class vlgCustomModulePort : vlgDeclarationModulePort
+    public class vlgCustomModulePortDeclaration : vlgDeclarationModulePort
+         , vlgIModuleInterfaceChild
     {
         public string DataType { get; set; }
         public string Name { get; set; }
@@ -89,7 +91,7 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     }
 
     public class vlgStandardModulePortImplementation : vlgStandardModulePort
-    , vlgIModuleImplementationChild
+        , vlgIModuleImplementationChild
     {
     }
 

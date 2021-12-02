@@ -69,4 +69,11 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         Pos,
         Neg
     }
+
+    public enum vlgShiftType
+    {
+        RightLogic,
+        RightArith,
+        Left
+    }
 }

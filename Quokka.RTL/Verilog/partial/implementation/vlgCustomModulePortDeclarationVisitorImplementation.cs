@@ -2,9 +2,9 @@
 
 namespace Quokka.RTL.Verilog.Implementation
 {
-    public partial class vlgCustomModulePortVisitorImplementation
+    public partial class vlgCustomModulePortDeclarationVisitorImplementation
 	{
-		public override void OnVisit(vlgCustomModulePort obj)
+		public override void OnVisit(vlgCustomModulePortDeclaration obj)
 		{
             var parts = new string[]
             {

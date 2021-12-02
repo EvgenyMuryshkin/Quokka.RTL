@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Quokka.RTL.Verilog.Implementation
+﻿namespace Quokka.RTL.Verilog.Implementation
 {
     public partial class vlgModuleInstanceVisitorImplementation
 	{

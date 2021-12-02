@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vlgModuleInstanceSimplePortMapping obj)
 		{
-			_builder.Append($"{Raw(obj.External)}");
+			_builder.AppendIndented($"{Raw(obj.External)}");
 		}
 	}
 }

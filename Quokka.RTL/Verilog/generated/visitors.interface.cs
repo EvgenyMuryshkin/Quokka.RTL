@@ -16,10 +16,12 @@ public interface vlgCommentVisitorInterface : vlgVisitorInterface<vlgComment> { 
 public interface vlgCompareExpressionVisitorInterface : vlgVisitorInterface<vlgCompareExpression> { }
 public interface vlgConditionalStatementVisitorInterface : vlgVisitorInterface<vlgConditionalStatement> { }
 public interface vlgCustomDeclarationVisitorInterface : vlgVisitorInterface<vlgCustomDeclaration> { }
-public interface vlgCustomModulePortVisitorInterface : vlgVisitorInterface<vlgCustomModulePort> { }
+public interface vlgCustomModulePortDeclarationVisitorInterface : vlgVisitorInterface<vlgCustomModulePortDeclaration> { }
 public interface vlgFileVisitorInterface : vlgVisitorInterface<vlgFile> { }
 public interface vlgForLoopVisitorInterface : vlgVisitorInterface<vlgForLoop> { }
+public interface vlgGenerateVisitorInterface : vlgVisitorInterface<vlgGenerate> { }
 public interface vlgGenericBlockVisitorInterface : vlgVisitorInterface<vlgGenericBlock> { }
+public interface vlgGenvarVisitorInterface : vlgVisitorInterface<vlgGenvar> { }
 public interface vlgIdentifierVisitorInterface : vlgVisitorInterface<vlgIdentifier> { }
 public interface vlgIdentifierExpressionVisitorInterface : vlgVisitorInterface<vlgIdentifierExpression> { }
 public interface vlgIfVisitorInterface : vlgVisitorInterface<vlgIf> { }
@@ -43,7 +45,9 @@ public interface vlgModuleInterfaceVisitorInterface : vlgVisitorInterface<vlgMod
 public interface vlgModuleParameterDeclarationVisitorInterface : vlgVisitorInterface<vlgModuleParameterDeclaration> { }
 public interface vlgModuleParametersVisitorInterface : vlgVisitorInterface<vlgModuleParameters> { }
 public interface vlgPlaceholderModulePortVisitorInterface : vlgVisitorInterface<vlgPlaceholderModulePort> { }
+public interface vlgProceduceCallVisitorInterface : vlgVisitorInterface<vlgProceduceCall> { }
 public interface vlgRangeVisitorInterface : vlgVisitorInterface<vlgRange> { }
+public interface vlgShiftExpressionVisitorInterface : vlgVisitorInterface<vlgShiftExpression> { }
 public interface vlgSimpleForLoopVisitorInterface : vlgVisitorInterface<vlgSimpleForLoop> { }
 public interface vlgStandardModulePortDeclarationVisitorInterface : vlgVisitorInterface<vlgStandardModulePortDeclaration> { }
 public interface vlgStandardModulePortImplementationVisitorInterface : vlgVisitorInterface<vlgStandardModulePortImplementation> { }

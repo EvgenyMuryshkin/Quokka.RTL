@@ -307,6 +307,9 @@ namespace Quokka.RTL.SourceGenerators
 
                 builder.AppendLine($"\tpublic {obj.Name}() {{ }}");
 
+                if (obj.Name == "vlgGenerate")
+                    Debugger.Break();
+
                 var props = ctx.AllProperties(obj);
 
                 var singleModelObjProp = ctx.SingleModelProperty(obj);
@@ -316,17 +319,20 @@ namespace Quokka.RTL.SourceGenerators
                     var singleCtorParamsNames = ctx.CtorParamNames(singleModelObjProp.PropertyType);
                     var singleCtorParamsTypes = ctx.CtorParameters(singleModelObjProp.PropertyType);
 
-                    builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.ToCSV()})");
-                    builder.AppendLine($"\t{{");
-                    builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.ToCSV()});");
-                    builder.AppendLine($"\t}}");
-
-                    if (singleCtorParamsTypes.Count > 1 && singleCtorParamsTypes.Last().PropertyType.IsList())
+                    if (singleCtorParamsTypes.Any())
                     {
-                        builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.Take(singleCtorParamsTypes.Count - 1).ToCSV()})");
+                        builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.ToCSV()})");
                         builder.AppendLine($"\t{{");
-                        builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.Take(singleCtorParamsTypes.Count - 1).ToCSV()});");
+                        builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.ToCSV()});");
                         builder.AppendLine($"\t}}");
+
+                        if (singleCtorParamsTypes.Count > 1 && singleCtorParamsTypes.Last().PropertyType.IsList())
+                        {
+                            builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.Take(singleCtorParamsTypes.Count - 1).ToCSV()})");
+                            builder.AppendLine($"\t{{");
+                            builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.Take(singleCtorParamsTypes.Count - 1).ToCSV()});");
+                            builder.AppendLine($"\t}}");
+                        }
                     }
                 }
 

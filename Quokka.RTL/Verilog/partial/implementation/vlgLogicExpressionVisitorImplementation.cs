@@ -13,7 +13,7 @@ namespace Quokka.RTL.Verilog.Implementation
 				{ vlgLogicType.Xor, "^"},
 			};
 
-			_builder.Append($"(({Raw(obj.Lhs)}) {lookup[obj.Type]} ({Raw(obj.Rhs)}))");
+			_builder.Append($"({Brackets(obj.Lhs)} {lookup[obj.Type]} {Brackets(obj.Rhs)})");
 		}
 	}
 }

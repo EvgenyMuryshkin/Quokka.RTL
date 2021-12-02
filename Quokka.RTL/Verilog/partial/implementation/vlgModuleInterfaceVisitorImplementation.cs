@@ -21,7 +21,7 @@ namespace Quokka.RTL.Verilog.Implementation
                         }
                         else
                         {
-                            _builder.AppendLine(",");
+                            _builder.AppendUnindentedLine(",");
                         }
                     }
                 });

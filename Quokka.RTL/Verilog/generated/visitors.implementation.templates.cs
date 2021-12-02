@@ -77,9 +77,9 @@ public partial class vlgCustomDeclarationVisitorImplementation
 	{
 	}
 }
-public partial class vlgCustomModulePortVisitorImplementation
+public partial class vlgCustomModulePortDeclarationVisitorImplementation
 {
-	public override void OnVisit(vlgCustomModulePort obj)
+	public override void OnVisit(vlgCustomModulePortDeclaration obj)
 	{
 	}
 }
@@ -95,9 +95,21 @@ public partial class vlgForLoopVisitorImplementation
 	{
 	}
 }
+public partial class vlgGenerateVisitorImplementation
+{
+	public override void OnVisit(vlgGenerate obj)
+	{
+	}
+}
 public partial class vlgGenericBlockVisitorImplementation
 {
 	public override void OnVisit(vlgGenericBlock obj)
+	{
+	}
+}
+public partial class vlgGenvarVisitorImplementation
+{
+	public override void OnVisit(vlgGenvar obj)
 	{
 	}
 }
@@ -239,9 +251,21 @@ public partial class vlgPlaceholderModulePortVisitorImplementation
 	{
 	}
 }
+public partial class vlgProceduceCallVisitorImplementation
+{
+	public override void OnVisit(vlgProceduceCall obj)
+	{
+	}
+}
 public partial class vlgRangeVisitorImplementation
 {
 	public override void OnVisit(vlgRange obj)
+	{
+	}
+}
+public partial class vlgShiftExpressionVisitorImplementation
+{
+	public override void OnVisit(vlgShiftExpression obj)
 	{
 	}
 }

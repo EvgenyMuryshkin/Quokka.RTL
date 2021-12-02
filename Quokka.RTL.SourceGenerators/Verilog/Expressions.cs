@@ -42,6 +42,13 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         public vlgExpression Rhs { get; set; }
     }
 
+    public class vlgShiftExpression : vlgExpression
+    {
+        public vlgExpression Lhs { get; set; }
+        public vlgShiftType Type { get; set; }
+        public vlgExpression Rhs { get; set; }
+    }
+
     public class vlgCompareExpression : vlgExpression
     {
         public vlgExpression Lhs { get; set; }

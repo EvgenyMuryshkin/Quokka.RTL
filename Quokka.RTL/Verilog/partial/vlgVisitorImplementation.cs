@@ -47,7 +47,17 @@ namespace Quokka.RTL.Verilog
             visitor.Visit(obj, builder);
 
             return builder.ToString();
+        }
 
+        protected string Brackets(object obj)
+        {
+            switch (obj)
+            {
+                case vlgIdentifierExpression e:
+                    return Raw(obj);
+                default:
+                    return $"({Raw(obj)})";
+            }
         }
     }
 }

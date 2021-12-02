@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vlgModuleInstanceParameter obj)
 		{
-			_builder.Append($".{obj.Name} ({obj.Value})");
+			_builder.AppendIndented($".{obj.Name} ({obj.Value})");
 		}
 	}
 }

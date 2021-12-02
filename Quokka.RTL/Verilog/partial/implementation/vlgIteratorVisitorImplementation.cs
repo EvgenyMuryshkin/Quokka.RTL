@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vlgIterator obj)
 		{
-			_builder.AppendLine($"integer {obj.Name}");
+			_builder.AppendLine($"integer {obj.Name};");
 		}
 	}
 }

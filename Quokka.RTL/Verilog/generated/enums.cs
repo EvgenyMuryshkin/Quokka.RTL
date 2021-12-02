@@ -51,6 +51,12 @@ public enum vlgPortDirection
 	Output = 1,
 	Bidir = 2,
 }
+public enum vlgShiftType
+{
+	RightLogic = 0,
+	RightArith = 1,
+	Left = 2,
+}
 public enum vlgSignType
 {
 	Unsigned = 0,

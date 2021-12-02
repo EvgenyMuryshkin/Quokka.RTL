@@ -97,6 +97,9 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         , IVisitorInterface
     {
         public List<vlgILoopChild> Children { get; set; }
+
+        [NoCtorInit]
+        public string Name { get; set; }
     }
 
     public class vlgSimpleForLoop : vlgAbstractForLoop
@@ -152,6 +155,7 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgCombBlock : vlgBlock
         , IVisitorInterface
+        , vlgIBlockChild
     {
         public List<vlgIdentifier> SensitivityList { get; set; }
     }
@@ -166,8 +170,32 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgSyncBlock : vlgBlock
         , IVisitorInterface
+        , vlgIBlockChild
     {
         public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; }
+    }
+
+    public class vlgProceduceCall : vlgAbstractObject
+        , vlgIModuleImplementationChild
+        , vlgIBlockChild
+    {
+        public string Proc { get; set; }
+        public string Name { get; set; }
+        public List<vlgExpression> Parameters { get; set; }
+    }
+
+    public class vlgGenvar : vlgAbstractObject
+        , vlgIModuleImplementationChild
+        , vlgIBlockChild
+    {
+        public string Name { get; set; }
+    }
+
+    public class vlgGenerate : vlgAbstractObject
+        , vlgIModuleImplementationChild
+        , vlgIBlockChild
+    {
+        public vlgGenericBlock Block { get; set; }
     }
 
     public class vlgFile : vlgAbstractObject

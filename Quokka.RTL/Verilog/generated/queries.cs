@@ -51,6 +51,17 @@ public partial class vlgCaseDefault
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgCombBlock
+	public vlgCaseDefault WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgCaseDefault WithCombBlock(vlgCombBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	//vlgComment
 	public vlgCaseDefault WithComment(params String[] Lines)
 	{
@@ -73,12 +84,56 @@ public partial class vlgCaseDefault
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgCaseDefault WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgCaseDefault WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCaseDefault WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgCaseDefault WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgCaseDefault WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCaseDefault WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgCaseDefault WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgCaseDefault WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgCaseDefault WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgCaseDefault WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -90,6 +145,17 @@ public partial class vlgCaseDefault
 		return this;
 	}
 	public vlgCaseDefault WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgCaseDefault WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgCaseDefault WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -107,15 +173,21 @@ public partial class vlgCaseDefault
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 }
 public abstract partial class vlgCaseItem
 {
@@ -144,6 +216,17 @@ public partial class vlgCaseStatement
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgCombBlock
+	public vlgCaseStatement WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgCaseStatement WithCombBlock(vlgCombBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	//vlgComment
 	public vlgCaseStatement WithComment(params String[] Lines)
 	{
@@ -166,12 +249,56 @@ public partial class vlgCaseStatement
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgCaseStatement WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgCaseStatement WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCaseStatement WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgCaseStatement WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgCaseStatement WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCaseStatement WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgCaseStatement WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgCaseStatement WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgCaseStatement WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgCaseStatement WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -183,6 +310,17 @@ public partial class vlgCaseStatement
 		return this;
 	}
 	public vlgCaseStatement WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgCaseStatement WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgCaseStatement WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -200,15 +338,21 @@ public partial class vlgCaseStatement
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 }
 public partial class vlgCombBlock
 {
@@ -230,6 +374,17 @@ public partial class vlgCombBlock
 		return this;
 	}
 	public vlgCombBlock WithCase(vlgCase obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgCombBlock
+	public vlgCombBlock WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgCombBlock WithCombBlock(vlgCombBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -256,12 +411,56 @@ public partial class vlgCombBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgCombBlock WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgCombBlock WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCombBlock WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgCombBlock WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgCombBlock WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgCombBlock WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgCombBlock WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgCombBlock WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgCombBlock WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgCombBlock WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -273,6 +472,17 @@ public partial class vlgCombBlock
 		return this;
 	}
 	public vlgCombBlock WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgCombBlock WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgCombBlock WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -290,15 +500,21 @@ public partial class vlgCombBlock
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 }
 public partial class vlgComment
 {
@@ -330,6 +546,17 @@ public partial class vlgConditionalStatement
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgCombBlock
+	public vlgConditionalStatement WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgConditionalStatement WithCombBlock(vlgCombBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	//vlgComment
 	public vlgConditionalStatement WithComment(params String[] Lines)
 	{
@@ -352,12 +579,56 @@ public partial class vlgConditionalStatement
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgConditionalStatement WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgConditionalStatement WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgConditionalStatement WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgConditionalStatement WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgConditionalStatement WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgConditionalStatement WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgConditionalStatement WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgConditionalStatement WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgConditionalStatement WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgConditionalStatement WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -369,6 +640,17 @@ public partial class vlgConditionalStatement
 		return this;
 	}
 	public vlgConditionalStatement WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgConditionalStatement WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgConditionalStatement WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -386,20 +668,26 @@ public partial class vlgConditionalStatement
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 }
 public partial class vlgCustomDeclaration
 {
 }
-public partial class vlgCustomModulePort
+public partial class vlgCustomModulePortDeclaration
 {
 }
 public abstract partial class vlgDeclarationModulePort
@@ -483,6 +771,9 @@ public partial class vlgForLoop
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
 }
+public partial class vlgGenerate
+{
+}
 public partial class vlgGenericBlock
 {
 	//vlgAssign
@@ -503,6 +794,17 @@ public partial class vlgGenericBlock
 		return this;
 	}
 	public vlgGenericBlock WithCase(vlgCase obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgCombBlock
+	public vlgGenericBlock WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgGenericBlock WithCombBlock(vlgCombBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -529,12 +831,56 @@ public partial class vlgGenericBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgGenericBlock WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgGenericBlock WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgGenericBlock WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgGenericBlock WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgGenericBlock WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgGenericBlock WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgGenericBlock WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgGenericBlock WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgGenericBlock WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgGenericBlock WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -546,6 +892,17 @@ public partial class vlgGenericBlock
 		return this;
 	}
 	public vlgGenericBlock WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgGenericBlock WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgGenericBlock WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -563,15 +920,24 @@ public partial class vlgGenericBlock
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
+}
+public partial class vlgGenvar
+{
 }
 public partial class vlgIdentifier
 {
@@ -737,7 +1103,29 @@ public partial class vlgModuleImplementation
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgModuleImplementation WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgModuleImplementation WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgModuleImplementation WithGenericBlock(vlgGenericBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgGenvar
+	public vlgModuleImplementation WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgModuleImplementation WithGenvar(vlgGenvar obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -824,6 +1212,17 @@ public partial class vlgModuleImplementation
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgProceduceCall
+	public vlgModuleImplementation WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgModuleImplementation WithProceduceCall(vlgProceduceCall obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	//vlgSimpleForLoop
 	public vlgModuleImplementation WithSimpleForLoop(String Iterator, Int32 From, Int32 To)
 	{
@@ -876,7 +1275,9 @@ public partial class vlgModuleImplementation
 	public IEnumerable<vlgConditionalStatement> AsConditionalStatement => Children.OfType<vlgConditionalStatement>();
 	public IEnumerable<vlgCustomDeclaration> AsCustomDeclaration => Children.OfType<vlgCustomDeclaration>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
 	public IEnumerable<vlgInitial> AsInitial => Children.OfType<vlgInitial>();
 	public IEnumerable<vlgIterator> AsIterator => Children.OfType<vlgIterator>();
@@ -885,6 +1286,7 @@ public partial class vlgModuleImplementation
 	public IEnumerable<vlgLogicSignal> AsLogicSignal => Children.OfType<vlgLogicSignal>();
 	public IEnumerable<vlgMemoryBlock> AsMemoryBlock => Children.OfType<vlgMemoryBlock>();
 	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
 	public IEnumerable<vlgStandardModulePortImplementation> AsStandardModulePortImplementation => Children.OfType<vlgStandardModulePortImplementation>();
 	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
@@ -997,13 +1399,13 @@ public partial class vlgModuleInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	//vlgCustomModulePort
-	public vlgModuleInterface WithCustomModulePort(vlgPortDirection Direction, vlgNetType NetType, String DataType, String Name)
+	//vlgCustomModulePortDeclaration
+	public vlgModuleInterface WithCustomModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, String DataType, String Name)
 	{
-		this.Children.Add(new vlgCustomModulePort(Direction, NetType, DataType, Name));
+		this.Children.Add(new vlgCustomModulePortDeclaration(Direction, NetType, DataType, Name));
 		return this;
 	}
-	public vlgModuleInterface WithCustomModulePort(vlgCustomModulePort obj)
+	public vlgModuleInterface WithCustomModulePortDeclaration(vlgCustomModulePortDeclaration obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -1030,17 +1432,6 @@ public partial class vlgModuleInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	//vlgStandardModulePortImplementation
-	public vlgModuleInterface WithStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
-	{
-		this.Children.Add(new vlgStandardModulePortImplementation(Direction, NetType, Sign, Width, Name));
-		return this;
-	}
-	public vlgModuleInterface WithStandardModulePortImplementation(vlgStandardModulePortImplementation obj)
-	{
-		if (obj != null) Children.Add(obj);
-		return this;
-	}
 	//vlgText
 	public vlgModuleInterface WithText(params String[] Lines)
 	{
@@ -1053,10 +1444,9 @@ public partial class vlgModuleInterface
 		return this;
 	}
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
-	public IEnumerable<vlgCustomModulePort> AsCustomModulePort => Children.OfType<vlgCustomModulePort>();
+	public IEnumerable<vlgCustomModulePortDeclaration> AsCustomModulePortDeclaration => Children.OfType<vlgCustomModulePortDeclaration>();
 	public IEnumerable<vlgPlaceholderModulePort> AsPlaceholderModulePort => Children.OfType<vlgPlaceholderModulePort>();
 	public IEnumerable<vlgStandardModulePortDeclaration> AsStandardModulePortDeclaration => Children.OfType<vlgStandardModulePortDeclaration>();
-	public IEnumerable<vlgStandardModulePortImplementation> AsStandardModulePortImplementation => Children.OfType<vlgStandardModulePortImplementation>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
 	public IEnumerable<vlgDeclarationModulePort> AsDeclarationModulePort => Children.OfType<vlgDeclarationModulePort>();
@@ -1112,7 +1502,13 @@ public abstract partial class vlgModulePort
 public partial class vlgPlaceholderModulePort
 {
 }
+public partial class vlgProceduceCall
+{
+}
 public partial class vlgRange
+{
+}
+public partial class vlgShiftExpression
 {
 }
 public abstract partial class vlgSignal
@@ -1174,6 +1570,17 @@ public partial class vlgSyncBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgCombBlock
+	public vlgSyncBlock WithCombBlock(params vlgIdentifier[] SensitivityList)
+	{
+		this.Children.Add(new vlgCombBlock(SensitivityList));
+		return this;
+	}
+	public vlgSyncBlock WithCombBlock(vlgCombBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	//vlgComment
 	public vlgSyncBlock WithComment(params String[] Lines)
 	{
@@ -1196,12 +1603,56 @@ public partial class vlgSyncBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenerate
+	public vlgSyncBlock WithGenerate(vlgGenericBlock Block)
+	{
+		this.Children.Add(new vlgGenerate(Block));
+		return this;
+	}
+	public vlgSyncBlock WithGenerate(vlgGenerate obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgSyncBlock WithGenericBlock(vlgGenericBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vlgGenvar
+	public vlgSyncBlock WithGenvar(String Name)
+	{
+		this.Children.Add(new vlgGenvar(Name));
+		return this;
+	}
+	public vlgSyncBlock WithGenvar(vlgGenvar obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 	public vlgSyncBlock WithIf(vlgIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgModuleInstance
+	public vlgSyncBlock WithModuleInstance(String Type, String Name)
+	{
+		this.Children.Add(new vlgModuleInstance(Type, Name));
+		return this;
+	}
+	public vlgSyncBlock WithModuleInstance(vlgModuleInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgProceduceCall
+	public vlgSyncBlock WithProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Children.Add(new vlgProceduceCall(Proc, Name, Parameters));
+		return this;
+	}
+	public vlgSyncBlock WithProceduceCall(vlgProceduceCall obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -1213,6 +1664,17 @@ public partial class vlgSyncBlock
 		return this;
 	}
 	public vlgSyncBlock WithSimpleForLoop(vlgSimpleForLoop obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgSyncBlock
+	public vlgSyncBlock WithSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	{
+		this.Children.Add(new vlgSyncBlock(SensitivityList));
+		return this;
+	}
+	public vlgSyncBlock WithSyncBlock(vlgSyncBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
 		return this;
@@ -1230,15 +1692,21 @@ public partial class vlgSyncBlock
 	}
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	public IEnumerable<vlgCase> AsCase => Children.OfType<vlgCase>();
+	public IEnumerable<vlgCombBlock> AsCombBlock => Children.OfType<vlgCombBlock>();
 	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
 	public IEnumerable<vlgForLoop> AsForLoop => Children.OfType<vlgForLoop>();
+	public IEnumerable<vlgGenerate> AsGenerate => Children.OfType<vlgGenerate>();
 	public IEnumerable<vlgGenericBlock> AsGenericBlock => Children.OfType<vlgGenericBlock>();
+	public IEnumerable<vlgGenvar> AsGenvar => Children.OfType<vlgGenvar>();
 	public IEnumerable<vlgIf> AsIf => Children.OfType<vlgIf>();
+	public IEnumerable<vlgModuleInstance> AsModuleInstance => Children.OfType<vlgModuleInstance>();
+	public IEnumerable<vlgProceduceCall> AsProceduceCall => Children.OfType<vlgProceduceCall>();
 	public IEnumerable<vlgSimpleForLoop> AsSimpleForLoop => Children.OfType<vlgSimpleForLoop>();
+	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
+	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 }
 public partial class vlgSyncBlockSensitivityItem
 {

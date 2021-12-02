@@ -9,7 +9,7 @@ namespace Quokka.RTL.Tools
     {
         StringBuilder _builder = new StringBuilder();
         int _indentCounter = 0;
-        string IndentText => string.Join("", Enumerable.Range(0, _indentCounter).Select(_ => "\t"));
+        public string IndentText => string.Join("", Enumerable.Range(0, _indentCounter).Select(_ => "\t"));
 
         public IDisposable Indent()
         {
@@ -26,6 +26,11 @@ namespace Quokka.RTL.Tools
         public void Append(string content)
         {
             _builder.Append(content);
+        }
+
+        public void AppendIndented(string content)
+        {
+            _builder.Append($"{IndentText}{content}");
         }
 
         public void AppendLine()

@@ -11,7 +11,7 @@ namespace Quokka.RTL.Verilog.Implementation
 				{ vlgUnaryType.Not, "~"}
 			};
 
-			_builder.Append($"({lookup[obj.Type]}({Raw(obj.Rhs)}))");
+			_builder.Append($"({lookup[obj.Type]}{Brackets(obj.Rhs)})");
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vlgModule obj)
 		{
-            _builder.AppendLine($"module ${obj.Name}");
+            _builder.AppendLine($"module {obj.Name}");
 
             Visit(obj.Parameters);
             Visit(obj.Interface);

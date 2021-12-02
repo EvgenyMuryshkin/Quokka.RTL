@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vlgTernaryExpression obj)
 		{
-			_builder.Append($"(({Raw(obj.Condition)}) ? ({Raw(obj.Lhs)}) : ({Raw(obj.Rhs)}))");
+			_builder.Append($"({Brackets(obj.Condition)} ? {Brackets(obj.Lhs)} : {Brackets(obj.Rhs)})");
 		}
 	}
 }
