@@ -35,6 +35,7 @@ namespace Quokka.RTL.SourceGenerators
             builder.AppendLine("using System.Linq;");
             builder.AppendLine($"namespace Quokka.RTL.Verilog{namespaceSuffix}");
         }
+
         void VisitorInterface(VerilogGeneratorContext ctx)
         {
             var builder = ctx.builder;
@@ -122,125 +123,6 @@ namespace Quokka.RTL.SourceGenerators
             builder.AppendLine("*/");
         }
 
-        void TopLevelVisitor(VerilogGeneratorContext ctx)
-        {
-            var builder = ctx.builder;
-
-            foreach (var parent in ctx.vlgVisitors)
-            {
-                builder.AppendLine($"public abstract class {parent.Name}AbstractVisitor");
-                builder.AppendLine("{");
-                builder.AppendLine("\tprotected readonly IndentedStringBuilder _builder;");
-                builder.AppendLine("\tprotected readonly vlgFormatters _formatters;");
-                builder.AppendLine($"\tpublic {parent.Name}AbstractVisitor(IndentedStringBuilder builder)");
-                builder.AppendLine("\t{");
-                builder.AppendLine("\t\t_builder = builder;");
-                builder.AppendLine("\t\t_formatters = new vlgFormatters();");
-                builder.AppendLine("\t}");
-
-                builder.AppendLine($"\tprotected abstract void OnVisit({parent.Name} obj);");
-                builder.AppendLine($"\tpublic void Visit({parent.Name} obj) => OnVisit(obj);");
-
-                var childrenType = ctx.ChildrenType(parent);
-                if (childrenType != null)
-                {
-                    var typedChildren = ctx.DerivedNonAbstract(childrenType);
-
-                    builder.AppendLine($"\tprotected virtual void OnUnsupported({childrenType.Name} obj)");
-                    builder.AppendLine("\t{");
-                    builder.AppendLine("\t\tthrow new NotImplementedException($\"Object type is not supported in visitor '{GetType().Name}': {obj.GetType().Name}\");");
-                    builder.AppendLine("\t}");
-
-                    foreach (var obj in typedChildren)
-                    {
-                        builder.AppendLine($"\tprotected abstract void OnVisit({obj.Name} obj);");
-                    }
-
-                    builder.AppendLine($"\tpublic void Visit({childrenType.Name} obj)");
-                    builder.AppendLine("\t{");
-                    builder.AppendLine("\t\tif (obj == null) return;");
-
-                    builder.AppendLine("\t\tswitch(obj)");
-                    builder.AppendLine("\t\t{");
-                    foreach (var obj in typedChildren)
-                    {
-                        builder.AppendLine($"\t\t\tcase {obj.Name} o: OnVisit(o); break;");
-                    }
-                    builder.AppendLine($"\t\t\tdefault: OnUnsupported(obj); break;");
-                    builder.AppendLine("\t\t} // switch");
-                    builder.AppendLine("\t} // Visit");
-                }
-
-                builder.AppendLine($"}} // {parent.Name}Visitor");
-            }
-            /*
-            foreach (var type in ctx.vlgDerivedVisitors)
-            {
-                var derivedTypes = ctx.DerivedNonAbstract(type);
-                var abstractClassName = $"{type.Name}DerivedAbstractVisitor";
-                builder.AppendLine($"public abstract class {abstractClassName}");
-                builder.AppendLine($"{{");
-                builder.AppendLine("\tprotected readonly vlgFormatters _formatters;");
-
-                builder.AppendLine($"\tpublic {abstractClassName}()");
-                builder.AppendLine("\t{");
-                builder.AppendLine("\t\t_formatters = new vlgFormatters();");
-                builder.AppendLine("\t}");
-
-
-                builder.AppendLine($"\tpublic virtual void Visit({type.Name} obj)");
-                builder.AppendLine($"\t{{");
-                builder.AppendLine("\t\tswitch(obj)");
-                builder.AppendLine("\t\t{");
-                foreach (var obj in derivedTypes)
-                {
-                    builder.AppendLine($"\t\t\tcase {obj.Name} o: OnVisit(o); break;");
-                }
-                builder.AppendLine($"\t\t\tdefault: OnUnsupported(obj); break;");
-                builder.AppendLine("\t\t} // switch");
-
-                builder.AppendLine($"\t}}");
-                
-                foreach (var obj in derivedTypes)
-                {
-                    builder.AppendLine($"\tprotected abstract void OnVisit({obj.Name} obj);");
-                }
-
-                builder.AppendLine($"\tprotected virtual void OnUnsupported({type.Name} obj)");
-                builder.AppendLine("\t{");
-                builder.AppendLine("\t\tthrow new NotImplementedException($\"Object type is not supported in visitor '{GetType().Name}': {obj.GetType().Name}\");");
-                builder.AppendLine("\t}");
-                builder.AppendLine($"}} // {abstractClassName}");
-            }
-            */
-            /*
-            builder.AppendLine($"public abstract class vlgTopLevelVisitor");
-            builder.AppendLine("{");
-            foreach (var obj in ctx.topLevelObjects)
-            {
-                builder.AppendLine($"\tprotected abstract void OnVisit({obj.Name} obj);");
-            }
-            builder.AppendLine($"\tprotected abstract void OnUnsupported(vlgTopLevelObject obj);");
-
-            builder.AppendLine($"\tpublic void Visit(vlgTopLevelObject obj)");
-            builder.AppendLine("\t{");
-            builder.AppendLine("\t\tif (obj == null) return;");
-
-            builder.AppendLine("\t\tswitch(obj)");
-            builder.AppendLine("\t\t{");
-            foreach (var obj in ctx.topLevelObjects)
-            {
-                builder.AppendLine($"\t\t\tcase {obj.Name} o: OnVisit(o); break;");
-            }
-            builder.AppendLine($"\t\t\tdefault: OnUnsupported(obj); break;");
-            builder.AppendLine("\t\t} // switch");
-            builder.AppendLine("\t} // Visit");
-
-            builder.AppendLine("} // vlgTopLevelVisitor");
-            */
-        }
-
-
         void VerilogEnums(VerilogGeneratorContext ctx)
         {
             var builder = ctx.builder;
@@ -306,9 +188,6 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine("{");
 
                 builder.AppendLine($"\tpublic {obj.Name}() {{ }}");
-
-                if (obj.Name == "vlgGenerate")
-                    Debugger.Break();
 
                 var props = ctx.AllProperties(obj);
 
@@ -528,142 +407,24 @@ namespace Quokka.RTL.SourceGenerators
             }
         }
 
-        void GenerateEnums(VerilogGeneratorContext ctx)
+        void GenerateFile(
+            VerilogGeneratorContext ctx, 
+            Action<VerilogGeneratorContext> generator, 
+            string fileName, 
+            string namespaceSuffix = "")
         {
             ctx.builder = new StringBuilder();
-            Usings(ctx);
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-
-            VerilogEnums(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"enums.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateInterface(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx);
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-
-            VerilogInterfaces(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"interface.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateAST(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx);
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-
-            VerilogAST(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"ast.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateQueries(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx);
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-
-            VerilogQueries(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"queries.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateVisitors(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx);
+            Usings(ctx, namespaceSuffix);
 
             var builder = ctx.builder;
             builder.AppendLine("{");
             builder.AppendLine($"using Quokka.RTL.Tools;");
 
-            TopLevelVisitor(ctx);
+            generator(ctx);
 
             builder.AppendLine("} // Quokka.RTL.Verilog");
             Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"visitors.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateVisitorInterface(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx);
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-            builder.AppendLine($"using Quokka.RTL.Tools;");
-
-            VisitorInterface(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"visitors.interface.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateVisitorImplementation(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx, ".Implementation");
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-            builder.AppendLine($"using Quokka.RTL.Tools;");
-
-            VisitorImplementation(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"visitors.implementation.cs"),
-                builder.ToString()
-            );
-        }
-
-        void GenerateVisitorImplementationTemplates(VerilogGeneratorContext ctx)
-        {
-            ctx.builder = new StringBuilder();
-            Usings(ctx, ".Implementation");
-
-            var builder = ctx.builder;
-            builder.AppendLine("{");
-            builder.AppendLine($"using Quokka.RTL.Tools;");
-
-            VisitorImplementationTemplates(ctx);
-
-            builder.AppendLine("} // Quokka.RTL.Verilog");
-            Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.VerilogSourcePath, $"visitors.implementation.templates.cs"),
+                Path.Combine(Tools.VerilogSourcePath, $"{fileName}.cs"),
                 builder.ToString()
             );
         }
@@ -674,14 +435,14 @@ namespace Quokka.RTL.SourceGenerators
             var ctx = new VerilogGeneratorContext();
             ctx.Validate();
 
-            GenerateEnums(ctx);
-            GenerateInterface(ctx);
-            GenerateAST(ctx);
-            GenerateQueries(ctx);
-            GenerateVisitorInterface(ctx);
-            GenerateVisitorImplementation(ctx);
-            GenerateVisitorImplementationTemplates(ctx);
-            //GenerateVisitors(ctx);
+            GenerateFile(ctx, VisitorImplementationTemplates, "visitors.implementation.templates", ".Implementation");
+            GenerateFile(ctx, VisitorImplementation, "visitors.implementation", ".Implementation");
+            GenerateFile(ctx, VisitorInterface, "visitors.interface");
+            //GenerateFile(ctx, TopLevelVisitor, "visitors");
+            GenerateFile(ctx, VerilogQueries, "queries");
+            GenerateFile(ctx, VerilogAST, "ast");
+            GenerateFile(ctx, VerilogInterfaces, "interface");
+            GenerateFile(ctx, VerilogEnums, "enums");
         }
     }
 }
