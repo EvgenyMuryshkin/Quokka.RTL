@@ -13,14 +13,12 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgModuleInstanceParameters : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIModuleInstanceParametersChild>
-        , IVisitorInterface
     {
         public List<vlgIModuleInstanceParametersChild> Children { get; set; }
     }
 
     public abstract class vlgModuleInstancePortMapping : vlgAbstractObject
         , vlgIModuleInstancePortMappingsChild
-        , IVisitorInterface
     {
     }
 
@@ -37,7 +35,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgModuleInstancePortMappings : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIModuleInstancePortMappingsChild>
-        , IVisitorInterface
     {
         public List<vlgIModuleInstancePortMappingsChild> Children { get; set; }
     }
@@ -105,27 +102,23 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgModuleParameters : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIModuleParametersChild>
-        , IVisitorInterface
     {
         public List<vlgIModuleParametersChild> Children { get; set; }
     }
 
     public class vlgModuleInterface : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIModuleInterfaceChild>
-        , IVisitorInterface
     {
         public List<vlgIModuleInterfaceChild> Children { get; set; }
     }
 
     public class vlgModuleImplementation : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIModuleImplementationChild>
-        , IVisitorInterface
     {
         public List<vlgIModuleImplementationChild> Children { get; set; }
     }
 
     public class vlgModule : vlgAbstractObject
-        , IVisitorInterface
         , vlgIFileChild
     {
         public string Name { get; set; }

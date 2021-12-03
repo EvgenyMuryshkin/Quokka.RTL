@@ -10,7 +10,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     }
 
     public class vlgIf : vlgAbstractObject
-        , IVisitorInterface
         , vlgIBlockChild
         , vlgIModuleImplementationChild
     {

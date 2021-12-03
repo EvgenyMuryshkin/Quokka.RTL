@@ -5,7 +5,6 @@ using System.Text;
 namespace Quokka.RTL.SourceGenerators.Verilog
 {
     public abstract class vlgCaseItem : vlgBlock
-        , IVisitorInterface
     {
 
     }
@@ -22,7 +21,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgCase : vlgAbstractObject
         , vlgIBlockChild
-        , IVisitorInterface
     {
         public vlgExpression Check { get; set; }
         public List<vlgCaseStatement> Statements { get; set; }

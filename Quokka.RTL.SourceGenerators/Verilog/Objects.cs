@@ -15,7 +15,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         , vlgIModuleImplementationChild
         , vlgIModuleParametersChild
         , vlgIBlockChild
-        , IVisitorInterface
         , vlgIModuleInstancePortMappingsChild
     {
         public List<string> Lines { get; set; }
@@ -29,7 +28,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         , vlgIModuleParametersChild
         , vlgIInitialChild
         , vlgIBlockChild
-        , IVisitorInterface
         , vlgIModuleInstancePortMappingsChild
     {
         public List<string> Lines { get; set; }
@@ -37,7 +35,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgAttribute : vlgAbstractObject
         , vlgIFileChild
-        , IVisitorInterface
     {
         public string Name { get; set; }
         public string Value { get; set; }
@@ -45,7 +42,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgCustomDeclaration : vlgAbstractObject
         , vlgIModuleImplementationChild
-        , IVisitorInterface
     {
         public string Type { get; set; }
         public string Name { get; set; }
@@ -77,7 +73,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     public class vlgInitial : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIInitialChild>
         , vlgIModuleImplementationChild
-        , IVisitorInterface
     {
         public string Name { get; set; }
         public List<vlgIInitialChild> Children { get; set; }
@@ -85,7 +80,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgIterator : vlgAbstractObject
         , vlgIModuleImplementationChild
-        , IVisitorInterface
     {
         public string Name { get; set; }
     }
@@ -94,7 +88,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         , IMetadataChildrenCollection<vlgILoopChild>
         , vlgIBlockChild
         , vlgIModuleImplementationChild
-        , IVisitorInterface
     {
         public List<vlgILoopChild> Children { get; set; }
 
@@ -133,14 +126,12 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         , vlgIInitialChild
         , vlgILoopChild
         , vlgIBlockChild
-        , IVisitorInterface
     {
         public vlgAssignExpression Expression { get; set; }
     }
 
     public abstract class vlgBlock : vlgAbstractObject
         , vlgIModuleImplementationChild
-        , IDerivedVisitorInterface
         , IMetadataChildrenCollection<vlgIBlockChild>
     {
         public List<vlgIBlockChild> Children { get; set; }
@@ -149,19 +140,16 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     public class vlgGenericBlock : vlgBlock
         , vlgIBlockChild
         , vlgILoopChild
-        , IVisitorInterface
     {
     }
 
     public class vlgCombBlock : vlgBlock
-        , IVisitorInterface
         , vlgIBlockChild
     {
         public List<vlgIdentifier> SensitivityList { get; set; }
     }
 
     public class vlgSyncBlockSensitivityItem : vlgAbstractObject
-        , IVisitorInterface
     {
         public vlgEdgeType Edge { get; set; }
         public vlgIdentifier Identifier { get; set; }
@@ -169,7 +157,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     }
 
     public class vlgSyncBlock : vlgBlock
-        , IVisitorInterface
         , vlgIBlockChild
     {
         public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; }
@@ -200,7 +187,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
 
     public class vlgFile : vlgAbstractObject
         , IMetadataChildrenCollection<vlgIFileChild>
-        , IVisitorInterface
     {
         public List<vlgIFileChild> Children { get; set; }
     }

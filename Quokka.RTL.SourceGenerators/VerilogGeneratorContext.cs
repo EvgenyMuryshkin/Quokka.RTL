@@ -14,7 +14,7 @@ namespace Quokka.RTL.SourceGenerators
         public List<TypeInfo> vlgInterfaces;
         public List<TypeInfo> vlgObjects;
         public List<TypeInfo> vlgVisitors;
-        public List<TypeInfo> vlgDerivedVisitors;
+
         public StringBuilder builder = new StringBuilder();
 
         public VerilogGeneratorContext()
@@ -41,7 +41,6 @@ namespace Quokka.RTL.SourceGenerators
                 .ToList();
 
             vlgVisitors = vlgObjects.Where(o => !o.IsAbstract /*&& typeof(IVisitorInterface).IsAssignableFrom(o)*/).ToList();
-            vlgDerivedVisitors = vlgObjects.Where(o => o.IsAbstract && typeof(IDerivedVisitorInterface).IsAssignableFrom(o)).ToList();
         }
 
         public List<PropertyInfo> CtorParameters(Type obj)

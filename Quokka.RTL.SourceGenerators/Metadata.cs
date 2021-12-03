@@ -10,8 +10,6 @@ namespace Quokka.RTL.SourceGenerators
     }
     public interface IMetadataInterface { }
 
-    public interface IVisitorInterface : IMetadataInterface { }
-    public interface IDerivedVisitorInterface : IMetadataInterface { }
     public interface IMetadataChildrenCollection<T> : IMetadataInterface
     {
         [NoCtorInit]
