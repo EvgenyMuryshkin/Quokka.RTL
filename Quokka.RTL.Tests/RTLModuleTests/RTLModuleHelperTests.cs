@@ -187,6 +187,16 @@ namespace Quokka.RTL.Tests
         }
 
         [TestMethod]
+        public void OutputArrayTest()
+        {
+            var internalProps = RTLModuleHelper.InternalProperties(typeof(ArrayOutputClass));
+            Assert.AreEqual(0, internalProps.Count);
+
+            var outputProps = RTLModuleHelper.OutputProperties(typeof(ArrayOutputClass));
+            Assert.AreEqual(1, outputProps.Count);
+        }
+
+        [TestMethod]
         public void OverrideInputsTest()
         {
             var internalProps = RTLModuleHelper.InternalProperties(typeof(InheritedModule));

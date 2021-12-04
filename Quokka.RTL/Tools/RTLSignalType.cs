@@ -9,4 +9,10 @@ namespace Quokka.RTL.Tools
         Floating,
         Iterator
     }
+
+    public enum RTLOrderType : byte
+    {
+        LBS,
+        MSB
+    }
 }

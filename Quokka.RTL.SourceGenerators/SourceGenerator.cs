@@ -73,7 +73,7 @@ namespace Quokka.RTL.SourceGenerators
             result.AppendLine("}");
 
             Tools.WriteAllTextIfChanged(
-                Path.Combine(Tools.SourcePath, $"RTLBitArray.generated.cs"),
+                Path.Combine(Tools.BitArraySourcePath, $"RTLBitArray.generated.cs"),
                 result.ToString()
                 );
         }

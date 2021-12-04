@@ -47,6 +47,11 @@ namespace Quokka.RTL
             }
         }
 
+        public RTLBitArray(byte[] lsb) : this(lsb.Reverse().Select(b => new RTLBitArray(b)).ToArray())
+        {
+
+        }
+
         public RTLBitArray(IEnumerable<bool> msbBits)
         {
             internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());

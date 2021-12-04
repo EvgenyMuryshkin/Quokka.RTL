@@ -32,6 +32,10 @@ namespace Quokka.RTL
                 }
                 return result;
             }
+            else if(valueType.IsArray)
+            {
+                throw new Exception();
+            }
             else if (valueType.IsStruct())
             {
                 return DeepCopy(value);

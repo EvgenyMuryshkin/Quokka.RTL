@@ -358,5 +358,20 @@ namespace Quokka.RTL.RTLBitArrayTests
 
             Trace.WriteLine($"JSON Copy: {json}");
         }
+
+        [TestMethod]
+        public void ToBytes()
+        {
+            var source = new RTLBitArray(0x04030201);
+            var bytes = (byte[])source;
+
+            Assert.AreEqual(0x01, bytes[0]);
+            Assert.AreEqual(0x02, bytes[1]);
+            Assert.AreEqual(0x03, bytes[2]);
+            Assert.AreEqual(0x04, bytes[3]);
+
+            var fromBytes = new RTLBitArray(bytes);
+            Assert.AreEqual(fromBytes, source);
+        }
     }
 }

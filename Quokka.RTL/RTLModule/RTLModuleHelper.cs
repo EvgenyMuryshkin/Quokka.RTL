@@ -55,9 +55,8 @@ namespace Quokka.RTL
             var isPublic = memberInfo.IsPublic();
             var isPropertyOrField = memberInfo is FieldInfo || memberInfo is PropertyInfo;
             var isToolkitType = RTLTypeCheck.IsToolkitType(memberInfo.DeclaringType);
-            var isArray = memberInfo.GetMemberType().IsArray;
 
-            return isArray || !isPublic && isPropertyOrField && !isToolkitType;
+            return !isPublic && isPropertyOrField && !isToolkitType;
         }
 
         public static bool IsSynthesizableObject(Type type)
@@ -116,7 +115,7 @@ namespace Quokka.RTL
         static TypeCache<bool> IsSynthesizableArrayTypeCache = new TypeCache<bool>(
             (type) =>
             {
-                return type.IsArray && IsSynthesizableSignalType(type.GetElementType());
+                return type.IsArray && (IsSynthesizableSignalType(type.GetElementType()) || IsSynthesizableArrayType(type.GetElementType()));
             });
         public static bool IsSynthesizableArrayType(Type type) => IsSynthesizableArrayTypeCache[type];
 
@@ -164,7 +163,7 @@ namespace Quokka.RTL
         public static List<MemberInfo> OutputProperties(Type type)
         {
             return SignalProperties(type)
-                .Where(p => !IsInternalProperty(p))
+                .Where(p => p.IsPublic())
                 .GroupBy(p => p.Name)
                 .Select(g =>
                 {
