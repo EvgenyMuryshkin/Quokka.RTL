@@ -363,6 +363,55 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine($"{string.Join(" ", modifiers)} partial class {obj.Name}");
                 builder.AppendLine("{");
 
+                if (obj.Name == "vlgBlock")
+                    Debugger.Break();
+
+                var typedChildren = ctx.FluentTypes(obj);
+
+                foreach (var child in typedChildren)
+                {
+                    var childCtorParams = ctx.CtorParamsDecl(child);
+
+                    if (childCtorParams.Any())
+                    {
+                        builder.AppendLine($"\t//{child.Name}");
+                        builder.AppendLine($"\tpublic {obj.Name} With{child.Name.Substring(3)}({childCtorParams.ToCSV()})");
+                        builder.AppendLine($"\t{{");
+                        builder.AppendLine($"\t\tthis.Children.Add(new {child.Name}({ctx.CtorParamNames(child).ToCSV()}));");
+                        builder.AppendLine($"\t\treturn this;");
+                        builder.AppendLine($"\t}}");
+                    }
+
+                    builder.AppendLine($"\tpublic {obj.Name} With{child.Name.Substring(3)}({child.Name} obj)");
+                    builder.AppendLine($"\t{{");
+                    builder.AppendLine($"\t\tif (obj != null) Children.Add(obj);");
+                    builder.AppendLine($"\t\treturn this;");
+                    builder.AppendLine($"\t}}");
+                }
+
+                var derivedTypes = typedChildren
+                    .SelectMany(t => ctx.Derived(t))
+                    .Concat(ctx.UnwrapBaseTypes(typedChildren))
+                    .Distinct();
+                foreach (var child in derivedTypes)
+                {
+                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
+                }
+                /*
+
+                foreach (var child in typedChildren)
+                {
+                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
+                }
+
+                var baseTypes = ctx.UnwrapBaseTypes(typedChildren.ToList());
+                foreach (var child in baseTypes)
+                {
+                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
+                }
+                */
+                /*
+
                 if (!obj.IsAbstract)
                 {
                     var childrenType = ctx.ChildrenType(obj);
@@ -402,7 +451,7 @@ namespace Quokka.RTL.SourceGenerators
                         }
                     }                    
                 }
-
+                */
                 builder.AppendLine("}");
             }
         }

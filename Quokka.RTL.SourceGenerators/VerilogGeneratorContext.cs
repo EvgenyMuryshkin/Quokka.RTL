@@ -80,7 +80,7 @@ namespace Quokka.RTL.SourceGenerators
             return CtorParameters(obj).Select(p => p.Name).ToList();
         }
 
-        public List<Type> UnwrapBaseTypes(List<Type> objs)
+        public List<Type> UnwrapBaseTypes(IEnumerable<Type> objs)
         {
             if (!objs.Any()) return new List<Type>();
 
@@ -113,10 +113,21 @@ namespace Quokka.RTL.SourceGenerators
             }
         }
 
-        
+        public IEnumerable<Type> FluentTypes(Type parentType)
+        {
+            var fluentType = parentType.GetCustomAttributes<FluentTypeAttribute>(false);
+
+            return fluentType.SelectMany(t => DerivedNonAbstract(t.Type));
+        }
+
         public IEnumerable<Type> DerivedNonAbstract(Type baseType)
         {
             return vlgObjects.Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t));
+        }
+
+        public IEnumerable<Type> Derived(Type baseType)
+        {
+            return vlgObjects.Where(t => baseType.IsAssignableFrom(t));
         }
 
         public List<PropertyInfo> OwnProperties(Type obj)

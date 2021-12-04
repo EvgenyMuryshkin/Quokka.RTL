@@ -8,7 +8,7 @@
 			_builder.AppendLine("begin");
 			using (_builder.Indent())
 			{
-				obj.Children.ForEach(Visit);
+				Visit(obj.Block);
 			}
 			_builder.AppendLine("end");
 		}

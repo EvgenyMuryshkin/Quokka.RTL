@@ -6,7 +6,7 @@
 		{
 			using (_builder.Indent())
 			{
-				obj.Children.ForEach(Visit);
+				Visit(obj.Block);
 			}
 		}
 	}

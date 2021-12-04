@@ -4,7 +4,7 @@
     {
         public override void OnVisit(vlgConditionalStatement obj)
         {
-            obj.Children.ForEach(Visit);
+            Visit(obj.Block);
         }
     }
 }

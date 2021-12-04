@@ -35,6 +35,7 @@ public interface vlgMathExpressionVisitorInterface : vlgVisitorInterface<vlgMath
 public interface vlgMemoryBlockVisitorInterface : vlgVisitorInterface<vlgMemoryBlock> { }
 public interface vlgModuleVisitorInterface : vlgVisitorInterface<vlgModule> { }
 public interface vlgModuleImplementationVisitorInterface : vlgVisitorInterface<vlgModuleImplementation> { }
+public interface vlgModuleImplementationBlockVisitorInterface : vlgVisitorInterface<vlgModuleImplementationBlock> { }
 public interface vlgModuleInstanceVisitorInterface : vlgVisitorInterface<vlgModuleInstance> { }
 public interface vlgModuleInstanceNamedPortMappingVisitorInterface : vlgVisitorInterface<vlgModuleInstanceNamedPortMapping> { }
 public interface vlgModuleInstanceParameterVisitorInterface : vlgVisitorInterface<vlgModuleInstanceParameter> { }
@@ -45,7 +46,7 @@ public interface vlgModuleInterfaceVisitorInterface : vlgVisitorInterface<vlgMod
 public interface vlgModuleParameterDeclarationVisitorInterface : vlgVisitorInterface<vlgModuleParameterDeclaration> { }
 public interface vlgModuleParametersVisitorInterface : vlgVisitorInterface<vlgModuleParameters> { }
 public interface vlgPlaceholderModulePortVisitorInterface : vlgVisitorInterface<vlgPlaceholderModulePort> { }
-public interface vlgProceduceCallVisitorInterface : vlgVisitorInterface<vlgProceduceCall> { }
+public interface vlgProcedureCallVisitorInterface : vlgVisitorInterface<vlgProcedureCall> { }
 public interface vlgRangeVisitorInterface : vlgVisitorInterface<vlgRange> { }
 public interface vlgShiftExpressionVisitorInterface : vlgVisitorInterface<vlgShiftExpression> { }
 public interface vlgSimpleForLoopVisitorInterface : vlgVisitorInterface<vlgSimpleForLoop> { }

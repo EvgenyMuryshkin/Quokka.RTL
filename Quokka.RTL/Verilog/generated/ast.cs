@@ -4,21 +4,74 @@ using System.Linq;
 namespace Quokka.RTL.Verilog
 {
 using Quokka.RTL.Tools;
-public abstract partial class vlgAbstractForLoop : vlgAbstractObject, vlgIBlockChild, vlgIModuleImplementationChild
+public abstract partial class vlgAbstractCollection : vlgAbstractObject
 {
-	public vlgAbstractForLoop() { }
+	public vlgAbstractCollection() { }
 	/// <summary>
 	/// vlgAssign
+	/// vlgAssignExpression
+	/// vlgAttribute
+	/// vlgBinaryValueExpression
+	/// vlgCase
+	/// vlgCombBlock
+	/// vlgComment
+	/// vlgCompareExpression
+	/// vlgConditionalStatement
+	/// vlgCustomDeclaration
+	/// vlgCustomModulePortDeclaration
+	/// vlgFile
+	/// vlgForLoop
+	/// vlgGenerate
 	/// vlgGenericBlock
+	/// vlgGenvar
+	/// vlgIdentifier
+	/// vlgIdentifierExpression
+	/// vlgIf
+	/// vlgInitial
+	/// vlgIterator
+	/// vlgLocalParamNameBinaryValue
+	/// vlgLocalParamNameExplicitValue
+	/// vlgLogicExpression
+	/// vlgLogicSignal
+	/// vlgMathExpression
+	/// vlgMemoryBlock
+	/// vlgModule
+	/// vlgModuleImplementation
+	/// vlgModuleImplementationBlock
+	/// vlgModuleInstance
+	/// vlgModuleInstanceNamedPortMapping
+	/// vlgModuleInstanceParameter
+	/// vlgModuleInstanceParameters
+	/// vlgModuleInstancePortMappings
+	/// vlgModuleInstanceSimplePortMapping
+	/// vlgModuleInterface
+	/// vlgModuleParameterDeclaration
+	/// vlgModuleParameters
+	/// vlgPlaceholderModulePort
+	/// vlgProcedureCall
+	/// vlgRange
+	/// vlgShiftExpression
+	/// vlgSimpleForLoop
+	/// vlgStandardModulePortDeclaration
+	/// vlgStandardModulePortImplementation
+	/// vlgSyncBlock
+	/// vlgSyncBlockSensitivityItem
+	/// vlgTernaryExpression
+	/// vlgText
+	/// vlgUnaryExpression
 	/// </summary>
-	public List<vlgILoopChild> Children { get; set; } = new List<vlgILoopChild>();
+	public List<vlgAbstractObject> Children { get; set; } = new List<vlgAbstractObject>();
+}
+public abstract partial class vlgAbstractForLoop : vlgAbstractCollection
+{
+	public vlgAbstractForLoop() { }
 	public String Name { get; set; }
 }
 public abstract partial class vlgAbstractObject
 {
 	public vlgAbstractObject() { }
 }
-public partial class vlgAssign : vlgAbstractObject, vlgIModuleImplementationChild, vlgIInitialChild, vlgILoopChild, vlgIBlockChild
+public partial class vlgAssign : vlgAbstractObject
 {
 	public vlgAssign() { }
 	public vlgAssign(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
@@ -48,7 +101,7 @@ public partial class vlgAssignExpression : vlgExpression
 	public vlgAssignType Type { get; set; }
 	public vlgExpression Expression { get; set; }
 }
-public partial class vlgAttribute : vlgAbstractObject, vlgIFileChild
+public partial class vlgAttribute : vlgAbstractObject
 {
 	public vlgAttribute() { }
 	public vlgAttribute(String Name, String Value)
@@ -72,28 +125,11 @@ public partial class vlgBinaryValueExpression : vlgExpression, vlgICaseStatement
 	}
 	public RTLBitArray Value { get; set; } = new RTLBitArray();
 }
-public abstract partial class vlgBlock : vlgAbstractObject, vlgIModuleImplementationChild
+public abstract partial class vlgBlock : vlgAbstractCollection
 {
 	public vlgBlock() { }
-	/// <summary>
-	/// vlgAssign
-	/// vlgCase
-	/// vlgCombBlock
-	/// vlgComment
-	/// vlgForLoop
-	/// vlgGenerate
-	/// vlgGenericBlock
-	/// vlgGenvar
-	/// vlgIf
-	/// vlgModuleInstance
-	/// vlgProceduceCall
-	/// vlgSimpleForLoop
-	/// vlgSyncBlock
-	/// vlgText
-	/// </summary>
-	public List<vlgIBlockChild> Children { get; set; } = new List<vlgIBlockChild>();
 }
-public partial class vlgCase : vlgAbstractObject, vlgIBlockChild
+public partial class vlgCase : vlgAbstractObject
 {
 	public vlgCase() { }
 	public vlgCase(vlgExpression Check, params vlgCaseStatement[] Statements)
@@ -114,15 +150,16 @@ public partial class vlgCase : vlgAbstractObject, vlgIBlockChild
 	public List<vlgCaseStatement> Statements { get; set; } = new List<vlgCaseStatement>();
 	public vlgCaseDefault Default { get; set; } = new vlgCaseDefault();
 }
-public partial class vlgCaseDefault : vlgCaseItem, vlgIModuleImplementationChild
+public partial class vlgCaseDefault : vlgCaseItem
 {
 	public vlgCaseDefault() { }
 }
-public abstract partial class vlgCaseItem : vlgBlock, vlgIModuleImplementationChild
+public abstract partial class vlgCaseItem
 {
 	public vlgCaseItem() { }
+	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
-public partial class vlgCaseStatement : vlgCaseItem, vlgIModuleImplementationChild
+public partial class vlgCaseStatement : vlgCaseItem
 {
 	public vlgCaseStatement() { }
 	public vlgCaseStatement(params vlgICaseStatement[] Conditions)
@@ -144,7 +181,7 @@ public partial class vlgCaseStatement : vlgCaseItem, vlgIModuleImplementationChi
 	/// </summary>
 	public List<vlgICaseStatement> Conditions { get; set; } = new List<vlgICaseStatement>();
 }
-public partial class vlgCombBlock : vlgBlock, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgCombBlock : vlgAbstractObject
 {
 	public vlgCombBlock() { }
 	public vlgCombBlock(params vlgIdentifier[] SensitivityList)
@@ -157,8 +194,9 @@ public partial class vlgCombBlock : vlgBlock, vlgIModuleImplementationChild, vlg
 		return new vlgCombBlock(new [] { single });
 	}
 	public List<vlgIdentifier> SensitivityList { get; set; } = new List<vlgIdentifier>();
+	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
-public partial class vlgComment : vlgAbstractObject, vlgIModuleInstanceChild, vlgIModuleInterfaceChild, vlgIFileChild, vlgIModuleImplementationChild, vlgIModuleParametersChild, vlgIBlockChild, vlgIModuleInstancePortMappingsChild
+public partial class vlgComment : vlgAbstractObject
 {
 	public vlgComment() { }
 	public vlgComment(params String[] Lines)
@@ -185,7 +223,7 @@ public partial class vlgCompareExpression : vlgExpression
 	public vlgCompareType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
-public partial class vlgConditionalStatement : vlgBlock, vlgIModuleImplementationChild
+public partial class vlgConditionalStatement : vlgAbstractObject
 {
 	public vlgConditionalStatement() { }
 	public vlgConditionalStatement(vlgExpression Condition)
@@ -229,8 +267,9 @@ public partial class vlgConditionalStatement : vlgBlock, vlgIModuleImplementatio
 		return new vlgConditionalStatement(Condition);
 	}
 	public vlgExpression Condition { get; set; }
+	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
-public partial class vlgCustomDeclaration : vlgAbstractObject, vlgIModuleImplementationChild
+public partial class vlgCustomDeclaration : vlgAbstractObject
 {
 	public vlgCustomDeclaration() { }
 	public vlgCustomDeclaration(String Type, String Name, String Initializer)
@@ -243,7 +282,7 @@ public partial class vlgCustomDeclaration : vlgAbstractObject, vlgIModuleImpleme
 	public String Name { get; set; }
 	public String Initializer { get; set; }
 }
-public partial class vlgCustomModulePortDeclaration : vlgDeclarationModulePort, vlgIModuleInterfaceChild
+public partial class vlgCustomModulePortDeclaration : vlgDeclarationModulePort
 {
 	public vlgCustomModulePortDeclaration() { }
 	public vlgCustomModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, String DataType, String Name)
@@ -271,18 +310,11 @@ public abstract partial class vlgExpression : vlgAbstractObject
 {
 	public vlgExpression() { }
 }
-public partial class vlgFile : vlgAbstractObject
+public partial class vlgFile : vlgAbstractCollection
 {
 	public vlgFile() { }
-	/// <summary>
-	/// vlgAttribute
-	/// vlgComment
-	/// vlgModule
-	/// vlgText
-	/// </summary>
-	public List<vlgIFileChild> Children { get; set; } = new List<vlgIFileChild>();
 }
-public partial class vlgForLoop : vlgAbstractForLoop, vlgIBlockChild, vlgIModuleImplementationChild
+public partial class vlgForLoop : vlgAbstractForLoop
 {
 	public vlgForLoop() { }
 	public vlgForLoop(vlgExpression Initializer, vlgExpression Condition, vlgExpression Increment)
@@ -295,7 +327,7 @@ public partial class vlgForLoop : vlgAbstractForLoop, vlgIBlockChild, vlgIModule
 	public vlgExpression Condition { get; set; }
 	public vlgExpression Increment { get; set; }
 }
-public partial class vlgGenerate : vlgAbstractObject, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgGenerate : vlgAbstractObject
 {
 	public vlgGenerate() { }
 	public vlgGenerate(vlgGenericBlock Block)
@@ -308,11 +340,11 @@ public partial class vlgGenerate : vlgAbstractObject, vlgIModuleImplementationCh
 	}
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
-public partial class vlgGenericBlock : vlgBlock, vlgIModuleImplementationChild, vlgIBlockChild, vlgILoopChild
+public partial class vlgGenericBlock : vlgBlock
 {
 	public vlgGenericBlock() { }
 }
-public partial class vlgGenvar : vlgAbstractObject, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgGenvar : vlgAbstractObject
 {
 	public vlgGenvar() { }
 	public vlgGenvar(String Name)
@@ -366,12 +398,12 @@ public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 	}
 	public vlgIdentifier Source { get; set; } = new vlgIdentifier();
 }
-public partial class vlgIf : vlgAbstractObject, vlgIBlockChild, vlgIModuleImplementationChild
+public partial class vlgIf : vlgAbstractObject
 {
 	public vlgIf() { }
 	public List<vlgConditionalStatement> Statements { get; set; } = new List<vlgConditionalStatement>();
 }
-public partial class vlgInitial : vlgAbstractObject, vlgIModuleImplementationChild
+public partial class vlgInitial : vlgAbstractCollection
 {
 	public vlgInitial() { }
 	public vlgInitial(String Name)
@@ -383,14 +415,8 @@ public partial class vlgInitial : vlgAbstractObject, vlgIModuleImplementationChi
 		return new vlgInitial(Name);
 	}
 	public String Name { get; set; }
-	/// <summary>
-	/// vlgAssign
-	/// vlgSimpleForLoop
-	/// vlgText
-	/// </summary>
-	public List<vlgIInitialChild> Children { get; set; } = new List<vlgIInitialChild>();
 }
-public partial class vlgIterator : vlgAbstractObject, vlgIModuleImplementationChild
+public partial class vlgIterator : vlgAbstractObject
 {
 	public vlgIterator() { }
 	public vlgIterator(String Name)
@@ -403,11 +429,11 @@ public partial class vlgIterator : vlgAbstractObject, vlgIModuleImplementationCh
 	}
 	public String Name { get; set; }
 }
-public abstract partial class vlgLocalParam : vlgAbstractObject, vlgIModuleImplementationChild
+public abstract partial class vlgLocalParam : vlgAbstractObject
 {
 	public vlgLocalParam() { }
 }
-public abstract partial class vlgLocalParamName : vlgLocalParam, vlgIModuleImplementationChild
+public abstract partial class vlgLocalParamName : vlgLocalParam
 {
 	public vlgLocalParamName() { }
 	public vlgLocalParamName(String Name)
@@ -416,7 +442,7 @@ public abstract partial class vlgLocalParamName : vlgLocalParam, vlgIModuleImple
 	}
 	public String Name { get; set; }
 }
-public partial class vlgLocalParamNameBinaryValue : vlgLocalParamName, vlgIModuleImplementationChild
+public partial class vlgLocalParamNameBinaryValue : vlgLocalParamName
 {
 	public vlgLocalParamNameBinaryValue() { }
 	public vlgLocalParamNameBinaryValue(String Name, RTLBitArray Value)
@@ -426,7 +452,7 @@ public partial class vlgLocalParamNameBinaryValue : vlgLocalParamName, vlgIModul
 	}
 	public RTLBitArray Value { get; set; } = new RTLBitArray();
 }
-public partial class vlgLocalParamNameExplicitValue : vlgLocalParamName, vlgIModuleImplementationChild
+public partial class vlgLocalParamNameExplicitValue : vlgLocalParamName
 {
 	public vlgLocalParamNameExplicitValue() { }
 	public vlgLocalParamNameExplicitValue(String Name, String Value)
@@ -449,7 +475,7 @@ public partial class vlgLogicExpression : vlgExpression
 	public vlgLogicType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
-public partial class vlgLogicSignal : vlgSignal, vlgIModuleImplementationChild
+public partial class vlgLogicSignal : vlgSignal
 {
 	public vlgLogicSignal() { }
 	public vlgLogicSignal(vlgNetType NetType, vlgSignType Sign, String Name, Int32 Width, String Initializer)
@@ -479,7 +505,7 @@ public partial class vlgMathExpression : vlgExpression
 	public vlgMathType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
-public partial class vlgMemoryBlock : vlgSignal, vlgIModuleImplementationChild
+public partial class vlgMemoryBlock : vlgSignal
 {
 	public vlgMemoryBlock() { }
 	public vlgMemoryBlock(String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
@@ -494,7 +520,7 @@ public partial class vlgMemoryBlock : vlgSignal, vlgIModuleImplementationChild
 	public Int32 Width { get; set; }
 	public Int32 Depth { get; set; }
 }
-public partial class vlgModule : vlgAbstractObject, vlgIFileChild
+public partial class vlgModule : vlgAbstractObject
 {
 	public vlgModule() { }
 	public vlgModule(String Name)
@@ -513,35 +539,21 @@ public partial class vlgModule : vlgAbstractObject, vlgIFileChild
 public partial class vlgModuleImplementation : vlgAbstractObject
 {
 	public vlgModuleImplementation() { }
-	/// <summary>
-	/// vlgAssign
-	/// vlgCaseDefault
-	/// vlgCaseStatement
-	/// vlgCombBlock
-	/// vlgComment
-	/// vlgConditionalStatement
-	/// vlgCustomDeclaration
-	/// vlgForLoop
-	/// vlgGenerate
-	/// vlgGenericBlock
-	/// vlgGenvar
-	/// vlgIf
-	/// vlgInitial
-	/// vlgIterator
-	/// vlgLocalParamNameBinaryValue
-	/// vlgLocalParamNameExplicitValue
-	/// vlgLogicSignal
-	/// vlgMemoryBlock
-	/// vlgModuleInstance
-	/// vlgProceduceCall
-	/// vlgSimpleForLoop
-	/// vlgStandardModulePortImplementation
-	/// vlgSyncBlock
-	/// vlgText
-	/// </summary>
-	public List<vlgIModuleImplementationChild> Children { get; set; } = new List<vlgIModuleImplementationChild>();
+	public vlgModuleImplementation(vlgModuleImplementationBlock Block)
+	{
+		this.Block = Block;
+	}
+	public static implicit operator vlgModuleImplementation(vlgModuleImplementationBlock Block)
+	{
+		return new vlgModuleImplementation(Block);
+	}
+	public vlgModuleImplementationBlock Block { get; set; } = new vlgModuleImplementationBlock();
 }
-public partial class vlgModuleInstance : vlgAbstractObject, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgModuleImplementationBlock : vlgBlock
+{
+	public vlgModuleImplementationBlock() { }
+}
+public partial class vlgModuleInstance : vlgAbstractObject
 {
 	public vlgModuleInstance() { }
 	public vlgModuleInstance(String Type, String Name)
@@ -554,7 +566,7 @@ public partial class vlgModuleInstance : vlgAbstractObject, vlgIModuleImplementa
 	public vlgModuleInstanceParameters Parameters { get; set; } = new vlgModuleInstanceParameters();
 	public vlgModuleInstancePortMappings PortMappings { get; set; } = new vlgModuleInstancePortMappings();
 }
-public partial class vlgModuleInstanceNamedPortMapping : vlgModuleInstancePortMapping, vlgIModuleInstancePortMappingsChild
+public partial class vlgModuleInstanceNamedPortMapping : vlgModuleInstancePortMapping
 {
 	public vlgModuleInstanceNamedPortMapping() { }
 	public vlgModuleInstanceNamedPortMapping(String Internal, vlgExpression External)
@@ -565,7 +577,7 @@ public partial class vlgModuleInstanceNamedPortMapping : vlgModuleInstancePortMa
 	public String Internal { get; set; }
 	public vlgExpression External { get; set; }
 }
-public partial class vlgModuleInstanceParameter : vlgAbstractObject, vlgIModuleInstanceParametersChild
+public partial class vlgModuleInstanceParameter : vlgAbstractObject
 {
 	public vlgModuleInstanceParameter() { }
 	public vlgModuleInstanceParameter(String Name, String Value)
@@ -576,30 +588,19 @@ public partial class vlgModuleInstanceParameter : vlgAbstractObject, vlgIModuleI
 	public String Name { get; set; }
 	public String Value { get; set; }
 }
-public partial class vlgModuleInstanceParameters : vlgAbstractObject
+public partial class vlgModuleInstanceParameters : vlgAbstractCollection
 {
 	public vlgModuleInstanceParameters() { }
-	/// <summary>
-	/// vlgModuleInstanceParameter
-	/// </summary>
-	public List<vlgIModuleInstanceParametersChild> Children { get; set; } = new List<vlgIModuleInstanceParametersChild>();
 }
-public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject, vlgIModuleInstancePortMappingsChild
+public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 {
 	public vlgModuleInstancePortMapping() { }
 }
-public partial class vlgModuleInstancePortMappings : vlgAbstractObject
+public partial class vlgModuleInstancePortMappings : vlgAbstractCollection
 {
 	public vlgModuleInstancePortMappings() { }
-	/// <summary>
-	/// vlgComment
-	/// vlgModuleInstanceNamedPortMapping
-	/// vlgModuleInstanceSimplePortMapping
-	/// vlgText
-	/// </summary>
-	public List<vlgIModuleInstancePortMappingsChild> Children { get; set; } = new List<vlgIModuleInstancePortMappingsChild>();
 }
-public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortMapping, vlgIModuleInstancePortMappingsChild
+public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortMapping
 {
 	public vlgModuleInstanceSimplePortMapping() { }
 	public vlgModuleInstanceSimplePortMapping(vlgExpression External)
@@ -644,19 +645,11 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	}
 	public vlgExpression External { get; set; }
 }
-public partial class vlgModuleInterface : vlgAbstractObject
+public partial class vlgModuleInterface : vlgAbstractCollection
 {
 	public vlgModuleInterface() { }
-	/// <summary>
-	/// vlgComment
-	/// vlgCustomModulePortDeclaration
-	/// vlgPlaceholderModulePort
-	/// vlgStandardModulePortDeclaration
-	/// vlgText
-	/// </summary>
-	public List<vlgIModuleInterfaceChild> Children { get; set; } = new List<vlgIModuleInterfaceChild>();
 }
-public partial class vlgModuleParameterDeclaration : vlgAbstractObject, vlgIModuleParametersChild
+public partial class vlgModuleParameterDeclaration : vlgAbstractObject
 {
 	public vlgModuleParameterDeclaration() { }
 	public vlgModuleParameterDeclaration(String Name, Int32 Width, RTLBitArray DefaultValue)
@@ -669,21 +662,15 @@ public partial class vlgModuleParameterDeclaration : vlgAbstractObject, vlgIModu
 	public Int32 Width { get; set; }
 	public RTLBitArray DefaultValue { get; set; } = new RTLBitArray();
 }
-public partial class vlgModuleParameters : vlgAbstractObject
+public partial class vlgModuleParameters : vlgAbstractCollection
 {
 	public vlgModuleParameters() { }
-	/// <summary>
-	/// vlgComment
-	/// vlgModuleParameterDeclaration
-	/// vlgText
-	/// </summary>
-	public List<vlgIModuleParametersChild> Children { get; set; } = new List<vlgIModuleParametersChild>();
 }
 public abstract partial class vlgModulePort : vlgAbstractObject
 {
 	public vlgModulePort() { }
 }
-public partial class vlgPlaceholderModulePort : vlgModulePort, vlgIModuleInterfaceChild
+public partial class vlgPlaceholderModulePort : vlgModulePort
 {
 	public vlgPlaceholderModulePort() { }
 	public vlgPlaceholderModulePort(String Name)
@@ -696,17 +683,17 @@ public partial class vlgPlaceholderModulePort : vlgModulePort, vlgIModuleInterfa
 	}
 	public String Name { get; set; }
 }
-public partial class vlgProceduceCall : vlgAbstractObject, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgProcedureCall : vlgAbstractObject
 {
-	public vlgProceduceCall() { }
-	public vlgProceduceCall(String Proc, String Name, params vlgExpression[] Parameters)
+	public vlgProcedureCall() { }
+	public vlgProcedureCall(String Proc, String Name, params vlgExpression[] Parameters)
 	{
 		this.Proc = Proc;
 		this.Name = Name;
 		if (Parameters != null)
 			this.Parameters = Parameters.ToList();
 	}
-	public vlgProceduceCall(String Proc, String Name)
+	public vlgProcedureCall(String Proc, String Name)
 	{
 		this.Proc = Proc;
 		this.Name = Name;
@@ -796,11 +783,11 @@ public partial class vlgShiftExpression : vlgExpression
 	public vlgShiftType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
-public abstract partial class vlgSignal : vlgAbstractObject, vlgIModuleImplementationChild
+public abstract partial class vlgSignal : vlgAbstractObject
 {
 	public vlgSignal() { }
 }
-public partial class vlgSimpleForLoop : vlgAbstractForLoop, vlgIBlockChild, vlgIModuleImplementationChild, vlgIInitialChild
+public partial class vlgSimpleForLoop : vlgAbstractForLoop
 {
 	public vlgSimpleForLoop() { }
 	public vlgSimpleForLoop(String Iterator, Int32 From, Int32 To)
@@ -828,7 +815,7 @@ public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 	public Int32 Width { get; set; }
 	public String Name { get; set; }
 }
-public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, vlgIModuleInterfaceChild
+public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort
 {
 	public vlgStandardModulePortDeclaration() { }
 	public vlgStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
@@ -840,7 +827,7 @@ public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, v
 		this.Name = Name;
 	}
 }
-public partial class vlgStandardModulePortImplementation : vlgStandardModulePort, vlgIModuleImplementationChild
+public partial class vlgStandardModulePortImplementation : vlgStandardModulePort
 {
 	public vlgStandardModulePortImplementation() { }
 	public vlgStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
@@ -852,7 +839,7 @@ public partial class vlgStandardModulePortImplementation : vlgStandardModulePort
 		this.Name = Name;
 	}
 }
-public partial class vlgSyncBlock : vlgBlock, vlgIModuleImplementationChild, vlgIBlockChild
+public partial class vlgSyncBlock : vlgAbstractObject
 {
 	public vlgSyncBlock() { }
 	public vlgSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
@@ -865,6 +852,7 @@ public partial class vlgSyncBlock : vlgBlock, vlgIModuleImplementationChild, vlg
 		return new vlgSyncBlock(new [] { single });
 	}
 	public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; } = new List<vlgSyncBlockSensitivityItem>();
+	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
 public partial class vlgSyncBlockSensitivityItem : vlgAbstractObject
 {
@@ -890,7 +878,7 @@ public partial class vlgTernaryExpression : vlgExpression
 	public vlgExpression Lhs { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
-public partial class vlgText : vlgAbstractObject, vlgIModuleInstanceChild, vlgIModuleInterfaceChild, vlgIFileChild, vlgIModuleImplementationChild, vlgIModuleParametersChild, vlgIInitialChild, vlgIBlockChild, vlgIModuleInstancePortMappingsChild
+public partial class vlgText : vlgAbstractObject
 {
 	public vlgText() { }
 	public vlgText(params String[] Lines)

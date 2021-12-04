@@ -129,6 +129,10 @@ public abstract class vlgModuleImplementationVisitorGeneratedImplementation : vl
 {
 	public vlgModuleImplementationVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vlgModuleImplementationBlockVisitorGeneratedImplementation : vlgVisitorImplementation<vlgModuleImplementationBlock>, vlgModuleImplementationBlockVisitorInterface
+{
+	public vlgModuleImplementationBlockVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgModuleInstanceVisitorGeneratedImplementation : vlgVisitorImplementation<vlgModuleInstance>, vlgModuleInstanceVisitorInterface
 {
 	public vlgModuleInstanceVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -169,9 +173,9 @@ public abstract class vlgPlaceholderModulePortVisitorGeneratedImplementation : v
 {
 	public vlgPlaceholderModulePortVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
-public abstract class vlgProceduceCallVisitorGeneratedImplementation : vlgVisitorImplementation<vlgProceduceCall>, vlgProceduceCallVisitorInterface
+public abstract class vlgProcedureCallVisitorGeneratedImplementation : vlgVisitorImplementation<vlgProcedureCall>, vlgProcedureCallVisitorInterface
 {
-	public vlgProceduceCallVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+	public vlgProcedureCallVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public abstract class vlgRangeVisitorGeneratedImplementation : vlgVisitorImplementation<vlgRange>, vlgRangeVisitorInterface
 {
@@ -338,6 +342,10 @@ public partial class vlgModuleImplementationVisitorImplementation : vlgModuleImp
 {
 	public vlgModuleImplementationVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vlgModuleImplementationBlockVisitorImplementation : vlgModuleImplementationBlockVisitorGeneratedImplementation
+{
+	public vlgModuleImplementationBlockVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgModuleInstanceVisitorImplementation : vlgModuleInstanceVisitorGeneratedImplementation
 {
 	public vlgModuleInstanceVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -378,9 +386,9 @@ public partial class vlgPlaceholderModulePortVisitorImplementation : vlgPlacehol
 {
 	public vlgPlaceholderModulePortVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
-public partial class vlgProceduceCallVisitorImplementation : vlgProceduceCallVisitorGeneratedImplementation
+public partial class vlgProcedureCallVisitorImplementation : vlgProcedureCallVisitorGeneratedImplementation
 {
-	public vlgProceduceCallVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+	public vlgProcedureCallVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 public partial class vlgRangeVisitorImplementation : vlgRangeVisitorGeneratedImplementation
 {
@@ -460,6 +468,7 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgMemoryBlock o: return vlgMemoryBlockVisitor(o);
 			case vlgModule o: return vlgModuleVisitor(o);
 			case vlgModuleImplementation o: return vlgModuleImplementationVisitor(o);
+			case vlgModuleImplementationBlock o: return vlgModuleImplementationBlockVisitor(o);
 			case vlgModuleInstance o: return vlgModuleInstanceVisitor(o);
 			case vlgModuleInstanceNamedPortMapping o: return vlgModuleInstanceNamedPortMappingVisitor(o);
 			case vlgModuleInstanceParameter o: return vlgModuleInstanceParameterVisitor(o);
@@ -470,7 +479,7 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgModuleParameterDeclaration o: return vlgModuleParameterDeclarationVisitor(o);
 			case vlgModuleParameters o: return vlgModuleParametersVisitor(o);
 			case vlgPlaceholderModulePort o: return vlgPlaceholderModulePortVisitor(o);
-			case vlgProceduceCall o: return vlgProceduceCallVisitor(o);
+			case vlgProcedureCall o: return vlgProcedureCallVisitor(o);
 			case vlgRange o: return vlgRangeVisitor(o);
 			case vlgShiftExpression o: return vlgShiftExpressionVisitor(o);
 			case vlgSimpleForLoop o: return vlgSimpleForLoopVisitor(o);
@@ -612,6 +621,10 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgModuleImplementationVisitor(_deps, obj);
 	}
+	private vlgModuleImplementationBlockVisitorInterface vlgModuleImplementationBlockVisitor(vlgModuleImplementationBlock obj)
+	{
+		return vlgModuleImplementationBlockVisitor(_deps, obj);
+	}
 	private vlgModuleInstanceVisitorInterface vlgModuleInstanceVisitor(vlgModuleInstance obj)
 	{
 		return vlgModuleInstanceVisitor(_deps, obj);
@@ -652,9 +665,9 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgPlaceholderModulePortVisitor(_deps, obj);
 	}
-	private vlgProceduceCallVisitorInterface vlgProceduceCallVisitor(vlgProceduceCall obj)
+	private vlgProcedureCallVisitorInterface vlgProcedureCallVisitor(vlgProcedureCall obj)
 	{
-		return vlgProceduceCallVisitor(_deps, obj);
+		return vlgProcedureCallVisitor(_deps, obj);
 	}
 	private vlgRangeVisitorInterface vlgRangeVisitor(vlgRange obj)
 	{
@@ -758,6 +771,8 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgModuleVisitorImplementation(deps);
 	protected virtual vlgModuleImplementationVisitorInterface vlgModuleImplementationVisitor(vlgVisitorImplementationDeps deps, vlgModuleImplementation obj)
 		=> new vlgModuleImplementationVisitorImplementation(deps);
+	protected virtual vlgModuleImplementationBlockVisitorInterface vlgModuleImplementationBlockVisitor(vlgVisitorImplementationDeps deps, vlgModuleImplementationBlock obj)
+		=> new vlgModuleImplementationBlockVisitorImplementation(deps);
 	protected virtual vlgModuleInstanceVisitorInterface vlgModuleInstanceVisitor(vlgVisitorImplementationDeps deps, vlgModuleInstance obj)
 		=> new vlgModuleInstanceVisitorImplementation(deps);
 	protected virtual vlgModuleInstanceNamedPortMappingVisitorInterface vlgModuleInstanceNamedPortMappingVisitor(vlgVisitorImplementationDeps deps, vlgModuleInstanceNamedPortMapping obj)
@@ -778,8 +793,8 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgModuleParametersVisitorImplementation(deps);
 	protected virtual vlgPlaceholderModulePortVisitorInterface vlgPlaceholderModulePortVisitor(vlgVisitorImplementationDeps deps, vlgPlaceholderModulePort obj)
 		=> new vlgPlaceholderModulePortVisitorImplementation(deps);
-	protected virtual vlgProceduceCallVisitorInterface vlgProceduceCallVisitor(vlgVisitorImplementationDeps deps, vlgProceduceCall obj)
-		=> new vlgProceduceCallVisitorImplementation(deps);
+	protected virtual vlgProcedureCallVisitorInterface vlgProcedureCallVisitor(vlgVisitorImplementationDeps deps, vlgProcedureCall obj)
+		=> new vlgProcedureCallVisitorImplementation(deps);
 	protected virtual vlgRangeVisitorInterface vlgRangeVisitor(vlgVisitorImplementationDeps deps, vlgRange obj)
 		=> new vlgRangeVisitorImplementation(deps);
 	protected virtual vlgShiftExpressionVisitorInterface vlgShiftExpressionVisitor(vlgVisitorImplementationDeps deps, vlgShiftExpression obj)

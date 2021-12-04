@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Quokka.RTL.Verilog.Implementation
 {
-    public partial class vlgProceduceCallVisitorImplementation
+    public partial class vlgProcedureCallVisitorImplementation
 	{
-		public override void OnVisit(vlgProceduceCall obj)
+		public override void OnVisit(vlgProcedureCall obj)
 		{
 			var args = obj.Parameters.Select(Raw);
 			_builder.AppendLine($"{obj.Proc} {obj.Name}({args.StringJoin(", ")});");

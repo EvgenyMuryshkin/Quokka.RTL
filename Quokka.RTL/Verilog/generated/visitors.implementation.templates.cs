@@ -191,6 +191,12 @@ public partial class vlgModuleImplementationVisitorImplementation
 	{
 	}
 }
+public partial class vlgModuleImplementationBlockVisitorImplementation
+{
+	public override void OnVisit(vlgModuleImplementationBlock obj)
+	{
+	}
+}
 public partial class vlgModuleInstanceVisitorImplementation
 {
 	public override void OnVisit(vlgModuleInstance obj)
@@ -251,9 +257,9 @@ public partial class vlgPlaceholderModulePortVisitorImplementation
 	{
 	}
 }
-public partial class vlgProceduceCallVisitorImplementation
+public partial class vlgProcedureCallVisitorImplementation
 {
-	public override void OnVisit(vlgProceduceCall obj)
+	public override void OnVisit(vlgProcedureCall obj)
 	{
 	}
 }

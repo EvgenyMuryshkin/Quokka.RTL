@@ -12,7 +12,7 @@ namespace Quokka.RTL.Verilog.Implementation
 			_builder.AppendLine("begin");
 			using (_builder.Indent())
 			{
-				obj.Children.ForEach(Visit);
+				Visit(obj.Block);
 			}
 			_builder.AppendLine("end");
 		}

@@ -24,7 +24,7 @@ namespace Quokka.RTL.Verilog.Implementation
                 _builder.AppendLine($"begin");
                 using (_builder.Indent())
                 {
-                    statement.Children.ForEach(Visit);
+                    Visit(statement.Block);
                 }
                 _builder.AppendLine($"end");
             }
