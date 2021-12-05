@@ -82,10 +82,6 @@ public partial class vlgAssign : vlgAbstractObject
 	{
 		this.Expression = Expression;
 	}
-	public static implicit operator vlgAssign(vlgAssignExpression Expression)
-	{
-		return new vlgAssign(Expression);
-	}
 	public vlgAssignExpression Expression { get; set; } = new vlgAssignExpression();
 }
 public partial class vlgAssignExpression : vlgExpression
@@ -119,10 +115,6 @@ public partial class vlgBinaryValueExpression : vlgExpression, vlgICaseStatement
 	{
 		this.Value = Value;
 	}
-	public static implicit operator vlgBinaryValueExpression(RTLBitArray Value)
-	{
-		return new vlgBinaryValueExpression(Value);
-	}
 	public RTLBitArray Value { get; set; } = new RTLBitArray();
 }
 public abstract partial class vlgBlock : vlgAbstractCollection
@@ -135,16 +127,11 @@ public partial class vlgCase : vlgAbstractObject
 	public vlgCase(vlgExpression Check, params vlgCaseStatement[] Statements)
 	{
 		this.Check = Check;
-		if (Statements != null)
-			this.Statements = Statements.ToList();
+		this.Statements = Statements?.ToList() ?? new List<vlgCaseStatement>();
 	}
 	public vlgCase(vlgExpression Check)
 	{
 		this.Check = Check;
-	}
-	public static implicit operator vlgCase(vlgExpression Check)
-	{
-		return new vlgCase(Check);
 	}
 	public vlgExpression Check { get; set; }
 	public List<vlgCaseStatement> Statements { get; set; } = new List<vlgCaseStatement>();
@@ -164,16 +151,7 @@ public partial class vlgCaseStatement : vlgCaseItem
 	public vlgCaseStatement() { }
 	public vlgCaseStatement(params vlgICaseStatement[] Conditions)
 	{
-		if (Conditions != null)
-			this.Conditions = Conditions.ToList();
-	}
-	public static implicit operator vlgCaseStatement(vlgBinaryValueExpression single)
-	{
-		return new vlgCaseStatement(new [] { single });
-	}
-	public static implicit operator vlgCaseStatement(vlgIdentifierExpression single)
-	{
-		return new vlgCaseStatement(new [] { single });
+		this.Conditions = Conditions?.ToList() ?? new List<vlgICaseStatement>();
 	}
 	/// <summary>
 	/// vlgBinaryValueExpression
@@ -186,12 +164,7 @@ public partial class vlgCombBlock : vlgAbstractObject
 	public vlgCombBlock() { }
 	public vlgCombBlock(params vlgIdentifier[] SensitivityList)
 	{
-		if (SensitivityList != null)
-			this.SensitivityList = SensitivityList.ToList();
-	}
-	public static implicit operator vlgCombBlock(vlgIdentifier single)
-	{
-		return new vlgCombBlock(new [] { single });
+		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgIdentifier>();
 	}
 	public List<vlgIdentifier> SensitivityList { get; set; } = new List<vlgIdentifier>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
@@ -201,12 +174,7 @@ public partial class vlgComment : vlgAbstractObject
 	public vlgComment() { }
 	public vlgComment(params String[] Lines)
 	{
-		if (Lines != null)
-			this.Lines = Lines.ToList();
-	}
-	public static implicit operator vlgComment(String single)
-	{
-		return new vlgComment(new [] { single });
+		this.Lines = Lines?.ToList() ?? new List<String>();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
@@ -229,42 +197,6 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	public vlgConditionalStatement(vlgExpression Condition)
 	{
 		this.Condition = Condition;
-	}
-	public static implicit operator vlgConditionalStatement(vlgAssignExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgBinaryValueExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgCompareExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgIdentifierExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgLogicExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgMathExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgShiftExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgTernaryExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
-	}
-	public static implicit operator vlgConditionalStatement(vlgUnaryExpression Condition)
-	{
-		return new vlgConditionalStatement(Condition);
 	}
 	public vlgExpression Condition { get; set; }
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
@@ -334,10 +266,6 @@ public partial class vlgGenerate : vlgAbstractObject
 	{
 		this.Block = Block;
 	}
-	public static implicit operator vlgGenerate(vlgGenericBlock Block)
-	{
-		return new vlgGenerate(Block);
-	}
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
 public partial class vlgGenericBlock : vlgBlock
@@ -351,10 +279,6 @@ public partial class vlgGenvar : vlgAbstractObject
 	{
 		this.Name = Name;
 	}
-	public static implicit operator vlgGenvar(String Name)
-	{
-		return new vlgGenvar(Name);
-	}
 	public String Name { get; set; }
 }
 public partial class vlgIdentifier : vlgAbstractObject
@@ -363,16 +287,11 @@ public partial class vlgIdentifier : vlgAbstractObject
 	public vlgIdentifier(String Name, params vlgRange[] Indexes)
 	{
 		this.Name = Name;
-		if (Indexes != null)
-			this.Indexes = Indexes.ToList();
+		this.Indexes = Indexes?.ToList() ?? new List<vlgRange>();
 	}
 	public vlgIdentifier(String Name)
 	{
 		this.Name = Name;
-	}
-	public static implicit operator vlgIdentifier(String Name)
-	{
-		return new vlgIdentifier(Name);
 	}
 	public String Name { get; set; }
 	public List<vlgRange> Indexes { get; set; } = new List<vlgRange>();
@@ -392,10 +311,6 @@ public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 	{
 		this.Source = Source;
 	}
-	public static implicit operator vlgIdentifierExpression(vlgIdentifier Source)
-	{
-		return new vlgIdentifierExpression(Source);
-	}
 	public vlgIdentifier Source { get; set; } = new vlgIdentifier();
 }
 public partial class vlgIf : vlgAbstractObject
@@ -410,10 +325,6 @@ public partial class vlgInitial : vlgAbstractCollection
 	{
 		this.Name = Name;
 	}
-	public static implicit operator vlgInitial(String Name)
-	{
-		return new vlgInitial(Name);
-	}
 	public String Name { get; set; }
 }
 public partial class vlgIterator : vlgAbstractObject
@@ -422,10 +333,6 @@ public partial class vlgIterator : vlgAbstractObject
 	public vlgIterator(String Name)
 	{
 		this.Name = Name;
-	}
-	public static implicit operator vlgIterator(String Name)
-	{
-		return new vlgIterator(Name);
 	}
 	public String Name { get; set; }
 }
@@ -527,10 +434,6 @@ public partial class vlgModule : vlgAbstractObject
 	{
 		this.Name = Name;
 	}
-	public static implicit operator vlgModule(String Name)
-	{
-		return new vlgModule(Name);
-	}
 	public String Name { get; set; }
 	public vlgModuleParameters Parameters { get; set; } = new vlgModuleParameters();
 	public vlgModuleInterface Interface { get; set; } = new vlgModuleInterface();
@@ -542,10 +445,6 @@ public partial class vlgModuleImplementation : vlgAbstractObject
 	public vlgModuleImplementation(vlgModuleImplementationBlock Block)
 	{
 		this.Block = Block;
-	}
-	public static implicit operator vlgModuleImplementation(vlgModuleImplementationBlock Block)
-	{
-		return new vlgModuleImplementation(Block);
 	}
 	public vlgModuleImplementationBlock Block { get; set; } = new vlgModuleImplementationBlock();
 }
@@ -607,42 +506,6 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	{
 		this.External = External;
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgAssignExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgBinaryValueExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgCompareExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgIdentifierExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgLogicExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgMathExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgShiftExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgTernaryExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgUnaryExpression External)
-	{
-		return new vlgModuleInstanceSimplePortMapping(External);
-	}
 	public vlgExpression External { get; set; }
 }
 public partial class vlgModuleInterface : vlgAbstractCollection
@@ -677,10 +540,6 @@ public partial class vlgPlaceholderModulePort : vlgModulePort
 	{
 		this.Name = Name;
 	}
-	public static implicit operator vlgPlaceholderModulePort(String Name)
-	{
-		return new vlgPlaceholderModulePort(Name);
-	}
 	public String Name { get; set; }
 }
 public partial class vlgProcedureCall : vlgAbstractObject
@@ -690,8 +549,7 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	{
 		this.Proc = Proc;
 		this.Name = Name;
-		if (Parameters != null)
-			this.Parameters = Parameters.ToList();
+		this.Parameters = Parameters?.ToList() ?? new List<vlgExpression>();
 	}
 	public vlgProcedureCall(String Proc, String Name)
 	{
@@ -718,44 +576,7 @@ public partial class vlgRange : vlgAbstractObject
 	public vlgRange() { }
 	public vlgRange(params vlgExpression[] Indexes)
 	{
-		if (Indexes != null)
-			this.Indexes = Indexes.ToList();
-	}
-	public static implicit operator vlgRange(vlgAssignExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgBinaryValueExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgCompareExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgIdentifierExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgLogicExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgMathExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgShiftExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgTernaryExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgUnaryExpression single)
-	{
-		return new vlgRange(new [] { single });
+		this.Indexes = Indexes?.ToList() ?? new List<vlgExpression>();
 	}
 	/// <summary>
 	/// vlgAssignExpression
@@ -844,12 +665,7 @@ public partial class vlgSyncBlock : vlgAbstractObject
 	public vlgSyncBlock() { }
 	public vlgSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
 	{
-		if (SensitivityList != null)
-			this.SensitivityList = SensitivityList.ToList();
-	}
-	public static implicit operator vlgSyncBlock(vlgSyncBlockSensitivityItem single)
-	{
-		return new vlgSyncBlock(new [] { single });
+		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgSyncBlockSensitivityItem>();
 	}
 	public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; } = new List<vlgSyncBlockSensitivityItem>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
@@ -883,12 +699,7 @@ public partial class vlgText : vlgAbstractObject
 	public vlgText() { }
 	public vlgText(params String[] Lines)
 	{
-		if (Lines != null)
-			this.Lines = Lines.ToList();
-	}
-	public static implicit operator vlgText(String single)
-	{
-		return new vlgText(new [] { single });
+		this.Lines = Lines?.ToList() ?? new List<String>();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }

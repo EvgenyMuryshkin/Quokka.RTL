@@ -40,9 +40,9 @@ namespace Quokka.RTL.SourceGenerators
         {
             var builder = ctx.builder;
 
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
-                builder.AppendLine($"public interface {obj.Name}VisitorInterface : {ctx.vlgPrefix}VisitorInterface<{obj.Name}> {{ }}");
+                builder.AppendLine($"public interface {obj.Name}VisitorInterface : {ctx.prefix}VisitorInterface<{obj.Name}> {{ }}");
             }
         }
 
@@ -51,7 +51,7 @@ namespace Quokka.RTL.SourceGenerators
             var builder = ctx.builder;
 
             builder.AppendLine($"// generated implementations");
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"public abstract class {obj.Name}VisitorGeneratedImplementation : vlgVisitorImplementation<{obj.Name}>, {obj.Name}VisitorInterface");
                 builder.AppendLine("{");
@@ -60,7 +60,7 @@ namespace Quokka.RTL.SourceGenerators
             }
 
             builder.AppendLine($"// partial implementations");
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"public partial class {obj.Name}VisitorImplementation : {obj.Name}VisitorGeneratedImplementation");
                 builder.AppendLine("{");
@@ -69,14 +69,14 @@ namespace Quokka.RTL.SourceGenerators
             }
 
             builder.AppendLine($"// visitor factory");
-            builder.AppendLine($"public partial class {ctx.vlgPrefix}VisitorFactoryImplementation : {ctx.vlgPrefix}VisitorFactoryInterface");
+            builder.AppendLine($"public partial class {ctx.prefix}VisitorFactoryImplementation : {ctx.prefix}VisitorFactoryInterface");
             builder.AppendLine("{");
             builder.AppendLine($"\tpublic virtual vlgVisitorInterface Resolve(object obj)");
             builder.AppendLine("\t{");
 
             builder.AppendLine("\t\tswitch(obj)");
             builder.AppendLine("\t\t{");
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"\t\t\tcase {obj.Name} o: return {obj.Name}Visitor(o);");
             }
@@ -85,12 +85,12 @@ namespace Quokka.RTL.SourceGenerators
 
             builder.AppendLine("\t}");
             
-            builder.AppendLine($"\tprotected virtual {ctx.vlgPrefix}VisitorInterface VisitorInterface(object obj)");
+            builder.AppendLine($"\tprotected virtual {ctx.prefix}VisitorInterface VisitorInterface(object obj)");
             builder.AppendLine("\t{");
             builder.AppendLine($"\t\tthrow new Exception($\"Unsupported object type '{{obj.GetType()}}' in visitor resolver '{{GetType()}}'\");");
             builder.AppendLine("\t}");
 
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"\tprivate {obj.Name}VisitorInterface {obj.Name}Visitor({obj.Name} obj)");
                 builder.AppendLine("\t{");
@@ -98,7 +98,7 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine("\t}");
             }
 
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"\tprotected virtual {obj.Name}VisitorInterface {obj.Name}Visitor(vlgVisitorImplementationDeps deps, {obj.Name} obj)");
                 builder.AppendLine($"\t\t=> new {obj.Name}VisitorImplementation(deps);");
@@ -111,7 +111,7 @@ namespace Quokka.RTL.SourceGenerators
         {
             var builder = ctx.builder;
             builder.AppendLine("/*");
-            foreach (var obj in ctx.vlgVisitors)
+            foreach (var obj in ctx.visitors)
             {
                 builder.AppendLine($"public partial class {obj.Name}VisitorImplementation");
                 builder.AppendLine("{");
@@ -126,7 +126,7 @@ namespace Quokka.RTL.SourceGenerators
         void VerilogEnums(VerilogGeneratorContext ctx)
         {
             var builder = ctx.builder;
-            foreach (var e in ctx.vlgEnums)
+            foreach (var e in ctx.enums)
             {
                 builder.AppendLine($"public enum {e.Name}");
                 builder.AppendLine("{");
@@ -144,7 +144,7 @@ namespace Quokka.RTL.SourceGenerators
         void VerilogInterfaces(VerilogGeneratorContext ctx)
         {
             var builder = ctx.builder;
-            foreach (var obj in ctx.vlgInterfaces)
+            foreach (var obj in ctx.interfaces)
             {
                 var inheritance = new List<string>();
                 ctx.Inheritance(inheritance, obj);
@@ -170,7 +170,7 @@ namespace Quokka.RTL.SourceGenerators
         {
             var builder = ctx.builder;
 
-            foreach (var obj in ctx.vlgObjects)
+            foreach (var obj in ctx.objects)
             {
                 var modifiers = new List<string>();
                 AccessModifiers(modifiers, obj);
@@ -214,7 +214,6 @@ namespace Quokka.RTL.SourceGenerators
                         }
                     }
                 }
-
                 
                 Action<List<PropertyInfo>> ctor = (ctorParams) =>
                 {
@@ -228,8 +227,7 @@ namespace Quokka.RTL.SourceGenerators
                     {
                         if (p.PropertyType.IsList())
                         {
-                            builder.AppendLine($"\t\tif ({p.Name} != null)");
-                            builder.AppendLine($"\t\t\tthis.{p.Name} = {p.Name}.ToList();");
+                            builder.AppendLine($"\t\tthis.{p.Name} = {p.Name}?.ToList() ?? new List<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>();");
                         }
                         else
                         {
@@ -246,71 +244,6 @@ namespace Quokka.RTL.SourceGenerators
                 if (ctorParams.Count > 1 && ctorParams.Last().PropertyType.IsList())
                 {
                     ctor(ctorParams.Take(ctorParams.Count - 1).ToList());
-                }
-
-                if (!obj.IsAbstract && ctorParams.Count == 2 && ctorParams.Last().PropertyType.IsList())
-                {
-                    var ctorArgs = ctx.CtorParamsDecl(obj).Take(1); ;
-                    builder.AppendLine($"\tpublic static implicit operator {obj.Name}({ctorArgs.ToCSV()})");
-                    builder.AppendLine($"\t{{");
-                    builder.AppendLine($"\t\treturn new {obj.Name}({ctorParams.Take(1).Select(p => p.Name).ToCSV()});");
-                    builder.AppendLine($"\t}}");
-                }
-
-
-                if (!obj.IsAbstract && ctorParams.Count == 1)
-                {
-                    var singleProperty = ctorParams[0];
-
-                    if (singleProperty.PropertyType.IsList())
-                    {
-                        var listItemType = singleProperty.PropertyType.GetGenericArguments()[0];
-
-                        if (listItemType.IsInterface || listItemType.IsAbstract)
-                        {
-                            var derived = ctx.DerivedNonAbstract(listItemType);
-
-                            foreach (var d in derived)
-                            {
-                                builder.AppendLine($"\tpublic static implicit operator {obj.Name}({ctx.PropertyType(d)} single)");
-                                builder.AppendLine($"\t{{");
-                                builder.AppendLine($"\t\treturn new {obj.Name}(new [] {{ single }});");
-                                builder.AppendLine($"\t}}");
-                            }
-                        }
-                        else
-                        {
-                            var singlePropertyTypeName = ctx.PropertyType(listItemType);
-
-                            builder.AppendLine($"\tpublic static implicit operator {obj.Name}({singlePropertyTypeName} single)");
-                            builder.AppendLine($"\t{{");
-                            builder.AppendLine($"\t\treturn new {obj.Name}(new [] {{ single }});");
-                            builder.AppendLine($"\t}}");
-                        }
-                    }
-                    else
-                    {
-                        if (singleProperty.PropertyType.IsInterface || singleProperty.PropertyType.IsAbstract)
-                        {
-                            var derived = ctx.DerivedNonAbstract(singleProperty.PropertyType);
-
-                            foreach (var d in derived)
-                            {
-                                builder.AppendLine($"\tpublic static implicit operator {obj.Name}({ctx.PropertyType(d)} {singleProperty.Name})");
-                                builder.AppendLine($"\t{{");
-                                builder.AppendLine($"\t\treturn new {obj.Name}({singleProperty.Name});");
-                                builder.AppendLine($"\t}}");
-                            }
-                        }
-                        else
-                        {
-                            var ctorArgs = ctx.CtorParamsDecl(obj);
-                            builder.AppendLine($"\tpublic static implicit operator {obj.Name}({ctorArgs.ToCSV()})");
-                            builder.AppendLine($"\t{{");
-                            builder.AppendLine($"\t\treturn new {obj.Name}({ctorParams.Select(p => p.Name).ToCSV()});");
-                            builder.AppendLine($"\t}}");
-                        }
-                    }
                 }
 
                 // object properties
@@ -347,11 +280,47 @@ namespace Quokka.RTL.SourceGenerators
             }
         }
 
+        void VerilogImplicit(VerilogGeneratorContext ctx)
+        {
+            var builder = ctx.builder;
+
+            foreach (var obj in ctx.objects)
+            {
+                var modifiers = new List<string>();
+                AccessModifiers(modifiers, obj);
+                InstanceModifiers(modifiers, obj);
+
+                var inheritance = new List<string>();
+                ctx.Inheritance(inheritance, obj);
+
+                builder.Append($"{string.Join(" ", modifiers)} partial class {obj.Name}");
+                if (inheritance.Any())
+                {
+                    builder.Append($" : {inheritance.ToCSV()}");
+                }
+                builder.AppendLine();
+                builder.AppendLine("{");
+
+                var implicitOperators = ctx.ImplicitOperators(obj);
+
+                foreach (var iop in implicitOperators)
+                {
+                    builder.AppendLine($"\tpublic static implicit operator {iop.TargetType.Name}({iop.ParamsLine})");
+                    builder.AppendLine($"\t{{");
+                    builder.AppendLine($"\t\treturn new {iop.TargetType.Name}({iop.ArgsLine});");
+                    builder.AppendLine($"\t}}");
+                }
+
+                builder.AppendLine("}");
+            }
+        }
+
+
         void VerilogQueries(VerilogGeneratorContext ctx)
         {
             var builder = ctx.builder;
 
-            foreach (var obj in ctx.vlgObjects)
+            foreach (var obj in ctx.objects)
             {
                 var modifiers = new List<string>();
                 AccessModifiers(modifiers, obj);
@@ -363,8 +332,32 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine($"{string.Join(" ", modifiers)} partial class {obj.Name}");
                 builder.AppendLine("{");
 
-                if (obj.Name == "vlgBlock")
-                    Debugger.Break();
+                var asQueryTypes = ctx.AsQueryTypes(obj);
+
+                foreach (var child in asQueryTypes)
+                {
+                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
+                }
+
+                builder.AppendLine("}");
+            }
+        }
+
+        void VerilogFluent(VerilogGeneratorContext ctx)
+        {
+            var builder = ctx.builder;
+
+            foreach (var obj in ctx.objects)
+            {
+                var modifiers = new List<string>();
+                AccessModifiers(modifiers, obj);
+                InstanceModifiers(modifiers, obj);
+
+                var inheritance = new List<string>();
+                ctx.Inheritance(inheritance, obj);
+
+                builder.AppendLine($"{string.Join(" ", modifiers)} partial class {obj.Name}");
+                builder.AppendLine("{");
 
                 var typedChildren = ctx.FluentTypes(obj);
 
@@ -389,69 +382,6 @@ namespace Quokka.RTL.SourceGenerators
                     builder.AppendLine($"\t}}");
                 }
 
-                var derivedTypes = typedChildren
-                    .SelectMany(t => ctx.Derived(t))
-                    .Concat(ctx.UnwrapBaseTypes(typedChildren))
-                    .Distinct();
-                foreach (var child in derivedTypes)
-                {
-                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
-                }
-                /*
-
-                foreach (var child in typedChildren)
-                {
-                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
-                }
-
-                var baseTypes = ctx.UnwrapBaseTypes(typedChildren.ToList());
-                foreach (var child in baseTypes)
-                {
-                    builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
-                }
-                */
-                /*
-
-                if (!obj.IsAbstract)
-                {
-                    var childrenType = ctx.ChildrenType(obj);
-                    if (childrenType != null)
-                    {
-                        var typedChildren = ctx.DerivedNonAbstract(childrenType);
-                        foreach (var child in typedChildren)
-                        {
-                            var childCtorParams = ctx.CtorParamsDecl(child);
-
-                            if (childCtorParams.Any())
-                            {
-                                builder.AppendLine($"\t//{child.Name}");
-                                builder.AppendLine($"\tpublic {obj.Name} With{child.Name.Substring(3)}({childCtorParams.ToCSV()})");
-                                builder.AppendLine($"\t{{");
-                                builder.AppendLine($"\t\tthis.Children.Add(new {child.Name}({ctx.CtorParamNames(child).ToCSV()}));");
-                                builder.AppendLine($"\t\treturn this;");
-                                builder.AppendLine($"\t}}");
-                            }
-
-                            builder.AppendLine($"\tpublic {obj.Name} With{child.Name.Substring(3)}({child.Name} obj)");
-                            builder.AppendLine($"\t{{");
-                            builder.AppendLine($"\t\tif (obj != null) Children.Add(obj);");
-                            builder.AppendLine($"\t\treturn this;");
-                            builder.AppendLine($"\t}}");
-                        }
-
-                        foreach (var child in typedChildren)
-                        {
-                            builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
-                        }
-
-                        var baseTypes = ctx.UnwrapBaseTypes(typedChildren.ToList());
-                        foreach (var child in baseTypes)
-                        {
-                            builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
-                        }
-                    }                    
-                }
-                */
                 builder.AppendLine("}");
             }
         }
@@ -487,9 +417,10 @@ namespace Quokka.RTL.SourceGenerators
             GenerateFile(ctx, VisitorImplementationTemplates, "visitors.implementation.templates", ".Implementation");
             GenerateFile(ctx, VisitorImplementation, "visitors.implementation", ".Implementation");
             GenerateFile(ctx, VisitorInterface, "visitors.interface");
-            //GenerateFile(ctx, TopLevelVisitor, "visitors");
             GenerateFile(ctx, VerilogQueries, "queries");
+            GenerateFile(ctx, VerilogFluent, "fluent");
             GenerateFile(ctx, VerilogAST, "ast");
+            GenerateFile(ctx, VerilogImplicit, "implicit");
             GenerateFile(ctx, VerilogInterfaces, "interface");
             GenerateFile(ctx, VerilogEnums, "enums");
         }
