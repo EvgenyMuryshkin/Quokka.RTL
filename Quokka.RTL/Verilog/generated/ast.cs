@@ -133,6 +133,51 @@ public partial class vlgCase : vlgAbstractObject
 	{
 		this.Check = Check;
 	}
+	// from vlgAssignExpression
+	public vlgCase(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.Check = new vlgAssignExpression(Target, Type, Expression);
+	}
+	// from vlgBinaryValueExpression
+	public vlgCase(RTLBitArray Value)
+	{
+		this.Check = new vlgBinaryValueExpression(Value);
+	}
+	// from vlgCompareExpression
+	public vlgCase(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
+	{
+		this.Check = new vlgCompareExpression(Lhs, Type, Rhs);
+	}
+	// from vlgIdentifierExpression
+	public vlgCase(vlgIdentifier Source)
+	{
+		this.Check = new vlgIdentifierExpression(Source);
+	}
+	// from vlgLogicExpression
+	public vlgCase(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
+	{
+		this.Check = new vlgLogicExpression(Lhs, Type, Rhs);
+	}
+	// from vlgMathExpression
+	public vlgCase(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
+	{
+		this.Check = new vlgMathExpression(Lhs, Type, Rhs);
+	}
+	// from vlgShiftExpression
+	public vlgCase(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
+	{
+		this.Check = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	// from vlgTernaryExpression
+	public vlgCase(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
+	{
+		this.Check = new vlgTernaryExpression(Condition, Lhs, Rhs);
+	}
+	// from vlgUnaryExpression
+	public vlgCase(vlgUnaryType Type, vlgExpression Rhs)
+	{
+		this.Check = new vlgUnaryExpression(Type, Rhs);
+	}
 	public vlgExpression Check { get; set; }
 	public List<vlgCaseStatement> Statements { get; set; } = new List<vlgCaseStatement>();
 	public vlgCaseDefault Default { get; set; } = new vlgCaseDefault();
@@ -197,6 +242,51 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	public vlgConditionalStatement(vlgExpression Condition)
 	{
 		this.Condition = Condition;
+	}
+	// from vlgAssignExpression
+	public vlgConditionalStatement(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.Condition = new vlgAssignExpression(Target, Type, Expression);
+	}
+	// from vlgBinaryValueExpression
+	public vlgConditionalStatement(RTLBitArray Value)
+	{
+		this.Condition = new vlgBinaryValueExpression(Value);
+	}
+	// from vlgCompareExpression
+	public vlgConditionalStatement(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
+	{
+		this.Condition = new vlgCompareExpression(Lhs, Type, Rhs);
+	}
+	// from vlgIdentifierExpression
+	public vlgConditionalStatement(vlgIdentifier Source)
+	{
+		this.Condition = new vlgIdentifierExpression(Source);
+	}
+	// from vlgLogicExpression
+	public vlgConditionalStatement(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
+	{
+		this.Condition = new vlgLogicExpression(Lhs, Type, Rhs);
+	}
+	// from vlgMathExpression
+	public vlgConditionalStatement(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
+	{
+		this.Condition = new vlgMathExpression(Lhs, Type, Rhs);
+	}
+	// from vlgShiftExpression
+	public vlgConditionalStatement(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
+	{
+		this.Condition = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	// from vlgTernaryExpression
+	public vlgConditionalStatement(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
+	{
+		this.Condition = new vlgTernaryExpression(Condition, Lhs, Rhs);
+	}
+	// from vlgUnaryExpression
+	public vlgConditionalStatement(vlgUnaryType Type, vlgExpression Rhs)
+	{
+		this.Condition = new vlgUnaryExpression(Type, Rhs);
 	}
 	public vlgExpression Condition { get; set; }
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
@@ -505,6 +595,51 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	public vlgModuleInstanceSimplePortMapping(vlgExpression External)
 	{
 		this.External = External;
+	}
+	// from vlgAssignExpression
+	public vlgModuleInstanceSimplePortMapping(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.External = new vlgAssignExpression(Target, Type, Expression);
+	}
+	// from vlgBinaryValueExpression
+	public vlgModuleInstanceSimplePortMapping(RTLBitArray Value)
+	{
+		this.External = new vlgBinaryValueExpression(Value);
+	}
+	// from vlgCompareExpression
+	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
+	{
+		this.External = new vlgCompareExpression(Lhs, Type, Rhs);
+	}
+	// from vlgIdentifierExpression
+	public vlgModuleInstanceSimplePortMapping(vlgIdentifier Source)
+	{
+		this.External = new vlgIdentifierExpression(Source);
+	}
+	// from vlgLogicExpression
+	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
+	{
+		this.External = new vlgLogicExpression(Lhs, Type, Rhs);
+	}
+	// from vlgMathExpression
+	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
+	{
+		this.External = new vlgMathExpression(Lhs, Type, Rhs);
+	}
+	// from vlgShiftExpression
+	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
+	{
+		this.External = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	// from vlgTernaryExpression
+	public vlgModuleInstanceSimplePortMapping(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
+	{
+		this.External = new vlgTernaryExpression(Condition, Lhs, Rhs);
+	}
+	// from vlgUnaryExpression
+	public vlgModuleInstanceSimplePortMapping(vlgUnaryType Type, vlgExpression Rhs)
+	{
+		this.External = new vlgUnaryExpression(Type, Rhs);
 	}
 	public vlgExpression External { get; set; }
 }

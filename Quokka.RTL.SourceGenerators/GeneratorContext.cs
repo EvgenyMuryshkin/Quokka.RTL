@@ -8,8 +8,9 @@ namespace Quokka.RTL.SourceGenerators
 {
     public class MethodParam
     {
-        public string Type { get; set; }
-        public string Name { get; set; }
+        public Type Type { get; set; }
+        public string TypeName { get; set; }
+        public string ParamName { get; set; }
     }
 
     public class ImplicitOperator
@@ -18,7 +19,7 @@ namespace Quokka.RTL.SourceGenerators
         public List<MethodParam> Params { get; set; } = new List<MethodParam>();
         public List<string> Args { get; set; } = new List<string>();
 
-        public string ParamsLine => Params.Select(p => $"{p.Type} {p.Name}").ToCSV();
+        public string ParamsLine => Params.Select(p => $"{p.TypeName} {p.ParamName}").ToCSV();
         public string ArgsLine => Args.ToCSV();
     }
 
@@ -93,22 +94,25 @@ namespace Quokka.RTL.SourceGenerators
                 {
                     return new MethodParam()
                     {
-                        Type = $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[]",
-                        Name = p.Name
+                        Type = p.PropertyType,
+                        TypeName = $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[]",
+                        ParamName = p.Name
                     };
                 }
 
                 return new MethodParam()
                 {
-                    Type = $"IEnumerable<{PropertyType(p.PropertyType.GetGenericArguments()[0])}>",
-                    Name = p.Name
+                    Type = p.PropertyType,
+                    TypeName = $"IEnumerable<{PropertyType(p.PropertyType.GetGenericArguments()[0])}>",
+                    ParamName = p.Name
                 };
             }
 
             return new MethodParam()
             {
-                Type = PropertyType(p.PropertyType),
-                Name = p.Name
+                Type = p.PropertyType,
+                TypeName = PropertyType(p.PropertyType),
+                ParamName = p.Name
             };
         }
 
@@ -227,6 +231,20 @@ namespace Quokka.RTL.SourceGenerators
             return null;
         }
 
+        public PropertyInfo SingleModelListProperty(Type obj)
+        {
+            var props = AllProperties(obj);
+            if (props.Count == 1 && props[0].PropertyType.IsList() && objects.Contains(props[0].PropertyType.GetGenericArguments()[0]))
+            {
+                var singleObjProp = props[0];
+                var modelType = singleObjProp.PropertyType.GetGenericArguments()[0];
+                if (objects.Contains(modelType) || interfaces.Contains(modelType))
+                    return singleObjProp;
+            }
+
+            return null;
+        }
+
         List<T> PropertyAttributes<T>(PropertyInfo p)
             where T : Attribute
         {
@@ -283,7 +301,7 @@ namespace Quokka.RTL.SourceGenerators
                 {
                     TargetType = obj,
                     Params = ctopParamArgs.Take(1).ToList(),
-                    Args = ctopParamArgs.Take(1).Select(p => p.Name).ToList()
+                    Args = ctopParamArgs.Take(1).Select(p => p.ParamName).ToList()
                 });
             }
 
@@ -309,8 +327,9 @@ namespace Quokka.RTL.SourceGenerators
                                 {
                                     new MethodParam()
                                     {
-                                        Type = PropertyType(d),
-                                        Name= "single"
+                                        Type = d,
+                                        TypeName = PropertyType(d),
+                                        ParamName= "single"
                                     }
                                 },
                                 Args =
@@ -329,8 +348,9 @@ namespace Quokka.RTL.SourceGenerators
                             {
                                 new MethodParam()
                                 {
-                                    Type = PropertyType(listItemType),
-                                    Name= "single"
+                                    Type = listItemType,
+                                    TypeName = PropertyType(listItemType),
+                                    ParamName= "single"
                                 }
                             },
                             Args =
@@ -355,8 +375,9 @@ namespace Quokka.RTL.SourceGenerators
                                 {
                                     new MethodParam()
                                     {
-                                        Type = PropertyType(d),
-                                        Name = singleProperty.Name
+                                        Type = d,
+                                        TypeName = PropertyType(d),
+                                        ParamName = singleProperty.Name
                                     }
                                 },
                                 Args =
@@ -382,6 +403,21 @@ namespace Quokka.RTL.SourceGenerators
                         });
                     }
                 }
+            }
+
+            return result;
+        }
+
+        public List<List<PropertyInfo>> CtorVariants(Type obj)
+        {
+            var result = new List<List<PropertyInfo>>();
+
+            var ctorParams = CtorParameters(obj);
+            result.Add(ctorParams);
+
+            if (ctorParams.Count > 1 && ctorParams.Last().PropertyType.IsList())
+            {
+                result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
             }
 
             return result;
