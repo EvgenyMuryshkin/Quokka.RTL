@@ -38,9 +38,53 @@ public abstract partial class vlgBlock : vlgAbstractCollection
 }
 public partial class vlgCase : vlgAbstractObject
 {
-	public static implicit operator vlgCase(vlgExpression Check)
+	public static implicit operator vlgCase(vlgAssignExpression source)
 	{
-		return new vlgCase(Check);
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgBinaryValueExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(RTLBitArray Value)
+	{
+		return new vlgCase(new vlgBinaryValueExpression(Value));
+	}
+	public static implicit operator vlgCase(vlgCompareExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgIdentifierExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(String Name)
+	{
+		return new vlgCase(new vlgIdentifierExpression(new vlgIdentifier(Name)));
+	}
+	public static implicit operator vlgCase(vlgIdentifier Source)
+	{
+		return new vlgCase(new vlgIdentifierExpression(Source));
+	}
+	public static implicit operator vlgCase(vlgLogicExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgMathExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgShiftExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgTernaryExpression source)
+	{
+		return new vlgCase(source);
+	}
+	public static implicit operator vlgCase(vlgUnaryExpression source)
+	{
+		return new vlgCase(source);
 	}
 }
 public partial class vlgCaseDefault : vlgCaseItem
@@ -51,69 +95,85 @@ public abstract partial class vlgCaseItem
 }
 public partial class vlgCaseStatement : vlgCaseItem
 {
-	public static implicit operator vlgCaseStatement(vlgBinaryValueExpression single)
+	public static implicit operator vlgCaseStatement(RTLBitArray Value)
 	{
-		return new vlgCaseStatement(new [] { single });
+		return new vlgCaseStatement(new vlgBinaryValueExpression(Value));
 	}
-	public static implicit operator vlgCaseStatement(vlgIdentifierExpression single)
+	public static implicit operator vlgCaseStatement(String Name)
 	{
-		return new vlgCaseStatement(new [] { single });
+		return new vlgCaseStatement(new vlgIdentifierExpression(new vlgIdentifier(Name)));
+	}
+	public static implicit operator vlgCaseStatement(vlgIdentifier Source)
+	{
+		return new vlgCaseStatement(new vlgIdentifierExpression(Source));
 	}
 }
 public partial class vlgCombBlock : vlgAbstractObject
 {
-	public static implicit operator vlgCombBlock(vlgIdentifier single)
+	public static implicit operator vlgCombBlock(vlgIdentifier source)
 	{
-		return new vlgCombBlock(new [] { single });
+		return new vlgCombBlock(source);
+	}
+	public static implicit operator vlgCombBlock(String Name)
+	{
+		return new vlgCombBlock(new vlgIdentifier(Name));
 	}
 }
 public partial class vlgComment : vlgAbstractObject
 {
-	public static implicit operator vlgComment(String single)
-	{
-		return new vlgComment(new [] { single });
-	}
 }
 public partial class vlgCompareExpression : vlgExpression
 {
 }
 public partial class vlgConditionalStatement : vlgAbstractObject
 {
-	public static implicit operator vlgConditionalStatement(vlgAssignExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgAssignExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
 	}
-	public static implicit operator vlgConditionalStatement(vlgBinaryValueExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgBinaryValueExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
 	}
-	public static implicit operator vlgConditionalStatement(vlgCompareExpression Condition)
+	public static implicit operator vlgConditionalStatement(RTLBitArray Value)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(new vlgBinaryValueExpression(Value));
 	}
-	public static implicit operator vlgConditionalStatement(vlgIdentifierExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgCompareExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
 	}
-	public static implicit operator vlgConditionalStatement(vlgLogicExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgIdentifierExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
 	}
-	public static implicit operator vlgConditionalStatement(vlgMathExpression Condition)
+	public static implicit operator vlgConditionalStatement(String Name)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(new vlgIdentifierExpression(new vlgIdentifier(Name)));
 	}
-	public static implicit operator vlgConditionalStatement(vlgShiftExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgIdentifier Source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(new vlgIdentifierExpression(Source));
 	}
-	public static implicit operator vlgConditionalStatement(vlgTernaryExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgLogicExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
 	}
-	public static implicit operator vlgConditionalStatement(vlgUnaryExpression Condition)
+	public static implicit operator vlgConditionalStatement(vlgMathExpression source)
 	{
-		return new vlgConditionalStatement(Condition);
+		return new vlgConditionalStatement(source);
+	}
+	public static implicit operator vlgConditionalStatement(vlgShiftExpression source)
+	{
+		return new vlgConditionalStatement(source);
+	}
+	public static implicit operator vlgConditionalStatement(vlgTernaryExpression source)
+	{
+		return new vlgConditionalStatement(source);
+	}
+	public static implicit operator vlgConditionalStatement(vlgUnaryExpression source)
+	{
+		return new vlgConditionalStatement(source);
 	}
 }
 public partial class vlgCustomDeclaration : vlgAbstractObject
@@ -160,6 +220,10 @@ public partial class vlgIdentifier : vlgAbstractObject
 }
 public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 {
+	public static implicit operator vlgIdentifierExpression(String Name)
+	{
+		return new vlgIdentifierExpression(new vlgIdentifier(Name));
+	}
 	public static implicit operator vlgIdentifierExpression(vlgIdentifier Source)
 	{
 		return new vlgIdentifierExpression(Source);
@@ -243,41 +307,53 @@ public partial class vlgModuleInstancePortMappings : vlgAbstractCollection
 }
 public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortMapping
 {
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgAssignExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgAssignExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgBinaryValueExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgBinaryValueExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgCompareExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(RTLBitArray Value)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(new vlgBinaryValueExpression(Value));
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgIdentifierExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgCompareExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgLogicExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgIdentifierExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgMathExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(String Name)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(new vlgIdentifierExpression(new vlgIdentifier(Name)));
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgShiftExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgIdentifier Source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(new vlgIdentifierExpression(Source));
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgTernaryExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgLogicExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
-	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgUnaryExpression External)
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgMathExpression source)
 	{
-		return new vlgModuleInstanceSimplePortMapping(External);
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgShiftExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgTernaryExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgUnaryExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
 	}
 }
 public partial class vlgModuleInterface : vlgAbstractCollection
@@ -304,41 +380,9 @@ public partial class vlgProcedureCall : vlgAbstractObject
 }
 public partial class vlgRange : vlgAbstractObject
 {
-	public static implicit operator vlgRange(vlgAssignExpression single)
+	public static implicit operator vlgRange(vlgExpression source)
 	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgBinaryValueExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgCompareExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgIdentifierExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgLogicExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgMathExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgShiftExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgTernaryExpression single)
-	{
-		return new vlgRange(new [] { single });
-	}
-	public static implicit operator vlgRange(vlgUnaryExpression single)
-	{
-		return new vlgRange(new [] { single });
+		return new vlgRange(source);
 	}
 }
 public partial class vlgShiftExpression : vlgExpression
@@ -361,9 +405,9 @@ public partial class vlgStandardModulePortImplementation : vlgStandardModulePort
 }
 public partial class vlgSyncBlock : vlgAbstractObject
 {
-	public static implicit operator vlgSyncBlock(vlgSyncBlockSensitivityItem single)
+	public static implicit operator vlgSyncBlock(vlgSyncBlockSensitivityItem source)
 	{
-		return new vlgSyncBlock(new [] { single });
+		return new vlgSyncBlock(source);
 	}
 }
 public partial class vlgSyncBlockSensitivityItem : vlgAbstractObject
@@ -374,10 +418,6 @@ public partial class vlgTernaryExpression : vlgExpression
 }
 public partial class vlgText : vlgAbstractObject
 {
-	public static implicit operator vlgText(String single)
-	{
-		return new vlgText(new [] { single });
-	}
 }
 public partial class vlgUnaryExpression : vlgExpression
 {

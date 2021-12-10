@@ -9,17 +9,18 @@ namespace Quokka.RTL.SourceGenerators
     public class MethodParam
     {
         public Type Type { get; set; }
-        public string TypeName { get; set; }
+        public string ParamType { get; set; }
         public string ParamName { get; set; }
     }
 
     public class ImplicitOperator
     {
-        public Type TargetType { get; set; }
+        public List<Type> ChainedTypes { get; set; } = new List<Type>();
+        public Type TargetType => ChainedTypes[0];
         public List<MethodParam> Params { get; set; } = new List<MethodParam>();
         public List<string> Args { get; set; } = new List<string>();
 
-        public string ParamsLine => Params.Select(p => $"{p.TypeName} {p.ParamName}").ToCSV();
+        public string ParamsLine => Params.Select(p => $"{p.ParamType} {p.ParamName}").ToCSV();
         public string ArgsLine => Args.ToCSV();
     }
 
@@ -86,8 +87,40 @@ namespace Quokka.RTL.SourceGenerators
             }).ToList();
         }
 
+        public MethodParam MethodParam(Type propertyType, string propertyName, bool asParams = false)
+        {
+            if (propertyType.IsList())
+            {
+                if (asParams)
+                {
+                    return new MethodParam()
+                    {
+                        Type = propertyType,
+                        ParamType = $"params {PropertyType(propertyType.GetGenericArguments()[0])}[]",
+                        ParamName = propertyName
+                    };
+                }
+
+                return new MethodParam()
+                {
+                    Type = propertyType,
+                    ParamType = $"IEnumerable<{PropertyType(propertyType.GetGenericArguments()[0])}>",
+                    ParamName = propertyName
+                };
+            }
+
+            return new MethodParam()
+            {
+                Type = propertyType,
+                ParamType = PropertyType(propertyType),
+                ParamName = propertyName
+            };
+        }
+
         public MethodParam MethodParam(PropertyInfo p, bool asParams = false)
         {
+            return MethodParam(p.PropertyType, p.Name, asParams);
+
             if (p.PropertyType.IsList())
             {
                 if (asParams)
@@ -95,7 +128,7 @@ namespace Quokka.RTL.SourceGenerators
                     return new MethodParam()
                     {
                         Type = p.PropertyType,
-                        TypeName = $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[]",
+                        ParamType = $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[]",
                         ParamName = p.Name
                     };
                 }
@@ -103,7 +136,7 @@ namespace Quokka.RTL.SourceGenerators
                 return new MethodParam()
                 {
                     Type = p.PropertyType,
-                    TypeName = $"IEnumerable<{PropertyType(p.PropertyType.GetGenericArguments()[0])}>",
+                    ParamType = $"IEnumerable<{PropertyType(p.PropertyType.GetGenericArguments()[0])}>",
                     ParamName = p.Name
                 };
             }
@@ -111,7 +144,7 @@ namespace Quokka.RTL.SourceGenerators
             return new MethodParam()
             {
                 Type = p.PropertyType,
-                TypeName = PropertyType(p.PropertyType),
+                ParamType = PropertyType(p.PropertyType),
                 ParamName = p.Name
             };
         }
@@ -282,13 +315,83 @@ namespace Quokka.RTL.SourceGenerators
             return p.Name;
         }
 
-        public List<ImplicitOperator> ImplicitOperators(Type obj)
+        public List<ImplicitOperator> ImplicitOperators(Type obj, List<Type> chainedTypes)
         {
             var result = new List<ImplicitOperator>();
 
-            if (obj.IsAbstract)
+            if (obj == null || !objects.Contains(obj) || obj.IsAbstract)
                 return result;
 
+            chainedTypes = (chainedTypes ?? new List<Type>()).ToList();
+            chainedTypes.Add(obj);
+
+            foreach (var ctorVariant in CtorVariants(obj).Where(v => v.Count == 1))
+            {
+                var methodParams = MethodParams(ctorVariant);
+
+                var singlePropType = ctorVariant[0].PropertyType;
+                if (singlePropType.IsList())
+                {
+                    var elementType = singlePropType.GetGenericArguments()[0];
+                    if (elementType.IsInterface)
+                    {
+                        var derived = DerivedNonAbstract(elementType);
+                        foreach (var d in derived)
+                        {
+                            result.AddRange(ImplicitOperators(d, chainedTypes));
+                        }
+                    }
+                    else if (objects.Contains(elementType))
+                    {
+                        result.Add(new ImplicitOperator()
+                        {
+                            ChainedTypes = chainedTypes,
+                            Params = { MethodParam(elementType, "source") },
+                            Args = { "source" }
+                        });
+
+                        result.AddRange(ImplicitOperators(elementType, chainedTypes));
+                    }
+                }
+                else if (singlePropType.IsAbstract)
+                {
+                    var derived = DerivedNonAbstract(singlePropType);
+                    foreach (var d in derived)
+                    {
+                        result.Add(new ImplicitOperator()
+                        {
+                            ChainedTypes = chainedTypes,
+                            Params = { MethodParam(d, "source") } ,
+                            Args = { "source" }
+                        });
+
+                        result.AddRange(ImplicitOperators(d, chainedTypes));
+                    }
+                }
+                else if (objects.Contains(singlePropType))
+                {
+                    result.AddRange(ImplicitOperators(singlePropType, chainedTypes));
+
+                    result.Add(new ImplicitOperator()
+                    {
+                        ChainedTypes = chainedTypes,
+                        Params = methodParams.ToList(),
+                        Args = methodParams.Select(p => p.ParamName).ToList()
+                    });
+                }
+                else
+                {
+                    result.Add(new ImplicitOperator()
+                    {
+                        ChainedTypes = chainedTypes,
+                        Params = methodParams.ToList(),
+                        Args = methodParams.Select(p => p.ParamName).ToList()
+                    });
+                }
+            }
+
+            return result;
+            /*
             var ctorParamProps = CtorParameters(obj);
             var ctopParamArgs = MethodParams(ctorParamProps);
 
@@ -303,6 +406,8 @@ namespace Quokka.RTL.SourceGenerators
                     Params = ctopParamArgs.Take(1).ToList(),
                     Args = ctopParamArgs.Take(1).Select(p => p.ParamName).ToList()
                 });
+
+                result.AddRange(ImplicitOperators(ctorParamProps[0].PropertyType));
             }
 
             if (ctorParamProps.Count == 1)
@@ -328,7 +433,7 @@ namespace Quokka.RTL.SourceGenerators
                                     new MethodParam()
                                     {
                                         Type = d,
-                                        TypeName = PropertyType(d),
+                                        ParamType = PropertyType(d),
                                         ParamName= "single"
                                     }
                                 },
@@ -349,7 +454,7 @@ namespace Quokka.RTL.SourceGenerators
                                 new MethodParam()
                                 {
                                     Type = listItemType,
-                                    TypeName = PropertyType(listItemType),
+                                    ParamType = PropertyType(listItemType),
                                     ParamName= "single"
                                 }
                             },
@@ -376,7 +481,7 @@ namespace Quokka.RTL.SourceGenerators
                                     new MethodParam()
                                     {
                                         Type = d,
-                                        TypeName = PropertyType(d),
+                                        ParamType = PropertyType(d),
                                         ParamName = singleProperty.Name
                                     }
                                 },
@@ -406,6 +511,7 @@ namespace Quokka.RTL.SourceGenerators
             }
 
             return result;
+            */
         }
 
         public List<List<PropertyInfo>> CtorVariants(Type obj)

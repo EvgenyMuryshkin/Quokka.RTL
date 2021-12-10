@@ -198,6 +198,16 @@ public partial class vlgCaseStatement : vlgCaseItem
 	{
 		this.Conditions = Conditions?.ToList() ?? new List<vlgICaseStatement>();
 	}
+	// from vlgBinaryValueExpression
+	public vlgCaseStatement(RTLBitArray Value)
+	{
+		this.Conditions.Add(new vlgBinaryValueExpression(Value));
+	}
+	// from vlgIdentifierExpression
+	public vlgCaseStatement(vlgIdentifier Source)
+	{
+		this.Conditions.Add(new vlgIdentifierExpression(Source));
+	}
 	/// <summary>
 	/// vlgBinaryValueExpression
 	/// vlgIdentifierExpression
@@ -210,6 +220,16 @@ public partial class vlgCombBlock : vlgAbstractObject
 	public vlgCombBlock(params vlgIdentifier[] SensitivityList)
 	{
 		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgIdentifier>();
+	}
+	// from vlgIdentifier
+	public vlgCombBlock(String Name, params vlgRange[] Indexes)
+	{
+		this.SensitivityList.Add(new vlgIdentifier(Name, Indexes));
+	}
+	// from vlgIdentifier
+	public vlgCombBlock(String Name)
+	{
+		this.SensitivityList.Add(new vlgIdentifier(Name));
 	}
 	public List<vlgIdentifier> SensitivityList { get; set; } = new List<vlgIdentifier>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
@@ -713,6 +733,51 @@ public partial class vlgRange : vlgAbstractObject
 	{
 		this.Indexes = Indexes?.ToList() ?? new List<vlgExpression>();
 	}
+	// from vlgAssignExpression
+	public vlgRange(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.Indexes.Add(new vlgAssignExpression(Target, Type, Expression));
+	}
+	// from vlgBinaryValueExpression
+	public vlgRange(RTLBitArray Value)
+	{
+		this.Indexes.Add(new vlgBinaryValueExpression(Value));
+	}
+	// from vlgCompareExpression
+	public vlgRange(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgCompareExpression(Lhs, Type, Rhs));
+	}
+	// from vlgIdentifierExpression
+	public vlgRange(vlgIdentifier Source)
+	{
+		this.Indexes.Add(new vlgIdentifierExpression(Source));
+	}
+	// from vlgLogicExpression
+	public vlgRange(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgLogicExpression(Lhs, Type, Rhs));
+	}
+	// from vlgMathExpression
+	public vlgRange(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgMathExpression(Lhs, Type, Rhs));
+	}
+	// from vlgShiftExpression
+	public vlgRange(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgShiftExpression(Lhs, Type, Rhs));
+	}
+	// from vlgTernaryExpression
+	public vlgRange(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgTernaryExpression(Condition, Lhs, Rhs));
+	}
+	// from vlgUnaryExpression
+	public vlgRange(vlgUnaryType Type, vlgExpression Rhs)
+	{
+		this.Indexes.Add(new vlgUnaryExpression(Type, Rhs));
+	}
 	/// <summary>
 	/// vlgAssignExpression
 	/// vlgBinaryValueExpression
@@ -801,6 +866,11 @@ public partial class vlgSyncBlock : vlgAbstractObject
 	public vlgSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
 	{
 		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgSyncBlockSensitivityItem>();
+	}
+	// from vlgSyncBlockSensitivityItem
+	public vlgSyncBlock(vlgEdgeType Edge, vlgIdentifier Identifier)
+	{
+		this.SensitivityList.Add(new vlgSyncBlockSensitivityItem(Edge, Identifier));
 	}
 	public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; } = new List<vlgSyncBlockSensitivityItem>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
