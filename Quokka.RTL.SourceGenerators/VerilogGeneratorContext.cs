@@ -2,6 +2,6 @@
 {
     public class VerilogGeneratorContext : GeneratorContext
     {
-        public VerilogGeneratorContext() : base("vlg") { }
+        public VerilogGeneratorContext() : base("Verilog", "vlg") { }
     }
 }

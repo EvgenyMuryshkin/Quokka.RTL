@@ -6,35 +6,9 @@ using System.Text;
 
 namespace Quokka.RTL.SourceGenerators
 {
-    public class MethodParam
-    {
-        public Type Type { get; set; }
-        public string ParamType { get; set; }
-        public string ParamName { get; set; }
-    }
-
-    public class ImplicitOperator
-    {
-        public List<Type> ChainedTypes { get; set; } = new List<Type>();
-
-        Type _targetTypeOverride;
-        public Type TargetType
-        {
-            get => _targetTypeOverride ?? ChainedTypes[0];
-            set
-            {
-                _targetTypeOverride = value;
-            }
-        }
-        public List<MethodParam> Params { get; set; } = new List<MethodParam>();
-        public List<string> Args { get; set; } = new List<string>();
-
-        public string ParamsLine => Params.Select(p => $"{p.ParamType} {p.ParamName}").ToCSV();
-        public string ArgsLine => Args.ToCSV();
-    }
-
     public class GeneratorContext
     {
+        public readonly string ns;
         public readonly string prefix;
         public List<TypeInfo> enums;
         public List<TypeInfo> interfaces;
@@ -43,8 +17,9 @@ namespace Quokka.RTL.SourceGenerators
 
         public StringBuilder builder = new StringBuilder();
 
-        public GeneratorContext(string prefix)
+        public GeneratorContext(string ns, string prefix)
         {
+            this.ns = ns;
             this.prefix = prefix;
 
             objects = Assembly
