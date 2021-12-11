@@ -6,6 +6,10 @@ namespace Quokka.RTL.Verilog
 using Quokka.RTL.Tools;
 public abstract partial class vlgAbstractCollection : vlgAbstractObject
 {
+	public static implicit operator vlgAbstractCollection(String Name)
+	{
+		return new vlgInitial(Name);
+	}
 }
 public abstract partial class vlgAbstractForLoop : vlgAbstractCollection
 {
@@ -92,6 +96,18 @@ public partial class vlgCaseDefault : vlgCaseItem
 }
 public abstract partial class vlgCaseItem
 {
+	public static implicit operator vlgCaseItem(RTLBitArray Value)
+	{
+		return new vlgCaseStatement(new vlgBinaryValueExpression(Value));
+	}
+	public static implicit operator vlgCaseItem(String Name)
+	{
+		return new vlgCaseStatement(new vlgIdentifierExpression(new vlgIdentifier(Name)));
+	}
+	public static implicit operator vlgCaseItem(vlgIdentifier Source)
+	{
+		return new vlgCaseStatement(new vlgIdentifierExpression(Source));
+	}
 }
 public partial class vlgCaseStatement : vlgCaseItem
 {
@@ -187,6 +203,18 @@ public abstract partial class vlgDeclarationModulePort : vlgModulePort
 }
 public abstract partial class vlgExpression : vlgAbstractObject
 {
+	public static implicit operator vlgExpression(RTLBitArray Value)
+	{
+		return new vlgBinaryValueExpression(Value);
+	}
+	public static implicit operator vlgExpression(String Name)
+	{
+		return new vlgIdentifierExpression(new vlgIdentifier(Name));
+	}
+	public static implicit operator vlgExpression(vlgIdentifier Source)
+	{
+		return new vlgIdentifierExpression(Source);
+	}
 }
 public partial class vlgFile : vlgAbstractCollection
 {
@@ -301,6 +329,54 @@ public partial class vlgModuleInstanceParameters : vlgAbstractCollection
 }
 public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 {
+	public static implicit operator vlgModuleInstancePortMapping(vlgAssignExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgBinaryValueExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(RTLBitArray Value)
+	{
+		return new vlgModuleInstanceSimplePortMapping(new vlgBinaryValueExpression(Value));
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgCompareExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgIdentifierExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(String Name)
+	{
+		return new vlgModuleInstanceSimplePortMapping(new vlgIdentifierExpression(new vlgIdentifier(Name)));
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgIdentifier Source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(new vlgIdentifierExpression(Source));
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgLogicExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgMathExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgShiftExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgTernaryExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	public static implicit operator vlgModuleInstancePortMapping(vlgUnaryExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
 }
 public partial class vlgModuleInstancePortMappings : vlgAbstractCollection
 {
@@ -367,6 +443,10 @@ public partial class vlgModuleParameters : vlgAbstractCollection
 }
 public abstract partial class vlgModulePort : vlgAbstractObject
 {
+	public static implicit operator vlgModulePort(String Name)
+	{
+		return new vlgPlaceholderModulePort(Name);
+	}
 }
 public partial class vlgPlaceholderModulePort : vlgModulePort
 {

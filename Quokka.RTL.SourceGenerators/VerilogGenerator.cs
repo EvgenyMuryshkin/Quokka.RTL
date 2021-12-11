@@ -373,10 +373,10 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine();
                 builder.AppendLine("{");
 
-                if (obj.Name == "vlgConditionalStatement")
+                if (obj.Name == "vlgRange")
                     Debugger.Break();
 
-                var implicitOperators = ctx.ImplicitOperators(obj, null);
+                var implicitOperators = ctx.ImplicitOperators(obj);
 
                 foreach (var iop in implicitOperators)
                 {

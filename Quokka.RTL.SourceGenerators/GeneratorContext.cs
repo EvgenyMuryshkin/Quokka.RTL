@@ -16,7 +16,16 @@ namespace Quokka.RTL.SourceGenerators
     public class ImplicitOperator
     {
         public List<Type> ChainedTypes { get; set; } = new List<Type>();
-        public Type TargetType => ChainedTypes[0];
+
+        Type _targetTypeOverride;
+        public Type TargetType
+        {
+            get => _targetTypeOverride ?? ChainedTypes[0];
+            set
+            {
+                _targetTypeOverride = value;
+            }
+        }
         public List<MethodParam> Params { get; set; } = new List<MethodParam>();
         public List<string> Args { get; set; } = new List<string>();
 
@@ -314,13 +323,37 @@ namespace Quokka.RTL.SourceGenerators
 
             return p.Name;
         }
+        public List<ImplicitOperator> ImplicitOperators(Type obj)
+        {
+            var all = AllImplicitOperators(obj, null);
+            var groups = all.GroupBy(p => p.Params[0].Type).Where(g => g.Count() == 1).SelectMany(g => g).ToList();
+            return groups;
+        }
 
-        public List<ImplicitOperator> ImplicitOperators(Type obj, List<Type> chainedTypes)
+        List<ImplicitOperator> AllImplicitOperators(Type obj, List<Type> chainedTypes)
         {
             var result = new List<ImplicitOperator>();
 
-            if (obj == null || !objects.Contains(obj) || obj.IsAbstract)
+            if (obj == null || !objects.Contains(obj))
                 return result;
+
+            // top level abstract object
+            if (obj.IsAbstract && chainedTypes == null)
+            {
+                var derived = DerivedNonAbstract(obj);
+
+                foreach (var d in derived)
+                {
+                    var dimp = AllImplicitOperators(d, null);
+                    foreach (var i in dimp.Where(d => !obj.IsAssignableFrom(d.Params[0].Type)))
+                    {
+                        i.TargetType = obj;
+                        result.Add(i);
+                    }
+                }
+
+                return result;
+            }
 
             chainedTypes = (chainedTypes ?? new List<Type>()).ToList();
             chainedTypes.Add(obj);
@@ -338,7 +371,7 @@ namespace Quokka.RTL.SourceGenerators
                         var derived = DerivedNonAbstract(elementType);
                         foreach (var d in derived)
                         {
-                            result.AddRange(ImplicitOperators(d, chainedTypes));
+                            result.AddRange(AllImplicitOperators(d, chainedTypes));
                         }
                     }
                     else if (objects.Contains(elementType))
@@ -350,7 +383,7 @@ namespace Quokka.RTL.SourceGenerators
                             Args = { "source" }
                         });
 
-                        result.AddRange(ImplicitOperators(elementType, chainedTypes));
+                        result.AddRange(AllImplicitOperators(elementType, chainedTypes));
                     }
                 }
                 else if (singlePropType.IsAbstract)
@@ -365,12 +398,12 @@ namespace Quokka.RTL.SourceGenerators
                             Args = { "source" }
                         });
 
-                        result.AddRange(ImplicitOperators(d, chainedTypes));
+                        result.AddRange(AllImplicitOperators(d, chainedTypes));
                     }
                 }
                 else if (objects.Contains(singlePropType))
                 {
-                    result.AddRange(ImplicitOperators(singlePropType, chainedTypes));
+                    result.AddRange(AllImplicitOperators(singlePropType, chainedTypes));
 
                     result.Add(new ImplicitOperator()
                     {
