@@ -60,6 +60,7 @@ namespace Quokka.RTL.SourceGenerators
         }
         public static string BitArraySourcePath => Path.Combine(PathToSolution(), @"Quokka.RTL/RTLBitArray");
         public static string VerilogSourcePath => Path.Combine(PathToSolution(), @"Quokka.RTL/Verilog/generated");
+        public static string VHDLSourcePath => Path.Combine(PathToSolution(), @"Quokka.RTL/VHDL/generated");
         public static string TestsPath => Path.Combine(PathToSolution(), @"Quokka.RTL.Tests/RTLBitArrayTests");
     }
 }

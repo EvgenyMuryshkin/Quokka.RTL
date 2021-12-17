@@ -252,7 +252,7 @@ namespace Quokka.RTL.SourceGenerators
                     {
                         if (p.PropertyType.IsList())
                         {
-                            builder.AppendLine($"\t\tthis.{p.Name} = {p.Name}?.ToList() ?? new List<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>();");
+                            builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Array.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
                         }
                         else
                         {

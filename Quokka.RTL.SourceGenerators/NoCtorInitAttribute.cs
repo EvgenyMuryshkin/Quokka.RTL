@@ -6,4 +6,9 @@ namespace Quokka.RTL.SourceGenerators
     {
 
     }
+
+    public class NoVisitorAttribute : Attribute
+    {
+
+    }
 }

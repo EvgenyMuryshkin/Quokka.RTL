@@ -127,7 +127,7 @@ public partial class vlgCase : vlgAbstractObject
 	public vlgCase(vlgExpression Check, params vlgCaseStatement[] Statements)
 	{
 		this.Check = Check;
-		this.Statements = Statements?.ToList() ?? new List<vlgCaseStatement>();
+		this.Statements = (Statements ?? Array.Empty<vlgCaseStatement>()).Where(s => s != null).ToList();
 	}
 	public vlgCase(vlgExpression Check)
 	{
@@ -196,7 +196,7 @@ public partial class vlgCaseStatement : vlgCaseItem
 	public vlgCaseStatement() { }
 	public vlgCaseStatement(params vlgICaseStatement[] Conditions)
 	{
-		this.Conditions = Conditions?.ToList() ?? new List<vlgICaseStatement>();
+		this.Conditions = (Conditions ?? Array.Empty<vlgICaseStatement>()).Where(s => s != null).ToList();
 	}
 	// from vlgBinaryValueExpression
 	public vlgCaseStatement(RTLBitArray Value)
@@ -219,7 +219,7 @@ public partial class vlgCombBlock : vlgAbstractObject
 	public vlgCombBlock() { }
 	public vlgCombBlock(params vlgIdentifier[] SensitivityList)
 	{
-		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgIdentifier>();
+		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgIdentifier>()).Where(s => s != null).ToList();
 	}
 	// from vlgIdentifier
 	public vlgCombBlock(String Name, params vlgRange[] Indexes)
@@ -239,7 +239,7 @@ public partial class vlgComment : vlgAbstractObject
 	public vlgComment() { }
 	public vlgComment(params String[] Lines)
 	{
-		this.Lines = Lines?.ToList() ?? new List<String>();
+		this.Lines = (Lines ?? Array.Empty<String>()).Where(s => s != null).ToList();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
@@ -397,7 +397,7 @@ public partial class vlgIdentifier : vlgAbstractObject
 	public vlgIdentifier(String Name, params vlgRange[] Indexes)
 	{
 		this.Name = Name;
-		this.Indexes = Indexes?.ToList() ?? new List<vlgRange>();
+		this.Indexes = (Indexes ?? Array.Empty<vlgRange>()).Where(s => s != null).ToList();
 	}
 	public vlgIdentifier(String Name)
 	{
@@ -704,7 +704,7 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	{
 		this.Proc = Proc;
 		this.Name = Name;
-		this.Parameters = Parameters?.ToList() ?? new List<vlgExpression>();
+		this.Parameters = (Parameters ?? Array.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
 	public vlgProcedureCall(String Proc, String Name)
 	{
@@ -731,7 +731,7 @@ public partial class vlgRange : vlgAbstractObject
 	public vlgRange() { }
 	public vlgRange(params vlgExpression[] Indexes)
 	{
-		this.Indexes = Indexes?.ToList() ?? new List<vlgExpression>();
+		this.Indexes = (Indexes ?? Array.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
 	// from vlgAssignExpression
 	public vlgRange(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
@@ -865,7 +865,7 @@ public partial class vlgSyncBlock : vlgAbstractObject
 	public vlgSyncBlock() { }
 	public vlgSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
 	{
-		this.SensitivityList = SensitivityList?.ToList() ?? new List<vlgSyncBlockSensitivityItem>();
+		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgSyncBlockSensitivityItem>()).Where(s => s != null).ToList();
 	}
 	// from vlgSyncBlockSensitivityItem
 	public vlgSyncBlock(vlgEdgeType Edge, vlgIdentifier Identifier)
@@ -904,7 +904,7 @@ public partial class vlgText : vlgAbstractObject
 	public vlgText() { }
 	public vlgText(params String[] Lines)
 	{
-		this.Lines = Lines?.ToList() ?? new List<String>();
+		this.Lines = (Lines ?? Array.Empty<String>()).Where(s => s != null).ToList();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }

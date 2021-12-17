@@ -43,7 +43,7 @@ namespace Quokka.RTL.SourceGenerators
                 .OrderBy(t => t.Name)
                 .ToList();
 
-            visitors = objects.Where(o => !o.IsAbstract /*&& typeof(IVisitorInterface).IsAssignableFrom(o)*/).ToList();
+            visitors = objects.Where(o => !o.IsAbstract && o.GetCustomAttribute< NoVisitorAttribute>(true) == null /*&& typeof(IVisitorInterface).IsAssignableFrom(o)*/).ToList();
         }
 
         public List<PropertyInfo> CtorParameters(Type obj)
