@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace Quokka.RTL.VHDL.Implementation
 {
     public partial class vhdEntityVisitorImplementation

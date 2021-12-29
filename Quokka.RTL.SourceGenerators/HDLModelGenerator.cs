@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -223,96 +224,78 @@ namespace Quokka.RTL.SourceGenerators
                     }
                     */
                 }
-                /*
-                if (!obj.IsAbstract)
-                {
-                    var singleObjListModelProp = ctx.SingleModelListProperty(obj);
-                    if (singleObjListModelProp != null)
-                    {
-                        var itemType = singleObjListModelProp.PropertyType.GetGenericArguments()[0];
-                        var derived = ctx.DerivedNonAbstract(itemType);
-                        foreach (var d in derived)
-                        {
-                            builder.AppendLine($"\t//{d.Name}");
-                        }
-                    }
-                }
-                */
-
-
-                Action<List<PropertyInfo>> ctor = (ctorParams) =>
-                {
-                    if (!ctorParams.Any())
-                        return;
-
-                    var ctorArgs = ctx.CtorParamsDecl(ctorParams);
-                    builder.AppendLine($"\tpublic {obj.Name}({ctorArgs.ToCSV()})");
-                    builder.AppendLine($"\t{{");
-                    foreach (var p in ctorParams)
-                    {
-                        if (p.PropertyType.IsList())
-                        {
-                            builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Array.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
-                        }
-                        else
-                        {
-                            builder.AppendLine($"\t\tthis.{p.Name} = {p.Name};");
-                        }
-                    }
-                    builder.AppendLine($"\t}}");
-
-                    if (ctorParams.Count == 1)
-                    {
-                        if (ctx.objects.Contains(ctorParams[0].PropertyType))
-                        {
-                            var derived = ctx.DerivedNonAbstract(ctorParams[0].PropertyType).Where(t => t != ctorParams[0].PropertyType);
-                            if (derived.Any())
-                            {
-                                foreach (var d in derived)
-                                {
-                                    foreach (var ctorVariant in ctx.CtorVariants(d))
-                                    {
-                                        var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant);
-                                        var derivedCtorParamNames = ctorVariant.Select(p => p.Name).ToCSV();
-                                        builder.AppendLine($"\t// from {d.Name}");
-                                        builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
-                                        builder.AppendLine($"\t{{");
-                                        builder.AppendLine($"\t\tthis.{ctorParams[0].Name} = new {d.Name}({derivedCtorParamNames});");
-                                        builder.AppendLine($"\t}}");
-                                    }
-                                }
-                            }
-                        }
-
-                        if (ctorParams[0].PropertyType.IsList())
-                        {
-                            var derived = ctx.DerivedNonAbstract(ctorParams[0].PropertyType.GetGenericArguments()[0]).Where(t => t != ctorParams[0].PropertyType);
-                            if (derived.Any())
-                            {
-                                foreach (var d in derived)
-                                {
-                                    foreach (var ctorVariant in ctx.CtorVariants(d))
-                                    {
-                                        var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant);
-                                        var derivedCtorParamNames = ctorVariant.Select(p => p.Name).ToCSV();
-                                        builder.AppendLine($"\t// from {d.Name}");
-                                        builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
-                                        builder.AppendLine($"\t{{");
-                                        builder.AppendLine($"\t\tthis.{ctorParams[0].Name}.Add(new {d.Name}({derivedCtorParamNames}));");
-                                        builder.AppendLine($"\t}}");
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                };
 
                 // object ctor
 
-                foreach (var ctorVariant in ctx.CtorVariants(obj))
-                {
-                    ctor(ctorVariant);
+                foreach (var ctorVariant in ctx.AllCtorVariants(obj))
+                {                   
+                    switch (ctorVariant.CtorVariantType)
+                    {
+                        case CtorVariantType.Direct:
+                        {
+                            var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+
+                            if (ctorVariant.IsCommented)
+                            {
+                                builder.AppendLine($"\t// ignored {obj.Name}({ctorArgs.ToCSV()})");
+                                continue;
+                            }
+
+                            builder.AppendLine($"\tpublic {obj.Name}({ctorArgs.ToCSV()})");
+                            builder.AppendLine($"\t{{");
+                            foreach (var p in ctorVariant.Props)
+                            {
+                                if (p.PropertyType.IsList())
+                                {
+                                    builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Array.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
+                                }
+                                else
+                                {
+                                    builder.AppendLine($"\t\tthis.{p.Name} = {p.Name};");
+                                }
+                            }
+                            builder.AppendLine($"\t}}");
+
+                        }
+                        break;
+                        case CtorVariantType.SingleObjct:
+                        {
+                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+                            var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
+                            builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
+                            
+                            if (ctorVariant.IsCommented)
+                            {
+                                builder.AppendLine($"\t// ignored {obj.Name}({derivedCtorArgs.ToCSV()})");
+                                continue;
+                            }
+
+                            builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
+                            builder.AppendLine($"\t{{");
+                            builder.AppendLine($"\t\tthis.{ctorVariant.TargetProp.Name} = new {ctorVariant.ObjectType.Name}({derivedCtorParamNames});");
+                            builder.AppendLine($"\t}}");
+                        }
+                        break;
+                        case CtorVariantType.SingleCollection:
+                        {
+                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+                            var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
+                            builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
+
+                            if (ctorVariant.IsCommented)
+                            {
+                                builder.AppendLine($"\t// ignored {obj.Name}({derivedCtorArgs.ToCSV()})");
+                                continue;
+                            }
+
+                            builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
+                            builder.AppendLine($"\t{{");
+                            builder.AppendLine($"\t\tthis.{ctorVariant.TargetProp.Name}.Add(new {ctorVariant.ObjectType.Name}({derivedCtorParamNames}));");
+                            builder.AppendLine($"\t}}");
+
+                        }
+                        break;
+                    }
                 }
 
                 // object properties
@@ -382,60 +365,6 @@ namespace Quokka.RTL.SourceGenerators
                     builder.AppendLine($"\t\treturn {leading}{iop.ArgsLine}{trailing};");
 
                     builder.AppendLine($"\t}}");
-
-                    continue;
-                    if (iop.Params.Count == 1)
-                    {
-                        var paramType = iop.Params[0].Type;
-                        if (ctx.objects.Contains(paramType))
-                        {
-                            foreach (var parmTypeCtor in ctx.CtorVariants(paramType).Where(t => t.Count == 1))
-                            {
-                                var paramTypeCtorParams = ctx.CtorParamsDecl(parmTypeCtor);
-                                var paramTypeCtorParamNames = parmTypeCtor.Select(p => p.Name);
-
-                                builder.AppendLine($"\tpublic static implicit operator {iop.TargetType.Name}({paramTypeCtorParams.ToCSV()})");
-                                builder.AppendLine($"\t{{");
-                                builder.AppendLine($"\t\treturn new {iop.TargetType.Name}(new {paramType.Name}({paramTypeCtorParamNames.ToCSV()}));");
-                                builder.AppendLine($"\t}}");
-                            }
-
-                            var paramTypeProps = ctx.CtorParameters(paramType);
-                            if (paramTypeProps.Count == 1)
-                            {
-                                var paramTypeCtorParams = ctx.CtorParamsDecl(paramType);
-                                var paramTypeCtorParamNames = ctx.CtorParamNames(paramType);
-
-                                builder.AppendLine($"\tpublic static implicit operator {iop.TargetType.Name}({paramTypeCtorParams.ToCSV()})");
-                                builder.AppendLine($"\t{{");
-                                builder.AppendLine($"\t\treturn new {iop.TargetType.Name}(new {paramType.Name}({paramTypeCtorParamNames.ToCSV()}));");
-                                builder.AppendLine($"\t}}");
-
-                                var paramTypeCtorTypes = ctx.CtorVariants(paramType);
-
-                                foreach (var ctorVariant in paramTypeCtorTypes.Where(t => t.Count == 1))
-                                {
-                                    if (ctx.objects.Contains(ctorVariant[0].PropertyType))
-                                    {
-                                        var derivedCtorVariants = ctx.CtorVariants(ctorVariant[0].PropertyType);
-                                        foreach (var v in derivedCtorVariants.Where(t => t.Count == 1))
-                                        {
-                                            var derivedCtorArgs = ctx.CtorParamsDecl(v);
-                                            var derivedCtorParamNames = v.Select(p => p.Name);
-
-                                            builder.AppendLine($"\tpublic static implicit operator {iop.TargetType.Name}({derivedCtorArgs.ToCSV()})");
-                                            builder.AppendLine($"\t{{");
-                                            builder.AppendLine($"\t\treturn new {iop.TargetType.Name}(new {paramType.Name}({derivedCtorParamNames.ToCSV()}));");
-                                            builder.AppendLine($"\t}}");
-
-
-                                            //builder.AppendLine($"\t// {ctorVariant[0].PropertyType.Name} {derivedCtorArgs.ToCSV()}");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
 
                 builder.AppendLine("}");

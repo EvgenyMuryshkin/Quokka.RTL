@@ -51,7 +51,13 @@ namespace Quokka.RTL.VHDL
 
         protected string Brackets(object obj)
         {
-            return $"({Raw(obj)})";
+            switch (obj)
+            {
+                case vhdIdentifierExpression e:
+                    return Raw(obj);
+                default:
+                    return $"({Raw(obj)})";
+            }
         }
     }
 }

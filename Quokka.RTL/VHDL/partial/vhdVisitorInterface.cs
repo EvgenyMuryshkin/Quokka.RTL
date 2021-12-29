@@ -23,10 +23,12 @@ namespace Quokka.RTL.VHDL
         string RTLBitArray(RTLBitArray value);
         string DirectionType(string signalName, vhdPortDirection type);
         string DataType(string signalName, int width, vhdDataTypeSource type);
+        string CastType(vhdCastType type);
         string DataType(string signalName, RTLBitArray value);
+        string DataType(vhdDataType dataType);
         string NetType(string signalName, vhdNetTypeSource type);
+        string EdgeType(string signalName, vhdEdgeType type);
         /*
-        string EdgeType(string signalName, vlgEdgeType edgeType);
         string DirectionType(string signalName, vlgPortDirection type);
         */
         string Range(int l, int r);

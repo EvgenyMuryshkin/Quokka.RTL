@@ -4,6 +4,16 @@ namespace Quokka.RTL.VHDL
 {
     public class vhdFormattersImplementation : vhdFormattersInterface
     {
+        public string EdgeType(string signalName, vhdEdgeType type)
+        {
+            switch(type)
+            {
+                case vhdEdgeType.Rising: return "rising_edge";
+                case vhdEdgeType.Falling: return "falling_edge";
+                default: throw new Exception($"Edge type is not supported for '{signalName}': {type}");
+            }
+        }
+
         public string Range(int size)
         {
             if (size == 0)
@@ -61,6 +71,29 @@ namespace Quokka.RTL.VHDL
             }
         }
 
+        public string CastType(vhdCastType type)
+        {
+            switch (type)
+            {
+                case vhdCastType.Signed: return "signed";
+                case vhdCastType.Unsigned: return "unsigned";
+                case vhdCastType.Integer: return "to_integer";
+                default: throw new Exception($"unsupported sign type {type}");
+            }
+
+        }
+
+
+        public string DataType(vhdDataType dataType)
+        {
+            switch (dataType)
+            {
+                case vhdDataType.Signed: return "signed";
+                case vhdDataType.Unsigned: return "unsigned";
+                case vhdDataType.StdLogic: return "std_logic";
+                default: throw new Exception($"unsupported sign type {dataType}");
+            }
+        }
 
         public string DataType(string signalName, int width, vhdDataTypeSource type)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -298,11 +299,48 @@ namespace Quokka.RTL.SourceGenerators
 
             return p.Name;
         }
+
         public List<ImplicitOperator> ImplicitOperators(Type obj)
         {
-            var all = AllImplicitOperators(obj, null);
-            var groups = all.GroupBy(p => p.Params[0].Type).Where(g => g.Count() == 1).SelectMany(g => g).ToList();
+            List<ImplicitOperator> all;
+            if (obj.IsAbstract)
+            {
+                if (obj.Name == "vhdExpression")
+                    Debugger.Break();
+
+                all = AbstractImplicitOperators(obj);
+            }
+            else
+            {
+                all = AllImplicitOperators(obj, null);
+            }
+
+            var groups = all
+                .GroupBy(p => p.Params[0].Type)
+                .Where(g => g.Count() == 1)
+                .SelectMany(g => g)
+                .Where(o => o.Params.Count != 1 || o.Params[0].Type != obj)
+                .ToList();
+
             return groups;
+        }
+        List<ImplicitOperator> AbstractImplicitOperators(Type obj)
+        {
+            var result = new List<ImplicitOperator>();
+
+            var derived = DerivedNonAbstract(obj);
+
+            foreach (var d in derived)
+            {
+                var dimp = AllImplicitOperators(d, null);
+                foreach (var i in dimp.Where(d => !obj.IsAssignableFrom(d.Params[0].Type)))
+                {
+                    i.TargetType = obj;
+                    result.Add(i);
+                }
+            }
+
+            return result;
         }
 
         List<ImplicitOperator> AllImplicitOperators(Type obj, List<Type> chainedTypes)
@@ -312,28 +350,13 @@ namespace Quokka.RTL.SourceGenerators
             if (obj == null || !objects.Contains(obj))
                 return result;
 
-            // top level abstract object
-            if (obj.IsAbstract && chainedTypes == null)
-            {
-                var derived = DerivedNonAbstract(obj);
-
-                foreach (var d in derived)
-                {
-                    var dimp = AllImplicitOperators(d, null);
-                    foreach (var i in dimp.Where(d => !obj.IsAssignableFrom(d.Params[0].Type)))
-                    {
-                        i.TargetType = obj;
-                        result.Add(i);
-                    }
-                }
-
+            if (chainedTypes != null && chainedTypes.Contains(obj))
                 return result;
-            }
 
             chainedTypes = (chainedTypes ?? new List<Type>()).ToList();
             chainedTypes.Add(obj);
 
-            foreach (var ctorVariant in CtorVariants(obj).Where(v => v.Count == 1))
+            foreach (var ctorVariant in ImplicitCtorVariants(obj))
             {
                 var methodParams = MethodParams(ctorVariant);
 
@@ -399,129 +422,29 @@ namespace Quokka.RTL.SourceGenerators
             }
 
             return result;
-            /*
-            var ctorParamProps = CtorParameters(obj);
-            var ctopParamArgs = MethodParams(ctorParamProps);
+        }
 
-            if (ctorParamProps.Count == 2 && ctorParamProps.Last().PropertyType.IsList())
+        public List<List<PropertyInfo>> ImplicitCtorVariants(Type obj)
+        {
+            var result = new List<List<PropertyInfo>>();
+
+            var ctorParams = CtorParameters(obj);
+            if (!ctorParams.Any())
+                return result;
+
+            if (ctorParams.Count == 1)
             {
-                // object consists of two properties, last is list.
-                // Implicit operator from first property
-
-                result.Add(new ImplicitOperator()
-                {
-                    TargetType = obj,
-                    Params = ctopParamArgs.Take(1).ToList(),
-                    Args = ctopParamArgs.Take(1).Select(p => p.ParamName).ToList()
-                });
-
-                result.AddRange(ImplicitOperators(ctorParamProps[0].PropertyType));
+                result.Add(ctorParams);
             }
 
-            if (ctorParamProps.Count == 1)
+            if (ctorParams.Count == 2 && ctorParams.Last().PropertyType.IsList())
             {
-                var singleProperty = ctorParamProps[0];
-
-                if (singleProperty.PropertyType.IsList())
-                {
-                    var listItemType = singleProperty.PropertyType.GetGenericArguments()[0];
-
-                    if (listItemType.IsInterface || listItemType.IsAbstract)
-                    {
-                        // implicit conversion from all derived interfaces or concrete classes
-                        var derived = DerivedNonAbstract(listItemType);
-
-                        foreach (var d in derived)
-                        {
-                            result.Add(new ImplicitOperator()
-                            {
-                                TargetType = obj,
-                                Params =
-                                {
-                                    new MethodParam()
-                                    {
-                                        Type = d,
-                                        ParamType = PropertyType(d),
-                                        ParamName= "single"
-                                    }
-                                },
-                                Args =
-                                {
-                                    $"new [] {{ single }}"
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-                        result.Add(new ImplicitOperator()
-                        {
-                            TargetType = obj,
-                            Params =
-                            {
-                                new MethodParam()
-                                {
-                                    Type = listItemType,
-                                    ParamType = PropertyType(listItemType),
-                                    ParamName= "single"
-                                }
-                            },
-                            Args =
-                            {
-                                $"new [] {{ single }}"
-                            }
-                        });
-                    }
-                }
-                else
-                {
-                    if (singleProperty.PropertyType.IsInterface || singleProperty.PropertyType.IsAbstract)
-                    {
-                        var derived = DerivedNonAbstract(singleProperty.PropertyType);
-
-                        foreach (var d in derived)
-                        {
-                            result.Add(new ImplicitOperator()
-                            {
-                                TargetType = obj,
-                                Params =
-                                {
-                                    new MethodParam()
-                                    {
-                                        Type = d,
-                                        ParamType = PropertyType(d),
-                                        ParamName = singleProperty.Name
-                                    }
-                                },
-                                Args =
-                                {
-                                    singleProperty.Name
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-                        result.Add(new ImplicitOperator()
-                        {
-                            TargetType = obj,
-                            Params =
-                            {
-                                MethodParam(singleProperty)
-                            },
-                            Args =
-                            {
-                                singleProperty.Name
-                            }
-                        });
-                    }
-                }
+                result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
             }
 
             return result;
-            */
-        }
 
+        }
         public List<List<PropertyInfo>> CtorVariants(Type obj)
         {
             var result = new List<List<PropertyInfo>>();
@@ -532,6 +455,62 @@ namespace Quokka.RTL.SourceGenerators
             if (ctorParams.Count > 1 && ctorParams.Last().PropertyType.IsList())
             {
                 result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
+            }
+
+            return result;
+        }
+
+        public List<CtorVariant> AllCtorVariants(Type obj)
+        {
+            var result = new List<CtorVariant>();
+
+            var ctorVariants = CtorVariants(obj);
+
+            foreach (var ctorParams in ctorVariants)
+            {
+                if (!ctorParams.Any())
+                    continue;
+
+                result.Add(new CtorVariant(CtorVariantType.Direct, ctorParams, obj));
+
+                if (ctorParams.Count == 1)
+                {
+                    if (objects.Contains(ctorParams[0].PropertyType))
+                    {
+                        var derived = DerivedNonAbstract(ctorParams[0].PropertyType).Where(t => t != ctorParams[0].PropertyType);
+                        if (derived.Any())
+                        {
+                            foreach (var d in derived)
+                            {
+                                foreach (var ctorVariant in CtorVariants(d).Where(p => p.Any()))
+                                {
+                                    result.Add(new CtorVariant(CtorVariantType.SingleObjct, ctorVariant, obj, d, ctorParams[0]));
+                                }
+                            }
+                        }
+                    }
+
+                    if (ctorParams[0].PropertyType.IsList())
+                    {
+                        var derived = DerivedNonAbstract(ctorParams[0].PropertyType.GetGenericArguments()[0]).Where(t => t != ctorParams[0].PropertyType);
+                        if (derived.Any())
+                        {
+                            foreach (var d in derived)
+                            {
+                                foreach (var ctorVariant in CtorVariants(d).Where(p => p.Any()))
+                                {
+                                    result.Add(new CtorVariant(CtorVariantType.SingleCollection, ctorVariant, obj, d, ctorParams[0]));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var c in result.Where(r => r.CtorVariantType != CtorVariantType.Direct))
+            {
+                var sameCtors = result.Where(i => i.IsSame(c)).ToList();
+                c.IsCommented = sameCtors.Count != 1;
             }
 
             return result;
