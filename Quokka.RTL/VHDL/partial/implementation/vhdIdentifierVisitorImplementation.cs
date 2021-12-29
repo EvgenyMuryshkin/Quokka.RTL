@@ -7,8 +7,7 @@ namespace Quokka.RTL.VHDL.Implementation
 	{
 		public override void OnVisit(vhdIdentifier obj)
 		{
-			var formatted = $"{obj.Name}{obj.Indexes.Select(Raw).StringJoin("")}";
-			_builder.Append(formatted);
+			_builder.Append(obj.Name);
 		}
 	}
 } // Quokka.RTL.VHDL

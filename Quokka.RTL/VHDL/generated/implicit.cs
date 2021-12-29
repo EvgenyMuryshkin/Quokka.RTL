@@ -129,6 +129,10 @@ public partial class vhdCase : vhdAbstractObject
 	{
 		return new vhdCase(new vhdIdentifierExpression(Source));
 	}
+	public static implicit operator vhdCase(vhdIndexedExpression source)
+	{
+		return new vhdCase(source);
+	}
 	public static implicit operator vhdCase(vhdLogicExpression source)
 	{
 		return new vhdCase(source);
@@ -138,6 +142,10 @@ public partial class vhdCase : vhdAbstractObject
 		return new vhdCase(source);
 	}
 	public static implicit operator vhdCase(vhdOthersExpression source)
+	{
+		return new vhdCase(source);
+	}
+	public static implicit operator vhdCase(vhdParenthesizedExpression source)
 	{
 		return new vhdCase(source);
 	}
@@ -208,6 +216,10 @@ public partial class vhdCaseStatement : vhdAbstractObject
 	{
 		return new vhdCaseStatement(new vhdIdentifierExpression(Source));
 	}
+	public static implicit operator vhdCaseStatement(vhdIndexedExpression source)
+	{
+		return new vhdCaseStatement(source);
+	}
 	public static implicit operator vhdCaseStatement(vhdLogicExpression source)
 	{
 		return new vhdCaseStatement(source);
@@ -217,6 +229,10 @@ public partial class vhdCaseStatement : vhdAbstractObject
 		return new vhdCaseStatement(source);
 	}
 	public static implicit operator vhdCaseStatement(vhdOthersExpression source)
+	{
+		return new vhdCaseStatement(source);
+	}
+	public static implicit operator vhdCaseStatement(vhdParenthesizedExpression source)
 	{
 		return new vhdCaseStatement(source);
 	}
@@ -299,6 +315,10 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 	{
 		return new vhdConditionalStatement(new vhdIdentifierExpression(Source));
 	}
+	public static implicit operator vhdConditionalStatement(vhdIndexedExpression source)
+	{
+		return new vhdConditionalStatement(source);
+	}
 	public static implicit operator vhdConditionalStatement(vhdLogicExpression source)
 	{
 		return new vhdConditionalStatement(source);
@@ -308,6 +328,10 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 		return new vhdConditionalStatement(source);
 	}
 	public static implicit operator vhdConditionalStatement(vhdOthersExpression source)
+	{
+		return new vhdConditionalStatement(source);
+	}
+	public static implicit operator vhdConditionalStatement(vhdParenthesizedExpression source)
 	{
 		return new vhdConditionalStatement(source);
 	}
@@ -448,6 +472,9 @@ public partial class vhdIdentifierExpression : vhdExpression
 public partial class vhdIf : vhdAbstractObject
 {
 }
+public partial class vhdIndexedExpression : vhdExpression
+{
+}
 public partial class vhdLibraryReference : vhdAbstractObject
 {
 	public static implicit operator vhdLibraryReference(String Name)
@@ -482,6 +509,9 @@ public partial class vhdNull : vhdAbstractObject
 {
 }
 public partial class vhdOthersExpression : vhdExpression
+{
+}
+public partial class vhdParenthesizedExpression : vhdExpression
 {
 }
 public partial class vhdPredefinedAttributeExpression : vhdExpression

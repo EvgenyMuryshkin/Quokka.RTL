@@ -179,6 +179,9 @@ public partial class vhdIdentifierExpression
 public partial class vhdIf
 {
 }
+public partial class vhdIndexedExpression
+{
+}
 public partial class vhdLibraryReference
 {
 }
@@ -201,6 +204,9 @@ public partial class vhdNull
 {
 }
 public partial class vhdOthersExpression
+{
+}
+public partial class vhdParenthesizedExpression
 {
 }
 public partial class vhdPredefinedAttributeExpression

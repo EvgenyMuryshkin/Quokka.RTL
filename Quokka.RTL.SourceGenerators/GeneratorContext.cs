@@ -350,6 +350,9 @@ namespace Quokka.RTL.SourceGenerators
             if (obj == null || !objects.Contains(obj))
                 return result;
 
+            if (obj.GetCustomAttribute<NoImplicitAttribute>() != null)
+                return result;
+
             if (chainedTypes != null && chainedTypes.Contains(obj))
                 return result;
 

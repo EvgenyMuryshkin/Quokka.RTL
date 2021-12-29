@@ -11,4 +11,9 @@ namespace Quokka.RTL.SourceGenerators
     {
 
     }
+
+    public class NoImplicitAttribute : Attribute
+    {
+
+    }
 }

@@ -36,12 +36,14 @@ public interface vhdGenericBlockVisitorInterface : vhdVisitorInterface<vhdGeneri
 public interface vhdIdentifierVisitorInterface : vhdVisitorInterface<vhdIdentifier> { }
 public interface vhdIdentifierExpressionVisitorInterface : vhdVisitorInterface<vhdIdentifierExpression> { }
 public interface vhdIfVisitorInterface : vhdVisitorInterface<vhdIf> { }
+public interface vhdIndexedExpressionVisitorInterface : vhdVisitorInterface<vhdIndexedExpression> { }
 public interface vhdLibraryReferenceVisitorInterface : vhdVisitorInterface<vhdLibraryReference> { }
 public interface vhdLogicExpressionVisitorInterface : vhdVisitorInterface<vhdLogicExpression> { }
 public interface vhdLogicSignalVisitorInterface : vhdVisitorInterface<vhdLogicSignal> { }
 public interface vhdMathExpressionVisitorInterface : vhdVisitorInterface<vhdMathExpression> { }
 public interface vhdNullVisitorInterface : vhdVisitorInterface<vhdNull> { }
 public interface vhdOthersExpressionVisitorInterface : vhdVisitorInterface<vhdOthersExpression> { }
+public interface vhdParenthesizedExpressionVisitorInterface : vhdVisitorInterface<vhdParenthesizedExpression> { }
 public interface vhdPredefinedAttributeExpressionVisitorInterface : vhdVisitorInterface<vhdPredefinedAttributeExpression> { }
 public interface vhdProcedureCallVisitorInterface : vhdVisitorInterface<vhdProcedureCall> { }
 public interface vhdProcessVisitorInterface : vhdVisitorInterface<vhdProcess> { }
