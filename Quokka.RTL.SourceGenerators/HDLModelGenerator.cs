@@ -262,12 +262,23 @@ namespace Quokka.RTL.SourceGenerators
                         {
                             var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
                             var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
-                            builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
-                            
+
                             if (ctorVariant.IsCommented)
                             {
+                                builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
                                 builder.AppendLine($"\t// ignored {obj.Name}({derivedCtorArgs.ToCSV()})");
                                 continue;
+                            }
+                            else
+                            {
+                                builder.AppendLine($"\t/// <summary>");
+                                builder.AppendLine($"\t/// from {ctorVariant.ObjectType.Name}");
+                                builder.AppendLine($"\t/// </summary>");
+
+                                foreach (var p in ctorVariant.Props)
+                                {
+                                    builder.AppendLine($"\t/// <param name=\"{p.Name}\"></param>");
+                                }
                             }
 
                             builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
@@ -280,12 +291,23 @@ namespace Quokka.RTL.SourceGenerators
                         {
                             var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
                             var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
-                            builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
 
                             if (ctorVariant.IsCommented)
                             {
+                                builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
                                 builder.AppendLine($"\t// ignored {obj.Name}({derivedCtorArgs.ToCSV()})");
                                 continue;
+                            }
+                            else
+                            {
+                                builder.AppendLine($"\t/// <summary>");
+                                builder.AppendLine($"\t/// from {ctorVariant.ObjectType.Name}");
+                                builder.AppendLine($"\t/// </summary>");
+
+                                foreach (var p in ctorVariant.Props)
+                                {
+                                    builder.AppendLine($"\t/// <param name=\"{p.Name}\"></param>");
+                                }
                             }
 
                             builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
@@ -313,6 +335,7 @@ namespace Quokka.RTL.SourceGenerators
                             foreach (var d in derived)
                             {
                                 builder.AppendLine($"\t/// {d.Name}");
+                                builder.AppendLine();
                             }
                             builder.AppendLine("\t/// </summary>");
                         }

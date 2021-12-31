@@ -128,13 +128,15 @@ namespace Quokka.RTL.VHDL
                     {
                         case vhdNetType.Constant: return "constant";
                         case vhdNetType.Signal: return "signal";
-                        default: throw new Exception($"unsupported net type ({signalName}): {d.NetType}");
+                        case vhdNetType.Variable: return "variable";
+                        case vhdNetType.SharedVariable: return "shared variable";
+                        default: throw new Exception($"unsupported net type for signal {signalName}: {d.NetType}");
                     }
                 }
                 case vhdCustomNetType c:
                     return c.NetType;
                 default:
-                    throw new Exception($"unsupported net type source ({signalName}): {type}");
+                    throw new Exception($"unsupported net type source for signal {signalName}: {type}");
             }
         }
 

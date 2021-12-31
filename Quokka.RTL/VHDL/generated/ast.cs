@@ -9,63 +9,121 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	public vhdAbstractCollection() { }
 	/// <summary>
 	/// vhdAggregate
+
 	/// vhdAggregateBitConnection
+
 	/// vhdAggregateExpression
+
 	/// vhdAggregateOthersConnection
+
 	/// vhdAlias
+
 	/// vhdArchitecture
+
 	/// vhdArchitectureDeclarations
+
 	/// vhdArchitectureImplementation
+
 	/// vhdArchitectureImplementationBlock
+
 	/// vhdArrayTypeDeclaration
+
 	/// vhdAssignExpression
+
 	/// vhdAttribute
+
 	/// vhdBinaryValueExpression
+
 	/// vhdCase
+
 	/// vhdCaseStatement
+
 	/// vhdCastExpression
+
 	/// vhdCastResizeExpression
+
 	/// vhdComment
+
 	/// vhdCompareExpression
+
 	/// vhdConditionalStatement
+
 	/// vhdCustomDataType
+
 	/// vhdCustomEntityPort
+
 	/// vhdCustomNetType
+
 	/// vhdDefaultDataType
+
 	/// vhdDefaultNetType
+
 	/// vhdDefaultSignal
+
 	/// vhdEntity
+
 	/// vhdEntityInstance
+
 	/// vhdEntityInstanceNamedPortMapping
+
 	/// vhdEntityInstancePortMappings
+
 	/// vhdEntityInterface
+
 	/// vhdFile
+
 	/// vhdGenericBlock
+
 	/// vhdIdentifier
+
 	/// vhdIdentifierExpression
+
 	/// vhdIf
+
 	/// vhdIndexedExpression
+
 	/// vhdLibraryReference
+
 	/// vhdLogicExpression
+
 	/// vhdLogicSignal
+
 	/// vhdMathExpression
+
 	/// vhdNull
+
 	/// vhdOthersExpression
+
 	/// vhdParenthesizedExpression
+
 	/// vhdPredefinedAttributeExpression
+
 	/// vhdProcedureCall
+
 	/// vhdProcess
+
 	/// vhdProcessDeclarations
+
 	/// vhdRange
+
 	/// vhdResizeExpression
+
 	/// vhdShiftExpression
+
 	/// vhdSimpleForLoop
+
 	/// vhdStandardEntityPort
+
 	/// vhdSyncBlock
+
 	/// vhdTernaryExpression
+
 	/// vhdText
+
 	/// vhdUnaryExpression
+
 	/// vhdUse
+
 	/// </summary>
 	public List<vhdAbstractObject> Children { get; set; } = new List<vhdAbstractObject>();
 }
@@ -211,81 +269,145 @@ public partial class vhdCase : vhdAbstractObject
 	{
 		this.Expression = Expression;
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdCase(vhdAggregate Aggregate)
 	{
 		this.Expression = new vhdAggregateExpression(Aggregate);
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdCase(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdAssignExpression(Target, Type, Source);
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdCase(RTLBitArray Value)
 	{
 		this.Expression = new vhdBinaryValueExpression(Value);
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdCase(vhdCastType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdCastExpression(Type, Source);
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdCase(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdCastResizeExpression(Type, Source, Length);
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdCase(vhdIdentifier Source)
 	{
 		this.Expression = new vhdIdentifierExpression(Source);
 	}
-	// from vhdIndexedExpression
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
 	public vhdCase(vhdExpression Expression, params vhdRange[] Indexes)
 	{
 		this.Expression = new vhdIndexedExpression(Expression, Indexes);
 	}
 	// from vhdIndexedExpression
 	// ignored vhdCase(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdMathExpression(Lhs, Type, Rhs);
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdCase(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdCase(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdCase(vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.Expression = new vhdTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCase(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdUnaryExpression(Type, Rhs);
@@ -300,81 +422,145 @@ public partial class vhdCaseStatement : vhdAbstractObject
 	{
 		this.When = When;
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdCaseStatement(vhdAggregate Aggregate)
 	{
 		this.When = new vhdAggregateExpression(Aggregate);
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdCaseStatement(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.When = new vhdAssignExpression(Target, Type, Source);
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdCaseStatement(RTLBitArray Value)
 	{
 		this.When = new vhdBinaryValueExpression(Value);
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdCaseStatement(vhdCastType Type, vhdExpression Source)
 	{
 		this.When = new vhdCastExpression(Type, Source);
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdCaseStatement(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.When = new vhdCastResizeExpression(Type, Source, Length);
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.When = new vhdCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdCaseStatement(vhdIdentifier Source)
 	{
 		this.When = new vhdIdentifierExpression(Source);
 	}
-	// from vhdIndexedExpression
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
 	public vhdCaseStatement(vhdExpression Expression, params vhdRange[] Indexes)
 	{
 		this.When = new vhdIndexedExpression(Expression, Indexes);
 	}
 	// from vhdIndexedExpression
 	// ignored vhdCaseStatement(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.When = new vhdLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.When = new vhdMathExpression(Lhs, Type, Rhs);
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdCaseStatement(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdCaseStatement(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.When = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdCaseStatement(vhdExpression Source, vhdExpression Length)
 	{
 		this.When = new vhdResizeExpression(Source, Length);
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.When = new vhdShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.When = new vhdTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdCaseStatement(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.When = new vhdUnaryExpression(Type, Rhs);
@@ -435,81 +621,145 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 	{
 		this.Condition = Condition;
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdConditionalStatement(vhdAggregate Aggregate)
 	{
 		this.Condition = new vhdAggregateExpression(Aggregate);
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdConditionalStatement(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.Condition = new vhdAssignExpression(Target, Type, Source);
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdConditionalStatement(RTLBitArray Value)
 	{
 		this.Condition = new vhdBinaryValueExpression(Value);
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdConditionalStatement(vhdCastType Type, vhdExpression Source)
 	{
 		this.Condition = new vhdCastExpression(Type, Source);
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdConditionalStatement(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.Condition = new vhdCastResizeExpression(Type, Source, Length);
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.Condition = new vhdCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdConditionalStatement(vhdIdentifier Source)
 	{
 		this.Condition = new vhdIdentifierExpression(Source);
 	}
-	// from vhdIndexedExpression
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
 	public vhdConditionalStatement(vhdExpression Expression, params vhdRange[] Indexes)
 	{
 		this.Condition = new vhdIndexedExpression(Expression, Indexes);
 	}
 	// from vhdIndexedExpression
 	// ignored vhdConditionalStatement(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.Condition = new vhdLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.Condition = new vhdMathExpression(Lhs, Type, Rhs);
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdConditionalStatement(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdConditionalStatement(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Condition = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdConditionalStatement(vhdExpression Source, vhdExpression Length)
 	{
 		this.Condition = new vhdResizeExpression(Source, Length);
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.Condition = new vhdShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.Condition = new vhdTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdConditionalStatement(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.Condition = new vhdUnaryExpression(Type, Rhs);
@@ -699,37 +949,65 @@ public partial class vhdIndexedExpression : vhdExpression
 	{
 		this.Expression = Expression;
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdIndexedExpression(vhdAggregate Aggregate)
 	{
 		this.Expression = new vhdAggregateExpression(Aggregate);
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdIndexedExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdAssignExpression(Target, Type, Source);
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdIndexedExpression(RTLBitArray Value)
 	{
 		this.Expression = new vhdBinaryValueExpression(Value);
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdIndexedExpression(vhdCastType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdCastExpression(Type, Source);
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdIndexedExpression(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdCastResizeExpression(Type, Source, Length);
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdIndexedExpression(vhdIdentifier Source)
 	{
 		this.Expression = new vhdIdentifierExpression(Source);
@@ -738,39 +1016,71 @@ public partial class vhdIndexedExpression : vhdExpression
 	// ignored vhdIndexedExpression(vhdExpression Expression, params vhdRange[] Indexes)
 	// from vhdIndexedExpression
 	// ignored vhdIndexedExpression(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdMathExpression(Lhs, Type, Rhs);
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdIndexedExpression(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdIndexedExpression(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdIndexedExpression(vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.Expression = new vhdTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdIndexedExpression(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdUnaryExpression(Type, Rhs);
@@ -859,81 +1169,145 @@ public partial class vhdParenthesizedExpression : vhdExpression
 	{
 		this.Expression = Expression;
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdParenthesizedExpression(vhdAggregate Aggregate)
 	{
 		this.Expression = new vhdAggregateExpression(Aggregate);
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdParenthesizedExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdAssignExpression(Target, Type, Source);
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdParenthesizedExpression(RTLBitArray Value)
 	{
 		this.Expression = new vhdBinaryValueExpression(Value);
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdParenthesizedExpression(vhdCastType Type, vhdExpression Source)
 	{
 		this.Expression = new vhdCastExpression(Type, Source);
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdParenthesizedExpression(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdCastResizeExpression(Type, Source, Length);
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdParenthesizedExpression(vhdIdentifier Source)
 	{
 		this.Expression = new vhdIdentifierExpression(Source);
 	}
-	// from vhdIndexedExpression
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
 	public vhdParenthesizedExpression(vhdExpression Expression, params vhdRange[] Indexes)
 	{
 		this.Expression = new vhdIndexedExpression(Expression, Indexes);
 	}
 	// from vhdIndexedExpression
 	// ignored vhdParenthesizedExpression(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdMathExpression(Lhs, Type, Rhs);
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdParenthesizedExpression(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdParenthesizedExpression(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdParenthesizedExpression(vhdExpression Source, vhdExpression Length)
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.Expression = new vhdTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdParenthesizedExpression(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.Expression = new vhdUnaryExpression(Type, Rhs);
@@ -966,22 +1340,39 @@ public partial class vhdProcedureCall : vhdAbstractObject
 	public String Proc { get; set; }
 	/// <summary>
 	/// vhdAggregateExpression
+
 	/// vhdAssignExpression
+
 	/// vhdBinaryValueExpression
+
 	/// vhdCastExpression
+
 	/// vhdCastResizeExpression
+
 	/// vhdCompareExpression
+
 	/// vhdIdentifierExpression
+
 	/// vhdIndexedExpression
+
 	/// vhdLogicExpression
+
 	/// vhdMathExpression
+
 	/// vhdOthersExpression
+
 	/// vhdParenthesizedExpression
+
 	/// vhdPredefinedAttributeExpression
+
 	/// vhdResizeExpression
+
 	/// vhdShiftExpression
+
 	/// vhdTernaryExpression
+
 	/// vhdUnaryExpression
+
 	/// </summary>
 	public List<vhdExpression> Parameters { get; set; } = new List<vhdExpression>();
 }
@@ -992,7 +1383,10 @@ public partial class vhdProcess : vhdAbstractObject
 	{
 		this.SensitivityList = (SensitivityList ?? Array.Empty<vhdIdentifier>()).Where(s => s != null).ToList();
 	}
-	// from vhdIdentifier
+	/// <summary>
+	/// from vhdIdentifier
+	/// </summary>
+	/// <param name="Name"></param>
 	public vhdProcess(String Name)
 	{
 		this.SensitivityList.Add(new vhdIdentifier(Name));
@@ -1012,103 +1406,184 @@ public partial class vhdRange : vhdAbstractObject
 	{
 		this.Indexes = (Indexes ?? Array.Empty<vhdExpression>()).Where(s => s != null).ToList();
 	}
-	// from vhdAggregateExpression
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
 	public vhdRange(vhdAggregate Aggregate)
 	{
 		this.Indexes.Add(new vhdAggregateExpression(Aggregate));
 	}
-	// from vhdAssignExpression
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdRange(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
 	{
 		this.Indexes.Add(new vhdAssignExpression(Target, Type, Source));
 	}
-	// from vhdBinaryValueExpression
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vhdRange(RTLBitArray Value)
 	{
 		this.Indexes.Add(new vhdBinaryValueExpression(Value));
 	}
-	// from vhdCastExpression
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
 	public vhdRange(vhdCastType Type, vhdExpression Source)
 	{
 		this.Indexes.Add(new vhdCastExpression(Type, Source));
 	}
-	// from vhdCastResizeExpression
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdRange(vhdCastType Type, vhdExpression Source, vhdExpression Length)
 	{
 		this.Indexes.Add(new vhdCastResizeExpression(Type, Source, Length));
 	}
-	// from vhdCompareExpression
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdCompareExpression(Lhs, Type, Rhs));
 	}
-	// from vhdIdentifierExpression
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vhdRange(vhdIdentifier Source)
 	{
 		this.Indexes.Add(new vhdIdentifierExpression(Source));
 	}
-	// from vhdIndexedExpression
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
 	public vhdRange(vhdExpression Expression, params vhdRange[] Indexes)
 	{
 		this.Indexes.Add(new vhdIndexedExpression(Expression, Indexes));
 	}
 	// from vhdIndexedExpression
 	// ignored vhdRange(vhdExpression Expression)
-	// from vhdLogicExpression
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdLogicExpression(Lhs, Type, Rhs));
 	}
-	// from vhdMathExpression
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdMathExpression(Lhs, Type, Rhs));
 	}
 	// from vhdParenthesizedExpression
 	// ignored vhdRange(vhdExpression Expression)
-	// from vhdPredefinedAttributeExpression
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
 	public vhdRange(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Indexes.Add(new vhdPredefinedAttributeExpression(Source, Attribute));
 	}
-	// from vhdResizeExpression
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
 	public vhdRange(vhdExpression Source, vhdExpression Length)
 	{
 		this.Indexes.Add(new vhdResizeExpression(Source, Length));
 	}
-	// from vhdShiftExpression
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdShiftExpression(Lhs, Type, Rhs));
 	}
-	// from vhdTernaryExpression
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdTernaryExpression(Condition, Lhs, Rhs));
 	}
-	// from vhdUnaryExpression
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vhdRange(vhdUnaryType Type, vhdExpression Rhs)
 	{
 		this.Indexes.Add(new vhdUnaryExpression(Type, Rhs));
 	}
 	/// <summary>
 	/// vhdAggregateExpression
+
 	/// vhdAssignExpression
+
 	/// vhdBinaryValueExpression
+
 	/// vhdCastExpression
+
 	/// vhdCastResizeExpression
+
 	/// vhdCompareExpression
+
 	/// vhdIdentifierExpression
+
 	/// vhdIndexedExpression
+
 	/// vhdLogicExpression
+
 	/// vhdMathExpression
+
 	/// vhdOthersExpression
+
 	/// vhdParenthesizedExpression
+
 	/// vhdPredefinedAttributeExpression
+
 	/// vhdResizeExpression
+
 	/// vhdShiftExpression
+
 	/// vhdTernaryExpression
+
 	/// vhdUnaryExpression
+
 	/// </summary>
 	public List<vhdExpression> Indexes { get; set; } = new List<vhdExpression>();
 }

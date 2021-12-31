@@ -13,7 +13,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				{ vhdLogicType.Xor, "XOR" },
 			};
 
-			_builder.Append($"({Brackets(obj.Lhs)} {lookup[obj.Type]} {Brackets(obj.Rhs)})");
+			_builder.Append($"{Brackets(obj.Lhs)} {lookup[obj.Type]} {Brackets(obj.Rhs)}");
 		}
 	}
 } // Quokka.RTL.VHDL

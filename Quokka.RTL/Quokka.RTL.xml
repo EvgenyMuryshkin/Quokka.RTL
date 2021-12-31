@@ -1,0 +1,1027 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Quokka.RTL</name>
+    </assembly>
+    <members>
+        <member name="M:Quokka.RTL.RTLBitArray.#ctor">
+            <summary>
+            Empty constructor, defaults to unsigned bit
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.DefaultRTLCombinationalModule`1.OnRelatedObjectCreating(System.Object)">
+            <summary>
+            Method is called every time a new object inside module is created
+            E.g. state, inputs, pipeilne stages etc
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Quokka.RTL.DefaultRTLSynchronousModule`2">
+            <summary>
+            Base class for hardware state machine module, will be in toolkit
+            </summary>
+            <typeparam name="TInput"></typeparam>
+            <typeparam name="TState"></typeparam>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineControlSignals.PipelineStalled">
+            <summary>
+            Flag indicates that whole pipeline has stalled
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelinePreviewSignals.PipelineWillStall">
+            <summary>
+            Flag indicates that pipeline will stall during current clock cycle
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineStageControlSignals.StageStalled">
+            <summary>
+            Flag indicates that current stage has stalled
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineStagePreviewSignals.StageWillStall">
+            <summary>
+            Flag indicates that stage will stall during current clock cycle
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineStageRequestSignals.StallPipeline">
+            <summary>
+            Flag indicates that whole pipeline needs to stall 
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineStageRequestSignals.StallSelf">
+            <summary>
+            Flag indicates that current stage needs to stall
+            All previous stages will also stall 
+            All subsequent stages will continue to push data through
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.IRTLPipelineStageRequestSignals.StallPrev">
+            <summary>
+            Flag indicates that previous stages need to stall
+            Current stage will continue to work
+            All subsequent stages will continue to push data through
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgAbstractCollection.Children" -->
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Expression"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgCompareType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgLogicType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgMathType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgCaseStatement.Conditions" -->
+        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.#ctor(System.String,Quokka.RTL.Verilog.vlgRange[])">
+            <summary>
+            from vlgIdentifier
+            </summary>
+            <param name="Name"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.#ctor(System.String)">
+            <summary>
+            from vlgIdentifier
+            </summary>
+            <param name="Name"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Expression"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgCompareType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgLogicType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgMathType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Expression"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgCompareType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgLogicType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgMathType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgProcedureCall.Parameters" -->
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Expression"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgCompareType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgLogicType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgMathType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgRange.Indexes" -->
+        <member name="M:Quokka.RTL.Verilog.vlgSyncBlock.#ctor(Quokka.RTL.Verilog.vlgEdgeType,Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgSyncBlockSensitivityItem
+            </summary>
+            <param name="Edge"></param>
+            <param name="Identifier"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdAbstractCollection.Children" -->
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdProcedureCall.Parameters" -->
+        <member name="M:Quokka.RTL.VHDL.vhdProcess.#ctor(System.String)">
+            <summary>
+            from vhdIdentifier
+            </summary>
+            <param name="Name"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdRange.Indexes" -->
+    </members>
+</doc>

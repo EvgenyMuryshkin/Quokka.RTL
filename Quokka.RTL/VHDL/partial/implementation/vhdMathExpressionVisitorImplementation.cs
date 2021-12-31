@@ -15,7 +15,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				{ vhdMathType.Divide, "/" },
 			};
 
-			_builder.Append($"({Brackets(obj.Lhs)} {lookup[obj.Type]} {Brackets(obj.Rhs)})");
+			_builder.Append($"{Brackets(obj.Lhs)} {lookup[obj.Type]} {Brackets(obj.Rhs)}");
 		}
 	}
 } // Quokka.RTL.VHDL

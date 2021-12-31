@@ -9,11 +9,11 @@ namespace Quokka.RTL.VHDL.Implementation
 		{
 			if (obj.Indexes.Any())
             {
-				_builder.Append($"{Raw(obj.Expression)}");
+				_builder.Append($"{Brackets(obj.Expression)}{obj.Indexes.Select(Raw).StringJoin("")}");
 			}
 			else
             {
-				_builder.Append($"({Raw(obj.Expression)}){obj.Indexes.Select(Raw).StringJoin("")}");
+				_builder.Append($"{Raw(obj.Expression)}");
 			}
 		}
 	}

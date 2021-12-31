@@ -11,7 +11,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				{ vhdUnaryType.Not, "NOT" },
 			};
 
-			_builder.Append($"({lookup[obj.Type]} {Brackets(obj.Rhs)})");
+			_builder.Append($"{lookup[obj.Type]} {Brackets(obj.Rhs)}");
 		}
 	}
 } // Quokka.RTL.VHDL

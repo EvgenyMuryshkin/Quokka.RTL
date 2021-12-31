@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vhdPredefinedAttributeExpression obj)
 		{
-			_builder.Append($"{Raw(obj.Source)}'{obj.Attribute}");
+			_builder.Append($"{Raw(obj.Source)}'{obj.Attribute.ToString().ToLower()}");
 		}
 	}
 } // Quokka.RTL.VHDL

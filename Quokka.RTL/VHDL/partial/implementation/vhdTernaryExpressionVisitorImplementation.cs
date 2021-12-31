@@ -5,7 +5,7 @@
 	{
 		public override void OnVisit(vhdTernaryExpression obj)
 		{
-			_builder.Append($"{Raw(obj.Lhs)} when {Raw(obj.Condition)} else {Raw(obj.Rhs)}");
+			_builder.Append($"{Brackets(obj.Lhs)} when {Brackets(obj.Condition)} else {Brackets(obj.Rhs)}");
 		}
 	}
 } // Quokka.RTL.VHDL

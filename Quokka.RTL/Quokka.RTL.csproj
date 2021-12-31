@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.3.330</Version>
+    <Version>0.1.3.343</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <PackageReleaseNotes>Explicit MSB initialization, cleanup ctor usage, memory buffers export as state and internals</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>
@@ -20,6 +20,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <DocumentationFile>C:\code\Quokka.RTL\Quokka.RTL\Quokka.RTL.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\code\Quokka.RTL\Quokka.RTL\Quokka.RTL.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -28,5 +32,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Verilog\generated\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 </Project>

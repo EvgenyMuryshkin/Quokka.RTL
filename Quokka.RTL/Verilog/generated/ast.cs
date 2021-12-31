@@ -9,56 +9,107 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	public vlgAbstractCollection() { }
 	/// <summary>
 	/// vlgAssign
+
 	/// vlgAssignExpression
+
 	/// vlgAttribute
+
 	/// vlgBinaryValueExpression
+
 	/// vlgCase
+
 	/// vlgCombBlock
+
 	/// vlgComment
+
 	/// vlgCompareExpression
+
 	/// vlgConditionalStatement
+
 	/// vlgCustomDeclaration
+
 	/// vlgCustomModulePortDeclaration
+
 	/// vlgFile
+
 	/// vlgForLoop
+
 	/// vlgGenerate
+
 	/// vlgGenericBlock
+
 	/// vlgGenvar
+
 	/// vlgIdentifier
+
 	/// vlgIdentifierExpression
+
 	/// vlgIf
+
 	/// vlgInitial
+
 	/// vlgIterator
+
 	/// vlgLocalParamNameBinaryValue
+
 	/// vlgLocalParamNameExplicitValue
+
 	/// vlgLogicExpression
+
 	/// vlgLogicSignal
+
 	/// vlgMathExpression
+
 	/// vlgMemoryBlock
+
 	/// vlgModule
+
 	/// vlgModuleImplementation
+
 	/// vlgModuleImplementationBlock
+
 	/// vlgModuleInstance
+
 	/// vlgModuleInstanceNamedPortMapping
+
 	/// vlgModuleInstanceParameter
+
 	/// vlgModuleInstanceParameters
+
 	/// vlgModuleInstancePortMappings
+
 	/// vlgModuleInstanceSimplePortMapping
+
 	/// vlgModuleInterface
+
 	/// vlgModuleParameterDeclaration
+
 	/// vlgModuleParameters
+
 	/// vlgPlaceholderModulePort
+
 	/// vlgProcedureCall
+
 	/// vlgRange
+
 	/// vlgShiftExpression
+
 	/// vlgSimpleForLoop
+
 	/// vlgStandardModulePortDeclaration
+
 	/// vlgStandardModulePortImplementation
+
 	/// vlgSyncBlock
+
 	/// vlgSyncBlockSensitivityItem
+
 	/// vlgTernaryExpression
+
 	/// vlgText
+
 	/// vlgUnaryExpression
+
 	/// </summary>
 	public List<vlgAbstractObject> Children { get; set; } = new List<vlgAbstractObject>();
 }
@@ -133,47 +184,87 @@ public partial class vlgCase : vlgAbstractObject
 	{
 		this.Check = Check;
 	}
-	// from vlgAssignExpression
+	/// <summary>
+	/// from vlgAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Expression"></param>
 	public vlgCase(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
 	{
 		this.Check = new vlgAssignExpression(Target, Type, Expression);
 	}
-	// from vlgBinaryValueExpression
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vlgCase(RTLBitArray Value)
 	{
 		this.Check = new vlgBinaryValueExpression(Value);
 	}
-	// from vlgCompareExpression
+	/// <summary>
+	/// from vlgCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vlgIdentifierExpression
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vlgCase(vlgIdentifier Source)
 	{
 		this.Check = new vlgIdentifierExpression(Source);
 	}
-	// from vlgLogicExpression
+	/// <summary>
+	/// from vlgLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vlgMathExpression
+	/// <summary>
+	/// from vlgMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgMathExpression(Lhs, Type, Rhs);
 	}
-	// from vlgShiftExpression
+	/// <summary>
+	/// from vlgShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vlgTernaryExpression
+	/// <summary>
+	/// from vlgTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	{
 		this.Check = new vlgTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vlgUnaryExpression
+	/// <summary>
+	/// from vlgUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgCase(vlgUnaryType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgUnaryExpression(Type, Rhs);
@@ -198,19 +289,27 @@ public partial class vlgCaseStatement : vlgCaseItem
 	{
 		this.Conditions = (Conditions ?? Array.Empty<vlgICaseStatement>()).Where(s => s != null).ToList();
 	}
-	// from vlgBinaryValueExpression
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vlgCaseStatement(RTLBitArray Value)
 	{
 		this.Conditions.Add(new vlgBinaryValueExpression(Value));
 	}
-	// from vlgIdentifierExpression
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vlgCaseStatement(vlgIdentifier Source)
 	{
 		this.Conditions.Add(new vlgIdentifierExpression(Source));
 	}
 	/// <summary>
 	/// vlgBinaryValueExpression
+
 	/// vlgIdentifierExpression
+
 	/// </summary>
 	public List<vlgICaseStatement> Conditions { get; set; } = new List<vlgICaseStatement>();
 }
@@ -221,12 +320,19 @@ public partial class vlgCombBlock : vlgAbstractObject
 	{
 		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgIdentifier>()).Where(s => s != null).ToList();
 	}
-	// from vlgIdentifier
+	/// <summary>
+	/// from vlgIdentifier
+	/// </summary>
+	/// <param name="Name"></param>
+	/// <param name="Indexes"></param>
 	public vlgCombBlock(String Name, params vlgRange[] Indexes)
 	{
 		this.SensitivityList.Add(new vlgIdentifier(Name, Indexes));
 	}
-	// from vlgIdentifier
+	/// <summary>
+	/// from vlgIdentifier
+	/// </summary>
+	/// <param name="Name"></param>
 	public vlgCombBlock(String Name)
 	{
 		this.SensitivityList.Add(new vlgIdentifier(Name));
@@ -263,47 +369,87 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	{
 		this.Condition = Condition;
 	}
-	// from vlgAssignExpression
+	/// <summary>
+	/// from vlgAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Expression"></param>
 	public vlgConditionalStatement(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
 	{
 		this.Condition = new vlgAssignExpression(Target, Type, Expression);
 	}
-	// from vlgBinaryValueExpression
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vlgConditionalStatement(RTLBitArray Value)
 	{
 		this.Condition = new vlgBinaryValueExpression(Value);
 	}
-	// from vlgCompareExpression
+	/// <summary>
+	/// from vlgCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vlgIdentifierExpression
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vlgConditionalStatement(vlgIdentifier Source)
 	{
 		this.Condition = new vlgIdentifierExpression(Source);
 	}
-	// from vlgLogicExpression
+	/// <summary>
+	/// from vlgLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vlgMathExpression
+	/// <summary>
+	/// from vlgMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgMathExpression(Lhs, Type, Rhs);
 	}
-	// from vlgShiftExpression
+	/// <summary>
+	/// from vlgShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vlgTernaryExpression
+	/// <summary>
+	/// from vlgTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	{
 		this.Condition = new vlgTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vlgUnaryExpression
+	/// <summary>
+	/// from vlgUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgConditionalStatement(vlgUnaryType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgUnaryExpression(Type, Rhs);
@@ -616,47 +762,87 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	{
 		this.External = External;
 	}
-	// from vlgAssignExpression
+	/// <summary>
+	/// from vlgAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Expression"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
 	{
 		this.External = new vlgAssignExpression(Target, Type, Expression);
 	}
-	// from vlgBinaryValueExpression
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vlgModuleInstanceSimplePortMapping(RTLBitArray Value)
 	{
 		this.External = new vlgBinaryValueExpression(Value);
 	}
-	// from vlgCompareExpression
+	/// <summary>
+	/// from vlgCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgCompareExpression(Lhs, Type, Rhs);
 	}
-	// from vlgIdentifierExpression
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgIdentifier Source)
 	{
 		this.External = new vlgIdentifierExpression(Source);
 	}
-	// from vlgLogicExpression
+	/// <summary>
+	/// from vlgLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgLogicExpression(Lhs, Type, Rhs);
 	}
-	// from vlgMathExpression
+	/// <summary>
+	/// from vlgMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgMathExpression(Lhs, Type, Rhs);
 	}
-	// from vlgShiftExpression
+	/// <summary>
+	/// from vlgShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgShiftExpression(Lhs, Type, Rhs);
 	}
-	// from vlgTernaryExpression
+	/// <summary>
+	/// from vlgTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	{
 		this.External = new vlgTernaryExpression(Condition, Lhs, Rhs);
 	}
-	// from vlgUnaryExpression
+	/// <summary>
+	/// from vlgUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgModuleInstanceSimplePortMapping(vlgUnaryType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgUnaryExpression(Type, Rhs);
@@ -715,14 +901,23 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	public String Name { get; set; }
 	/// <summary>
 	/// vlgAssignExpression
+
 	/// vlgBinaryValueExpression
+
 	/// vlgCompareExpression
+
 	/// vlgIdentifierExpression
+
 	/// vlgLogicExpression
+
 	/// vlgMathExpression
+
 	/// vlgShiftExpression
+
 	/// vlgTernaryExpression
+
 	/// vlgUnaryExpression
+
 	/// </summary>
 	public List<vlgExpression> Parameters { get; set; } = new List<vlgExpression>();
 }
@@ -733,61 +928,110 @@ public partial class vlgRange : vlgAbstractObject
 	{
 		this.Indexes = (Indexes ?? Array.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
-	// from vlgAssignExpression
+	/// <summary>
+	/// from vlgAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Expression"></param>
 	public vlgRange(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
 	{
 		this.Indexes.Add(new vlgAssignExpression(Target, Type, Expression));
 	}
-	// from vlgBinaryValueExpression
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
 	public vlgRange(RTLBitArray Value)
 	{
 		this.Indexes.Add(new vlgBinaryValueExpression(Value));
 	}
-	// from vlgCompareExpression
+	/// <summary>
+	/// from vlgCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgCompareExpression(Lhs, Type, Rhs));
 	}
-	// from vlgIdentifierExpression
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
 	public vlgRange(vlgIdentifier Source)
 	{
 		this.Indexes.Add(new vlgIdentifierExpression(Source));
 	}
-	// from vlgLogicExpression
+	/// <summary>
+	/// from vlgLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgLogicExpression(Lhs, Type, Rhs));
 	}
-	// from vlgMathExpression
+	/// <summary>
+	/// from vlgMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgMathExpression(Lhs, Type, Rhs));
 	}
-	// from vlgShiftExpression
+	/// <summary>
+	/// from vlgShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgShiftExpression(Lhs, Type, Rhs));
 	}
-	// from vlgTernaryExpression
+	/// <summary>
+	/// from vlgTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgTernaryExpression(Condition, Lhs, Rhs));
 	}
-	// from vlgUnaryExpression
+	/// <summary>
+	/// from vlgUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
 	public vlgRange(vlgUnaryType Type, vlgExpression Rhs)
 	{
 		this.Indexes.Add(new vlgUnaryExpression(Type, Rhs));
 	}
 	/// <summary>
 	/// vlgAssignExpression
+
 	/// vlgBinaryValueExpression
+
 	/// vlgCompareExpression
+
 	/// vlgIdentifierExpression
+
 	/// vlgLogicExpression
+
 	/// vlgMathExpression
+
 	/// vlgShiftExpression
+
 	/// vlgTernaryExpression
+
 	/// vlgUnaryExpression
+
 	/// </summary>
 	public List<vlgExpression> Indexes { get; set; } = new List<vlgExpression>();
 }
@@ -867,7 +1111,11 @@ public partial class vlgSyncBlock : vlgAbstractObject
 	{
 		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgSyncBlockSensitivityItem>()).Where(s => s != null).ToList();
 	}
-	// from vlgSyncBlockSensitivityItem
+	/// <summary>
+	/// from vlgSyncBlockSensitivityItem
+	/// </summary>
+	/// <param name="Edge"></param>
+	/// <param name="Identifier"></param>
 	public vlgSyncBlock(vlgEdgeType Edge, vlgIdentifier Identifier)
 	{
 		this.SensitivityList.Add(new vlgSyncBlockSensitivityItem(Edge, Identifier));

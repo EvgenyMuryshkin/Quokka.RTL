@@ -54,6 +54,9 @@ namespace Quokka.RTL.VHDL
             switch (obj)
             {
                 case vhdIdentifierExpression e:
+                case vhdBinaryValueExpression b:
+                case vhdPredefinedAttributeExpression p:
+                case vhdCastExpression c:
                     return Raw(obj);
                 default:
                     return $"({Raw(obj)})";
