@@ -68,6 +68,7 @@ namespace Quokka.RTL.SourceGenerators
                 _targetTypeOverride = value;
             }
         }
+
         public List<MethodParam> Params { get; set; } = new List<MethodParam>();
         public List<string> Args { get; set; } = new List<string>();
 

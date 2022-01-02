@@ -52,7 +52,7 @@ namespace Quokka.RTL.SourceGenerators
             return AllProperties(obj).Where(p => !PropertyAttributes<NoCtorInitAttribute>(p).Any()).ToList();
         }
 
-        public List<string> CtorParamsDecl(List<PropertyInfo> props)
+        public List<string> CtorParamsDecl(List<PropertyInfo> props, bool asParams)
         {
             var listsCount = props.Where(p => p.PropertyType.IsList()).Count();
 
@@ -60,7 +60,7 @@ namespace Quokka.RTL.SourceGenerators
             {
                 if (p.PropertyType.IsList())
                 {
-                    if (listsCount == 1 && p == props.Last())
+                    if (asParams && listsCount == 1 && p == props.Last())
                     {
                         return $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[] {p.Name}";
                     }
@@ -72,20 +72,10 @@ namespace Quokka.RTL.SourceGenerators
             }).ToList();
         }
 
-        public MethodParam MethodParam(Type propertyType, string propertyName, bool asParams = false)
+        public MethodParam MethodParam(Type propertyType, string propertyName)
         {
             if (propertyType.IsList())
             {
-                if (asParams)
-                {
-                    return new MethodParam()
-                    {
-                        Type = propertyType,
-                        ParamType = $"params {PropertyType(propertyType.GetGenericArguments()[0])}[]",
-                        ParamName = propertyName
-                    };
-                }
-
                 return new MethodParam()
                 {
                     Type = propertyType,
@@ -102,49 +92,22 @@ namespace Quokka.RTL.SourceGenerators
             };
         }
 
-        public MethodParam MethodParam(PropertyInfo p, bool asParams = false)
+        public MethodParam MethodParam(PropertyInfo p)
         {
-            return MethodParam(p.PropertyType, p.Name, asParams);
-
-            if (p.PropertyType.IsList())
-            {
-                if (asParams)
-                {
-                    return new MethodParam()
-                    {
-                        Type = p.PropertyType,
-                        ParamType = $"params {PropertyType(p.PropertyType.GetGenericArguments()[0])}[]",
-                        ParamName = p.Name
-                    };
-                }
-
-                return new MethodParam()
-                {
-                    Type = p.PropertyType,
-                    ParamType = $"IEnumerable<{PropertyType(p.PropertyType.GetGenericArguments()[0])}>",
-                    ParamName = p.Name
-                };
-            }
-
-            return new MethodParam()
-            {
-                Type = p.PropertyType,
-                ParamType = PropertyType(p.PropertyType),
-                ParamName = p.Name
-            };
+            return MethodParam(p.PropertyType, p.Name);
         }
 
         public List<MethodParam> MethodParams(List<PropertyInfo> props)
         {
             var listsCount = props.Where(p => p.PropertyType.IsList()).Count();
 
-            return props.Select(p => MethodParam(p, listsCount == 1 && p == props.Last())).ToList();
+            return props.Select(p => MethodParam(p)).ToList();
         }
 
-        public List<string> CtorParamsDecl(Type obj)
+        public List<string> CtorParamsDecl(Type obj, bool asParams)
         {
             var props = CtorParameters(obj);
-            return CtorParamsDecl(props);
+            return CtorParamsDecl(props, asParams);
         }
 
         public List<string> CtorParamNames(Type obj)
@@ -305,9 +268,6 @@ namespace Quokka.RTL.SourceGenerators
             List<ImplicitOperator> all;
             if (obj.IsAbstract)
             {
-                if (obj.Name == "vhdExpression")
-                    Debugger.Break();
-
                 all = AbstractImplicitOperators(obj);
             }
             else
@@ -347,6 +307,9 @@ namespace Quokka.RTL.SourceGenerators
         {
             var result = new List<ImplicitOperator>();
 
+            if (obj.Name == "vlgCombBlock")
+                Debugger.Break();
+
             if (obj == null || !objects.Contains(obj))
                 return result;
 
@@ -357,12 +320,16 @@ namespace Quokka.RTL.SourceGenerators
                 return result;
 
             chainedTypes = (chainedTypes ?? new List<Type>()).ToList();
+
+            //var chainedTypesWithList = (chainedTypes ?? new List<Type>()).ToList();
+
             chainedTypes.Add(obj);
+            //chainedTypesWithList.Add(typeof(List<>).MakeGenericType(obj));
 
             foreach (var ctorVariant in ImplicitCtorVariants(obj))
             {
                 var methodParams = MethodParams(ctorVariant);
-
+                
                 var singlePropType = ctorVariant[0].PropertyType;
                 if (singlePropType.IsList())
                 {
@@ -372,7 +339,12 @@ namespace Quokka.RTL.SourceGenerators
                         var derived = DerivedNonAbstract(elementType);
                         foreach (var d in derived)
                         {
-                            result.AddRange(AllImplicitOperators(d, chainedTypes));
+                            foreach (var op in AllImplicitOperators(d, chainedTypes))
+                            {
+                                op.ChainedTypes = op.ChainedTypes.ToList();
+                                op.ChainedTypes[chainedTypes.Count] = typeof(List<>).MakeGenericType(op.ChainedTypes[chainedTypes.Count]);
+                                result.Add(op);
+                            }
                         }
                     }
                     else if (objects.Contains(elementType))
@@ -381,10 +353,15 @@ namespace Quokka.RTL.SourceGenerators
                         {
                             ChainedTypes = chainedTypes,
                             Params = { MethodParam(elementType, "source") },
-                            Args = { "source" }
+                            Args = { "new [] { source }" }
                         });
 
-                        result.AddRange(AllImplicitOperators(elementType, chainedTypes));
+                        foreach (var op in AllImplicitOperators(elementType, chainedTypes))
+                        {
+                            op.ChainedTypes = op.ChainedTypes.ToList();
+                            op.ChainedTypes[chainedTypes.Count] = typeof(List<>).MakeGenericType(op.ChainedTypes[chainedTypes.Count]);
+                            result.Add(op);
+                        }
                     }
                 }
                 else if (singlePropType.IsAbstract)
@@ -463,6 +440,17 @@ namespace Quokka.RTL.SourceGenerators
             return result;
         }
 
+        public Type SingleListMemberElementType(Type obj)
+        {
+            var ctorParams = CtorParameters(obj);
+            if (ctorParams.Count == 1 && ctorParams[0].PropertyType.IsList())
+            {
+                return ctorParams[0].PropertyType.GetGenericArguments()[0];
+            }
+
+            return null;
+        }
+
         public List<CtorVariant> AllCtorVariants(Type obj)
         {
             var result = new List<CtorVariant>();
@@ -510,8 +498,16 @@ namespace Quokka.RTL.SourceGenerators
                 }
             }
 
+            var childrenType = SingleListMemberElementType(obj);
+
             foreach (var c in result.Where(r => r.CtorVariantType != CtorVariantType.Direct))
             {
+                if (c.Props.All(p => p.PropertyType == childrenType))
+                {
+                    c.IsCommented = true;
+                    continue;
+                }
+
                 var sameCtors = result.Where(i => i.IsSame(c)).ToList();
                 c.IsCommented = sameCtors.Count != 1;
             }

@@ -54,6 +54,7 @@ namespace Quokka.RTL.VHDL
             switch (obj)
             {
                 case vhdIdentifierExpression e:
+                case vhdIndexedExpression ie:
                 case vhdBinaryValueExpression b:
                 case vhdPredefinedAttributeExpression p:
                 case vhdCastExpression c:

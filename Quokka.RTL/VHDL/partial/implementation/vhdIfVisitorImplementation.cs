@@ -13,11 +13,11 @@ namespace Quokka.RTL.VHDL.Implementation
 			{
 				if (statement == obj.Statements.First())
 				{
-					_builder.AppendLine($"if ({Raw(statement.Condition)}) then");
+					_builder.AppendLine($"if {Raw(statement.Condition)} then");
 				}
 				else if (statement.Condition != null)
 				{
-					_builder.AppendLine($"elsif ({Raw(statement.Condition)}) then");
+					_builder.AppendLine($"elsif {Raw(statement.Condition)} then");
 				}
 				else
 				{

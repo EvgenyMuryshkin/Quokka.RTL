@@ -12,7 +12,12 @@
             {
 				_builder.AppendLine($"for {obj.Iterator} in {obj.From} to {obj.To} loop");
 			}
-			Visit(obj.Block);
+
+			using (_builder.Indent())
+            {
+				Visit(obj.Block);
+			}
+
 			_builder.AppendLine($"end loop;");
 		}
 	}

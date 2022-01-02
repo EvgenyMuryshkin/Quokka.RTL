@@ -63,7 +63,127 @@
             All subsequent stages will continue to push data through
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgAbstractCollection.Children" -->
+        <member name="P:Quokka.RTL.Verilog.vlgAbstractCollection.Children">
+             <summary>
+             vlgAssign
+            
+             vlgAssignExpression
+            
+             vlgAttribute
+            
+             vlgBinaryValueExpression
+            
+             vlgCase
+            
+             vlgCombBlock
+            
+             vlgComment
+            
+             vlgCompareExpression
+            
+             vlgConditionalStatement
+            
+             vlgCustomDeclaration
+            
+             vlgCustomModulePortDeclaration
+            
+             vlgFile
+            
+             vlgForLoop
+            
+             vlgGenerate
+            
+             vlgGenericBlock
+            
+             vlgGenvar
+            
+             vlgIdentifier
+            
+             vlgIdentifierExpression
+            
+             vlgIf
+            
+             vlgInitial
+            
+             vlgIterator
+            
+             vlgLocalParamNameBinaryValue
+            
+             vlgLocalParamNameExplicitValue
+            
+             vlgLogicExpression
+            
+             vlgLogicSignal
+            
+             vlgMathExpression
+            
+             vlgMemoryBlock
+            
+             vlgModule
+            
+             vlgModuleImplementation
+            
+             vlgModuleImplementationBlock
+            
+             vlgModuleInstance
+            
+             vlgModuleInstanceNamedPortMapping
+            
+             vlgModuleInstanceParameter
+            
+             vlgModuleInstanceParameters
+            
+             vlgModuleInstancePortMappings
+            
+             vlgModuleInstanceSimplePortMapping
+            
+             vlgModuleInterface
+            
+             vlgModuleParameterDeclaration
+            
+             vlgModuleParameters
+            
+             vlgPlaceholderModulePort
+            
+             vlgProcedureCall
+            
+             vlgRange
+            
+             vlgShiftExpression
+            
+             vlgSimpleForLoop
+            
+             vlgStandardModulePortDeclaration
+            
+             vlgStandardModulePortImplementation
+            
+             vlgSyncBlock
+            
+             vlgSyncBlockSensitivityItem
+            
+             vlgTernaryExpression
+            
+             vlgText
+            
+             vlgUnaryExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAbstractCollection.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgAbstractCollection">
+            <summary>
+            from vlgInitial
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAssign.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgAssign">
+            <summary>
+            from vlgAssign
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgBinaryValueExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgBinaryValueExpression">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgAssignExpression
@@ -131,6 +251,81 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgBinaryValueExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgCompareExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgIdentifierExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgLogicExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgMathExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseItem.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgCaseItem">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseItem.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgCaseItem">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseItem.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgCaseItem">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.#ctor(Quokka.RTL.RTLBitArray)">
             <summary>
             from vlgBinaryValueExpression
@@ -143,8 +338,30 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgCaseStatement.Conditions" -->
-        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.#ctor(System.String,Quokka.RTL.Verilog.vlgRange[])">
+        <member name="P:Quokka.RTL.Verilog.vlgCaseStatement.Conditions">
+             <summary>
+             vlgBinaryValueExpression
+            
+             vlgIdentifierExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgCaseStatement">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgCaseStatement">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCaseStatement.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgCaseStatement">
+            <summary>
+            from vlgCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgRange})">
             <summary>
             from vlgIdentifier
             </summary>
@@ -156,6 +373,16 @@
             from vlgIdentifier
             </summary>
             <param name="Name"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgCombBlock">
+            <summary>
+            from vlgCombBlock
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCombBlock.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgCombBlock">
+            <summary>
+            from vlgCombBlock
+            </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -224,6 +451,186 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgBinaryValueExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgCompareExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgIdentifierExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgLogicExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgMathExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgExpression">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgExpression">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgExpression">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgGenerate.op_Implicit(Quokka.RTL.Verilog.vlgGenericBlock)~Quokka.RTL.Verilog.vlgGenerate">
+            <summary>
+            from vlgGenerate
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgGenvar.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgGenvar">
+            <summary>
+            from vlgGenvar
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgIdentifier.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgIdentifier">
+            <summary>
+            from vlgIdentifier
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgIdentifierExpression.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgIdentifierExpression">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgIdentifierExpression.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgIdentifierExpression">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgInitial.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgInitial">
+            <summary>
+            from vlgInitial
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgIterator.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgIterator">
+            <summary>
+            from vlgIterator
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModule.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgModule">
+            <summary>
+            from vlgModule
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleImplementation.op_Implicit(Quokka.RTL.Verilog.vlgModuleImplementationBlock)~Quokka.RTL.Verilog.vlgModuleImplementation">
+            <summary>
+            from vlgModuleImplementation
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgBinaryValueExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgCompareExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgIdentifierExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgLogicExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgMathExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgAssignExpression
@@ -291,7 +698,98 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgProcedureCall.Parameters" -->
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgBinaryValueExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgCompareExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgIdentifierExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgLogicExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgMathExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModulePort.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgModulePort">
+            <summary>
+            from vlgPlaceholderModulePort
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgPlaceholderModulePort.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgPlaceholderModulePort">
+            <summary>
+            from vlgPlaceholderModulePort
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.Verilog.vlgProcedureCall.Parameters">
+             <summary>
+             vlgAssignExpression
+            
+             vlgBinaryValueExpression
+            
+             vlgCompareExpression
+            
+             vlgIdentifierExpression
+            
+             vlgLogicExpression
+            
+             vlgMathExpression
+            
+             vlgShiftExpression
+            
+             vlgTernaryExpression
+            
+             vlgUnaryExpression
+            
+             </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgAssignExpression
@@ -344,14 +842,6 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
-            <summary>
-            from vlgTernaryExpression
-            </summary>
-            <param name="Condition"></param>
-            <param name="Lhs"></param>
-            <param name="Rhs"></param>
-        </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgUnaryExpression
@@ -359,7 +849,33 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.Verilog.vlgRange.Indexes" -->
+        <member name="P:Quokka.RTL.Verilog.vlgRange.Indexes">
+             <summary>
+             vlgAssignExpression
+            
+             vlgBinaryValueExpression
+            
+             vlgCompareExpression
+            
+             vlgIdentifierExpression
+            
+             vlgLogicExpression
+            
+             vlgMathExpression
+            
+             vlgShiftExpression
+            
+             vlgTernaryExpression
+            
+             vlgUnaryExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgRange">
+            <summary>
+            from vlgRange
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgSyncBlock.#ctor(Quokka.RTL.Verilog.vlgEdgeType,Quokka.RTL.Verilog.vlgIdentifier)">
             <summary>
             from vlgSyncBlockSensitivityItem
@@ -367,7 +883,166 @@
             <param name="Edge"></param>
             <param name="Identifier"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdAbstractCollection.Children" -->
+        <member name="M:Quokka.RTL.Verilog.vlgSyncBlock.op_Implicit(Quokka.RTL.Verilog.vlgSyncBlockSensitivityItem)~Quokka.RTL.Verilog.vlgSyncBlock">
+            <summary>
+            from vlgSyncBlock
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.VHDL.vhdAbstractCollection.Children">
+             <summary>
+             vhdAggregate
+            
+             vhdAggregateBitConnection
+            
+             vhdAggregateExpression
+            
+             vhdAggregateOthersConnection
+            
+             vhdAlias
+            
+             vhdArchitecture
+            
+             vhdArchitectureDeclarations
+            
+             vhdArchitectureImplementation
+            
+             vhdArchitectureImplementationBlock
+            
+             vhdArrayTypeDeclaration
+            
+             vhdAssignExpression
+            
+             vhdAttribute
+            
+             vhdBinaryValueExpression
+            
+             vhdCase
+            
+             vhdCaseStatement
+            
+             vhdCastExpression
+            
+             vhdCastResizeExpression
+            
+             vhdComment
+            
+             vhdCompareExpression
+            
+             vhdConditionalStatement
+            
+             vhdCustomDataType
+            
+             vhdCustomEntityPort
+            
+             vhdCustomNetType
+            
+             vhdDefaultDataType
+            
+             vhdDefaultNetType
+            
+             vhdDefaultSignal
+            
+             vhdEntity
+            
+             vhdEntityInstance
+            
+             vhdEntityInstanceNamedPortMapping
+            
+             vhdEntityInstancePortMappings
+            
+             vhdEntityInterface
+            
+             vhdFile
+            
+             vhdGenericBlock
+            
+             vhdIdentifier
+            
+             vhdIdentifierExpression
+            
+             vhdIf
+            
+             vhdIndexedExpression
+            
+             vhdLibraryReference
+            
+             vhdLogicExpression
+            
+             vhdLogicSignal
+            
+             vhdMathExpression
+            
+             vhdNull
+            
+             vhdOthersExpression
+            
+             vhdParenthesizedExpression
+            
+             vhdPredefinedAttributeExpression
+            
+             vhdProcedureCall
+            
+             vhdProcess
+            
+             vhdProcessDeclarations
+            
+             vhdRange
+            
+             vhdResizeExpression
+            
+             vhdShiftExpression
+            
+             vhdSimpleForLoop
+            
+             vhdStandardEntityPort
+            
+             vhdSyncBlock
+            
+             vhdTernaryExpression
+            
+             vhdText
+            
+             vhdUnaryExpression
+            
+             vhdUse
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(System.Boolean)~Quokka.RTL.VHDL.vhdAbstractObject">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdAbstractObject">
+            <summary>
+            from vhdDefaultDataType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdAbstractObject">
+            <summary>
+            from vhdDefaultNetType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateExpression.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdAggregateExpression">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.op_Implicit(System.Boolean)~Quokka.RTL.VHDL.vhdAggregateOthersConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdArchitectureImplementation.op_Implicit(Quokka.RTL.VHDL.vhdArchitectureImplementationBlock)~Quokka.RTL.VHDL.vhdArchitectureImplementation">
+            <summary>
+            from vhdArchitectureImplementation
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdBinaryValueExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdBinaryValueExpression">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
             from vhdAggregateExpression
@@ -417,7 +1092,7 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
             <summary>
             from vhdIndexedExpression
             </summary>
@@ -477,6 +1152,111 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdAggregateExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdAssignExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdBinaryValueExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdCastExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdCastResizeExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdCompareExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdIdentifierExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdMathExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdOthersExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdParenthesizedExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdPredefinedAttributeExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdTernaryExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdUnaryExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
             from vhdAggregateExpression
@@ -526,7 +1306,7 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
             <summary>
             from vhdIndexedExpression
             </summary>
@@ -586,6 +1366,111 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdAggregateExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdAssignExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdBinaryValueExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdCastExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdCastResizeExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdCompareExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdIdentifierExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdMathExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdOthersExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdParenthesizedExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdPredefinedAttributeExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdTernaryExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdUnaryExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
             from vhdAggregateExpression
@@ -635,7 +1520,7 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
             <summary>
             from vhdIndexedExpression
             </summary>
@@ -694,6 +1579,181 @@
             </summary>
             <param name="Type"></param>
             <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdAggregateExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdAssignExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdBinaryValueExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdCastExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdCastResizeExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdCompareExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdIdentifierExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdMathExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdOthersExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdParenthesizedExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdPredefinedAttributeExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdTernaryExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdUnaryExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCustomDataType.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdCustomDataType">
+            <summary>
+            from vhdCustomDataType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCustomNetType.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdCustomNetType">
+            <summary>
+            from vhdCustomNetType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdDataTypeSource.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdDataTypeSource">
+            <summary>
+            from vhdCustomDataType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdDataTypeSource.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdDataTypeSource">
+            <summary>
+            from vhdDefaultDataType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdDefaultDataType.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdDefaultDataType">
+            <summary>
+            from vhdDefaultDataType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdDefaultNetType.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdDefaultNetType">
+            <summary>
+            from vhdDefaultNetType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdEntity.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdEntity">
+            <summary>
+            from vhdEntity
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdExpression">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdExpression">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdExpression">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdExpression">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIdentifier.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdIdentifier">
+            <summary>
+            from vhdIdentifier
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIdentifierExpression.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdIdentifierExpression">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIdentifierExpression.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdIdentifierExpression">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
@@ -797,6 +1857,21 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdLibraryReference.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdLibraryReference">
+            <summary>
+            from vhdLibraryReference
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdNetTypeSource.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdNetTypeSource">
+            <summary>
+            from vhdCustomNetType
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdNetTypeSource.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdNetTypeSource">
+            <summary>
+            from vhdDefaultNetType
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
             from vhdAggregateExpression
@@ -846,7 +1921,7 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
             <summary>
             from vhdIndexedExpression
             </summary>
@@ -906,12 +1981,64 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdProcedureCall.Parameters" -->
+        <member name="P:Quokka.RTL.VHDL.vhdProcedureCall.Parameters">
+             <summary>
+             vhdAggregateExpression
+            
+             vhdAssignExpression
+            
+             vhdBinaryValueExpression
+            
+             vhdCastExpression
+            
+             vhdCastResizeExpression
+            
+             vhdCompareExpression
+            
+             vhdIdentifierExpression
+            
+             vhdIndexedExpression
+            
+             vhdLogicExpression
+            
+             vhdMathExpression
+            
+             vhdOthersExpression
+            
+             vhdParenthesizedExpression
+            
+             vhdPredefinedAttributeExpression
+            
+             vhdResizeExpression
+            
+             vhdShiftExpression
+            
+             vhdTernaryExpression
+            
+             vhdUnaryExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdProcedureCall.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdProcedureCall">
+            <summary>
+            from vhdProcedureCall
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdProcess.#ctor(System.String)">
             <summary>
             from vhdIdentifier
             </summary>
             <param name="Name"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdProcess.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdProcess">
+            <summary>
+            from vhdProcess
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdProcess.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdProcess">
+            <summary>
+            from vhdProcess
+            </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
             <summary>
@@ -962,7 +2089,7 @@
             </summary>
             <param name="Source"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdRange[])">
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
             <summary>
             from vhdIndexedExpression
             </summary>
@@ -992,27 +2119,12 @@
             <param name="Source"></param>
             <param name="Attribute"></param>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
-            <summary>
-            from vhdResizeExpression
-            </summary>
-            <param name="Source"></param>
-            <param name="Length"></param>
-        </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdShiftExpression
             </summary>
             <param name="Lhs"></param>
             <param name="Type"></param>
-            <param name="Rhs"></param>
-        </member>
-        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
-            <summary>
-            from vhdTernaryExpression
-            </summary>
-            <param name="Condition"></param>
-            <param name="Lhs"></param>
             <param name="Rhs"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
@@ -1022,6 +2134,53 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:Quokka.RTL.VHDL.vhdRange.Indexes" -->
+        <member name="P:Quokka.RTL.VHDL.vhdRange.Indexes">
+             <summary>
+             vhdAggregateExpression
+            
+             vhdAssignExpression
+            
+             vhdBinaryValueExpression
+            
+             vhdCastExpression
+            
+             vhdCastResizeExpression
+            
+             vhdCompareExpression
+            
+             vhdIdentifierExpression
+            
+             vhdIndexedExpression
+            
+             vhdLogicExpression
+            
+             vhdMathExpression
+            
+             vhdOthersExpression
+            
+             vhdParenthesizedExpression
+            
+             vhdPredefinedAttributeExpression
+            
+             vhdResizeExpression
+            
+             vhdShiftExpression
+            
+             vhdTernaryExpression
+            
+             vhdUnaryExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.op_Implicit(Quokka.RTL.VHDL.vhdExpression)~Quokka.RTL.VHDL.vhdRange">
+            <summary>
+            from vhdRange
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdUse.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdUse">
+            <summary>
+            from vhdUse
+            </summary>
+        </member>
     </members>
 </doc>

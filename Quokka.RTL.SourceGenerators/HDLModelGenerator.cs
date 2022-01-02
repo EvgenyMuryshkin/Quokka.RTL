@@ -192,7 +192,7 @@ namespace Quokka.RTL.SourceGenerators
                 var singleModelObjProp = ctx.SingleModelProperty(obj);
                 if (singleModelObjProp != null)
                 {
-                    var singleCtorArgs = ctx.CtorParamsDecl(singleModelObjProp.PropertyType);
+                    var singleCtorArgs = ctx.CtorParamsDecl(singleModelObjProp.PropertyType, false);
                     var singleCtorParamsNames = ctx.CtorParamNames(singleModelObjProp.PropertyType);
                     var singleCtorParamsTypes = ctx.CtorParameters(singleModelObjProp.PropertyType);
 
@@ -233,7 +233,7 @@ namespace Quokka.RTL.SourceGenerators
                     {
                         case CtorVariantType.Direct:
                         {
-                            var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+                            var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
 
                             if (ctorVariant.IsCommented)
                             {
@@ -247,7 +247,7 @@ namespace Quokka.RTL.SourceGenerators
                             {
                                 if (p.PropertyType.IsList())
                                 {
-                                    builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Array.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
+                                    builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Enumerable.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
                                 }
                                 else
                                 {
@@ -260,7 +260,7 @@ namespace Quokka.RTL.SourceGenerators
                         break;
                         case CtorVariantType.SingleObjct:
                         {
-                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
                             var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
 
                             if (ctorVariant.IsCommented)
@@ -289,7 +289,7 @@ namespace Quokka.RTL.SourceGenerators
                         break;
                         case CtorVariantType.SingleCollection:
                         {
-                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props);
+                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
                             var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
 
                             if (ctorVariant.IsCommented)
@@ -335,7 +335,7 @@ namespace Quokka.RTL.SourceGenerators
                             foreach (var d in derived)
                             {
                                 builder.AppendLine($"\t/// {d.Name}");
-                                builder.AppendLine();
+                                builder.AppendLine($"\t///");
                             }
                             builder.AppendLine("\t/// </summary>");
                         }
@@ -376,17 +376,49 @@ namespace Quokka.RTL.SourceGenerators
                 builder.AppendLine();
                 builder.AppendLine("{");
 
+                if (obj.Name == "vlgCaseItem")
+                    Debugger.Break();
+
                 var implicitOperators = ctx.ImplicitOperators(obj);
 
                 foreach (var iop in implicitOperators)
                 {
+                    builder.AppendLine($"\t/// <summary>");
+                    builder.AppendLine($"\t/// from {iop.ChainedTypes[0].Name}");
+                    builder.AppendLine($"\t/// </summary>");
+
                     builder.AppendLine($"\tpublic static implicit operator {iop.TargetType.Name}({iop.ParamsLine})");
                     builder.AppendLine($"\t{{");
 
-                    var leading = iop.ChainedTypes.Select(t => $"new {t.Name}(").StringJoin("");
-                    var trailing = iop.ChainedTypes.Select(t => $")").StringJoin("");
+                    var leading = iop.ChainedTypes.Select(t =>
+                    {
+                        if (t.IsList())
+                            return $"new [] {{ new {t.GetGenericArguments()[0].Name}(";
+
+                        return $"new {t.Name}(";
+                    }).StringJoin("");
+                    var trailing = iop.ChainedTypes.AsEnumerable().Reverse().Select(t =>
+                    {
+                        if (t.IsList())
+                            return $") }}";
+
+                        return $")";
+                    }).StringJoin("");
                     builder.AppendLine($"\t\treturn {leading}{iop.ArgsLine}{trailing};");
 
+
+                    /*
+                    if (iop.ChainedTypes.Count == 1)
+                    {
+                        var leading = iop.ChainedTypes.Select(t => $"new {t.Name}(").StringJoin("");
+                        var trailing = iop.ChainedTypes.Select(t => $")").StringJoin("");
+                        builder.AppendLine($"\t\treturn {leading}{iop.ArgsLine}{trailing};");
+                    }
+                    else
+                    {
+                        builder.AppendLine($"\t\treturn ({iop.ChainedTypes.Last().Name}){iop.ArgsLine};");
+                    }
+                    */
                     builder.AppendLine($"\t}}");
                 }
 
@@ -443,7 +475,7 @@ namespace Quokka.RTL.SourceGenerators
                 foreach (var child in typedChildren)
                 {
                     var childCtorProps = ctx.CtorParameters(child);
-                    var childCtorParams = ctx.CtorParamsDecl(child);
+                    var childCtorParams = ctx.CtorParamsDecl(child, true);
 
                     builder.AppendLine($"\t//{child.Name}");
 
@@ -464,7 +496,7 @@ namespace Quokka.RTL.SourceGenerators
                         if (childCtorProps.Count == 1 && ctx.objects.Contains(childCtorProps[0].PropertyType))
                         {
                             var forwardType = childCtorProps[0].PropertyType;
-                            var forwardCtorParams = ctx.CtorParamsDecl(forwardType);
+                            var forwardCtorParams = ctx.CtorParamsDecl(forwardType, true);
                             var forwardCtorParamNames = ctx.CtorParamNames(forwardType);
 
                             builder.AppendLine($"\tpublic {obj.Name} With{child.Name.Substring(3)}({forwardCtorParams.ToCSV()})");

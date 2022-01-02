@@ -11,7 +11,7 @@ namespace Quokka.RTL.Verilog.Implementation
                 _formatters.DirectionType(obj.Name, obj.Direction),
                 _formatters.NetType(obj.Name, obj.NetType),
                 _formatters.SignType(obj.Name, obj.Sign),
-                Raw(new vlgRange($"{obj.Width - 1}", "0")),
+                Raw(new vlgRange(new vlgExpression[] { $"{obj.Width - 1}", "0" })),
                 obj.Name,
             };
 

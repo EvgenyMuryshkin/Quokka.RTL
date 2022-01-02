@@ -9,107 +9,107 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	public vlgAbstractCollection() { }
 	/// <summary>
 	/// vlgAssign
-
+	///
 	/// vlgAssignExpression
-
+	///
 	/// vlgAttribute
-
+	///
 	/// vlgBinaryValueExpression
-
+	///
 	/// vlgCase
-
+	///
 	/// vlgCombBlock
-
+	///
 	/// vlgComment
-
+	///
 	/// vlgCompareExpression
-
+	///
 	/// vlgConditionalStatement
-
+	///
 	/// vlgCustomDeclaration
-
+	///
 	/// vlgCustomModulePortDeclaration
-
+	///
 	/// vlgFile
-
+	///
 	/// vlgForLoop
-
+	///
 	/// vlgGenerate
-
+	///
 	/// vlgGenericBlock
-
+	///
 	/// vlgGenvar
-
+	///
 	/// vlgIdentifier
-
+	///
 	/// vlgIdentifierExpression
-
+	///
 	/// vlgIf
-
+	///
 	/// vlgInitial
-
+	///
 	/// vlgIterator
-
+	///
 	/// vlgLocalParamNameBinaryValue
-
+	///
 	/// vlgLocalParamNameExplicitValue
-
+	///
 	/// vlgLogicExpression
-
+	///
 	/// vlgLogicSignal
-
+	///
 	/// vlgMathExpression
-
+	///
 	/// vlgMemoryBlock
-
+	///
 	/// vlgModule
-
+	///
 	/// vlgModuleImplementation
-
+	///
 	/// vlgModuleImplementationBlock
-
+	///
 	/// vlgModuleInstance
-
+	///
 	/// vlgModuleInstanceNamedPortMapping
-
+	///
 	/// vlgModuleInstanceParameter
-
+	///
 	/// vlgModuleInstanceParameters
-
+	///
 	/// vlgModuleInstancePortMappings
-
+	///
 	/// vlgModuleInstanceSimplePortMapping
-
+	///
 	/// vlgModuleInterface
-
+	///
 	/// vlgModuleParameterDeclaration
-
+	///
 	/// vlgModuleParameters
-
+	///
 	/// vlgPlaceholderModulePort
-
+	///
 	/// vlgProcedureCall
-
+	///
 	/// vlgRange
-
+	///
 	/// vlgShiftExpression
-
+	///
 	/// vlgSimpleForLoop
-
+	///
 	/// vlgStandardModulePortDeclaration
-
+	///
 	/// vlgStandardModulePortImplementation
-
+	///
 	/// vlgSyncBlock
-
+	///
 	/// vlgSyncBlockSensitivityItem
-
+	///
 	/// vlgTernaryExpression
-
+	///
 	/// vlgText
-
+	///
 	/// vlgUnaryExpression
-
+	///
 	/// </summary>
 	public List<vlgAbstractObject> Children { get; set; } = new List<vlgAbstractObject>();
 }
@@ -175,10 +175,10 @@ public abstract partial class vlgBlock : vlgAbstractCollection
 public partial class vlgCase : vlgAbstractObject
 {
 	public vlgCase() { }
-	public vlgCase(vlgExpression Check, params vlgCaseStatement[] Statements)
+	public vlgCase(vlgExpression Check, IEnumerable<vlgCaseStatement> Statements)
 	{
 		this.Check = Check;
-		this.Statements = (Statements ?? Array.Empty<vlgCaseStatement>()).Where(s => s != null).ToList();
+		this.Statements = (Statements ?? Enumerable.Empty<vlgCaseStatement>()).Where(s => s != null).ToList();
 	}
 	public vlgCase(vlgExpression Check)
 	{
@@ -285,9 +285,9 @@ public abstract partial class vlgCaseItem
 public partial class vlgCaseStatement : vlgCaseItem
 {
 	public vlgCaseStatement() { }
-	public vlgCaseStatement(params vlgICaseStatement[] Conditions)
+	public vlgCaseStatement(IEnumerable<vlgICaseStatement> Conditions)
 	{
-		this.Conditions = (Conditions ?? Array.Empty<vlgICaseStatement>()).Where(s => s != null).ToList();
+		this.Conditions = (Conditions ?? Enumerable.Empty<vlgICaseStatement>()).Where(s => s != null).ToList();
 	}
 	/// <summary>
 	/// from vlgBinaryValueExpression
@@ -307,25 +307,25 @@ public partial class vlgCaseStatement : vlgCaseItem
 	}
 	/// <summary>
 	/// vlgBinaryValueExpression
-
+	///
 	/// vlgIdentifierExpression
-
+	///
 	/// </summary>
 	public List<vlgICaseStatement> Conditions { get; set; } = new List<vlgICaseStatement>();
 }
 public partial class vlgCombBlock : vlgAbstractObject
 {
 	public vlgCombBlock() { }
-	public vlgCombBlock(params vlgIdentifier[] SensitivityList)
+	public vlgCombBlock(IEnumerable<vlgIdentifier> SensitivityList)
 	{
-		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgIdentifier>()).Where(s => s != null).ToList();
+		this.SensitivityList = (SensitivityList ?? Enumerable.Empty<vlgIdentifier>()).Where(s => s != null).ToList();
 	}
 	/// <summary>
 	/// from vlgIdentifier
 	/// </summary>
 	/// <param name="Name"></param>
 	/// <param name="Indexes"></param>
-	public vlgCombBlock(String Name, params vlgRange[] Indexes)
+	public vlgCombBlock(String Name, IEnumerable<vlgRange> Indexes)
 	{
 		this.SensitivityList.Add(new vlgIdentifier(Name, Indexes));
 	}
@@ -343,9 +343,9 @@ public partial class vlgCombBlock : vlgAbstractObject
 public partial class vlgComment : vlgAbstractObject
 {
 	public vlgComment() { }
-	public vlgComment(params String[] Lines)
+	public vlgComment(IEnumerable<String> Lines)
 	{
-		this.Lines = (Lines ?? Array.Empty<String>()).Where(s => s != null).ToList();
+		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
@@ -540,10 +540,10 @@ public partial class vlgGenvar : vlgAbstractObject
 public partial class vlgIdentifier : vlgAbstractObject
 {
 	public vlgIdentifier() { }
-	public vlgIdentifier(String Name, params vlgRange[] Indexes)
+	public vlgIdentifier(String Name, IEnumerable<vlgRange> Indexes)
 	{
 		this.Name = Name;
-		this.Indexes = (Indexes ?? Array.Empty<vlgRange>()).Where(s => s != null).ToList();
+		this.Indexes = (Indexes ?? Enumerable.Empty<vlgRange>()).Where(s => s != null).ToList();
 	}
 	public vlgIdentifier(String Name)
 	{
@@ -555,7 +555,7 @@ public partial class vlgIdentifier : vlgAbstractObject
 public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 {
 	public vlgIdentifierExpression() { }
-	public vlgIdentifierExpression(String Name, params vlgRange[] Indexes)
+	public vlgIdentifierExpression(String Name, IEnumerable<vlgRange> Indexes)
 	{
 		this.Source = new vlgIdentifier(Name, Indexes);
 	}
@@ -886,11 +886,11 @@ public partial class vlgPlaceholderModulePort : vlgModulePort
 public partial class vlgProcedureCall : vlgAbstractObject
 {
 	public vlgProcedureCall() { }
-	public vlgProcedureCall(String Proc, String Name, params vlgExpression[] Parameters)
+	public vlgProcedureCall(String Proc, String Name, IEnumerable<vlgExpression> Parameters)
 	{
 		this.Proc = Proc;
 		this.Name = Name;
-		this.Parameters = (Parameters ?? Array.Empty<vlgExpression>()).Where(s => s != null).ToList();
+		this.Parameters = (Parameters ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
 	public vlgProcedureCall(String Proc, String Name)
 	{
@@ -901,32 +901,32 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	public String Name { get; set; }
 	/// <summary>
 	/// vlgAssignExpression
-
+	///
 	/// vlgBinaryValueExpression
-
+	///
 	/// vlgCompareExpression
-
+	///
 	/// vlgIdentifierExpression
-
+	///
 	/// vlgLogicExpression
-
+	///
 	/// vlgMathExpression
-
+	///
 	/// vlgShiftExpression
-
+	///
 	/// vlgTernaryExpression
-
+	///
 	/// vlgUnaryExpression
-
+	///
 	/// </summary>
 	public List<vlgExpression> Parameters { get; set; } = new List<vlgExpression>();
 }
 public partial class vlgRange : vlgAbstractObject
 {
 	public vlgRange() { }
-	public vlgRange(params vlgExpression[] Indexes)
+	public vlgRange(IEnumerable<vlgExpression> Indexes)
 	{
-		this.Indexes = (Indexes ?? Array.Empty<vlgExpression>()).Where(s => s != null).ToList();
+		this.Indexes = (Indexes ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -994,16 +994,8 @@ public partial class vlgRange : vlgAbstractObject
 	{
 		this.Indexes.Add(new vlgShiftExpression(Lhs, Type, Rhs));
 	}
-	/// <summary>
-	/// from vlgTernaryExpression
-	/// </summary>
-	/// <param name="Condition"></param>
-	/// <param name="Lhs"></param>
-	/// <param name="Rhs"></param>
-	public vlgRange(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
-	{
-		this.Indexes.Add(new vlgTernaryExpression(Condition, Lhs, Rhs));
-	}
+	// from vlgTernaryExpression
+	// ignored vlgRange(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	/// <summary>
 	/// from vlgUnaryExpression
 	/// </summary>
@@ -1015,23 +1007,23 @@ public partial class vlgRange : vlgAbstractObject
 	}
 	/// <summary>
 	/// vlgAssignExpression
-
+	///
 	/// vlgBinaryValueExpression
-
+	///
 	/// vlgCompareExpression
-
+	///
 	/// vlgIdentifierExpression
-
+	///
 	/// vlgLogicExpression
-
+	///
 	/// vlgMathExpression
-
+	///
 	/// vlgShiftExpression
-
+	///
 	/// vlgTernaryExpression
-
+	///
 	/// vlgUnaryExpression
-
+	///
 	/// </summary>
 	public List<vlgExpression> Indexes { get; set; } = new List<vlgExpression>();
 }
@@ -1107,9 +1099,9 @@ public partial class vlgStandardModulePortImplementation : vlgStandardModulePort
 public partial class vlgSyncBlock : vlgAbstractObject
 {
 	public vlgSyncBlock() { }
-	public vlgSyncBlock(params vlgSyncBlockSensitivityItem[] SensitivityList)
+	public vlgSyncBlock(IEnumerable<vlgSyncBlockSensitivityItem> SensitivityList)
 	{
-		this.SensitivityList = (SensitivityList ?? Array.Empty<vlgSyncBlockSensitivityItem>()).Where(s => s != null).ToList();
+		this.SensitivityList = (SensitivityList ?? Enumerable.Empty<vlgSyncBlockSensitivityItem>()).Where(s => s != null).ToList();
 	}
 	/// <summary>
 	/// from vlgSyncBlockSensitivityItem
@@ -1150,9 +1142,9 @@ public partial class vlgTernaryExpression : vlgExpression
 public partial class vlgText : vlgAbstractObject
 {
 	public vlgText() { }
-	public vlgText(params String[] Lines)
+	public vlgText(IEnumerable<String> Lines)
 	{
-		this.Lines = (Lines ?? Array.Empty<String>()).Where(s => s != null).ToList();
+		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
