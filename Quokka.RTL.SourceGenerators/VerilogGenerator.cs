@@ -24,6 +24,7 @@ namespace Quokka.RTL.SourceGenerators
             GenerateFile(ctx, Implicit, "implicit");
             GenerateFile(ctx, Interfaces, "interface");
             GenerateFile(ctx, Enums, "enums");
+            GenerateFile(ctx, Clone, "clone");
         }
     }
 
@@ -47,6 +48,7 @@ namespace Quokka.RTL.SourceGenerators
             GenerateFile(ctx, Implicit, "implicit");
             GenerateFile(ctx, Interfaces, "interface");
             GenerateFile(ctx, Enums, "enums");
+            GenerateFile(ctx, Clone, "clone");
         }
     }
 }

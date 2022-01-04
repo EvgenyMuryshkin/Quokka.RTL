@@ -9,6 +9,7 @@ namespace Quokka.RTL.SourceGenerators
 {
     public class GeneratorContext
     {
+        public readonly Type baseType;
         public readonly string ns;
         public readonly string prefix;
         public List<TypeInfo> enums;
@@ -18,8 +19,9 @@ namespace Quokka.RTL.SourceGenerators
 
         public StringBuilder builder = new StringBuilder();
 
-        public GeneratorContext(string ns, string prefix)
+        public GeneratorContext(string ns, string prefix, Type baseType)
         {
+            this.baseType = baseType;
             this.ns = ns;
             this.prefix = prefix;
 

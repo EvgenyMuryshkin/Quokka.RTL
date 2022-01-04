@@ -139,6 +139,58 @@ namespace Quokka.RTL.SourceGenerators
             }
         }
 
+        protected void Clone(GeneratorContext ctx)
+        {
+            var builder = ctx.builder;
+            foreach (var e in ctx.objects)
+            {
+                builder.AppendLine($"public partial class {e.Name}");
+                builder.AppendLine("{");
+                if (e == ctx.baseType)
+                {
+                    builder.AppendLine($"\tpublic abstract {ctx.baseType.Name} UntypedClone();");
+                }
+                else if (!e.IsAbstract)
+                {
+                    builder.AppendLine($"\tpublic {e.Name} Clone() => UntypedClone() as {e.Name};");
+
+                    builder.AppendLine($"\tpublic override {ctx.baseType.Name} UntypedClone()");
+                    builder.AppendLine("\t{");
+                    builder.AppendLine($"\t\tvar result = new {e.Name}();");
+                    foreach (var p in ctx.AllProperties(e))
+                    {
+                        if (p.PropertyType.IsList())
+                        {
+                            var elementType = p.PropertyType.GetGenericArguments()[0];
+                            if (ctx.baseType.IsAssignableFrom(elementType))
+                            {
+                                builder.AppendLine($"\t\tresult.{p.Name} = {p.Name}.Select(i => i.UntypedClone() as {elementType.Name}).ToList();");
+
+                            }
+                            else
+                            {
+                                builder.AppendLine($"\t\tresult.{p.Name} = {p.Name}.ToList();");
+                            }
+                        }
+                        else if (ctx.baseType.IsAssignableFrom(p.PropertyType))
+                        {
+                            builder.AppendLine($"\t\tresult.{p.Name} = {p.Name}?.UntypedClone() as {p.PropertyType.Name};");
+                        }
+                        else
+                        {
+                            builder.AppendLine($"\t\tresult.{p.Name} = {p.Name};");
+                        }
+                    }
+
+                    builder.AppendLine($"\t\treturn result;");
+                    builder.AppendLine("\t}");
+                }
+
+                builder.AppendLine("}");
+            }
+        }
+
+
         protected void Interfaces(GeneratorContext ctx)
         {
             var builder = ctx.builder;

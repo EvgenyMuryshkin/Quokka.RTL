@@ -139,7 +139,7 @@ public partial class vlgCase : vlgAbstractObject
 public partial class vlgCaseDefault : vlgCaseItem
 {
 }
-public abstract partial class vlgCaseItem
+public abstract partial class vlgCaseItem : vlgAbstractObject
 {
 	/// <summary>
 	/// from vlgCaseStatement

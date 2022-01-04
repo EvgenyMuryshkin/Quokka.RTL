@@ -18,6 +18,10 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	///
 	/// vlgCase
 	///
+	/// vlgCaseDefault
+	///
+	/// vlgCaseStatement
+	///
 	/// vlgCombBlock
 	///
 	/// vlgComment
@@ -277,7 +281,7 @@ public partial class vlgCaseDefault : vlgCaseItem
 {
 	public vlgCaseDefault() { }
 }
-public abstract partial class vlgCaseItem
+public abstract partial class vlgCaseItem : vlgAbstractObject
 {
 	public vlgCaseItem() { }
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
