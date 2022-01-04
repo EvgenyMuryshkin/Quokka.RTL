@@ -16,4 +16,9 @@ namespace Quokka.RTL.SourceGenerators
     {
 
     }
+
+    public class RequiredListAttribute : Attribute
+    {
+
+    }
 }

@@ -100,6 +100,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdProcedureCall
 	///
+	/// vhdProcedureCallExpression
+	///
 	/// vhdProcess
 	///
 	/// vhdProcessDeclarations
@@ -375,6 +377,15 @@ public partial class vhdCase : vhdAbstractObject
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
 	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdCase(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Expression = new vhdProcedureCallExpression(Proc, Parameters);
+	}
+	/// <summary>
 	/// from vhdResizeExpression
 	/// </summary>
 	/// <param name="Source"></param>
@@ -526,6 +537,15 @@ public partial class vhdCaseStatement : vhdAbstractObject
 	public vhdCaseStatement(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.When = new vhdPredefinedAttributeExpression(Source, Attribute);
+	}
+	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdCaseStatement(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.When = new vhdProcedureCallExpression(Proc, Parameters);
 	}
 	/// <summary>
 	/// from vhdResizeExpression
@@ -725,6 +745,15 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 	public vhdConditionalStatement(vhdExpression Source, vhdPredefinedAttribute Attribute)
 	{
 		this.Condition = new vhdPredefinedAttributeExpression(Source, Attribute);
+	}
+	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdConditionalStatement(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Condition = new vhdProcedureCallExpression(Proc, Parameters);
 	}
 	/// <summary>
 	/// from vhdResizeExpression
@@ -1048,6 +1077,15 @@ public partial class vhdIndexedExpression : vhdExpression
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
 	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdIndexedExpression(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Expression = new vhdProcedureCallExpression(Proc, Parameters);
+	}
+	/// <summary>
 	/// from vhdResizeExpression
 	/// </summary>
 	/// <param name="Source"></param>
@@ -1275,6 +1313,15 @@ public partial class vhdParenthesizedExpression : vhdExpression
 		this.Expression = new vhdPredefinedAttributeExpression(Source, Attribute);
 	}
 	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdParenthesizedExpression(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Expression = new vhdProcedureCallExpression(Proc, Parameters);
+	}
+	/// <summary>
 	/// from vhdResizeExpression
 	/// </summary>
 	/// <param name="Source"></param>
@@ -1364,6 +1411,57 @@ public partial class vhdProcedureCall : vhdAbstractObject
 	/// vhdParenthesizedExpression
 	///
 	/// vhdPredefinedAttributeExpression
+	///
+	/// vhdProcedureCallExpression
+	///
+	/// vhdResizeExpression
+	///
+	/// vhdShiftExpression
+	///
+	/// vhdTernaryExpression
+	///
+	/// vhdUnaryExpression
+	///
+	/// </summary>
+	public List<vhdExpression> Parameters { get; set; } = new List<vhdExpression>();
+}
+public partial class vhdProcedureCallExpression : vhdExpression
+{
+	public vhdProcedureCallExpression() { }
+	public vhdProcedureCallExpression(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Proc = Proc;
+		this.Parameters = (Parameters ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
+	}
+	public String Proc { get; set; }
+	/// <summary>
+	/// vhdAggregateExpression
+	///
+	/// vhdAssignExpression
+	///
+	/// vhdBinaryValueExpression
+	///
+	/// vhdCastExpression
+	///
+	/// vhdCastResizeExpression
+	///
+	/// vhdCompareExpression
+	///
+	/// vhdIdentifierExpression
+	///
+	/// vhdIndexedExpression
+	///
+	/// vhdLogicExpression
+	///
+	/// vhdMathExpression
+	///
+	/// vhdOthersExpression
+	///
+	/// vhdParenthesizedExpression
+	///
+	/// vhdPredefinedAttributeExpression
+	///
+	/// vhdProcedureCallExpression
 	///
 	/// vhdResizeExpression
 	///
@@ -1511,6 +1609,15 @@ public partial class vhdRange : vhdAbstractObject
 	{
 		this.Indexes.Add(new vhdPredefinedAttributeExpression(Source, Attribute));
 	}
+	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdRange(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Indexes.Add(new vhdProcedureCallExpression(Proc, Parameters));
+	}
 	// from vhdResizeExpression
 	// ignored vhdRange(vhdExpression Source, vhdExpression Length)
 	/// <summary>
@@ -1560,6 +1667,8 @@ public partial class vhdRange : vhdAbstractObject
 	/// vhdParenthesizedExpression
 	///
 	/// vhdPredefinedAttributeExpression
+	///
+	/// vhdProcedureCallExpression
 	///
 	/// vhdResizeExpression
 	///

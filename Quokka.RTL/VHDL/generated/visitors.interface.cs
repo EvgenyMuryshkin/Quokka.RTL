@@ -46,6 +46,7 @@ public interface vhdOthersExpressionVisitorInterface : vhdVisitorInterface<vhdOt
 public interface vhdParenthesizedExpressionVisitorInterface : vhdVisitorInterface<vhdParenthesizedExpression> { }
 public interface vhdPredefinedAttributeExpressionVisitorInterface : vhdVisitorInterface<vhdPredefinedAttributeExpression> { }
 public interface vhdProcedureCallVisitorInterface : vhdVisitorInterface<vhdProcedureCall> { }
+public interface vhdProcedureCallExpressionVisitorInterface : vhdVisitorInterface<vhdProcedureCallExpression> { }
 public interface vhdProcessVisitorInterface : vhdVisitorInterface<vhdProcess> { }
 public interface vhdProcessDeclarationsVisitorInterface : vhdVisitorInterface<vhdProcessDeclarations> { }
 public interface vhdRangeVisitorInterface : vhdVisitorInterface<vhdRange> { }

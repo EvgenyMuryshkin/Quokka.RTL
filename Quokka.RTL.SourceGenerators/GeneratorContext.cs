@@ -419,7 +419,8 @@ namespace Quokka.RTL.SourceGenerators
 
             if (ctorParams.Count == 2 && ctorParams.Last().PropertyType.IsList())
             {
-                result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
+                if (ctorParams.Last().GetCustomAttribute<RequiredListAttribute>() == null)
+                    result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
             }
 
             return result;
@@ -434,7 +435,8 @@ namespace Quokka.RTL.SourceGenerators
 
             if (ctorParams.Count > 1 && ctorParams.Last().PropertyType.IsList())
             {
-                result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
+                if (ctorParams.Last().GetCustomAttribute<RequiredListAttribute>() == null)
+                    result.Add(ctorParams.Take(ctorParams.Count - 1).ToList());
             }
 
             return result;

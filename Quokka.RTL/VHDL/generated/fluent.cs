@@ -503,6 +503,9 @@ public partial class vhdPredefinedAttributeExpression
 public partial class vhdProcedureCall
 {
 }
+public partial class vhdProcedureCallExpression
+{
+}
 public partial class vhdProcess
 {
 }

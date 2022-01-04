@@ -982,6 +982,8 @@
             
              vhdProcedureCall
             
+             vhdProcedureCallExpression
+            
              vhdProcess
             
              vhdProcessDeclarations
@@ -1122,6 +1124,13 @@
             <param name="Source"></param>
             <param name="Attribute"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdResizeExpression
@@ -1237,6 +1246,11 @@
             from vhdCase
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdProcedureCallExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdCase">
             <summary>
             from vhdCase
@@ -1335,6 +1349,13 @@
             </summary>
             <param name="Source"></param>
             <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
@@ -1451,6 +1472,11 @@
             from vhdCaseStatement
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdProcedureCallExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
             <summary>
             from vhdCaseStatement
@@ -1549,6 +1575,13 @@
             </summary>
             <param name="Source"></param>
             <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
@@ -1661,6 +1694,11 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdPredefinedAttributeExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdProcedureCallExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
             <summary>
             from vhdConditionalStatement
             </summary>
@@ -1827,6 +1865,13 @@
             <param name="Source"></param>
             <param name="Attribute"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdIndexedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdResizeExpression
@@ -1951,6 +1996,13 @@
             <param name="Source"></param>
             <param name="Attribute"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdResizeExpression
@@ -2009,6 +2061,8 @@
             
              vhdPredefinedAttributeExpression
             
+             vhdProcedureCallExpression
+            
              vhdResizeExpression
             
              vhdShiftExpression
@@ -2023,6 +2077,46 @@
             <summary>
             from vhdProcedureCall
             </summary>
+        </member>
+        <member name="P:Quokka.RTL.VHDL.vhdProcedureCallExpression.Parameters">
+             <summary>
+             vhdAggregateExpression
+            
+             vhdAssignExpression
+            
+             vhdBinaryValueExpression
+            
+             vhdCastExpression
+            
+             vhdCastResizeExpression
+            
+             vhdCompareExpression
+            
+             vhdIdentifierExpression
+            
+             vhdIndexedExpression
+            
+             vhdLogicExpression
+            
+             vhdMathExpression
+            
+             vhdOthersExpression
+            
+             vhdParenthesizedExpression
+            
+             vhdPredefinedAttributeExpression
+            
+             vhdProcedureCallExpression
+            
+             vhdResizeExpression
+            
+             vhdShiftExpression
+            
+             vhdTernaryExpression
+            
+             vhdUnaryExpression
+            
+             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdProcess.#ctor(System.String)">
             <summary>
@@ -2119,6 +2213,13 @@
             <param name="Source"></param>
             <param name="Attribute"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdShiftExpression
@@ -2161,6 +2262,8 @@
              vhdParenthesizedExpression
             
              vhdPredefinedAttributeExpression
+            
+             vhdProcedureCallExpression
             
              vhdResizeExpression
             

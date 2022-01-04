@@ -257,6 +257,12 @@ public partial class vhdProcedureCallVisitorImplementation
 	{
 	}
 }
+public partial class vhdProcedureCallExpressionVisitorImplementation
+{
+	public override void OnVisit(vhdProcedureCallExpression obj)
+	{
+	}
+}
 public partial class vhdProcessVisitorImplementation
 {
 	public override void OnVisit(vhdProcess obj)

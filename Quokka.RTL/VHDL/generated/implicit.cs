@@ -228,6 +228,13 @@ public partial class vhdCase : vhdAbstractObject
 	/// <summary>
 	/// from vhdCase
 	/// </summary>
+	public static implicit operator vhdCase(vhdProcedureCallExpression source)
+	{
+		return new vhdCase(source);
+	}
+	/// <summary>
+	/// from vhdCase
+	/// </summary>
 	public static implicit operator vhdCase(vhdResizeExpression source)
 	{
 		return new vhdCase(source);
@@ -372,6 +379,13 @@ public partial class vhdCaseStatement : vhdAbstractObject
 	/// from vhdCaseStatement
 	/// </summary>
 	public static implicit operator vhdCaseStatement(vhdPredefinedAttributeExpression source)
+	{
+		return new vhdCaseStatement(source);
+	}
+	/// <summary>
+	/// from vhdCaseStatement
+	/// </summary>
+	public static implicit operator vhdCaseStatement(vhdProcedureCallExpression source)
 	{
 		return new vhdCaseStatement(source);
 	}
@@ -534,6 +548,13 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 	/// from vhdConditionalStatement
 	/// </summary>
 	public static implicit operator vhdConditionalStatement(vhdPredefinedAttributeExpression source)
+	{
+		return new vhdConditionalStatement(source);
+	}
+	/// <summary>
+	/// from vhdConditionalStatement
+	/// </summary>
+	public static implicit operator vhdConditionalStatement(vhdProcedureCallExpression source)
 	{
 		return new vhdConditionalStatement(source);
 	}
@@ -787,6 +808,9 @@ public partial class vhdProcedureCall : vhdAbstractObject
 	{
 		return new vhdProcedureCall(Proc);
 	}
+}
+public partial class vhdProcedureCallExpression : vhdExpression
+{
 }
 public partial class vhdProcess : vhdAbstractObject
 {

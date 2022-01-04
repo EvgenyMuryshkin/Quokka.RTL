@@ -173,6 +173,10 @@ public abstract class vhdProcedureCallVisitorGeneratedImplementation : vhdVisito
 {
 	public vhdProcedureCallVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdProcedureCallExpressionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdProcedureCallExpression>, vhdProcedureCallExpressionVisitorInterface
+{
+	public vhdProcedureCallExpressionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdProcessVisitorGeneratedImplementation : vhdVisitorImplementation<vhdProcess>, vhdProcessVisitorInterface
 {
 	public vhdProcessVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -390,6 +394,10 @@ public partial class vhdProcedureCallVisitorImplementation : vhdProcedureCallVis
 {
 	public vhdProcedureCallVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdProcedureCallExpressionVisitorImplementation : vhdProcedureCallExpressionVisitorGeneratedImplementation
+{
+	public vhdProcedureCallExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdProcessVisitorImplementation : vhdProcessVisitorGeneratedImplementation
 {
 	public vhdProcessVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -487,6 +495,7 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdParenthesizedExpression o: return vhdParenthesizedExpressionVisitor(o);
 			case vhdPredefinedAttributeExpression o: return vhdPredefinedAttributeExpressionVisitor(o);
 			case vhdProcedureCall o: return vhdProcedureCallVisitor(o);
+			case vhdProcedureCallExpression o: return vhdProcedureCallExpressionVisitor(o);
 			case vhdProcess o: return vhdProcessVisitor(o);
 			case vhdProcessDeclarations o: return vhdProcessDeclarationsVisitor(o);
 			case vhdRange o: return vhdRangeVisitor(o);
@@ -674,6 +683,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	{
 		return vhdProcedureCallVisitor(_deps, obj);
 	}
+	private vhdProcedureCallExpressionVisitorInterface vhdProcedureCallExpressionVisitor(vhdProcedureCallExpression obj)
+	{
+		return vhdProcedureCallExpressionVisitor(_deps, obj);
+	}
 	private vhdProcessVisitorInterface vhdProcessVisitor(vhdProcess obj)
 	{
 		return vhdProcessVisitor(_deps, obj);
@@ -806,6 +819,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdPredefinedAttributeExpressionVisitorImplementation(deps);
 	protected virtual vhdProcedureCallVisitorInterface vhdProcedureCallVisitor(vhdVisitorImplementationDeps deps, vhdProcedureCall obj)
 		=> new vhdProcedureCallVisitorImplementation(deps);
+	protected virtual vhdProcedureCallExpressionVisitorInterface vhdProcedureCallExpressionVisitor(vhdVisitorImplementationDeps deps, vhdProcedureCallExpression obj)
+		=> new vhdProcedureCallExpressionVisitorImplementation(deps);
 	protected virtual vhdProcessVisitorInterface vhdProcessVisitor(vhdVisitorImplementationDeps deps, vhdProcess obj)
 		=> new vhdProcessVisitorImplementation(deps);
 	protected virtual vhdProcessDeclarationsVisitorInterface vhdProcessDeclarationsVisitor(vhdVisitorImplementationDeps deps, vhdProcessDeclarations obj)
