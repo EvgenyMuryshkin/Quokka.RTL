@@ -5,6 +5,10 @@ namespace Quokka.RTL.Verilog.Implementation
 {
 using Quokka.RTL.Tools;
 // generated implementations
+public abstract class vlgAggregateExpressionVisitorGeneratedImplementation : vlgVisitorImplementation<vlgAggregateExpression>, vlgAggregateExpressionVisitorInterface
+{
+	public vlgAggregateExpressionVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgAssignVisitorGeneratedImplementation : vlgVisitorImplementation<vlgAssign>, vlgAssignVisitorInterface
 {
 	public vlgAssignVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -218,6 +222,10 @@ public abstract class vlgUnaryExpressionVisitorGeneratedImplementation : vlgVisi
 	public vlgUnaryExpressionVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
 // partial implementations
+public partial class vlgAggregateExpressionVisitorImplementation : vlgAggregateExpressionVisitorGeneratedImplementation
+{
+	public vlgAggregateExpressionVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgAssignVisitorImplementation : vlgAssignVisitorGeneratedImplementation
 {
 	public vlgAssignVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -437,6 +445,7 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		switch(obj)
 		{
+			case vlgAggregateExpression o: return vlgAggregateExpressionVisitor(o);
 			case vlgAssign o: return vlgAssignVisitor(o);
 			case vlgAssignExpression o: return vlgAssignExpressionVisitor(o);
 			case vlgAttribute o: return vlgAttributeVisitor(o);
@@ -496,6 +505,10 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	protected virtual vlgVisitorInterface VisitorInterface(object obj)
 	{
 		throw new Exception($"Unsupported object type '{obj.GetType()}' in visitor resolver '{GetType()}'");
+	}
+	private vlgAggregateExpressionVisitorInterface vlgAggregateExpressionVisitor(vlgAggregateExpression obj)
+	{
+		return vlgAggregateExpressionVisitor(_deps, obj);
 	}
 	private vlgAssignVisitorInterface vlgAssignVisitor(vlgAssign obj)
 	{
@@ -709,6 +722,8 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgUnaryExpressionVisitor(_deps, obj);
 	}
+	protected virtual vlgAggregateExpressionVisitorInterface vlgAggregateExpressionVisitor(vlgVisitorImplementationDeps deps, vlgAggregateExpression obj)
+		=> new vlgAggregateExpressionVisitorImplementation(deps);
 	protected virtual vlgAssignVisitorInterface vlgAssignVisitor(vlgVisitorImplementationDeps deps, vlgAssign obj)
 		=> new vlgAssignVisitorImplementation(deps);
 	protected virtual vlgAssignExpressionVisitorInterface vlgAssignExpressionVisitor(vlgVisitorImplementationDeps deps, vlgAssignExpression obj)

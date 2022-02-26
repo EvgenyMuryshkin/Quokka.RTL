@@ -35,6 +35,9 @@ public abstract partial class vlgAbstractForLoop
 public abstract partial class vlgAbstractObject
 {
 }
+public partial class vlgAggregateExpression
+{
+}
 public partial class vlgAssign
 {
 }
@@ -434,9 +437,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithMemoryBlock(String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
+	public vlgModuleImplementationBlock WithMemoryBlock(vlgNetType NetType, String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
 	{
-		this.Children.Add(new vlgMemoryBlock(Name, Sign, Width, Depth));
+		this.Children.Add(new vlgMemoryBlock(NetType, Name, Sign, Width, Depth));
 		return this;
 	}
 	//vlgInitial

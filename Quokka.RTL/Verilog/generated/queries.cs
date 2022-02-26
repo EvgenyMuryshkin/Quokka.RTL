@@ -18,6 +18,9 @@ public abstract partial class vlgAbstractForLoop
 public abstract partial class vlgAbstractObject
 {
 }
+public partial class vlgAggregateExpression
+{
+}
 public partial class vlgAssign
 {
 }

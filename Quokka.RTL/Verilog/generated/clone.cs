@@ -14,6 +14,17 @@ public partial class vlgAbstractObject
 {
 	public abstract vlgAbstractObject UntypedClone();
 }
+public partial class vlgAggregateExpression
+{
+	public vlgAggregateExpression Clone() => UntypedClone() as vlgAggregateExpression;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgAggregateExpression();
+		result.Size = Size;
+		result.Expressions = Expressions.Select(i => i.UntypedClone() as vlgExpression).ToList();
+		return result;
+	}
+}
 public partial class vlgAssign
 {
 	public vlgAssign Clone() => UntypedClone() as vlgAssign;
@@ -349,6 +360,7 @@ public partial class vlgMemoryBlock
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgMemoryBlock();
+		result.NetType = NetType;
 		result.Name = Name;
 		result.Sign = Sign;
 		result.Width = Width;

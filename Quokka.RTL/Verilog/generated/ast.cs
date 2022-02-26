@@ -8,6 +8,8 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 {
 	public vlgAbstractCollection() { }
 	/// <summary>
+	/// vlgAggregateExpression
+	///
 	/// vlgAssign
 	///
 	/// vlgAssignExpression
@@ -126,6 +128,43 @@ public abstract partial class vlgAbstractObject
 {
 	public vlgAbstractObject() { }
 }
+public partial class vlgAggregateExpression : vlgExpression
+{
+	public vlgAggregateExpression() { }
+	public vlgAggregateExpression(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Size = Size;
+		this.Expressions = (Expressions ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
+	}
+	public vlgAggregateExpression(Int32 Size)
+	{
+		this.Size = Size;
+	}
+	public Int32 Size { get; set; }
+	/// <summary>
+	/// vlgAggregateExpression
+	///
+	/// vlgAssignExpression
+	///
+	/// vlgBinaryValueExpression
+	///
+	/// vlgCompareExpression
+	///
+	/// vlgIdentifierExpression
+	///
+	/// vlgLogicExpression
+	///
+	/// vlgMathExpression
+	///
+	/// vlgShiftExpression
+	///
+	/// vlgTernaryExpression
+	///
+	/// vlgUnaryExpression
+	///
+	/// </summary>
+	public List<vlgExpression> Expressions { get; set; } = new List<vlgExpression>();
+}
 public partial class vlgAssign : vlgAbstractObject
 {
 	public vlgAssign() { }
@@ -187,6 +226,23 @@ public partial class vlgCase : vlgAbstractObject
 	public vlgCase(vlgExpression Check)
 	{
 		this.Check = Check;
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgCase(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Check = new vlgAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgCase(Int32 Size)
+	{
+		this.Check = new vlgAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -372,6 +428,23 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	public vlgConditionalStatement(vlgExpression Condition)
 	{
 		this.Condition = Condition;
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgConditionalStatement(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Condition = new vlgAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgConditionalStatement(Int32 Size)
+	{
+		this.Condition = new vlgAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -675,13 +748,15 @@ public partial class vlgMathExpression : vlgExpression
 public partial class vlgMemoryBlock : vlgSignal
 {
 	public vlgMemoryBlock() { }
-	public vlgMemoryBlock(String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
+	public vlgMemoryBlock(vlgNetType NetType, String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
 	{
+		this.NetType = NetType;
 		this.Name = Name;
 		this.Sign = Sign;
 		this.Width = Width;
 		this.Depth = Depth;
 	}
+	public vlgNetType NetType { get; set; }
 	public String Name { get; set; }
 	public vlgSignType Sign { get; set; }
 	public Int32 Width { get; set; }
@@ -765,6 +840,23 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	public vlgModuleInstanceSimplePortMapping(vlgExpression External)
 	{
 		this.External = External;
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgModuleInstanceSimplePortMapping(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.External = new vlgAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgModuleInstanceSimplePortMapping(Int32 Size)
+	{
+		this.External = new vlgAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -904,6 +996,8 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	public String Proc { get; set; }
 	public String Name { get; set; }
 	/// <summary>
+	/// vlgAggregateExpression
+	///
 	/// vlgAssignExpression
 	///
 	/// vlgBinaryValueExpression
@@ -931,6 +1025,23 @@ public partial class vlgRange : vlgAbstractObject
 	public vlgRange(IEnumerable<vlgExpression> Indexes)
 	{
 		this.Indexes = (Indexes ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgRange(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Indexes.Add(new vlgAggregateExpression(Size, Expressions));
+	}
+	/// <summary>
+	/// from vlgAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgRange(Int32 Size)
+	{
+		this.Indexes.Add(new vlgAggregateExpression(Size));
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -1010,6 +1121,8 @@ public partial class vlgRange : vlgAbstractObject
 		this.Indexes.Add(new vlgUnaryExpression(Type, Rhs));
 	}
 	/// <summary>
+	/// vlgAggregateExpression
+	///
 	/// vlgAssignExpression
 	///
 	/// vlgBinaryValueExpression

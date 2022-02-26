@@ -5,6 +5,12 @@ namespace Quokka.RTL.Verilog.Implementation
 {
 using Quokka.RTL.Tools;
 /*
+public partial class vlgAggregateExpressionVisitorImplementation
+{
+	public override void OnVisit(vlgAggregateExpression obj)
+	{
+	}
+}
 public partial class vlgAssignVisitorImplementation
 {
 	public override void OnVisit(vlgAssign obj)

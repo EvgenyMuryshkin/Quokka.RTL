@@ -10,7 +10,7 @@ namespace Quokka.RTL.Verilog.Implementation
 				return;
 
 			var indexes = obj.Indexes.Select(Raw).Distinct();
-			_builder.Append($"[{string.Join(": ", indexes)}]");
+			_builder.Append($"[{string.Join(":", indexes)}]");
 		}
 	}
 }

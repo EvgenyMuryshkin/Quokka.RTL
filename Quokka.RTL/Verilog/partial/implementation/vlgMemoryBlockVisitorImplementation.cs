@@ -8,7 +8,7 @@ namespace Quokka.RTL.Verilog.Implementation
 		{
 			var parts = new[]
 			{
-				"reg",
+			 	_formatters.NetType(obj.Name, obj.NetType),
 				_formatters.SignType(obj.Name, obj.Sign),
 				obj.Width == 1 ? "" : $"[{obj.Width - 1} : 0]",
 				obj.Name,

@@ -4,6 +4,7 @@ using System.Linq;
 namespace Quokka.RTL.Verilog
 {
 using Quokka.RTL.Tools;
+public interface vlgAggregateExpressionVisitorInterface : vlgVisitorInterface<vlgAggregateExpression> { }
 public interface vlgAssignVisitorInterface : vlgVisitorInterface<vlgAssign> { }
 public interface vlgAssignExpressionVisitorInterface : vlgVisitorInterface<vlgAssignExpression> { }
 public interface vlgAttributeVisitorInterface : vlgVisitorInterface<vlgAttribute> { }

@@ -2,6 +2,7 @@
 {
     public class vlgMemoryBlock : vlgSignal
     {
+        public vlgNetType NetType { get; set; }
         public string Name { get; set; }
         public vlgSignType Sign { get; set; }
         public int Width { get; set; }
