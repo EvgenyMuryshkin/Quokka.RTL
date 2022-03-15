@@ -193,6 +193,10 @@ public abstract class vlgSimpleForLoopVisitorGeneratedImplementation : vlgVisito
 {
 	public vlgSimpleForLoopVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vlgSizedAggregateExpressionVisitorGeneratedImplementation : vlgVisitorImplementation<vlgSizedAggregateExpression>, vlgSizedAggregateExpressionVisitorInterface
+{
+	public vlgSizedAggregateExpressionVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgStandardModulePortDeclarationVisitorGeneratedImplementation : vlgVisitorImplementation<vlgStandardModulePortDeclaration>, vlgStandardModulePortDeclarationVisitorInterface
 {
 	public vlgStandardModulePortDeclarationVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -410,6 +414,10 @@ public partial class vlgSimpleForLoopVisitorImplementation : vlgSimpleForLoopVis
 {
 	public vlgSimpleForLoopVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vlgSizedAggregateExpressionVisitorImplementation : vlgSizedAggregateExpressionVisitorGeneratedImplementation
+{
+	public vlgSizedAggregateExpressionVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgStandardModulePortDeclarationVisitorImplementation : vlgStandardModulePortDeclarationVisitorGeneratedImplementation
 {
 	public vlgStandardModulePortDeclarationVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -492,6 +500,7 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgRange o: return vlgRangeVisitor(o);
 			case vlgShiftExpression o: return vlgShiftExpressionVisitor(o);
 			case vlgSimpleForLoop o: return vlgSimpleForLoopVisitor(o);
+			case vlgSizedAggregateExpression o: return vlgSizedAggregateExpressionVisitor(o);
 			case vlgStandardModulePortDeclaration o: return vlgStandardModulePortDeclarationVisitor(o);
 			case vlgStandardModulePortImplementation o: return vlgStandardModulePortImplementationVisitor(o);
 			case vlgSyncBlock o: return vlgSyncBlockVisitor(o);
@@ -694,6 +703,10 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgSimpleForLoopVisitor(_deps, obj);
 	}
+	private vlgSizedAggregateExpressionVisitorInterface vlgSizedAggregateExpressionVisitor(vlgSizedAggregateExpression obj)
+	{
+		return vlgSizedAggregateExpressionVisitor(_deps, obj);
+	}
 	private vlgStandardModulePortDeclarationVisitorInterface vlgStandardModulePortDeclarationVisitor(vlgStandardModulePortDeclaration obj)
 	{
 		return vlgStandardModulePortDeclarationVisitor(_deps, obj);
@@ -816,6 +829,8 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgShiftExpressionVisitorImplementation(deps);
 	protected virtual vlgSimpleForLoopVisitorInterface vlgSimpleForLoopVisitor(vlgVisitorImplementationDeps deps, vlgSimpleForLoop obj)
 		=> new vlgSimpleForLoopVisitorImplementation(deps);
+	protected virtual vlgSizedAggregateExpressionVisitorInterface vlgSizedAggregateExpressionVisitor(vlgVisitorImplementationDeps deps, vlgSizedAggregateExpression obj)
+		=> new vlgSizedAggregateExpressionVisitorImplementation(deps);
 	protected virtual vlgStandardModulePortDeclarationVisitorInterface vlgStandardModulePortDeclarationVisitor(vlgVisitorImplementationDeps deps, vlgStandardModulePortDeclaration obj)
 		=> new vlgStandardModulePortDeclarationVisitorImplementation(deps);
 	protected virtual vlgStandardModulePortImplementationVisitorInterface vlgStandardModulePortImplementationVisitor(vlgVisitorImplementationDeps deps, vlgStandardModulePortImplementation obj)

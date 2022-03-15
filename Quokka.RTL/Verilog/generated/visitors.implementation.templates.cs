@@ -287,6 +287,12 @@ public partial class vlgSimpleForLoopVisitorImplementation
 	{
 	}
 }
+public partial class vlgSizedAggregateExpressionVisitorImplementation
+{
+	public override void OnVisit(vlgSizedAggregateExpression obj)
+	{
+	}
+}
 public partial class vlgStandardModulePortDeclarationVisitorImplementation
 {
 	public override void OnVisit(vlgStandardModulePortDeclaration obj)

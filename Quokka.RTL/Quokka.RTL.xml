@@ -159,6 +159,8 @@
             
              vlgSimpleForLoop
             
+             vlgSizedAggregateExpression
+            
              vlgStandardModulePortDeclaration
             
              vlgStandardModulePortImplementation
@@ -180,6 +182,78 @@
             from vlgInitial
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Expression"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vlgBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgCompareType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgIdentifier)">
+            <summary>
+            from vlgIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgLogicType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgMathType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+            <param name="Expressions"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(System.Int32)">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
+            <summary>
+            from vlgUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
         <member name="P:Quokka.RTL.Verilog.vlgAggregateExpression.Expressions">
              <summary>
              vlgAggregateExpression
@@ -198,16 +272,13 @@
             
              vlgShiftExpression
             
+             vlgSizedAggregateExpression
+            
              vlgTernaryExpression
             
              vlgUnaryExpression
             
              </summary>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgAggregateExpression">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgAssign.op_Implicit(Quokka.RTL.Verilog.vlgAssignExpression)~Quokka.RTL.Verilog.vlgAssign">
             <summary>
@@ -219,18 +290,11 @@
             from vlgBinaryValueExpression
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
             <summary>
             from vlgAggregateExpression
             </summary>
-            <param name="Size"></param>
             <param name="Expressions"></param>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(System.Int32)">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
-            <param name="Size"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -284,6 +348,19 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+            <param name="Expressions"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(System.Int32)">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgTernaryExpression
@@ -304,7 +381,7 @@
             from vlgCase
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgCase">
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgCase">
             <summary>
             from vlgCase
             </summary>
@@ -355,6 +432,16 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgSizedAggregateExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgCase">
             <summary>
             from vlgCase
             </summary>
@@ -442,18 +529,11 @@
             from vlgCombBlock
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
             <summary>
             from vlgAggregateExpression
             </summary>
-            <param name="Size"></param>
             <param name="Expressions"></param>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(System.Int32)">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
-            <param name="Size"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -507,6 +587,19 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+            <param name="Expressions"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(System.Int32)">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgTernaryExpression
@@ -527,7 +620,7 @@
             from vlgConditionalStatement
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgConditionalStatement">
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
             <summary>
             from vlgConditionalStatement
             </summary>
@@ -582,6 +675,16 @@
             from vlgConditionalStatement
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgSizedAggregateExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
             <summary>
             from vlgConditionalStatement
@@ -590,11 +693,6 @@
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
             <summary>
             from vlgConditionalStatement
-            </summary>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgExpression">
-            <summary>
-            from vlgAggregateExpression
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.Verilog.vlgExpression">
@@ -610,6 +708,11 @@
         <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgExpression">
             <summary>
             from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgExpression">
+            <summary>
+            from vlgSizedAggregateExpression
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgGenerate.op_Implicit(Quokka.RTL.Verilog.vlgGenericBlock)~Quokka.RTL.Verilog.vlgGenerate">
@@ -662,7 +765,7 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
             </summary>
@@ -717,6 +820,16 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgSizedAggregateExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
@@ -727,18 +840,11 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
             <summary>
             from vlgAggregateExpression
             </summary>
-            <param name="Size"></param>
             <param name="Expressions"></param>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Int32)">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
-            <param name="Size"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -792,6 +898,19 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+            <param name="Expressions"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Int32)">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgTernaryExpression
@@ -812,7 +931,7 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
-        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
             </summary>
@@ -867,6 +986,16 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgSizedAggregateExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgTernaryExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
@@ -905,24 +1034,13 @@
             
              vlgShiftExpression
             
+             vlgSizedAggregateExpression
+            
              vlgTernaryExpression
             
              vlgUnaryExpression
             
              </summary>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
-            <param name="Size"></param>
-            <param name="Expressions"></param>
-        </member>
-        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(System.Int32)">
-            <summary>
-            from vlgAggregateExpression
-            </summary>
-            <param name="Size"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -976,6 +1094,19 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(System.Int32,System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+            <param name="Expressions"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(System.Int32)">
+            <summary>
+            from vlgSizedAggregateExpression
+            </summary>
+            <param name="Size"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgUnaryType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgUnaryExpression
@@ -1001,6 +1132,8 @@
             
              vlgShiftExpression
             
+             vlgSizedAggregateExpression
+            
              vlgTernaryExpression
             
              vlgUnaryExpression
@@ -1010,6 +1143,37 @@
         <member name="M:Quokka.RTL.Verilog.vlgRange.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgRange">
             <summary>
             from vlgRange
+            </summary>
+        </member>
+        <member name="P:Quokka.RTL.Verilog.vlgSizedAggregateExpression.Expressions">
+             <summary>
+             vlgAggregateExpression
+            
+             vlgAssignExpression
+            
+             vlgBinaryValueExpression
+            
+             vlgCompareExpression
+            
+             vlgIdentifierExpression
+            
+             vlgLogicExpression
+            
+             vlgMathExpression
+            
+             vlgShiftExpression
+            
+             vlgSizedAggregateExpression
+            
+             vlgTernaryExpression
+            
+             vlgUnaryExpression
+            
+             </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgSizedAggregateExpression.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgSizedAggregateExpression">
+            <summary>
+            from vlgSizedAggregateExpression
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgSyncBlock.#ctor(Quokka.RTL.Verilog.vlgEdgeType,Quokka.RTL.Verilog.vlgIdentifier)">

@@ -102,6 +102,8 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	///
 	/// vlgSimpleForLoop
 	///
+	/// vlgSizedAggregateExpression
+	///
 	/// vlgStandardModulePortDeclaration
 	///
 	/// vlgStandardModulePortImplementation
@@ -131,16 +133,106 @@ public abstract partial class vlgAbstractObject
 public partial class vlgAggregateExpression : vlgExpression
 {
 	public vlgAggregateExpression() { }
-	public vlgAggregateExpression(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	public vlgAggregateExpression(IEnumerable<vlgExpression> Expressions)
 	{
-		this.Size = Size;
 		this.Expressions = (Expressions ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
+	// from vlgAggregateExpression
+	// ignored vlgAggregateExpression(IEnumerable<vlgExpression> Expressions)
+	/// <summary>
+	/// from vlgAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Expression"></param>
+	public vlgAggregateExpression(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.Expressions.Add(new vlgAssignExpression(Target, Type, Expression));
+	}
+	/// <summary>
+	/// from vlgBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
+	public vlgAggregateExpression(RTLBitArray Value)
+	{
+		this.Expressions.Add(new vlgBinaryValueExpression(Value));
+	}
+	/// <summary>
+	/// from vlgCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vlgAggregateExpression(vlgExpression Lhs, vlgCompareType Type, vlgExpression Rhs)
+	{
+		this.Expressions.Add(new vlgCompareExpression(Lhs, Type, Rhs));
+	}
+	/// <summary>
+	/// from vlgIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	public vlgAggregateExpression(vlgIdentifier Source)
+	{
+		this.Expressions.Add(new vlgIdentifierExpression(Source));
+	}
+	/// <summary>
+	/// from vlgLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vlgAggregateExpression(vlgExpression Lhs, vlgLogicType Type, vlgExpression Rhs)
+	{
+		this.Expressions.Add(new vlgLogicExpression(Lhs, Type, Rhs));
+	}
+	/// <summary>
+	/// from vlgMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vlgAggregateExpression(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
+	{
+		this.Expressions.Add(new vlgMathExpression(Lhs, Type, Rhs));
+	}
+	/// <summary>
+	/// from vlgShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vlgAggregateExpression(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
+	{
+		this.Expressions.Add(new vlgShiftExpression(Lhs, Type, Rhs));
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgAggregateExpression(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Expressions.Add(new vlgSizedAggregateExpression(Size, Expressions));
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
 	public vlgAggregateExpression(Int32 Size)
 	{
-		this.Size = Size;
+		this.Expressions.Add(new vlgSizedAggregateExpression(Size));
 	}
-	public Int32 Size { get; set; }
+	// from vlgTernaryExpression
+	// ignored vlgAggregateExpression(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
+	/// <summary>
+	/// from vlgUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vlgAggregateExpression(vlgUnaryType Type, vlgExpression Rhs)
+	{
+		this.Expressions.Add(new vlgUnaryExpression(Type, Rhs));
+	}
 	/// <summary>
 	/// vlgAggregateExpression
 	///
@@ -157,6 +249,8 @@ public partial class vlgAggregateExpression : vlgExpression
 	/// vlgMathExpression
 	///
 	/// vlgShiftExpression
+	///
+	/// vlgSizedAggregateExpression
 	///
 	/// vlgTernaryExpression
 	///
@@ -230,19 +324,10 @@ public partial class vlgCase : vlgAbstractObject
 	/// <summary>
 	/// from vlgAggregateExpression
 	/// </summary>
-	/// <param name="Size"></param>
 	/// <param name="Expressions"></param>
-	public vlgCase(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	public vlgCase(IEnumerable<vlgExpression> Expressions)
 	{
-		this.Check = new vlgAggregateExpression(Size, Expressions);
-	}
-	/// <summary>
-	/// from vlgAggregateExpression
-	/// </summary>
-	/// <param name="Size"></param>
-	public vlgCase(Int32 Size)
-	{
-		this.Check = new vlgAggregateExpression(Size);
+		this.Check = new vlgAggregateExpression(Expressions);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -309,6 +394,23 @@ public partial class vlgCase : vlgAbstractObject
 	public vlgCase(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgCase(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Check = new vlgSizedAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgCase(Int32 Size)
+	{
+		this.Check = new vlgSizedAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgTernaryExpression
@@ -432,19 +534,10 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	/// <summary>
 	/// from vlgAggregateExpression
 	/// </summary>
-	/// <param name="Size"></param>
 	/// <param name="Expressions"></param>
-	public vlgConditionalStatement(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	public vlgConditionalStatement(IEnumerable<vlgExpression> Expressions)
 	{
-		this.Condition = new vlgAggregateExpression(Size, Expressions);
-	}
-	/// <summary>
-	/// from vlgAggregateExpression
-	/// </summary>
-	/// <param name="Size"></param>
-	public vlgConditionalStatement(Int32 Size)
-	{
-		this.Condition = new vlgAggregateExpression(Size);
+		this.Condition = new vlgAggregateExpression(Expressions);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -511,6 +604,23 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	public vlgConditionalStatement(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgConditionalStatement(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Condition = new vlgSizedAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgConditionalStatement(Int32 Size)
+	{
+		this.Condition = new vlgSizedAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgTernaryExpression
@@ -844,19 +954,10 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	/// <summary>
 	/// from vlgAggregateExpression
 	/// </summary>
-	/// <param name="Size"></param>
 	/// <param name="Expressions"></param>
-	public vlgModuleInstanceSimplePortMapping(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	public vlgModuleInstanceSimplePortMapping(IEnumerable<vlgExpression> Expressions)
 	{
-		this.External = new vlgAggregateExpression(Size, Expressions);
-	}
-	/// <summary>
-	/// from vlgAggregateExpression
-	/// </summary>
-	/// <param name="Size"></param>
-	public vlgModuleInstanceSimplePortMapping(Int32 Size)
-	{
-		this.External = new vlgAggregateExpression(Size);
+		this.External = new vlgAggregateExpression(Expressions);
 	}
 	/// <summary>
 	/// from vlgAssignExpression
@@ -923,6 +1024,23 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	public vlgModuleInstanceSimplePortMapping(vlgExpression Lhs, vlgShiftType Type, vlgExpression Rhs)
 	{
 		this.External = new vlgShiftExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgModuleInstanceSimplePortMapping(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.External = new vlgSizedAggregateExpression(Size, Expressions);
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgModuleInstanceSimplePortMapping(Int32 Size)
+	{
+		this.External = new vlgSizedAggregateExpression(Size);
 	}
 	/// <summary>
 	/// from vlgTernaryExpression
@@ -1012,6 +1130,8 @@ public partial class vlgProcedureCall : vlgAbstractObject
 	///
 	/// vlgShiftExpression
 	///
+	/// vlgSizedAggregateExpression
+	///
 	/// vlgTernaryExpression
 	///
 	/// vlgUnaryExpression
@@ -1026,23 +1146,8 @@ public partial class vlgRange : vlgAbstractObject
 	{
 		this.Indexes = (Indexes ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
 	}
-	/// <summary>
-	/// from vlgAggregateExpression
-	/// </summary>
-	/// <param name="Size"></param>
-	/// <param name="Expressions"></param>
-	public vlgRange(Int32 Size, IEnumerable<vlgExpression> Expressions)
-	{
-		this.Indexes.Add(new vlgAggregateExpression(Size, Expressions));
-	}
-	/// <summary>
-	/// from vlgAggregateExpression
-	/// </summary>
-	/// <param name="Size"></param>
-	public vlgRange(Int32 Size)
-	{
-		this.Indexes.Add(new vlgAggregateExpression(Size));
-	}
+	// from vlgAggregateExpression
+	// ignored vlgRange(IEnumerable<vlgExpression> Expressions)
 	/// <summary>
 	/// from vlgAssignExpression
 	/// </summary>
@@ -1109,6 +1214,23 @@ public partial class vlgRange : vlgAbstractObject
 	{
 		this.Indexes.Add(new vlgShiftExpression(Lhs, Type, Rhs));
 	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	/// <param name="Expressions"></param>
+	public vlgRange(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Indexes.Add(new vlgSizedAggregateExpression(Size, Expressions));
+	}
+	/// <summary>
+	/// from vlgSizedAggregateExpression
+	/// </summary>
+	/// <param name="Size"></param>
+	public vlgRange(Int32 Size)
+	{
+		this.Indexes.Add(new vlgSizedAggregateExpression(Size));
+	}
 	// from vlgTernaryExpression
 	// ignored vlgRange(vlgExpression Condition, vlgExpression Lhs, vlgExpression Rhs)
 	/// <summary>
@@ -1136,6 +1258,8 @@ public partial class vlgRange : vlgAbstractObject
 	/// vlgMathExpression
 	///
 	/// vlgShiftExpression
+	///
+	/// vlgSizedAggregateExpression
 	///
 	/// vlgTernaryExpression
 	///
@@ -1173,6 +1297,45 @@ public partial class vlgSimpleForLoop : vlgAbstractForLoop
 	public String Iterator { get; set; }
 	public Int32 From { get; set; }
 	public Int32 To { get; set; }
+}
+public partial class vlgSizedAggregateExpression : vlgExpression
+{
+	public vlgSizedAggregateExpression() { }
+	public vlgSizedAggregateExpression(Int32 Size, IEnumerable<vlgExpression> Expressions)
+	{
+		this.Size = Size;
+		this.Expressions = (Expressions ?? Enumerable.Empty<vlgExpression>()).Where(s => s != null).ToList();
+	}
+	public vlgSizedAggregateExpression(Int32 Size)
+	{
+		this.Size = Size;
+	}
+	public Int32 Size { get; set; }
+	/// <summary>
+	/// vlgAggregateExpression
+	///
+	/// vlgAssignExpression
+	///
+	/// vlgBinaryValueExpression
+	///
+	/// vlgCompareExpression
+	///
+	/// vlgIdentifierExpression
+	///
+	/// vlgLogicExpression
+	///
+	/// vlgMathExpression
+	///
+	/// vlgShiftExpression
+	///
+	/// vlgSizedAggregateExpression
+	///
+	/// vlgTernaryExpression
+	///
+	/// vlgUnaryExpression
+	///
+	/// </summary>
+	public List<vlgExpression> Expressions { get; set; } = new List<vlgExpression>();
 }
 public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 {

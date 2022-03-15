@@ -51,6 +51,7 @@ public interface vlgProcedureCallVisitorInterface : vlgVisitorInterface<vlgProce
 public interface vlgRangeVisitorInterface : vlgVisitorInterface<vlgRange> { }
 public interface vlgShiftExpressionVisitorInterface : vlgVisitorInterface<vlgShiftExpression> { }
 public interface vlgSimpleForLoopVisitorInterface : vlgVisitorInterface<vlgSimpleForLoop> { }
+public interface vlgSizedAggregateExpressionVisitorInterface : vlgVisitorInterface<vlgSizedAggregateExpression> { }
 public interface vlgStandardModulePortDeclarationVisitorInterface : vlgVisitorInterface<vlgStandardModulePortDeclaration> { }
 public interface vlgStandardModulePortImplementationVisitorInterface : vlgVisitorInterface<vlgStandardModulePortImplementation> { }
 public interface vlgSyncBlockVisitorInterface : vlgVisitorInterface<vlgSyncBlock> { }

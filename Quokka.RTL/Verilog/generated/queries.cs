@@ -252,6 +252,9 @@ public abstract partial class vlgSignal
 public partial class vlgSimpleForLoop
 {
 }
+public partial class vlgSizedAggregateExpression
+{
+}
 public abstract partial class vlgStandardModulePort
 {
 }

@@ -20,7 +20,6 @@ public partial class vlgAggregateExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgAggregateExpression();
-		result.Size = Size;
 		result.Expressions = Expressions.Select(i => i.UntypedClone() as vlgExpression).ToList();
 		return result;
 	}
@@ -562,6 +561,17 @@ public partial class vlgSimpleForLoop
 		result.Iterator = Iterator;
 		result.From = From;
 		result.To = To;
+		return result;
+	}
+}
+public partial class vlgSizedAggregateExpression
+{
+	public vlgSizedAggregateExpression Clone() => UntypedClone() as vlgSizedAggregateExpression;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgSizedAggregateExpression();
+		result.Size = Size;
+		result.Expressions = Expressions.Select(i => i.UntypedClone() as vlgExpression).ToList();
 		return result;
 	}
 }

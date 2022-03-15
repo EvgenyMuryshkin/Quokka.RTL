@@ -282,6 +282,7 @@ namespace Quokka.RTL.SourceGenerators
                 .Where(g => g.Count() == 1)
                 .SelectMany(g => g)
                 .Where(o => o.Params.Count != 1 || o.Params[0].Type != obj)
+                .Where(o => o.Params[0].Type != obj.BaseType)
                 .ToList();
 
             return groups;
