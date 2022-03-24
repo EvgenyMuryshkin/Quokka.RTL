@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vhdAggregateOthersConnection obj)
 		{
-			_builder.Append($"others => '{(obj.Value ? "1" : "0")}'");
+			_builder.Append($"others => {Raw(obj.Expression)}");
 		}
 	}
 } // Quokka.RTL.VHDL

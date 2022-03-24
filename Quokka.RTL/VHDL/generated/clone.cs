@@ -51,7 +51,7 @@ public partial class vhdAggregateOthersConnection
 	public override vhdAbstractObject UntypedClone()
 	{
 		var result = new vhdAggregateOthersConnection();
-		result.Value = Value;
+		result.Expression = Expression?.UntypedClone() as vhdExpression;
 		return result;
 	}
 }
@@ -397,6 +397,7 @@ public partial class vhdIdentifier
 	{
 		var result = new vhdIdentifier();
 		result.Name = Name;
+		result.Indexes = Indexes.Select(i => i.UntypedClone() as vhdRange).ToList();
 		return result;
 	}
 }
@@ -417,17 +418,6 @@ public partial class vhdIf
 	{
 		var result = new vhdIf();
 		result.Statements = Statements.Select(i => i.UntypedClone() as vhdConditionalStatement).ToList();
-		return result;
-	}
-}
-public partial class vhdIndexedExpression
-{
-	public vhdIndexedExpression Clone() => UntypedClone() as vhdIndexedExpression;
-	public override vhdAbstractObject UntypedClone()
-	{
-		var result = new vhdIndexedExpression();
-		result.Expression = Expression?.UntypedClone() as vhdExpression;
-		result.Indexes = Indexes.Select(i => i.UntypedClone() as vhdRange).ToList();
 		return result;
 	}
 }

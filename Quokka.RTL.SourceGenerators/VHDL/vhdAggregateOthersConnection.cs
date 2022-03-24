@@ -2,6 +2,6 @@
 {
     public class vhdAggregateOthersConnection : vhdAbstractObject
     {
-        public bool Value { get; set; }
+        public vhdExpression Expression { get; set; }
     }
 }
