@@ -29,6 +29,7 @@ namespace Quokka.RTL.SourceGenerators
             var builder = ctx.builder;
 
             builder.AppendLine("using System;");
+            builder.AppendLine("using System.Collections;");
             builder.AppendLine("using System.Collections.Generic;");
             builder.AppendLine("using System.Linq;");
             builder.AppendLine($"namespace Quokka.RTL.{ctx.ns}{namespaceSuffix}");
@@ -222,107 +223,221 @@ namespace Quokka.RTL.SourceGenerators
 
             foreach (var obj in ctx.objects)
             {
+                var props = ctx.AllProperties(obj);
+                var singleModelObjProp = ctx.SingleModelProperty(obj);
+
+                var isCollection = false;
+                PropertyInfo singleObjCollection = null;
+                PropertyInfo singleListProp = null;
+                Type genericListParameter = null;
+                string childrenInderface = null;
+
+                isCollection = !obj.IsAbstract && ctx.IsCollection(obj);
+
+                var objCollections = props.Where(p => ctx.IsCollection(p.PropertyType)).ToList();
+
+                singleObjCollection = obj.IsAbstract
+                    ? null
+                    : objCollections.Count == 1 
+                        ? objCollections[0]
+                        : null;
+                var listProps = props.Where(p => p.PropertyType.IsList() && ctx.objects.Contains(p.PropertyType.GetGenericArguments()[0])).ToList();
+                singleListProp = !obj.IsAbstract && listProps.Count == 1
+                    ? listProps[0]
+                    : null;
+                genericListParameter = singleListProp != null ? singleListProp.PropertyType.GetGenericArguments()[0] : null;
+                var ctorVariants = ctx.AllCtorVariants(obj);
+
+                if (!obj.IsAbstract && ctx.IsCollection(obj))
+                {
+                    builder.AppendLine("/// <summary>");
+                    var fluentTypes = ctx.FluentTypes(obj);
+                    foreach (var t in fluentTypes)
+                    {
+                        builder.AppendLine($"/// {t.Name}");
+                    }
+                    builder.AppendLine("/// </summary>");
+                    builder.AppendLine($"public interface {obj.Name}Child");
+                    builder.AppendLine($"{{");
+                    builder.AppendLine($"}}");
+                }
+
+                if (isCollection)
+                {
+                    childrenInderface = $"{obj.Name}Child";
+                }
+                else if (singleObjCollection != null)
+                {
+                    childrenInderface = $"{singleObjCollection.PropertyType.Name}Child";
+                }
+                else if (singleListProp != null)
+                {
+                    childrenInderface = $"{genericListParameter.Name}";
+                }
+
                 var modifiers = new List<string>();
                 AccessModifiers(modifiers, obj);
                 InstanceModifiers(modifiers, obj);
 
                 var inheritance = new List<string>();
                 ctx.Inheritance(inheritance, obj);
+                ctx.FluentInterfaces(inheritance, obj);
 
                 builder.Append($"{string.Join(" ", modifiers)} partial class {obj.Name}");
                 if (inheritance.Any())
                 {
                     builder.Append($" : {inheritance.ToCSV()}");
+                    if (childrenInderface != null)
+                        builder.Append($", IEnumerable//<{childrenInderface}>");
+
                 }
+                else
+                {
+                    if (childrenInderface != null)
+                        builder.Append($" : IEnumerable//<{childrenInderface}>");
+                }
+
                 builder.AppendLine();
                 builder.AppendLine("{");
 
                 builder.AppendLine($"\tpublic {obj.Name}() {{ }}");
 
-                var props = ctx.AllProperties(obj);
+                if (isCollection)
+                {
+                    var childrenType = ctx.ChildrenType(obj);
+                    builder.AppendLine($"\t// {childrenType.Name} collection");
+                    builder.AppendLine($"\tIEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();");
 
-                var singleModelObjProp = ctx.SingleModelProperty(obj);
+                    builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
+                    builder.AppendLine($"\t{{");
+                    builder.AppendLine($"\t\tvar typed = child as {childrenType.Name};");
+                    builder.AppendLine($"\t\tif (typed == null) throw new Exception($\"Type of child object is not expected: {{child?.GetType()}}\");");
+                    builder.AppendLine($"\t\tChildren.Add(typed);");
+                    builder.AppendLine($"\t}}");
+                }
+                else if (singleObjCollection != null)
+                {
+                    builder.AppendLine($"\t// {singleObjCollection.Name} single object collection");
+                    builder.AppendLine($"\tIEnumerator IEnumerable.GetEnumerator() => ({singleObjCollection.Name} as IEnumerable).GetEnumerator();");
+
+                    var childrenType = ctx.ChildrenType(singleObjCollection.PropertyType);
+
+                    builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
+                    builder.AppendLine($"\t{{");
+                    builder.AppendLine($"\t\t{singleObjCollection.Name}.Add(child);");
+                    builder.AppendLine($"\t}}");
+                }
+                else if (singleListProp != null)
+                {
+                    builder.AppendLine($"\t// {genericListParameter.Name} single list member");
+                    builder.AppendLine($"\tIEnumerator IEnumerable.GetEnumerator() => ({singleListProp.Name} as IEnumerable).GetEnumerator();");
+
+                    var childrenType = genericListParameter;
+
+                    builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
+                    builder.AppendLine($"\t{{");
+                    builder.AppendLine($"\t\t{singleListProp.Name}.Add(child);");
+                    builder.AppendLine($"\t}}");
+                }
+
                 if (singleModelObjProp != null)
                 {
-                    var singleCtorArgs = ctx.CtorParamsDecl(singleModelObjProp.PropertyType, false);
-                    var singleCtorParamsNames = ctx.CtorParamNames(singleModelObjProp.PropertyType);
                     var singleCtorParamsTypes = ctx.CtorParameters(singleModelObjProp.PropertyType);
 
-                    if (singleCtorParamsTypes.Any())
+                    var asParamsOption = new List<bool>() { false };
+                    if (singleCtorParamsTypes.Any() && singleCtorParamsTypes.Last().PropertyType.IsList())
                     {
-                        builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.ToCSV()})");
-                        builder.AppendLine($"\t{{");
-                        builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.ToCSV()});");
-                        builder.AppendLine($"\t}}");
+                        //TODO: check that ctors do not overlap by parameters
+                        if (ctorVariants.Count == 1 && ctorVariants[0].CtorVariantType == CtorVariantType.Direct)
+                            asParamsOption.Add(true);
+                    }
 
-                        if (singleCtorParamsTypes.Count > 1 && singleCtorParamsTypes.Last().PropertyType.IsList())
+                    foreach (var asParam in asParamsOption)
+                    {
+                        var singleCtorArgs = ctx.CtorParamsDecl(singleModelObjProp.PropertyType, asParam);
+                        var singleCtorParamsNames = ctx.CtorParamNames(singleModelObjProp.PropertyType);
+
+                        if (singleCtorParamsTypes.Any())
                         {
-                            builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.Take(singleCtorParamsTypes.Count - 1).ToCSV()})");
+                            builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.ToCSV()})");
                             builder.AppendLine($"\t{{");
-                            builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.Take(singleCtorParamsTypes.Count - 1).ToCSV()});");
+                            builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.ToCSV()});");
                             builder.AppendLine($"\t}}");
+                            /*
+                            if (singleCtorParamsTypes.Count > 1 && singleCtorParamsTypes.Last().PropertyType.IsList())
+                            {
+                                builder.AppendLine($"\tpublic {obj.Name}({singleCtorArgs.Take(singleCtorParamsTypes.Count - 1).ToCSV()})");
+                                builder.AppendLine($"\t{{");
+                                builder.AppendLine($"\t\tthis.{singleModelObjProp.Name} = new {singleModelObjProp.PropertyType.Name}({singleCtorParamsNames.Take(singleCtorParamsTypes.Count - 1).ToCSV()});");
+                                builder.AppendLine($"\t}}");
+                            }
+                            */
                         }
                     }
-
-                    /*
-                    foreach (var iop in ctx.ImplicitOperators(obj).Where(i => i.Params.Count == 1 && ctx.objects.Contains(i.Params[0].Type)))
-                    {
-                        builder.AppendLine("/*");
-                        foreach (var ctorVariant in ctx.CtorVariants(iop.Params[0].Type))
-                        {
-                            builder.AppendLine($"\t//{iop.ParamsLine}({ctorVariant.Select(p => p.PropertyType.Name).ToCSV()}");
-                        }
-                        builder.AppendLine("* /");
-                    }
-                    */
                 }
 
                 // object ctor
 
-                foreach (var ctorVariant in ctx.AllCtorVariants(obj))
+                foreach (var ctorVariant in ctorVariants)
                 {                   
                     switch (ctorVariant.CtorVariantType)
                     {
                         case CtorVariantType.Direct:
                         {
-                            var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
-
                             if (ctorVariant.IsCommented)
                             {
+                                var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
                                 builder.AppendLine($"\t// ignored {obj.Name}({ctorArgs.ToCSV()})");
                                 continue;
                             }
 
-                            builder.AppendLine($"\tpublic {obj.Name}({ctorArgs.ToCSV()})");
-                            builder.AppendLine($"\t{{");
-                            foreach (var p in ctorVariant.Props)
+                            var asParamsOption = new List<bool>() { false };
+                            if (ctorVariant.Props.Last().PropertyType.IsList())
                             {
-                                if (p.PropertyType.IsList())
-                                {
-                                    builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Enumerable.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
-                                }
-                                else
-                                {
-                                    builder.AppendLine($"\t\tthis.{p.Name} = {p.Name};");
-                                }
+                                asParamsOption.Add(true);
                             }
-                            builder.AppendLine($"\t}}");
 
+                            foreach (var asParmas in asParamsOption)
+                            {
+                                var ctorArgs = ctx.CtorParamsDecl(ctorVariant.Props, asParmas);
+
+                                builder.AppendLine($"\tpublic {obj.Name}({ctorArgs.ToCSV()})");
+                                builder.AppendLine($"\t{{");
+                                foreach (var p in ctorVariant.Props)
+                                {
+                                    if (p.PropertyType.IsList())
+                                    {
+                                        builder.AppendLine($"\t\tthis.{p.Name} = ({p.Name} ?? Enumerable.Empty<{ctx.PropertyType(p.PropertyType.GetGenericArguments()[0])}>()).Where(s => s != null).ToList();");
+                                    }
+                                    else
+                                    {
+                                        builder.AppendLine($"\t\tthis.{p.Name} = {p.Name};");
+                                    }
+                                }
+                                builder.AppendLine($"\t}}");
+                            }
                         }
                         break;
-                        case CtorVariantType.SingleObjct:
+                        case CtorVariantType.SingleObject:
                         {
-                            var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
-                            var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
-
                             if (ctorVariant.IsCommented)
                             {
+                                var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props, false);
                                 builder.AppendLine($"\t// from {ctorVariant.ObjectType.Name}");
                                 builder.AppendLine($"\t// ignored {obj.Name}({derivedCtorArgs.ToCSV()})");
                                 continue;
                             }
-                            else
+
+                            var asParamsOption = new List<bool>() { false };
+                            if (ctorVariant.Props.Last().PropertyType.IsList())
                             {
+                                //asParamsOption.Add(true);
+                            }
+                            foreach (var asParmas in asParamsOption)
+                            {
+                                var derivedCtorArgs = ctx.CtorParamsDecl(ctorVariant.Props, asParmas);
+                                var derivedCtorParamNames = ctorVariant.Props.Select(p => p.Name).ToCSV();
+
                                 builder.AppendLine($"\t/// <summary>");
                                 builder.AppendLine($"\t/// from {ctorVariant.ObjectType.Name}");
                                 builder.AppendLine($"\t/// </summary>");
@@ -331,12 +446,12 @@ namespace Quokka.RTL.SourceGenerators
                                 {
                                     builder.AppendLine($"\t/// <param name=\"{p.Name}\"></param>");
                                 }
-                            }
 
-                            builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
-                            builder.AppendLine($"\t{{");
-                            builder.AppendLine($"\t\tthis.{ctorVariant.TargetProp.Name} = new {ctorVariant.ObjectType.Name}({derivedCtorParamNames});");
-                            builder.AppendLine($"\t}}");
+                                builder.AppendLine($"\tpublic {obj.Name}({derivedCtorArgs.ToCSV()})");
+                                builder.AppendLine($"\t{{");
+                                builder.AppendLine($"\t\tthis.{ctorVariant.TargetProp.Name} = new {ctorVariant.ObjectType.Name}({derivedCtorParamNames});");
+                                builder.AppendLine($"\t}}");
+                            }
                         }
                         break;
                         case CtorVariantType.SingleCollection:

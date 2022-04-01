@@ -715,9 +715,25 @@
             from vlgSizedAggregateExpression
             </summary>
         </member>
+        <member name="T:Quokka.RTL.Verilog.vlgFileChild">
+            <summary>
+            vlgComment
+            vlgText
+            vlgModule
+            vlgAttribute
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgForLoopChild">
+            <summary>
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgGenerate.op_Implicit(Quokka.RTL.Verilog.vlgGenericBlock)~Quokka.RTL.Verilog.vlgGenerate">
             <summary>
             from vlgGenerate
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgGenericBlockChild">
+            <summary>
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgGenvar.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgGenvar">
@@ -740,6 +756,14 @@
             from vlgIdentifierExpression
             </summary>
         </member>
+        <member name="T:Quokka.RTL.Verilog.vlgInitialChild">
+            <summary>
+            vlgComment
+            vlgText
+            vlgSimpleForLoop
+            vlgAssign
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgInitial.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgInitial">
             <summary>
             from vlgInitial
@@ -758,6 +782,26 @@
         <member name="M:Quokka.RTL.Verilog.vlgModuleImplementation.op_Implicit(Quokka.RTL.Verilog.vlgModuleImplementationBlock)~Quokka.RTL.Verilog.vlgModuleImplementation">
             <summary>
             from vlgModuleImplementation
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgModuleImplementationBlockChild">
+            <summary>
+            vlgLocalParamNameBinaryValue
+            vlgLocalParamNameExplicitValue
+            vlgStandardModulePortImplementation
+            vlgCustomDeclaration
+            vlgLogicSignal
+            vlgMemoryBlock
+            vlgInitial
+            vlgIterator
+            vlgCombBlock
+            vlgSyncBlock
+            vlgModuleImplementationBlock
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgModuleInstanceParametersChild">
+            <summary>
+            vlgModuleInstanceParameter
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgAggregateExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
@@ -838,6 +882,14 @@
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgUnaryExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgModuleInstancePortMappingsChild">
+            <summary>
+            vlgComment
+            vlgText
+            vlgModuleInstanceNamedPortMapping
+            vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(System.Collections.Generic.IEnumerable{Quokka.RTL.Verilog.vlgExpression})">
@@ -1006,6 +1058,22 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
+        <member name="T:Quokka.RTL.Verilog.vlgModuleInterfaceChild">
+            <summary>
+            vlgComment
+            vlgText
+            vlgPlaceholderModulePort
+            vlgCustomModulePortDeclaration
+            vlgStandardModulePortDeclaration
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgModuleParametersChild">
+            <summary>
+            vlgComment
+            vlgText
+            vlgModuleParameterDeclaration
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModulePort.op_Implicit(System.String)~Quokka.RTL.Verilog.vlgModulePort">
             <summary>
             from vlgPlaceholderModulePort
@@ -1143,6 +1211,10 @@
         <member name="M:Quokka.RTL.Verilog.vlgRange.op_Implicit(Quokka.RTL.Verilog.vlgExpression)~Quokka.RTL.Verilog.vlgRange">
             <summary>
             from vlgRange
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.Verilog.vlgSimpleForLoopChild">
+            <summary>
             </summary>
         </member>
         <member name="P:Quokka.RTL.Verilog.vlgSizedAggregateExpression.Expressions">
@@ -1316,6 +1388,10 @@
         <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdAbstractObject">
             <summary>
             from vhdDefaultNetType
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdAggregateChild">
+            <summary>
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateExpression.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdAggregateExpression">
@@ -1537,9 +1613,23 @@
             from vhdAggregateOthersConnection
             </summary>
         </member>
+        <member name="T:Quokka.RTL.VHDL.vhdArchitectureDeclarationsChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdDefaultSignal
+            vhdLogicSignal
+            vhdArrayTypeDeclaration
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdArchitectureImplementation.op_Implicit(Quokka.RTL.VHDL.vhdArchitectureImplementationBlock)~Quokka.RTL.VHDL.vhdArchitectureImplementation">
             <summary>
             from vhdArchitectureImplementation
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdArchitectureImplementationBlockChild">
+            <summary>
+            vhdEntityInstance
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdBinaryValueExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdBinaryValueExpression">
@@ -2224,6 +2314,21 @@
             from vhdEntity
             </summary>
         </member>
+        <member name="T:Quokka.RTL.VHDL.vhdEntityInstancePortMappingsChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdEntityInstanceNamedPortMapping
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdEntityInterfaceChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdCustomEntityPort
+            vhdStandardEntityPort
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdExpression">
             <summary>
             from vhdAggregateExpression
@@ -2242,6 +2347,22 @@
         <member name="M:Quokka.RTL.VHDL.vhdExpression.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdExpression">
             <summary>
             from vhdIdentifierExpression
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdFileChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdLibraryReference
+            vhdUse
+            vhdEntity
+            vhdArchitecture
+            vhdAttribute
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdGenericBlockChild">
+            <summary>
+            vhdGenericBlock
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdIdentifier.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdIdentifier">
@@ -2485,6 +2606,16 @@
         <member name="M:Quokka.RTL.VHDL.vhdProcess.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdProcess">
             <summary>
             from vhdProcess
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdProcessDeclarationsChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdDefaultSignal
+            vhdLogicSignal
+            vhdArrayTypeDeclaration
+            vhdAlias
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdAggregate)">

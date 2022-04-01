@@ -125,9 +125,18 @@ namespace Quokka.RTL.SourceGenerators
             return baseTypes.Concat(UnwrapBaseTypes(baseTypes)).Distinct().ToList();
         }
 
-        public Type ChildrenType(Type p)
+        public Type ImplementedCollectionType(Type p)
         {
             var childrenCollection = p.GetInterfaces().Where(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == typeof(IMetadataChildrenCollection<>)).SingleOrDefault();
+
+            return childrenCollection;
+        }
+
+        public bool IsCollection(Type p) => ImplementedCollectionType(p) != null;
+
+        public Type ChildrenType(Type p)
+        {
+            var childrenCollection = ImplementedCollectionType(p);
 
             return childrenCollection?.GetGenericArguments()?.First();
         }
@@ -150,9 +159,9 @@ namespace Quokka.RTL.SourceGenerators
             }
         }
 
-        public IEnumerable<Type> FluentTypes(Type parentType)
+        public IEnumerable<Type> FluentTypes(Type parentType, bool inherit = false)
         {
-            var fluentType = parentType.GetCustomAttributes<FluentTypeAttribute>(false);
+            var fluentType = parentType.GetCustomAttributes<FluentTypeAttribute>(inherit);
 
             return fluentType.SelectMany(t => DerivedNonAbstract(t.Type));
         }
@@ -249,6 +258,18 @@ namespace Quokka.RTL.SourceGenerators
 
             foreach (var i in obj.GetInterfaces().Where(i => !typeof(IMetadataInterface).IsAssignableFrom(i)))
                 result.Add(PropertyType(i));
+        }
+
+        public void FluentInterfaces(List<string> result, Type obj)
+        {
+            foreach (var tl in objects.Where(t => !t.IsAbstract))
+            {
+                var fluentTypes = FluentTypes(tl, true);
+                if (fluentTypes.Contains(obj))
+                {
+                    result.Add($"{tl.Name}Child");
+                }
+            }
         }
 
         public string PropertyType(Type p)
@@ -480,7 +501,7 @@ namespace Quokka.RTL.SourceGenerators
                             {
                                 foreach (var ctorVariant in CtorVariants(d).Where(p => p.Any()))
                                 {
-                                    result.Add(new CtorVariant(CtorVariantType.SingleObjct, ctorVariant, obj, d, ctorParams[0]));
+                                    result.Add(new CtorVariant(CtorVariantType.SingleObject, ctorVariant, obj, d, ctorParams[0]));
                                 }
                             }
                         }

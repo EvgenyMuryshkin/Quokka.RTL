@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 namespace Quokka.RTL.VHDL
@@ -131,9 +132,22 @@ public abstract partial class vhdAbstractObject
 {
 	public vhdAbstractObject() { }
 }
-public partial class vhdAggregate : vhdAbstractCollection
+/// <summary>
+/// </summary>
+public interface vhdAggregateChild
+{
+}
+public partial class vhdAggregate : vhdAbstractCollection, IEnumerable//<vhdAggregateChild>
 {
 	public vhdAggregate() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdAggregateChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
 public partial class vhdAggregateBitConnection : vhdAbstractObject
 {
@@ -150,9 +164,15 @@ public abstract partial class vhdAggregateConnection : vhdAbstractObject
 {
 	public vhdAggregateConnection() { }
 }
-public partial class vhdAggregateExpression : vhdExpression
+public partial class vhdAggregateExpression : vhdExpression, IEnumerable//<vhdAggregateChild>
 {
 	public vhdAggregateExpression() { }
+	// Aggregate single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Aggregate as IEnumerable).GetEnumerator();
+	public void Add(vhdAggregateChild child)
+	{
+		Aggregate.Add(child);
+	}
 	public vhdAggregateExpression(vhdAggregate Aggregate)
 	{
 		this.Aggregate = Aggregate;
@@ -309,7 +329,7 @@ public partial class vhdAggregateOthersConnection : vhdAbstractObject
 	}
 	public vhdExpression Expression { get; set; }
 }
-public partial class vhdAlias : vhdAbstractObject
+public partial class vhdAlias : vhdAbstractObject, vhdProcessDeclarationsChild
 {
 	public vhdAlias() { }
 	public vhdAlias(String Alias, vhdExpression Expression)
@@ -320,9 +340,15 @@ public partial class vhdAlias : vhdAbstractObject
 	public String Alias { get; set; }
 	public vhdExpression Expression { get; set; }
 }
-public partial class vhdArchitecture : vhdAbstractObject
+public partial class vhdArchitecture : vhdAbstractObject, vhdFileChild, IEnumerable//<vhdArchitectureDeclarationsChild>
 {
 	public vhdArchitecture() { }
+	// Declarations single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Declarations as IEnumerable).GetEnumerator();
+	public void Add(vhdArchitectureDeclarationsChild child)
+	{
+		Declarations.Add(child);
+	}
 	public vhdArchitecture(String Type, String Entity)
 	{
 		this.Type = Type;
@@ -333,24 +359,62 @@ public partial class vhdArchitecture : vhdAbstractObject
 	public vhdArchitectureDeclarations Declarations { get; set; } = new vhdArchitectureDeclarations();
 	public vhdArchitectureImplementation Implementation { get; set; } = new vhdArchitectureImplementation();
 }
-public partial class vhdArchitectureDeclarations : vhdAbstractCollection
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdDefaultSignal
+/// vhdLogicSignal
+/// vhdArrayTypeDeclaration
+/// </summary>
+public interface vhdArchitectureDeclarationsChild
+{
+}
+public partial class vhdArchitectureDeclarations : vhdAbstractCollection, IEnumerable//<vhdArchitectureDeclarationsChild>
 {
 	public vhdArchitectureDeclarations() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdArchitectureDeclarationsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdArchitectureImplementation : vhdAbstractObject
+public partial class vhdArchitectureImplementation : vhdAbstractObject, IEnumerable//<vhdArchitectureImplementationBlockChild>
 {
 	public vhdArchitectureImplementation() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	public void Add(vhdArchitectureImplementationBlockChild child)
+	{
+		Block.Add(child);
+	}
 	public vhdArchitectureImplementation(vhdArchitectureImplementationBlock Block)
 	{
 		this.Block = Block;
 	}
 	public vhdArchitectureImplementationBlock Block { get; set; } = new vhdArchitectureImplementationBlock();
 }
-public partial class vhdArchitectureImplementationBlock : vhdBlock
+/// <summary>
+/// vhdEntityInstance
+/// </summary>
+public interface vhdArchitectureImplementationBlockChild
+{
+}
+public partial class vhdArchitectureImplementationBlock : vhdBlock, IEnumerable//<vhdArchitectureImplementationBlockChild>
 {
 	public vhdArchitectureImplementationBlock() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdArchitectureImplementationBlockChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration
+public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
 {
 	public vhdArrayTypeDeclaration() { }
 	public vhdArrayTypeDeclaration(String Name, Int32 Depth, vhdDataType Type, Int32 Width)
@@ -364,7 +428,7 @@ public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration
 	public vhdDataType Type { get; set; }
 	public Int32 Width { get; set; }
 }
-public partial class vhdAssignExpression : vhdExpression
+public partial class vhdAssignExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild
 {
 	public vhdAssignExpression() { }
 	public vhdAssignExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
@@ -377,7 +441,7 @@ public partial class vhdAssignExpression : vhdExpression
 	public vhdAssignType Type { get; set; }
 	public vhdExpression Source { get; set; }
 }
-public partial class vhdAttribute : vhdAbstractObject
+public partial class vhdAttribute : vhdAbstractObject, vhdFileChild
 {
 	public vhdAttribute() { }
 	public vhdAttribute(String Name, String Target, String Value)
@@ -403,9 +467,15 @@ public abstract partial class vhdBlock : vhdAbstractCollection
 {
 	public vhdBlock() { }
 }
-public partial class vhdCase : vhdAbstractObject
+public partial class vhdCase : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdCaseStatement>
 {
 	public vhdCase() { }
+	// vhdCaseStatement single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Statements as IEnumerable).GetEnumerator();
+	public void Add(vhdCaseStatement child)
+	{
+		Statements.Add(child);
+	}
 	public vhdCase(vhdExpression Expression)
 	{
 		this.Expression = Expression;
@@ -554,9 +624,15 @@ public partial class vhdCase : vhdAbstractObject
 	public vhdExpression Expression { get; set; }
 	public List<vhdCaseStatement> Statements { get; set; } = new List<vhdCaseStatement>();
 }
-public partial class vhdCaseStatement : vhdAbstractObject
+public partial class vhdCaseStatement : vhdAbstractObject, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdCaseStatement() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	public void Add(vhdGenericBlockChild child)
+	{
+		Block.Add(child);
+	}
 	public vhdCaseStatement(vhdExpression When)
 	{
 		this.When = When;
@@ -729,10 +805,14 @@ public partial class vhdCastResizeExpression : vhdExpression
 	public vhdExpression Source { get; set; }
 	public vhdExpression Length { get; set; }
 }
-public partial class vhdComment : vhdAbstractObject
+public partial class vhdComment : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdComment() { }
 	public vhdComment(IEnumerable<String> Lines)
+	{
+		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
+	}
+	public vhdComment(params String[] Lines)
 	{
 		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
 	}
@@ -751,9 +831,15 @@ public partial class vhdCompareExpression : vhdExpression
 	public vhdCompareType Type { get; set; }
 	public vhdExpression Rhs { get; set; }
 }
-public partial class vhdConditionalStatement : vhdAbstractObject
+public partial class vhdConditionalStatement : vhdAbstractObject, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdConditionalStatement() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	public void Add(vhdGenericBlockChild child)
+	{
+		Block.Add(child);
+	}
 	public vhdConditionalStatement(vhdExpression Condition)
 	{
 		this.Condition = Condition;
@@ -911,7 +997,7 @@ public partial class vhdCustomDataType : vhdDataTypeSource
 	}
 	public String DataType { get; set; }
 }
-public partial class vhdCustomEntityPort : vhdEntityPort
+public partial class vhdCustomEntityPort : vhdEntityPort, vhdEntityInterfaceChild
 {
 	public vhdCustomEntityPort() { }
 	public vhdCustomEntityPort(String Name, vhdPortDirection Direction, String Declaration, String Initializer)
@@ -955,10 +1041,18 @@ public partial class vhdDefaultNetType : vhdNetTypeSource
 	}
 	public vhdNetType NetType { get; set; }
 }
-public partial class vhdDefaultSignal : vhdNet
+public partial class vhdDefaultSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
 {
 	public vhdDefaultSignal() { }
 	public vhdDefaultSignal(vhdNetTypeSource NetType, String Name, vhdDataTypeSource DataType, Int32 Width, IEnumerable<String> Initializer)
+	{
+		this.NetType = NetType;
+		this.Name = Name;
+		this.DataType = DataType;
+		this.Width = Width;
+		this.Initializer = (Initializer ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
+	}
+	public vhdDefaultSignal(vhdNetTypeSource NetType, String Name, vhdDataTypeSource DataType, Int32 Width, params String[] Initializer)
 	{
 		this.NetType = NetType;
 		this.Name = Name;
@@ -977,9 +1071,15 @@ public partial class vhdDefaultSignal : vhdNet
 	public Int32 Width { get; set; }
 	public List<String> Initializer { get; set; } = new List<String>();
 }
-public partial class vhdEntity : vhdAbstractObject
+public partial class vhdEntity : vhdAbstractObject, vhdFileChild, IEnumerable//<vhdEntityInterfaceChild>
 {
 	public vhdEntity() { }
+	// Interface single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Interface as IEnumerable).GetEnumerator();
+	public void Add(vhdEntityInterfaceChild child)
+	{
+		Interface.Add(child);
+	}
 	public vhdEntity(String Name)
 	{
 		this.Name = Name;
@@ -987,9 +1087,15 @@ public partial class vhdEntity : vhdAbstractObject
 	public String Name { get; set; }
 	public vhdEntityInterface Interface { get; set; } = new vhdEntityInterface();
 }
-public partial class vhdEntityInstance : vhdAbstractObject
+public partial class vhdEntityInstance : vhdAbstractObject, vhdArchitectureImplementationBlockChild, IEnumerable//<vhdEntityInstancePortMappingsChild>
 {
 	public vhdEntityInstance() { }
+	// PortMappings single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (PortMappings as IEnumerable).GetEnumerator();
+	public void Add(vhdEntityInstancePortMappingsChild child)
+	{
+		PortMappings.Add(child);
+	}
 	public vhdEntityInstance(String Name, String Type)
 	{
 		this.Name = Name;
@@ -999,7 +1105,7 @@ public partial class vhdEntityInstance : vhdAbstractObject
 	public String Type { get; set; }
 	public vhdEntityInstancePortMappings PortMappings { get; set; } = new vhdEntityInstancePortMappings();
 }
-public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping
+public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping, vhdEntityInstancePortMappingsChild
 {
 	public vhdEntityInstanceNamedPortMapping() { }
 	public vhdEntityInstanceNamedPortMapping(String Internal, vhdExpression External)
@@ -1014,13 +1120,46 @@ public abstract partial class vhdEntityInstancePortMapping : vhdAbstractObject
 {
 	public vhdEntityInstancePortMapping() { }
 }
-public partial class vhdEntityInstancePortMappings : vhdAbstractCollection
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdEntityInstanceNamedPortMapping
+/// </summary>
+public interface vhdEntityInstancePortMappingsChild
+{
+}
+public partial class vhdEntityInstancePortMappings : vhdAbstractCollection, IEnumerable//<vhdEntityInstancePortMappingsChild>
 {
 	public vhdEntityInstancePortMappings() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdEntityInstancePortMappingsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdEntityInterface : vhdAbstractCollection
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdCustomEntityPort
+/// vhdStandardEntityPort
+/// </summary>
+public interface vhdEntityInterfaceChild
+{
+}
+public partial class vhdEntityInterface : vhdAbstractCollection, IEnumerable//<vhdEntityInterfaceChild>
 {
 	public vhdEntityInterface() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdEntityInterfaceChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
 public abstract partial class vhdEntityPort : vhdAbstractObject
 {
@@ -1037,18 +1176,63 @@ public abstract partial class vhdExpression : vhdAbstractObject
 {
 	public vhdExpression() { }
 }
-public partial class vhdFile : vhdAbstractCollection
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdLibraryReference
+/// vhdUse
+/// vhdEntity
+/// vhdArchitecture
+/// vhdAttribute
+/// </summary>
+public interface vhdFileChild
+{
+}
+public partial class vhdFile : vhdAbstractCollection, IEnumerable//<vhdFileChild>
 {
 	public vhdFile() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdFileChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdGenericBlock : vhdBlock
+/// <summary>
+/// vhdGenericBlock
+/// </summary>
+public interface vhdGenericBlockChild
+{
+}
+public partial class vhdGenericBlock : vhdBlock, vhdGenericBlockChild, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdGenericBlock() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdGenericBlockChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdIdentifier : vhdAbstractObject
+public partial class vhdIdentifier : vhdAbstractObject, IEnumerable//<vhdRange>
 {
 	public vhdIdentifier() { }
+	// vhdRange single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Indexes as IEnumerable).GetEnumerator();
+	public void Add(vhdRange child)
+	{
+		Indexes.Add(child);
+	}
 	public vhdIdentifier(String Name, IEnumerable<vhdRange> Indexes)
+	{
+		this.Name = Name;
+		this.Indexes = (Indexes ?? Enumerable.Empty<vhdRange>()).Where(s => s != null).ToList();
+	}
+	public vhdIdentifier(String Name, params vhdRange[] Indexes)
 	{
 		this.Name = Name;
 		this.Indexes = (Indexes ?? Enumerable.Empty<vhdRange>()).Where(s => s != null).ToList();
@@ -1067,9 +1251,9 @@ public partial class vhdIdentifierExpression : vhdExpression
 	{
 		this.Source = new vhdIdentifier(Name, Indexes);
 	}
-	public vhdIdentifierExpression(String Name)
+	public vhdIdentifierExpression(String Name, params vhdRange[] Indexes)
 	{
-		this.Source = new vhdIdentifier(Name);
+		this.Source = new vhdIdentifier(Name, Indexes);
 	}
 	public vhdIdentifierExpression(vhdIdentifier Source)
 	{
@@ -1077,12 +1261,18 @@ public partial class vhdIdentifierExpression : vhdExpression
 	}
 	public vhdIdentifier Source { get; set; } = new vhdIdentifier();
 }
-public partial class vhdIf : vhdAbstractObject
+public partial class vhdIf : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdConditionalStatement>
 {
 	public vhdIf() { }
+	// vhdConditionalStatement single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Statements as IEnumerable).GetEnumerator();
+	public void Add(vhdConditionalStatement child)
+	{
+		Statements.Add(child);
+	}
 	public List<vhdConditionalStatement> Statements { get; set; } = new List<vhdConditionalStatement>();
 }
-public partial class vhdLibraryReference : vhdAbstractObject
+public partial class vhdLibraryReference : vhdAbstractObject, vhdFileChild
 {
 	public vhdLibraryReference() { }
 	public vhdLibraryReference(String Name)
@@ -1104,10 +1294,16 @@ public partial class vhdLogicExpression : vhdExpression
 	public vhdLogicType Type { get; set; }
 	public vhdExpression Rhs { get; set; }
 }
-public partial class vhdLogicSignal : vhdNet
+public partial class vhdLogicSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
 {
 	public vhdLogicSignal() { }
 	public vhdLogicSignal(vhdNetTypeSource NetType, String Name, IEnumerable<RTLBitArray> Initializer)
+	{
+		this.NetType = NetType;
+		this.Name = Name;
+		this.Initializer = (Initializer ?? Enumerable.Empty<RTLBitArray>()).Where(s => s != null).ToList();
+	}
+	public vhdLogicSignal(vhdNetTypeSource NetType, String Name, params RTLBitArray[] Initializer)
 	{
 		this.NetType = NetType;
 		this.Name = Name;
@@ -1148,7 +1344,7 @@ public abstract partial class vhdNetTypeSource : vhdAbstractObject
 {
 	public vhdNetTypeSource() { }
 }
-public partial class vhdNull : vhdAbstractObject
+public partial class vhdNull : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild
 {
 	public vhdNull() { }
 }
@@ -1317,10 +1513,21 @@ public partial class vhdPredefinedAttributeExpression : vhdExpression
 	public vhdExpression Source { get; set; }
 	public vhdPredefinedAttribute Attribute { get; set; }
 }
-public partial class vhdProcedureCall : vhdAbstractObject
+public partial class vhdProcedureCall : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdExpression>
 {
 	public vhdProcedureCall() { }
+	// vhdExpression single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Parameters as IEnumerable).GetEnumerator();
+	public void Add(vhdExpression child)
+	{
+		Parameters.Add(child);
+	}
 	public vhdProcedureCall(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Proc = Proc;
+		this.Parameters = (Parameters ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
+	}
+	public vhdProcedureCall(String Proc, params vhdExpression[] Parameters)
 	{
 		this.Proc = Proc;
 		this.Parameters = (Parameters ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
@@ -1368,10 +1575,21 @@ public partial class vhdProcedureCall : vhdAbstractObject
 	/// </summary>
 	public List<vhdExpression> Parameters { get; set; } = new List<vhdExpression>();
 }
-public partial class vhdProcedureCallExpression : vhdExpression
+public partial class vhdProcedureCallExpression : vhdExpression, IEnumerable//<vhdExpression>
 {
 	public vhdProcedureCallExpression() { }
+	// vhdExpression single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Parameters as IEnumerable).GetEnumerator();
+	public void Add(vhdExpression child)
+	{
+		Parameters.Add(child);
+	}
 	public vhdProcedureCallExpression(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Proc = Proc;
+		this.Parameters = (Parameters ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
+	}
+	public vhdProcedureCallExpression(String Proc, params vhdExpression[] Parameters)
 	{
 		this.Proc = Proc;
 		this.Parameters = (Parameters ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
@@ -1415,10 +1633,20 @@ public partial class vhdProcedureCallExpression : vhdExpression
 	/// </summary>
 	public List<vhdExpression> Parameters { get; set; } = new List<vhdExpression>();
 }
-public partial class vhdProcess : vhdAbstractObject
+public partial class vhdProcess : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdIdentifier>
 {
 	public vhdProcess() { }
+	// vhdIdentifier single list member
+	IEnumerator IEnumerable.GetEnumerator() => (SensitivityList as IEnumerable).GetEnumerator();
+	public void Add(vhdIdentifier child)
+	{
+		SensitivityList.Add(child);
+	}
 	public vhdProcess(IEnumerable<vhdIdentifier> SensitivityList)
+	{
+		this.SensitivityList = (SensitivityList ?? Enumerable.Empty<vhdIdentifier>()).Where(s => s != null).ToList();
+	}
+	public vhdProcess(params vhdIdentifier[] SensitivityList)
 	{
 		this.SensitivityList = (SensitivityList ?? Enumerable.Empty<vhdIdentifier>()).Where(s => s != null).ToList();
 	}
@@ -1443,14 +1671,43 @@ public partial class vhdProcess : vhdAbstractObject
 	public vhdProcessDeclarations Declarations { get; set; } = new vhdProcessDeclarations();
 	public vhdGenericBlock Block { get; set; } = new vhdGenericBlock();
 }
-public partial class vhdProcessDeclarations : vhdAbstractCollection
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdDefaultSignal
+/// vhdLogicSignal
+/// vhdArrayTypeDeclaration
+/// vhdAlias
+/// </summary>
+public interface vhdProcessDeclarationsChild
+{
+}
+public partial class vhdProcessDeclarations : vhdAbstractCollection, IEnumerable//<vhdProcessDeclarationsChild>
 {
 	public vhdProcessDeclarations() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	public void Add(vhdProcessDeclarationsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
-public partial class vhdRange : vhdAbstractObject
+public partial class vhdRange : vhdAbstractObject, IEnumerable//<vhdExpression>
 {
 	public vhdRange() { }
+	// vhdExpression single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Indexes as IEnumerable).GetEnumerator();
+	public void Add(vhdExpression child)
+	{
+		Indexes.Add(child);
+	}
 	public vhdRange(IEnumerable<vhdExpression> Indexes)
+	{
+		this.Indexes = (Indexes ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
+	}
+	public vhdRange(params vhdExpression[] Indexes)
 	{
 		this.Indexes = (Indexes ?? Enumerable.Empty<vhdExpression>()).Where(s => s != null).ToList();
 	}
@@ -1642,9 +1899,15 @@ public partial class vhdShiftExpression : vhdExpression
 	public vhdShiftType Type { get; set; }
 	public vhdExpression Rhs { get; set; }
 }
-public partial class vhdSimpleForLoop : vhdAbstractObject
+public partial class vhdSimpleForLoop : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdSimpleForLoop() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	public void Add(vhdGenericBlockChild child)
+	{
+		Block.Add(child);
+	}
 	public vhdSimpleForLoop(String Iterator, Int32 From, Int32 To)
 	{
 		this.Iterator = Iterator;
@@ -1656,7 +1919,7 @@ public partial class vhdSimpleForLoop : vhdAbstractObject
 	public Int32 To { get; set; }
 	public vhdGenericBlock Block { get; set; } = new vhdGenericBlock();
 }
-public partial class vhdStandardEntityPort : vhdEntityPort
+public partial class vhdStandardEntityPort : vhdEntityPort, vhdEntityInterfaceChild
 {
 	public vhdStandardEntityPort() { }
 	public vhdStandardEntityPort(String Name, vhdPortDirection Direction, vhdDataType Sign, Int32 Width, String Initializer)
@@ -1671,9 +1934,15 @@ public partial class vhdStandardEntityPort : vhdEntityPort
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
 }
-public partial class vhdSyncBlock : vhdAbstractObject
+public partial class vhdSyncBlock : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdSyncBlock() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	public void Add(vhdGenericBlockChild child)
+	{
+		Block.Add(child);
+	}
 	public vhdSyncBlock(vhdEdgeType Type, vhdExpression Source)
 	{
 		this.Type = Type;
@@ -1696,10 +1965,14 @@ public partial class vhdTernaryExpression : vhdExpression
 	public vhdExpression Lhs { get; set; }
 	public vhdExpression Rhs { get; set; }
 }
-public partial class vhdText : vhdAbstractObject
+public partial class vhdText : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdText() { }
 	public vhdText(IEnumerable<String> Lines)
+	{
+		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
+	}
+	public vhdText(params String[] Lines)
 	{
 		this.Lines = (Lines ?? Enumerable.Empty<String>()).Where(s => s != null).ToList();
 	}
@@ -1725,7 +1998,7 @@ public partial class vhdUnaryExpression : vhdExpression
 	public vhdUnaryType Type { get; set; }
 	public vhdExpression Rhs { get; set; }
 }
-public partial class vhdUse : vhdAbstractObject
+public partial class vhdUse : vhdAbstractObject, vhdFileChild
 {
 	public vhdUse() { }
 	public vhdUse(String Value)

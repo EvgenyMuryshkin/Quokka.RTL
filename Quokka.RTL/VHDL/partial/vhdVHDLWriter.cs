@@ -9,6 +9,28 @@ namespace Quokka.RTL.VHDL
 
     public class vhdVHDLWriter
     {
+        public static void WriteObject(
+            vhdVisitorFactoryInterface visitorFactory,
+            IndentedStringBuilder builder,
+            vhdAbstractObject obj)
+        {
+            var visitor = visitorFactory.Resolve(obj);
+            visitor.Visit(obj, builder);
+        }
+
+        public static string WriteObject(vhdAbstractObject obj)
+        {
+            var formatters = new vhdFormattersImplementation();
+            var visitorFactory = new vhdVisitorFactoryImplementation(formatters);
+
+            var builder = new IndentedStringBuilder();
+
+            WriteObject(visitorFactory, builder, obj);
+
+            return builder.ToString();
+        }
+
+
         public static void Write(
             vhdVisitorFactoryInterface visitorFactory,
             IndentedStringBuilder builder, 

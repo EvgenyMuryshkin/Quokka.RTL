@@ -8,7 +8,7 @@ namespace Quokka.RTL.SourceGenerators
     public enum CtorVariantType
     {
         Direct,
-        SingleObjct,
+        SingleObject,
         SingleCollection
     }
 
