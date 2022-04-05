@@ -5,6 +5,8 @@ using System.Linq;
 namespace Quokka.RTL.Verilog
 {
 using Quokka.RTL.Tools;
+using Newtonsoft.Json;
+[JsonObjectAttribute]
 public abstract partial class vlgAbstractCollection : vlgAbstractObject
 {
 	public vlgAbstractCollection() { }
@@ -122,20 +124,24 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	/// </summary>
 	public List<vlgAbstractObject> Children { get; set; } = new List<vlgAbstractObject>();
 }
+[JsonObjectAttribute]
 public abstract partial class vlgAbstractForLoop : vlgAbstractCollection
 {
 	public vlgAbstractForLoop() { }
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgAbstractObject
 {
 	public vlgAbstractObject() { }
 }
+[JsonObjectAttribute]
 public partial class vlgAggregateExpression : vlgExpression, IEnumerable//<vlgExpression>
 {
 	public vlgAggregateExpression() { }
 	// vlgExpression single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Expressions as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgExpression);
 	public void Add(vlgExpression child)
 	{
 		Expressions.Add(child);
@@ -270,6 +276,7 @@ public partial class vlgAggregateExpression : vlgExpression, IEnumerable//<vlgEx
 	/// </summary>
 	public List<vlgExpression> Expressions { get; set; } = new List<vlgExpression>();
 }
+[JsonObjectAttribute]
 public partial class vlgAssign : vlgAbstractObject, vlgForLoopChild, vlgGenericBlockChild, vlgInitialChild, vlgModuleImplementationBlockChild, vlgSimpleForLoopChild
 {
 	public vlgAssign() { }
@@ -283,6 +290,7 @@ public partial class vlgAssign : vlgAbstractObject, vlgForLoopChild, vlgGenericB
 	}
 	public vlgAssignExpression Expression { get; set; } = new vlgAssignExpression();
 }
+[JsonObjectAttribute]
 public partial class vlgAssignExpression : vlgExpression
 {
 	public vlgAssignExpression() { }
@@ -296,6 +304,7 @@ public partial class vlgAssignExpression : vlgExpression
 	public vlgAssignType Type { get; set; }
 	public vlgExpression Expression { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgAttribute : vlgAbstractObject, vlgFileChild
 {
 	public vlgAttribute() { }
@@ -307,6 +316,7 @@ public partial class vlgAttribute : vlgAbstractObject, vlgFileChild
 	public String Name { get; set; }
 	public String Value { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgBinaryValueExpression : vlgExpression, vlgICaseStatement
 {
 	public vlgBinaryValueExpression() { }
@@ -316,15 +326,18 @@ public partial class vlgBinaryValueExpression : vlgExpression, vlgICaseStatement
 	}
 	public RTLBitArray Value { get; set; } = new RTLBitArray();
 }
+[JsonObjectAttribute]
 public abstract partial class vlgBlock : vlgAbstractCollection
 {
 	public vlgBlock() { }
 }
+[JsonObjectAttribute]
 public partial class vlgCase : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgCaseStatement>
 {
 	public vlgCase() { }
 	// vlgCaseStatement single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Statements as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgCaseStatement);
 	public void Add(vlgCaseStatement child)
 	{
 		Statements.Add(child);
@@ -457,26 +470,31 @@ public partial class vlgCase : vlgAbstractObject, vlgGenericBlockChild, vlgModul
 	public List<vlgCaseStatement> Statements { get; set; } = new List<vlgCaseStatement>();
 	public vlgCaseDefault Default { get; set; } = new vlgCaseDefault();
 }
+[JsonObjectAttribute]
 public partial class vlgCaseDefault : vlgCaseItem, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgCaseDefault() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
 	}
 }
+[JsonObjectAttribute]
 public abstract partial class vlgCaseItem : vlgAbstractObject
 {
 	public vlgCaseItem() { }
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
+[JsonObjectAttribute]
 public partial class vlgCaseStatement : vlgCaseItem, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgCaseStatement() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
@@ -513,11 +531,13 @@ public partial class vlgCaseStatement : vlgCaseItem, IEnumerable//<vlgGenericBlo
 	/// </summary>
 	public List<vlgICaseStatement> Conditions { get; set; } = new List<vlgICaseStatement>();
 }
+[JsonObjectAttribute]
 public partial class vlgCombBlock : vlgAbstractObject, vlgModuleImplementationBlockChild, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgCombBlock() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
@@ -550,6 +570,7 @@ public partial class vlgCombBlock : vlgAbstractObject, vlgModuleImplementationBl
 	public List<vlgIdentifier> SensitivityList { get; set; } = new List<vlgIdentifier>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
+[JsonObjectAttribute]
 public partial class vlgComment : vlgAbstractObject, vlgFileChild, vlgGenericBlockChild, vlgInitialChild, vlgModuleImplementationBlockChild, vlgModuleInstancePortMappingsChild, vlgModuleInterfaceChild, vlgModuleParametersChild
 {
 	public vlgComment() { }
@@ -563,6 +584,7 @@ public partial class vlgComment : vlgAbstractObject, vlgFileChild, vlgGenericBlo
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
+[JsonObjectAttribute]
 public partial class vlgCompareExpression : vlgExpression
 {
 	public vlgCompareExpression() { }
@@ -576,11 +598,13 @@ public partial class vlgCompareExpression : vlgExpression
 	public vlgCompareType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgConditionalStatement : vlgAbstractObject, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgConditionalStatement() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
@@ -702,6 +726,7 @@ public partial class vlgConditionalStatement : vlgAbstractObject, IEnumerable//<
 	public vlgExpression Condition { get; set; }
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
+[JsonObjectAttribute]
 public partial class vlgCustomDeclaration : vlgAbstractObject, vlgModuleImplementationBlockChild
 {
 	public vlgCustomDeclaration() { }
@@ -715,6 +740,7 @@ public partial class vlgCustomDeclaration : vlgAbstractObject, vlgModuleImplemen
 	public String Name { get; set; }
 	public String Initializer { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgCustomModulePortDeclaration : vlgDeclarationModulePort, vlgModuleInterfaceChild
 {
 	public vlgCustomModulePortDeclaration() { }
@@ -728,6 +754,7 @@ public partial class vlgCustomModulePortDeclaration : vlgDeclarationModulePort, 
 	public String DataType { get; set; }
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgDeclarationModulePort : vlgModulePort
 {
 	public vlgDeclarationModulePort() { }
@@ -739,6 +766,7 @@ public abstract partial class vlgDeclarationModulePort : vlgModulePort
 	public vlgPortDirection Direction { get; set; }
 	public vlgNetType NetType { get; set; }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgExpression : vlgAbstractObject
 {
 	public vlgExpression() { }
@@ -752,11 +780,13 @@ public abstract partial class vlgExpression : vlgAbstractObject
 public interface vlgFileChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgFile : vlgAbstractCollection, IEnumerable//<vlgFileChild>
 {
 	public vlgFile() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgFileChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -769,11 +799,13 @@ public partial class vlgFile : vlgAbstractCollection, IEnumerable//<vlgFileChild
 public interface vlgForLoopChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgForLoop : vlgAbstractForLoop, vlgGenericBlockChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgForLoopChild>
 {
 	public vlgForLoop() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgForLoopChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -790,11 +822,13 @@ public partial class vlgForLoop : vlgAbstractForLoop, vlgGenericBlockChild, vlgM
 	public vlgExpression Condition { get; set; }
 	public vlgExpression Increment { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgGenerate : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgGenerate() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
@@ -810,11 +844,13 @@ public partial class vlgGenerate : vlgAbstractObject, vlgGenericBlockChild, vlgM
 public interface vlgGenericBlockChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgGenericBlock : vlgBlock, vlgForLoopChild, vlgGenericBlockChild, vlgModuleImplementationBlockChild, vlgSimpleForLoopChild, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgGenericBlock() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -822,6 +858,7 @@ public partial class vlgGenericBlock : vlgBlock, vlgForLoopChild, vlgGenericBloc
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgGenvar : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild
 {
 	public vlgGenvar() { }
@@ -831,11 +868,13 @@ public partial class vlgGenvar : vlgAbstractObject, vlgGenericBlockChild, vlgMod
 	}
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgIdentifier : vlgAbstractObject, IEnumerable//<vlgRange>
 {
 	public vlgIdentifier() { }
 	// vlgRange single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Indexes as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgRange);
 	public void Add(vlgRange child)
 	{
 		Indexes.Add(child);
@@ -857,6 +896,7 @@ public partial class vlgIdentifier : vlgAbstractObject, IEnumerable//<vlgRange>
 	public String Name { get; set; }
 	public List<vlgRange> Indexes { get; set; } = new List<vlgRange>();
 }
+[JsonObjectAttribute]
 public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 {
 	public vlgIdentifierExpression() { }
@@ -874,11 +914,13 @@ public partial class vlgIdentifierExpression : vlgExpression, vlgICaseStatement
 	}
 	public vlgIdentifier Source { get; set; } = new vlgIdentifier();
 }
+[JsonObjectAttribute]
 public partial class vlgIf : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgConditionalStatement>
 {
 	public vlgIf() { }
 	// vlgConditionalStatement single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Statements as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgConditionalStatement);
 	public void Add(vlgConditionalStatement child)
 	{
 		Statements.Add(child);
@@ -894,11 +936,13 @@ public partial class vlgIf : vlgAbstractObject, vlgGenericBlockChild, vlgModuleI
 public interface vlgInitialChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgInitial : vlgAbstractCollection, vlgModuleImplementationBlockChild, IEnumerable//<vlgInitialChild>
 {
 	public vlgInitial() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgInitialChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -911,6 +955,7 @@ public partial class vlgInitial : vlgAbstractCollection, vlgModuleImplementation
 	}
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgIterator : vlgAbstractObject, vlgModuleImplementationBlockChild
 {
 	public vlgIterator() { }
@@ -920,10 +965,12 @@ public partial class vlgIterator : vlgAbstractObject, vlgModuleImplementationBlo
 	}
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgLocalParam : vlgAbstractObject
 {
 	public vlgLocalParam() { }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgLocalParamName : vlgLocalParam
 {
 	public vlgLocalParamName() { }
@@ -933,6 +980,7 @@ public abstract partial class vlgLocalParamName : vlgLocalParam
 	}
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgLocalParamNameBinaryValue : vlgLocalParamName, vlgModuleImplementationBlockChild
 {
 	public vlgLocalParamNameBinaryValue() { }
@@ -943,6 +991,7 @@ public partial class vlgLocalParamNameBinaryValue : vlgLocalParamName, vlgModule
 	}
 	public RTLBitArray Value { get; set; } = new RTLBitArray();
 }
+[JsonObjectAttribute]
 public partial class vlgLocalParamNameExplicitValue : vlgLocalParamName, vlgModuleImplementationBlockChild
 {
 	public vlgLocalParamNameExplicitValue() { }
@@ -953,6 +1002,7 @@ public partial class vlgLocalParamNameExplicitValue : vlgLocalParamName, vlgModu
 	}
 	public String Value { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgLogicExpression : vlgExpression
 {
 	public vlgLogicExpression() { }
@@ -966,6 +1016,7 @@ public partial class vlgLogicExpression : vlgExpression
 	public vlgLogicType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgLogicSignal : vlgSignal, vlgModuleImplementationBlockChild
 {
 	public vlgLogicSignal() { }
@@ -983,6 +1034,7 @@ public partial class vlgLogicSignal : vlgSignal, vlgModuleImplementationBlockChi
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgMathExpression : vlgExpression
 {
 	public vlgMathExpression() { }
@@ -996,6 +1048,7 @@ public partial class vlgMathExpression : vlgExpression
 	public vlgMathType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgMemoryBlock : vlgSignal, vlgModuleImplementationBlockChild
 {
 	public vlgMemoryBlock() { }
@@ -1013,6 +1066,7 @@ public partial class vlgMemoryBlock : vlgSignal, vlgModuleImplementationBlockChi
 	public Int32 Width { get; set; }
 	public Int32 Depth { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgModule : vlgAbstractObject, vlgFileChild
 {
 	public vlgModule() { }
@@ -1025,11 +1079,13 @@ public partial class vlgModule : vlgAbstractObject, vlgFileChild
 	public vlgModuleInterface Interface { get; set; } = new vlgModuleInterface();
 	public vlgModuleImplementation Implementation { get; set; } = new vlgModuleImplementation();
 }
+[JsonObjectAttribute]
 public partial class vlgModuleImplementation : vlgAbstractObject, IEnumerable//<vlgModuleImplementationBlockChild>
 {
 	public vlgModuleImplementation() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleImplementationBlockChild child)
 	{
 		Block.Add(child);
@@ -1056,11 +1112,13 @@ public partial class vlgModuleImplementation : vlgAbstractObject, IEnumerable//<
 public interface vlgModuleImplementationBlockChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgModuleImplementationBlock : vlgBlock, vlgModuleImplementationBlockChild, IEnumerable//<vlgModuleImplementationBlockChild>
 {
 	public vlgModuleImplementationBlock() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleImplementationBlockChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1068,6 +1126,7 @@ public partial class vlgModuleImplementationBlock : vlgBlock, vlgModuleImplement
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstance : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild
 {
 	public vlgModuleInstance() { }
@@ -1081,6 +1140,7 @@ public partial class vlgModuleInstance : vlgAbstractObject, vlgGenericBlockChild
 	public vlgModuleInstanceParameters Parameters { get; set; } = new vlgModuleInstanceParameters();
 	public vlgModuleInstancePortMappings PortMappings { get; set; } = new vlgModuleInstancePortMappings();
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstanceNamedPortMapping : vlgModuleInstancePortMapping, vlgModuleInstancePortMappingsChild
 {
 	public vlgModuleInstanceNamedPortMapping() { }
@@ -1092,6 +1152,7 @@ public partial class vlgModuleInstanceNamedPortMapping : vlgModuleInstancePortMa
 	public String Internal { get; set; }
 	public vlgExpression External { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstanceParameter : vlgAbstractObject, vlgModuleInstanceParametersChild
 {
 	public vlgModuleInstanceParameter() { }
@@ -1109,11 +1170,13 @@ public partial class vlgModuleInstanceParameter : vlgAbstractObject, vlgModuleIn
 public interface vlgModuleInstanceParametersChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstanceParameters : vlgAbstractCollection, IEnumerable//<vlgModuleInstanceParametersChild>
 {
 	public vlgModuleInstanceParameters() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleInstanceParametersChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1121,6 +1184,7 @@ public partial class vlgModuleInstanceParameters : vlgAbstractCollection, IEnume
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 {
 	public vlgModuleInstancePortMapping() { }
@@ -1134,11 +1198,13 @@ public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 public interface vlgModuleInstancePortMappingsChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstancePortMappings : vlgAbstractCollection, IEnumerable//<vlgModuleInstancePortMappingsChild>
 {
 	public vlgModuleInstancePortMappings() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleInstancePortMappingsChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1146,6 +1212,7 @@ public partial class vlgModuleInstancePortMappings : vlgAbstractCollection, IEnu
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortMapping, vlgModuleInstancePortMappingsChild
 {
 	public vlgModuleInstanceSimplePortMapping() { }
@@ -1275,11 +1342,13 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 public interface vlgModuleInterfaceChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgModuleInterface : vlgAbstractCollection, IEnumerable//<vlgModuleInterfaceChild>
 {
 	public vlgModuleInterface() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleInterfaceChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1287,6 +1356,7 @@ public partial class vlgModuleInterface : vlgAbstractCollection, IEnumerable//<v
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgModuleParameterDeclaration : vlgAbstractObject, vlgModuleParametersChild
 {
 	public vlgModuleParameterDeclaration() { }
@@ -1308,11 +1378,13 @@ public partial class vlgModuleParameterDeclaration : vlgAbstractObject, vlgModul
 public interface vlgModuleParametersChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgModuleParameters : vlgAbstractCollection, IEnumerable//<vlgModuleParametersChild>
 {
 	public vlgModuleParameters() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgModuleParametersChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1320,10 +1392,12 @@ public partial class vlgModuleParameters : vlgAbstractCollection, IEnumerable//<
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
 public abstract partial class vlgModulePort : vlgAbstractObject
 {
 	public vlgModulePort() { }
 }
+[JsonObjectAttribute]
 public partial class vlgPlaceholderModulePort : vlgModulePort, vlgModuleInterfaceChild
 {
 	public vlgPlaceholderModulePort() { }
@@ -1333,11 +1407,13 @@ public partial class vlgPlaceholderModulePort : vlgModulePort, vlgModuleInterfac
 	}
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgProcedureCall : vlgAbstractObject, vlgGenericBlockChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgExpression>
 {
 	public vlgProcedureCall() { }
 	// vlgExpression single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Parameters as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgExpression);
 	public void Add(vlgExpression child)
 	{
 		Parameters.Add(child);
@@ -1387,11 +1463,13 @@ public partial class vlgProcedureCall : vlgAbstractObject, vlgGenericBlockChild,
 	/// </summary>
 	public List<vlgExpression> Parameters { get; set; } = new List<vlgExpression>();
 }
+[JsonObjectAttribute]
 public partial class vlgRange : vlgAbstractObject, IEnumerable//<vlgExpression>
 {
 	public vlgRange() { }
 	// vlgExpression single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Indexes as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgExpression);
 	public void Add(vlgExpression child)
 	{
 		Indexes.Add(child);
@@ -1526,6 +1604,7 @@ public partial class vlgRange : vlgAbstractObject, IEnumerable//<vlgExpression>
 	/// </summary>
 	public List<vlgExpression> Indexes { get; set; } = new List<vlgExpression>();
 }
+[JsonObjectAttribute]
 public partial class vlgShiftExpression : vlgExpression
 {
 	public vlgShiftExpression() { }
@@ -1539,6 +1618,7 @@ public partial class vlgShiftExpression : vlgExpression
 	public vlgShiftType Type { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
+[JsonObjectAttribute]
 public abstract partial class vlgSignal : vlgAbstractObject
 {
 	public vlgSignal() { }
@@ -1548,11 +1628,13 @@ public abstract partial class vlgSignal : vlgAbstractObject
 public interface vlgSimpleForLoopChild
 {
 }
+[JsonObjectAttribute]
 public partial class vlgSimpleForLoop : vlgAbstractForLoop, vlgGenericBlockChild, vlgInitialChild, vlgModuleImplementationBlockChild, IEnumerable//<vlgSimpleForLoopChild>
 {
 	public vlgSimpleForLoop() { }
 	// vlgAbstractObject collection
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgSimpleForLoopChild child)
 	{
 		var typed = child as vlgAbstractObject;
@@ -1569,11 +1651,13 @@ public partial class vlgSimpleForLoop : vlgAbstractForLoop, vlgGenericBlockChild
 	public Int32 From { get; set; }
 	public Int32 To { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgSizedAggregateExpression : vlgExpression, IEnumerable//<vlgExpression>
 {
 	public vlgSizedAggregateExpression() { }
 	// vlgExpression single list member
 	IEnumerator IEnumerable.GetEnumerator() => (Expressions as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgExpression);
 	public void Add(vlgExpression child)
 	{
 		Expressions.Add(child);
@@ -1619,6 +1703,7 @@ public partial class vlgSizedAggregateExpression : vlgExpression, IEnumerable//<
 	/// </summary>
 	public List<vlgExpression> Expressions { get; set; } = new List<vlgExpression>();
 }
+[JsonObjectAttribute]
 public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 {
 	public vlgStandardModulePort() { }
@@ -1634,6 +1719,7 @@ public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 	public Int32 Width { get; set; }
 	public String Name { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, vlgModuleInterfaceChild
 {
 	public vlgStandardModulePortDeclaration() { }
@@ -1646,6 +1732,7 @@ public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, v
 		this.Name = Name;
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgStandardModulePortImplementation : vlgStandardModulePort, vlgModuleImplementationBlockChild
 {
 	public vlgStandardModulePortImplementation() { }
@@ -1658,11 +1745,13 @@ public partial class vlgStandardModulePortImplementation : vlgStandardModulePort
 		this.Name = Name;
 	}
 }
+[JsonObjectAttribute]
 public partial class vlgSyncBlock : vlgAbstractObject, vlgModuleImplementationBlockChild, IEnumerable//<vlgGenericBlockChild>
 {
 	public vlgSyncBlock() { }
 	// Block single object collection
 	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vlgAbstractObject);
 	public void Add(vlgGenericBlockChild child)
 	{
 		Block.Add(child);
@@ -1687,6 +1776,7 @@ public partial class vlgSyncBlock : vlgAbstractObject, vlgModuleImplementationBl
 	public List<vlgSyncBlockSensitivityItem> SensitivityList { get; set; } = new List<vlgSyncBlockSensitivityItem>();
 	public vlgGenericBlock Block { get; set; } = new vlgGenericBlock();
 }
+[JsonObjectAttribute]
 public partial class vlgSyncBlockSensitivityItem : vlgAbstractObject
 {
 	public vlgSyncBlockSensitivityItem() { }
@@ -1698,6 +1788,7 @@ public partial class vlgSyncBlockSensitivityItem : vlgAbstractObject
 	public vlgEdgeType Edge { get; set; }
 	public vlgIdentifier Identifier { get; set; } = new vlgIdentifier();
 }
+[JsonObjectAttribute]
 public partial class vlgTernaryExpression : vlgExpression
 {
 	public vlgTernaryExpression() { }
@@ -1711,6 +1802,7 @@ public partial class vlgTernaryExpression : vlgExpression
 	public vlgExpression Lhs { get; set; }
 	public vlgExpression Rhs { get; set; }
 }
+[JsonObjectAttribute]
 public partial class vlgText : vlgAbstractObject, vlgFileChild, vlgGenericBlockChild, vlgInitialChild, vlgModuleImplementationBlockChild, vlgModuleInstancePortMappingsChild, vlgModuleInterfaceChild, vlgModuleParametersChild
 {
 	public vlgText() { }
@@ -1724,6 +1816,7 @@ public partial class vlgText : vlgAbstractObject, vlgFileChild, vlgGenericBlockC
 	}
 	public List<String> Lines { get; set; } = new List<String>();
 }
+[JsonObjectAttribute]
 public partial class vlgUnaryExpression : vlgExpression
 {
 	public vlgUnaryExpression() { }

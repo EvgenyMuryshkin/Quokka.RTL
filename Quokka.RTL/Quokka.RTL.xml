@@ -1630,6 +1630,7 @@
         <member name="T:Quokka.RTL.VHDL.vhdArchitectureImplementationBlockChild">
             <summary>
             vhdEntityInstance
+            vhdGenericBlock
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdBinaryValueExpression.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdBinaryValueExpression">

@@ -106,6 +106,12 @@ public partial class vhdArchitectureImplementationBlock
 		this.Children.Add(new vhdEntityInstance(Name, Type));
 		return this;
 	}
+	//vhdGenericBlock
+	public vhdArchitectureImplementationBlock WithGenericBlock(vhdGenericBlock obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
 }
 public partial class vhdArrayTypeDeclaration
 {

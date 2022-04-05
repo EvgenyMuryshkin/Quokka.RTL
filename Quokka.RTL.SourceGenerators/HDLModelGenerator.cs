@@ -220,6 +220,7 @@ namespace Quokka.RTL.SourceGenerators
         protected void AST(GeneratorContext ctx)
         {
             var builder = ctx.builder;
+            builder.AppendLine($"using Newtonsoft.Json;");
 
             foreach (var obj in ctx.objects)
             {
@@ -283,6 +284,7 @@ namespace Quokka.RTL.SourceGenerators
                 ctx.Inheritance(inheritance, obj);
                 ctx.FluentInterfaces(inheritance, obj);
 
+                builder.AppendLine($"[JsonObjectAttribute]");
                 builder.Append($"{string.Join(" ", modifiers)} partial class {obj.Name}");
                 if (inheritance.Any())
                 {
@@ -308,6 +310,7 @@ namespace Quokka.RTL.SourceGenerators
                     builder.AppendLine($"\t// {childrenType.Name} collection");
                     builder.AppendLine($"\tIEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();");
 
+                    builder.AppendLine($"\t[Obsolete]public void Add(object obj) => Add(obj as {childrenType.Name});");
                     builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
                     builder.AppendLine($"\t{{");
                     builder.AppendLine($"\t\tvar typed = child as {childrenType.Name};");
@@ -322,6 +325,7 @@ namespace Quokka.RTL.SourceGenerators
 
                     var childrenType = ctx.ChildrenType(singleObjCollection.PropertyType);
 
+                    builder.AppendLine($"\t[Obsolete]public void Add(object obj) => Add(obj as {childrenType.Name});");
                     builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
                     builder.AppendLine($"\t{{");
                     builder.AppendLine($"\t\t{singleObjCollection.Name}.Add(child);");
@@ -334,6 +338,7 @@ namespace Quokka.RTL.SourceGenerators
 
                     var childrenType = genericListParameter;
 
+                    builder.AppendLine($"\t[Obsolete]public void Add(object obj) => Add(obj as {childrenType.Name});");
                     builder.AppendLine($"\tpublic void Add({childrenInderface} child)");
                     builder.AppendLine($"\t{{");
                     builder.AppendLine($"\t\t{singleListProp.Name}.Add(child);");
@@ -597,7 +602,7 @@ namespace Quokka.RTL.SourceGenerators
         protected void Queries(GeneratorContext ctx)
         {
             var builder = ctx.builder;
-
+            builder.AppendLine($"using Newtonsoft.Json;");
             foreach (var obj in ctx.objects)
             {
                 var modifiers = new List<string>();
@@ -614,7 +619,34 @@ namespace Quokka.RTL.SourceGenerators
 
                 foreach (var child in asQueryTypes)
                 {
+                    builder.AppendLine($"\t[JsonIgnore]");
                     builder.AppendLine($"\tpublic IEnumerable<{child.Name}> As{child.Name.Substring(3)} => Children.OfType<{child.Name}>();");
+                }
+
+                if (obj == ctx.baseType)
+                {
+                    builder.AppendLine($"\tpublic abstract IEnumerable<{ctx.baseType.Name}> SelfWithChildren();");
+                }
+                else
+                {
+                    builder.AppendLine($"\tpublic override IEnumerable<{ctx.baseType.Name}> SelfWithChildren()");
+                    builder.AppendLine("\t{");
+                    builder.AppendLine($"\t\tvar result = new List<{ctx.baseType.Name}>() {{ this }};");
+
+                    foreach (var prop in ctx.AllProperties(obj))
+                    {
+                        if (ctx.objects.Contains(prop.PropertyType))
+                        {
+                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelfWithChildren());");
+                        }
+                        else if (prop.PropertyType.IsList() && ctx.objects.Contains(prop.PropertyType.GetGenericArguments()[0]))
+                        {
+                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelectMany(c => c.SelfWithChildren()));");
+                        }
+                    }
+
+                    builder.AppendLine("\t\treturn result;");
+                    builder.AppendLine("\t}");
                 }
 
                 builder.AppendLine("}");
