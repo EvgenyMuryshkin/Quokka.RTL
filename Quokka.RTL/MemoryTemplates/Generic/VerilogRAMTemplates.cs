@@ -1,4 +1,7 @@
 ﻿using Quokka.RTL.Verilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Quokka.RTL.MemoryTemplates.Generic
 {
@@ -12,180 +15,186 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             _implementation = implementation;
         }
 
-        public void SDP_RF(
-            string clock, 
-            string writeEnable,
-            string ram,
-            string write_addr,
-            string write_data,
-            string read_addr,
-            string read_data
-            )
+        string RegName(vlgIdentifier data)
         {
-            _implementation.Block.WithComment("inferred simple dual port RAM with read-first behaviour");
+            var indexes = Indexes(data);
+            var regParts = new List<string>();
+            regParts.Add(indexes[0]);
 
-            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock)
+            regParts.Add("reg");
+
+            return string.Join("_", regParts);
+        }
+
+        List<string> Indexes(vlgIdentifier data)
+        {
+            return data.Indexes.SelectMany(r =>
             {
-                Block =
+                return r.Indexes.Select(i =>
                 {
-                    new vlgIf()
+                    switch (i)
                     {
-                        new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
-                        {
-                            new vlgAssign(
-                                new vlgIdentifier(ram, new vlgIdentifierExpression(write_addr)),
-                                vlgAssignType.NonBlocking,
-                                write_data
-                            )
-                        }
-                    },
-                    new vlgAssign(
-                        read_data,
-                        vlgAssignType.NonBlocking,
-                        new vlgIdentifierExpression(ram, new vlgIdentifierExpression(read_addr))
-                    )
+                        case vlgIdentifierExpression e: return e.Source.Name;
+                        default: throw new Exception($"Unsupported index expression: {i.GetType().Name}");
+                    }
+                });
+            }).ToList();
+        }
+
+        List<string> Indexes(RAMTemplateData<vlgIdentifier> data)
+        {
+            var result = data.Read.SelectMany(r => Indexes(r.Source))
+                .Concat(data.Write.SelectMany(w => Indexes(w.Target)))
+                .Distinct()
+                .ToList();
+
+            return result;
+        }
+
+        public void SDP_RF(RAMTemplateData<vlgIdentifier> data)
+        {
+            var clock = data.Clock;
+            var ram = data.RAM;
+
+            var addrs = Indexes(data);
+
+            if (addrs.Count == 1)
+                _implementation.Block.WithComment("inferred single port RAM with read-first behaviour");
+            else
+                _implementation.Block.WithComment("inferred simple dual port RAM with read-first behaviour");
+
+            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock);
+
+            foreach (var write in data.Write)
+            {
+                var writeEnable = write.WriteEnable;
+
+                var assign = new vlgAssign(
+                    write.Target,
+                    vlgAssignType.NonBlocking,
+                    write.Source
+                );
+
+                if (writeEnable == null)
+                {
+                    block.Add(assign);
                 }
-            };
+                else
+                {
+                    block.Add(
+                        new vlgIf()
+                        {
+                            new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
+                            {
+                                assign
+                            }
+                        }
+                    );
+                }
+            }
+
+            foreach (var read in data.Read)
+            {
+                block.Add(
+                    new vlgAssign(
+                        read.Target,
+                        vlgAssignType.NonBlocking,
+                        read.Source
+                    )
+                );
+            }
 
             _implementation.Block.WithSyncBlock(block);
         }
 
-        public void SP_RF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string addr,
-            string write_data,
-            string read_data
-            )
+        public void SDP_WF(RAMTemplateData<vlgIdentifier> data)
         {
-            _implementation.Block.WithComment("inferred single port RAM with read-first behaviour");
+            var clock = data.Clock;
+            var ram = data.RAM;
+            var ramWidth = data.RAMWidth;
 
-            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock)
+            var addrs = Indexes(data);
+
+            if (addrs.Count == 1)
+                _implementation.Block.WithComment("inferred single port RAM with write-first behaviour");
+            else
+                _implementation.Block.WithComment("inferred simple dual port RAM with write-first behaviour");
+
+            foreach (var read in data.Read)
             {
-                Block =
+                var addrReg = RegName(read.Source);
+                _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, addrReg, ramWidth, null);
+            }
+
+
+            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock);
+
+            foreach (var write in data.Write)
+            {
+                var writeEnable = write.WriteEnable;
+
+                var assign = new vlgAssign(
+                    write.Target,
+                    vlgAssignType.NonBlocking,
+                    write.Source
+                );
+
+                if (writeEnable == null)
                 {
-                    new vlgIf()
-                    {
-                        new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
-                        {
-                            new vlgAssign(
-                                new vlgIdentifier(ram, new vlgIdentifierExpression(addr)),
-                                vlgAssignType.NonBlocking,
-                                write_data
-                            )
-                        }
-                    },
-                    new vlgAssign(
-                        read_data,
-                        vlgAssignType.NonBlocking,
-                        new vlgIdentifierExpression(ram, new vlgIdentifierExpression(addr))
-                    )
+                    block.Add(assign);
                 }
-            };
-
-            _implementation.Block.WithSyncBlock(block);
-        }
-
-        public void SDP_WF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string ram_width,
-            string write_addr,
-            string write_data,
-            string read_addr,
-            string read_data 
-            )
-        {
-            _implementation.Block.WithComment("inferred simple dual port RAM with write-first behaviour");
-
-            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock)
-            {
-                Block =
+                else
                 {
-                    new vlgIf()
-                    {
-                        new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
+                    block.Add(
+                        new vlgIf()
                         {
-                            new vlgAssign(
-                                new vlgIdentifier(ram, new vlgIdentifierExpression(write_addr)),
-                                vlgAssignType.Blocking,
-                                write_data
-                            )
+                            new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
+                            {
+                                assign
+                            }
                         }
-                    },
-                    new vlgAssign(
-                        read_data,
-                        vlgAssignType.NonBlocking,
-                        new vlgIdentifierExpression(ram, new vlgIdentifierExpression(read_addr))
-                    )
+                    );
                 }
-            };
+            }
 
-            _implementation.Block.WithSyncBlock(block);
-        }
-        
-        public void SP_WF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string ram_width,
-            string addr,
-            string write_data,
-            string read_data
-            )
-        {
-            var ramWidth = int.Parse(ram_width);
-            var addrReg = $"{addr}_reg";
-
-            _implementation.Block.WithComment("inferred single port RAM with write-first behaviour");
-            _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, addrReg, ramWidth, null);
-
-            var block = new vlgSyncBlock(vlgEdgeType.Pos, clock)
+            foreach (var read in data.Read)
             {
-                Block =
-                {
-                    new vlgIf()
-                    {
-                        new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
-                        {
-                            new vlgAssign(
-                                new vlgIdentifier(ram, new vlgIdentifierExpression(addr)),
-                                vlgAssignType.NonBlocking,
-                                write_data
-                            )
-                        }
-                    },
+                var addrReg = RegName(read.Source);
+
+                block.Add(
                     new vlgAssign(
                         addrReg,
                         vlgAssignType.NonBlocking,
-                        addr
+                        read.Source.Indexes[0].Indexes[0]
                     )
-                }
-            };
+                );
+            }
 
             _implementation.Block.WithSyncBlock(block);
 
-            _implementation.Block.WithAssign(
-                new vlgAssign(
-                    read_data,
-                    vlgAssignType.Assign,
-                    new vlgIdentifierExpression(ram, new vlgIdentifierExpression(addrReg))
-                )
-            );
+            foreach (var read in data.Read)
+            {
+                var addrReg = RegName(read.Source);
+
+                _implementation.Block.WithAssign(
+                    new vlgAssign(
+                        read.Target,
+                        vlgAssignType.Assign,
+                        new vlgIdentifierExpression(read.Source.Name, new vlgIdentifierExpression(addrReg))
+                    )
+                );
+            }
         }
-        
+
         public void TDP_PORT(
-                string ram,
-                string clock,
-                string writeEnable,
-                string addr,
-                string write_data,
-                string read_data,
+                RAMTemplateData<vlgIdentifier> data,
                 string comments
             )
         {
+            var clock = data.Clock;
+            var write = data.Write.Single();
+            var read = data.Read.Single();
+
             _implementation.Block.WithComment(comments);
 
             var block = new vlgSyncBlock(vlgEdgeType.Pos, clock)
@@ -194,25 +203,25 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 {
                     new vlgIf()
                     {
-                        new vlgConditionalStatement(new vlgIdentifierExpression(writeEnable))
+                        new vlgConditionalStatement(new vlgIdentifierExpression(write.WriteEnable))
                         {
                             new vlgAssign(
-                                new vlgIdentifier(ram, new vlgIdentifierExpression(addr)),
+                                write.Target,
                                 vlgAssignType.NonBlocking,
-                                write_data
+                                write.Source
                             ),
                             new vlgAssign(
-                                read_data,
+                                read.Target,
                                 vlgAssignType.NonBlocking,
-                                new vlgIdentifierExpression(write_data)
+                                new vlgIdentifierExpression(write.Source)
                             )
                         },
                         new vlgConditionalStatement()
                         {
                             new vlgAssign(
-                                read_data,
+                                read.Target,
                                 vlgAssignType.NonBlocking,
-                                new vlgIdentifierExpression(ram, new vlgIdentifierExpression(addr))
+                                read.Source
                             )
                         }
                     },
@@ -223,21 +232,12 @@ namespace Quokka.RTL.MemoryTemplates.Generic
         }
 
         public void TDP(
-            string ram,
-            string clock_a,
-            string writeEnable_a,
-            string addr_a,
-            string write_data_a,
-            string read_data_a,
-            string clock_b,
-            string writeEnable_b,
-            string addr_b,
-            string write_data_b,
-            string read_data_b
+            RAMTemplateData<vlgIdentifier> data_a,
+            RAMTemplateData<vlgIdentifier> data_b
         )
         {
-            TDP_PORT(ram, clock_a, writeEnable_a, addr_a, write_data_a, read_data_a, "Port A");
-            TDP_PORT(ram, clock_b, writeEnable_b, addr_b, write_data_b, read_data_b, "Port B");
+            TDP_PORT(data_a, "Port A");
+            TDP_PORT(data_b, "Port B");
         }
     }
 }

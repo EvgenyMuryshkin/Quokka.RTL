@@ -1,5 +1,7 @@
 ﻿using Quokka.RTL.VHDL;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Quokka.RTL.MemoryTemplates.Generic
 {
@@ -15,287 +17,289 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             _implementation = implementation;
         }
 
-        public void SDP_RF(
-            string clock, 
-            string writeEnable,
-            string ram,
-            string write_addr,
-            string write_data,
-            string read_addr,
-            string read_data
-            )
+        string RegName(vhdIdentifier data)
         {
-            var block = new vhdGenericBlock()
+            var indexes = Indexes(data);
+            var regParts = new List<string>();
+            regParts.Add(indexes[0]);
+
+            regParts.Add("reg");
+
+            return string.Join("_", regParts);
+        }
+
+        List<vhdIdentifier> Identifiers(vhdIdentifier data)
+        {
+            var result = new List<vhdIdentifier>() { data.Name };
+
+            foreach (var idx in data.Indexes.SelectMany(i => i.Indexes))
             {
-                new vhdComment("inferred simple dual port RAM with read-first behaviour"),
-                new vhdProcess()
+                switch (idx)
                 {
-                    SensitivityList =
+                    case vhdIdentifierExpression e: result.Add(e.Source); break;
+                }
+            }
+
+            return result;
+        }
+
+        List<vhdIdentifier> IndexIdentifiers(vhdIdentifier data)
+        {
+            var result = new List<vhdIdentifier>();
+
+            foreach (var idx in data.Indexes.SelectMany(i => i.Indexes))
+            {
+                switch (idx)
+                {
+                    case vhdIdentifierExpression e: result.Add(e.Source); break;
+                }
+            }
+
+            return result;
+        }
+
+        List<string> Indexes(vhdIdentifier data)
+        {
+            return data.Indexes.SelectMany(r =>
+            {
+                return r.Indexes.Select(i =>
+                {
+                    switch (i)
                     {
-                        clock,
-                        writeEnable,
-                        write_addr,
-                        write_data,
-                        read_addr
-                    },
-                    Block =
-                    {
-                        new vhdSyncBlock(vhdEdgeType.Rising, clock)
+                        case vhdIdentifierExpression e: return e.Source.Name;
+                        default: throw new Exception($"Unsupported index expression: {i.GetType().Name}");
+                    }
+                });
+            }).ToList();
+        }
+
+        List<string> Indexes(RAMTemplateData<vhdIdentifier> data)
+        {
+            var result = data.Read.SelectMany(r => Indexes(r.Source))
+                .Concat(data.Write.SelectMany(w => Indexes(w.Target)))
+                .Distinct()
+                .ToList();
+
+            return result;
+        }
+
+        public void SDP_RF(RAMTemplateData<vhdIdentifier> data)
+        {
+            var clock = data.Clock;
+
+            var addrs = Indexes(data);
+
+            if (addrs.Count == 1)
+                _implementation.Block.WithComment("inferred single port RAM with read-first behaviour");
+            else
+                _implementation.Block.WithComment("inferred simple dual port RAM with read-first behaviour");
+
+            var syncBlock = new vhdSyncBlock(vhdEdgeType.Rising, clock);
+            var process = new vhdProcess()
+            {
+                SensitivityList = { clock },
+                Block = { syncBlock }
+            };
+
+            foreach (var write in data.Write)
+            {
+                if (write.WriteEnable != null)
+                    process.SensitivityList.Add(write.WriteEnable);
+
+                process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
+                process.SensitivityList.AddRange(Identifiers(write.Source));
+
+                if (write.WriteEnable != null)
+                {
+                    syncBlock.Block.WithIf(
+                        new vhdIf()
                         {
-                            new vhdIf()
+                            new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
-                                new vhdConditionalStatement(new vhdCompareExpression(writeEnable, vhdCompareType.Equal, "'1'"))
-                                {
-                                    new vhdAssignExpression(
-                                        new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", write_addr)),
-                                        vhdAssignType.Signal,
-                                        write_data
-                                    )
-                                }
-                            },
-                            new vhdAssignExpression(
-                                read_data,
-                                vhdAssignType.Signal,
-                                new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", read_addr))
-                            )
+                                new vhdAssignExpression(
+                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    vhdAssignType.Signal,
+                                    write.Source
+                                )
+                            }
                         }
-                    }
+                    );
                 }
-            };
+                else
+                {
+                    syncBlock.Block.WithAssignExpression(
+                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        vhdAssignType.Signal,
+                        write.Source
+                    );
+                }
+            }
 
-            _implementation.Block.WithGenericBlock(block);
+            foreach (var read in data.Read)
+            {
+                process.SensitivityList.AddRange(Identifiers(read.Source));
+
+                syncBlock.Block.WithAssignExpression(
+                    read.Target,
+                    vhdAssignType.Signal,
+                    new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", read.Source.Indexes.Single().Indexes.Single()))
+                );
+            }
+
+            _implementation.Block.WithProcess(process);
         }
 
-        public void SP_RF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string addr,
-            string write_data,
-            string read_data,
-            string comments = "inferred single port RAM with read-first behaviour"
-            )
+        public void SDP_WF(RAMTemplateData<vhdIdentifier> data)
         {
-            var block = new vhdGenericBlock()
+            var clock = data.Clock;
+            var ram = data.RAM;
+            var ramWidth = data.RAMWidth;
+
+            var addrs = Indexes(data);
+
+            if (addrs.Count == 1)
+                _implementation.Block.WithComment("inferred single port RAM with write-first behaviour");
+            else
+                _implementation.Block.WithComment("inferred simple dual port RAM with write-first behaviour");
+
+            foreach (var read in data.Read)
             {
-                new vhdComment(comments),
-                new vhdProcess()
+                var readAddrReg = RegName(read.Source);
+                _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramWidth);
+            }
+
+            var syncBlock = new vhdSyncBlock(vhdEdgeType.Rising, clock);
+
+            var process = new vhdProcess()
+            {
+                SensitivityList = { clock },
+                Block = { syncBlock }
+            };
+
+            foreach (var write in data.Write)
+            {
+                if (write.WriteEnable != null)
+                    process.SensitivityList.Add(write.WriteEnable);
+
+                process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
+                process.SensitivityList.AddRange(Identifiers(write.Source));
+
+                if (write.WriteEnable != null)
                 {
-                    SensitivityList =
-                    {
-                        clock,
-                        writeEnable,
-                        addr,
-                        write_data
-                    },
-                    Block =
-                    {
-                        new vhdSyncBlock(vhdEdgeType.Rising, clock)
+                    syncBlock.Block.WithIf(
+                        new vhdIf()
                         {
-                            new vhdIf()
+                            new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
-                                new vhdConditionalStatement(new vhdCompareExpression(writeEnable, vhdCompareType.Equal, "'1'"))
-                                {
-                                    new vhdAssignExpression(
-                                        new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addr)),
-                                        vhdAssignType.Signal,
-                                        write_data
-                                    )
-                                }
-                            },
-                            new vhdAssignExpression(
-                                read_data,
-                                vhdAssignType.Signal,
-                                new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addr))
-                            )
+                                new vhdAssignExpression(
+                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    vhdAssignType.Signal,
+                                    write.Source
+                                )
+                            }
                         }
-                    }
+                    );
                 }
-            };
+                else
+                {
+                    syncBlock.Block.WithAssignExpression(
+                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        vhdAssignType.Signal,
+                        write.Source
+                    );
+                }
+            }
 
-            _implementation.Block.WithGenericBlock(block);
+            foreach (var read in data.Read)
+            {
+                var readAddrReg = RegName(read.Source);
+
+                process.SensitivityList.Add(readAddrReg);
+                process.SensitivityList.AddRange(Identifiers(read.Source));
+
+                syncBlock.Block.WithAssignExpression(
+                    readAddrReg,
+                    vhdAssignType.Signal,
+                    read.Source.Indexes.Single().Indexes.Single()
+                );
+
+                process.Block.WithAssignExpression(
+                    read.Target,
+                    vhdAssignType.Signal,
+                    new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", readAddrReg))
+                );
+            }
+
+            _implementation.Block.WithProcess(process);
         }
 
-        public void SDP_WF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string ram_width,
-            string write_addr,
-            string write_data,
-            string read_addr,
-            string read_data,
-            string comments = "inferred simple dual port RAM with write-first behaviour"
-            )
+        public void TDP_PORT(RAMTemplateData<vhdIdentifier> data, string comments)
         {
-            var ramWidth = int.Parse(ram_width);
-            var readAddrReg = $"{read_addr}_reg";
-            _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramWidth);
+            var clock = data.Clock;
 
-            var block = new vhdGenericBlock()
+            _implementation.Block.WithComment(comments);
+
+            var syncBlock = new vhdSyncBlock(vhdEdgeType.Rising, clock);
+
+            var process = new vhdProcess()
             {
-                new vhdComment(comments),
-                new vhdProcess()
-                {
-                    SensitivityList =
-                    {
-                        clock,
-                        writeEnable,
-                        write_addr,
-                        write_data,
-                        read_addr
-                    },
-                    Block =
-                    {
-                        new vhdSyncBlock(vhdEdgeType.Rising, clock)
-                        {
-                            new vhdIf()
-                            {
-                                new vhdConditionalStatement(new vhdCompareExpression(writeEnable, vhdCompareType.Equal, "'1'"))
-                                {
-                                    new vhdAssignExpression(
-                                        new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", write_addr)),
-                                        vhdAssignType.Signal,
-                                        write_data
-                                    )
-                                }
-                            },
-                            new vhdAssignExpression(readAddrReg, vhdAssignType.Signal, read_addr)
-                        },
-                        new vhdAssignExpression(
-                            read_data,
-                            vhdAssignType.Signal,
-                            new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", readAddrReg))
-                        )
-                    }
-                }
+                SensitivityList = { clock },
+                Block = { syncBlock }
             };
 
-            _implementation.Block.WithGenericBlock(block);
-        }
-
-        public void SP_WF(
-            string clock,
-            string writeEnable,
-            string ram,
-            string ram_width,
-            string addr,
-            string write_data,
-            string read_data
-            )
-        {
-            var ramWidth = int.Parse(ram_width);
-            var addrReg = $"{addr}_reg";
-            _declarations.WithDefaultSignal(vhdNetType.Signal, addrReg, vhdDataType.Unsigned, ramWidth);
-
-            var block = new vhdGenericBlock()
+            foreach (var write in data.Write)
             {
-                new vhdComment("inferred single port RAM with write-first behaviour"),
-                new vhdProcess()
-                {
-                    SensitivityList =
-                    {
-                        clock,
-                        writeEnable,
-                        addr,
-                        write_data
-                    },
-                    Block =
-                    {
-                        new vhdSyncBlock(vhdEdgeType.Rising, clock)
-                        {
-                            new vhdIf()
-                            {
-                                new vhdConditionalStatement(new vhdCompareExpression(writeEnable, vhdCompareType.Equal, "'1'"))
-                                {
-                                    new vhdAssignExpression(
-                                        new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addrReg)),
-                                        vhdAssignType.Signal,
-                                        write_data
-                                    )
-                                }
-                            },
-                            new vhdAssignExpression(addrReg, vhdAssignType.Signal, addr)
-                        },
-                        new vhdAssignExpression(
-                            read_data,
-                            vhdAssignType.Signal,
-                            new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addrReg))
-                        )
-                    }
-                }
-            };
+                if (write.WriteEnable != null)
+                    process.SensitivityList.Add(write.WriteEnable);
 
-            _implementation.Block.WithGenericBlock(block);
-        }
+                process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
+                process.SensitivityList.AddRange(IndexIdentifiers(write.Source));
 
-        public void TDP_PORT(
-                string ram,
-                string clock,
-                string writeEnable,
-                string addr,
-                string write_data,
-                string read_data,
-                string comments
-            )
-        {
-            var block = new vhdGenericBlock()
-            {
-                new vhdComment(comments),
-                new vhdProcess()
+                if (write.WriteEnable != null)
                 {
-                    SensitivityList =
-                    {
-                        clock,
-                        writeEnable,
-                        addr,
-                        write_data
-                    },
-                    Block =
-                    {
-                        new vhdSyncBlock(vhdEdgeType.Rising, clock)
+                    syncBlock.Block.WithIf(
+                        new vhdIf()
                         {
-                            new vhdIf()
+                            new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
-                                new vhdConditionalStatement(new vhdCompareExpression(writeEnable, vhdCompareType.Equal, "'1'"))
-                                {
-                                    new vhdAssignExpression(
-                                        new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addr)),
-                                        vhdAssignType.Variable,
-                                        write_data
-                                    )
-                                }
-                            },
-                            new vhdAssignExpression(
-                                read_data,
-                                vhdAssignType.Signal,
-                                new vhdIdentifierExpression(ram, new vhdProcedureCallExpression("TO_INTEGER", addr))
-                            )
+                                new vhdAssignExpression(
+                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    vhdAssignType.Variable,
+                                    write.Source
+                                )
+                            }
                         }
-                    }
+                    );
                 }
-            };
+                else
+                {
+                    syncBlock.Block.WithAssignExpression(
+                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        vhdAssignType.Variable,
+                        write.Source
+                    );
+                }
+            }
 
-            _implementation.Block.WithGenericBlock(block);
+            foreach (var read in data.Read)
+            {
+                process.SensitivityList.AddRange(IndexIdentifiers(read.Target));
+                process.SensitivityList.AddRange(IndexIdentifiers(read.Source));
 
+                syncBlock.Block.WithAssignExpression(
+                    read.Target,
+                    vhdAssignType.Signal,
+                    new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", read.Source.Indexes.Single().Indexes.Single()))
+                );
+            }
+
+            _implementation.Block.WithProcess(process);
         }
 
-        public void TDP(
-            string ram,
-            string clock_a,
-            string writeEnable_a,
-            string addr_a,
-            string write_data_a,
-            string read_data_a,
-            string clock_b,
-            string writeEnable_b,
-            string addr_b,
-            string write_data_b,
-            string read_data_b
-        )
+        public void TDP(RAMTemplateData<vhdIdentifier> portA, RAMTemplateData<vhdIdentifier> portB)
         {
-            TDP_PORT(ram, clock_a, writeEnable_a, addr_a, write_data_a, read_data_a, "Port A");
-            TDP_PORT(ram, clock_b, writeEnable_b, addr_b, write_data_b, read_data_b, "Port B");
+            TDP_PORT(portA, "Port A");
+            TDP_PORT(portB, "Port B");
         }
     }
 }
