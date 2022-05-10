@@ -24,6 +24,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
         public string Clock;
         public string RAM;
         public int RAMWidth;
+        public string RegSuffix = "";
         public List<RAMTemplateWriteData<TExpr>> Write = new List<RAMTemplateWriteData<TExpr>>();
         public List<RAMTemplateReadData<TExpr>> Read = new List<RAMTemplateReadData<TExpr>>();
     }

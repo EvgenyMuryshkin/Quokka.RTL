@@ -15,13 +15,13 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             _implementation = implementation;
         }
 
-        string RegName(vlgIdentifier data)
+        string RegName(RAMTemplateData<vlgIdentifier> template, vlgIdentifier data)
         {
             var indexes = Indexes(data);
             var regParts = new List<string>();
             regParts.Add(indexes[0]);
 
-            regParts.Add("reg");
+            regParts.Add($"reg{template.RegSuffix}");
 
             return string.Join("_", regParts);
         }
@@ -122,7 +122,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
             foreach (var read in data.Read)
             {
-                var addrReg = RegName(read.Source);
+                var addrReg = RegName(data, read.Source);
                 _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, addrReg, ramWidth, null);
             }
 
@@ -159,7 +159,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
             foreach (var read in data.Read)
             {
-                var addrReg = RegName(read.Source);
+                var addrReg = RegName(data, read.Source);
 
                 block.Add(
                     new vlgAssign(
@@ -174,7 +174,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
             foreach (var read in data.Read)
             {
-                var addrReg = RegName(read.Source);
+                var addrReg = RegName(data, read.Source);
 
                 _implementation.Block.WithAssign(
                     new vlgAssign(

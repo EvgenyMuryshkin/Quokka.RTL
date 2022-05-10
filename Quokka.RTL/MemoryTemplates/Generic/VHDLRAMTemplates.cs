@@ -17,13 +17,13 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             _implementation = implementation;
         }
 
-        string RegName(vhdIdentifier data)
+        string RegName(RAMTemplateData<vhdIdentifier> template, vhdIdentifier data)
         {
             var indexes = Indexes(data);
             var regParts = new List<string>();
             regParts.Add(indexes[0]);
 
-            regParts.Add("reg");
+            regParts.Add($"reg{template.RegSuffix}");
 
             return string.Join("_", regParts);
         }
@@ -32,13 +32,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
         {
             var result = new List<vhdIdentifier>() { data.Name };
 
-            foreach (var idx in data.Indexes.SelectMany(i => i.Indexes))
-            {
-                switch (idx)
-                {
-                    case vhdIdentifierExpression e: result.Add(e.Source); break;
-                }
-            }
+            result.AddRange(IndexIdentifiers(data));
 
             return result;
         }
@@ -51,7 +45,10 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             {
                 switch (idx)
                 {
-                    case vhdIdentifierExpression e: result.Add(e.Source); break;
+                    case vhdIdentifierExpression e: 
+                        if (!int.TryParse(e.Source.Name, out var _))
+                            result.Add(e.Source); 
+                        break;
                 }
             }
 
@@ -81,6 +78,21 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 .ToList();
 
             return result;
+        }
+
+        List<vhdRange> MemoryIndexing(List<vhdRange> source)
+        {
+            return source.Select(range =>
+            {
+                if (range.Indexes.Count == 1 && range.Indexes[0] is vhdIdentifierExpression id && !int.TryParse(id.Source.Name, out var _))
+                {
+                    return new vhdProcedureCallExpression("TO_INTEGER", id);
+                }
+                else
+                {
+                    return range;
+                }
+            }).ToList();
         }
 
         public void SDP_RF(RAMTemplateData<vhdIdentifier> data)
@@ -117,7 +129,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                             new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
                                 new vhdAssignExpression(
-                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Signal,
                                     write.Source
                                 )
@@ -128,7 +140,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 else
                 {
                     syncBlock.Block.WithAssignExpression(
-                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Signal,
                         write.Source
                     );
@@ -142,7 +154,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 syncBlock.Block.WithAssignExpression(
                     read.Target,
                     vhdAssignType.Signal,
-                    new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", read.Source.Indexes.Single().Indexes.Single()))
+                    new vhdIdentifierExpression(read.Source.Name, MemoryIndexing(read.Source.Indexes))
                 );
             }
 
@@ -164,7 +176,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
             foreach (var read in data.Read)
             {
-                var readAddrReg = RegName(read.Source);
+                var readAddrReg = RegName(data, read.Source);
                 _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramWidth);
             }
 
@@ -192,7 +204,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                             new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
                                 new vhdAssignExpression(
-                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Signal,
                                     write.Source
                                 )
@@ -203,7 +215,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 else
                 {
                     syncBlock.Block.WithAssignExpression(
-                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Signal,
                         write.Source
                     );
@@ -212,7 +224,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
             foreach (var read in data.Read)
             {
-                var readAddrReg = RegName(read.Source);
+                var readAddrReg = RegName(data, read.Source);
 
                 process.SensitivityList.Add(readAddrReg);
                 process.SensitivityList.AddRange(Identifiers(read.Source));
@@ -263,7 +275,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                             new vhdConditionalStatement(new vhdCompareExpression(write.WriteEnable, vhdCompareType.Equal, "'1'"))
                             {
                                 new vhdAssignExpression(
-                                    new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                                    new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Variable,
                                     write.Source
                                 )
@@ -274,7 +286,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 else
                 {
                     syncBlock.Block.WithAssignExpression(
-                        new vhdIdentifierExpression(write.Target.Name, new vhdProcedureCallExpression("TO_INTEGER", write.Target.Indexes.Single().Indexes.Single())),
+                        new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Variable,
                         write.Source
                     );
@@ -289,7 +301,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 syncBlock.Block.WithAssignExpression(
                     read.Target,
                     vhdAssignType.Signal,
-                    new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", read.Source.Indexes.Single().Indexes.Single()))
+                    new vhdIdentifierExpression(read.Source.Name, MemoryIndexing(read.Source.Indexes))
                 );
             }
 
