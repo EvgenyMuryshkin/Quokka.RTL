@@ -1,4 +1,5 @@
-﻿using Quokka.RTL.Verilog;
+﻿using Quokka.RTL.Tools;
+using Quokka.RTL.Verilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,7 +112,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
         {
             var clock = data.Clock;
             var ram = data.RAM;
-            var ramWidth = data.RAMWidth;
+            var ramDepth = data.RAMDepth;
 
             var addrs = Indexes(data);
 
@@ -120,10 +121,11 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             else
                 _implementation.Block.WithComment("inferred simple dual port RAM with write-first behaviour");
 
+            var ramAddressBits = (int)RTLCalculators.CalcBitsForValue((ulong)(ramDepth - 1));
             foreach (var read in data.Read)
             {
                 var addrReg = RegName(data, read.Source);
-                _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, addrReg, ramWidth, null);
+                _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, addrReg, ramAddressBits, null);
             }
 
 
@@ -160,14 +162,24 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             foreach (var read in data.Read)
             {
                 var addrReg = RegName(data, read.Source);
+                var index = read.Source.Indexes[0].Indexes[0];
+                switch (index)
+                {
+                    case vlgIdentifierExpression ie:
+                        var rangedIndex = ie.Clone();
+                        rangedIndex.Source.Indexes.Add(new vlgRange($"{ramAddressBits - 1}", "0"));
 
-                block.Add(
-                    new vlgAssign(
-                        addrReg,
-                        vlgAssignType.NonBlocking,
-                        read.Source.Indexes[0].Indexes[0]
-                    )
-                );
+                        block.Add(
+                            new vlgAssign(
+                                addrReg,
+                                vlgAssignType.NonBlocking,
+                                rangedIndex
+                            )
+                        );
+                        break;
+                    default:
+                        throw new Exception($"Expecting identifier expression: {vlgVerilogWriter.WriteObject(index)}");
+                }
             }
 
             _implementation.Block.WithSyncBlock(block);

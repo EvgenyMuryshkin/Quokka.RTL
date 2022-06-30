@@ -1,4 +1,5 @@
-﻿using Quokka.RTL.VHDL;
+﻿using Quokka.RTL.Tools;
+using Quokka.RTL.VHDL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,7 +166,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
         {
             var clock = data.Clock;
             var ram = data.RAM;
-            var ramWidth = data.RAMWidth;
+            var ramDepth = data.RAMDepth;
 
             var addrs = Indexes(data);
 
@@ -174,10 +175,11 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             else
                 _implementation.Block.WithComment("inferred simple dual port RAM with write-first behaviour");
 
+            var ramAddressBits = (int)RTLCalculators.CalcBitsForValue((ulong)(ramDepth - 1));
             foreach (var read in data.Read)
             {
                 var readAddrReg = RegName(data, read.Source);
-                _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramWidth);
+                _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramAddressBits);
             }
 
             var syncBlock = new vhdSyncBlock(vhdEdgeType.Rising, clock);
@@ -229,11 +231,21 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 process.SensitivityList.Add(readAddrReg);
                 process.SensitivityList.AddRange(Identifiers(read.Source));
 
-                syncBlock.Block.WithAssignExpression(
-                    readAddrReg,
-                    vhdAssignType.Signal,
-                    read.Source.Indexes.Single().Indexes.Single()
-                );
+                var index = read.Source.Indexes.Single().Indexes.Single();
+                switch (index)
+                {
+                    case vhdIdentifierExpression ie:
+                        var rangedIndex = ie.Clone();
+                        rangedIndex.Source.Indexes.Add(new vhdRange($"{ramAddressBits - 1}", "0"));
+                        syncBlock.Block.WithAssignExpression(
+                            readAddrReg,
+                            vhdAssignType.Signal,
+                            rangedIndex
+                        );
+                        break;
+                    default:
+                        throw new Exception($"Expecting identifier expression: {vhdVHDLWriter.WriteObject(index)}");
+                }
 
                 process.Block.WithAssignExpression(
                     read.Target,
