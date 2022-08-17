@@ -150,6 +150,18 @@ public partial class vhdEntityInstanceVisitorImplementation
 	{
 	}
 }
+public partial class vhdEntityInstanceGenericMappingsVisitorImplementation
+{
+	public override void OnVisit(vhdEntityInstanceGenericMappings obj)
+	{
+	}
+}
+public partial class vhdEntityInstanceNamedGenericMappingVisitorImplementation
+{
+	public override void OnVisit(vhdEntityInstanceNamedGenericMapping obj)
+	{
+	}
+}
 public partial class vhdEntityInstanceNamedPortMappingVisitorImplementation
 {
 	public override void OnVisit(vhdEntityInstanceNamedPortMapping obj)

@@ -1,4 +1,6 @@
 ﻿using Quokka.RTL.Tools;
+using Quokka.RTL.Verilog;
+using Quokka.RTL.VHDL;
 using Quokka.VCD;
 using System;
 using System.Collections;
@@ -272,5 +274,7 @@ namespace Quokka.RTL
             DeltaCycle(0);
             Commit();
         }
+
+        public IRTLModuleTranslator InstanceTranslator(IRTLModuleTranslatorDeps deps) => null;
     }
 }

@@ -100,7 +100,7 @@ namespace Quokka.RTL.Tools
 
 
                         // TODO: sort out getter and setter later
-                        if (m.Name.StartsWith("get_") || m.Name.StartsWith("set_"))
+                        if (m.Name.StartsWith("<>c") || m.Name.StartsWith("get_") || m.Name.StartsWith("set_"))
                         {
                             continue;
                         }
@@ -114,6 +114,33 @@ namespace Quokka.RTL.Tools
             }
 
             return result;
+        }
+
+        public static List<MemberInfo> OrderedSerializableMembers(Type type, bool throwIfNotSerializable = false)
+        {
+            var members = SerializableMembers(type, throwIfNotSerializable);
+
+            var memberIndex = members.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
+            var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
+            if (notIndexed.HasValue())
+                throw new Exception($"Members of type '{type}' should have index: {notIndexed}");
+
+            return memberIndex.OrderBy(m => m.index.Index).Select(m => m.m).ToList();
+        }
+
+        public static (int, int) SerializedRange(object target, MemberInfo mi)
+        {
+            if (target == null) throw new NullReferenceException(nameof(target));
+            if (mi == null) throw new NullReferenceException(nameof(mi));
+
+            var orderedMembers = OrderedSerializableMembers(target.GetType());
+
+            var from = 0;
+            var leading = orderedMembers.TakeWhile(m => m != mi);
+
+            from = leading.Sum(m => RTLSignalTools.SizeOfValue(m.GetValue(target)).Size);
+
+            return (from + RTLSignalTools.SizeOfValue(mi.GetValue(target)).Size - 1, from);
         }
     }
 }

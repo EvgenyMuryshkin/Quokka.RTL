@@ -10,6 +10,9 @@ namespace Quokka.RTL
         List<IRTLPipelineStage> Stages { get; }
         Type SourceType { get; }
         Type ResultType { get; }
+        object Source { get; }
+        object Result { get; }
+
         bool HasControlSignals { get; }
     }
 }

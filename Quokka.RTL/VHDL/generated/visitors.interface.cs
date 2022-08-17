@@ -29,6 +29,8 @@ public interface vhdCustomEntityPortVisitorInterface : vhdVisitorInterface<vhdCu
 public interface vhdDefaultSignalVisitorInterface : vhdVisitorInterface<vhdDefaultSignal> { }
 public interface vhdEntityVisitorInterface : vhdVisitorInterface<vhdEntity> { }
 public interface vhdEntityInstanceVisitorInterface : vhdVisitorInterface<vhdEntityInstance> { }
+public interface vhdEntityInstanceGenericMappingsVisitorInterface : vhdVisitorInterface<vhdEntityInstanceGenericMappings> { }
+public interface vhdEntityInstanceNamedGenericMappingVisitorInterface : vhdVisitorInterface<vhdEntityInstanceNamedGenericMapping> { }
 public interface vhdEntityInstanceNamedPortMappingVisitorInterface : vhdVisitorInterface<vhdEntityInstanceNamedPortMapping> { }
 public interface vhdEntityInstancePortMappingsVisitorInterface : vhdVisitorInterface<vhdEntityInstancePortMappings> { }
 public interface vhdEntityInterfaceVisitorInterface : vhdVisitorInterface<vhdEntityInterface> { }

@@ -126,6 +126,11 @@ namespace Quokka.RTL.Tools
             return type.IsEnum || signedTypes.Contains(type) || unsignedTypes.Contains(type) || type == typeof(float) || type == typeof(RTLBitArray);
         }
 
+        public static bool IsFactory(Type t)
+        {
+            return typeof(MulticastDelegate).IsAssignableFrom(t);
+        }
+
         public static bool IsFactoryCreatedModule(Type type)
         {
             if (!IsDerivedRTLModuleType(type))
@@ -134,7 +139,7 @@ namespace Quokka.RTL.Tools
             var delegates = type
                 .GetTypeInfo()
                 .DeclaredNestedTypes
-                .Where(t => typeof(MulticastDelegate).IsAssignableFrom(t))
+                .Where(IsFactory)
                 .ToList();
 
             var invokes = delegates.Select(d => d.GetMethod("Invoke")).Where(m => m.ReturnType == type).ToList();
@@ -142,31 +147,79 @@ namespace Quokka.RTL.Tools
             return invokes.Any();
         }
 
+        public static bool HasMultipleConstructors(Type rtlModuleType)
+        {
+            return rtlModuleType.GetConstructors().Count() != 1;
+        }
+
         public static bool HasInjectableCtorArguments(Type rtlModuleType)
         {
-            // TODO: empty ctor only at this stage
-            return rtlModuleType.GetConstructors().Any(c => c.GetParameters().Count() == 0);
+            if (HasMultipleConstructors(rtlModuleType))
+                return false;
+
+            var ctor = rtlModuleType.GetConstructors().Single();
+
+            foreach (var p in ctor.GetParameters())
+            {
+                if (IsFactory(p.ParameterType))
+                    continue;
+
+                if (!CanCreateWithDI(p.ParameterType))
+                    return false;
+            }
+
+            return true;
         }
 
         public static bool HasNonInjectableCtorArguments(Type rtlModuleType)
         {
             // types with multiple constructors is not a top-level
-            if (rtlModuleType.GetConstructors().Count() != 1)
+            if (HasMultipleConstructors(rtlModuleType))
                 return true;
 
             var ctor = rtlModuleType.GetConstructors().Single();
-            return ctor.GetParameters().Any(p => IsNative(p.ParameterType) || IsStruct(p.ParameterType));
+
+            foreach (var p in ctor.GetParameters())
+            {
+                if (IsFactory(p.ParameterType))
+                    continue;
+
+                if (!CanCreateWithDI(p.ParameterType))
+                    return true;
+            }
+
+            return false;
+
+        }
+
+        static bool CanCreateWithDI(Type rtlModuleType, HashSet<Type> reentry)
+        {
+            if (reentry.Contains(rtlModuleType))
+                return false;
+            
+            reentry.Add(rtlModuleType);
+
+            if (IsNative(rtlModuleType))
+                return false;
+
+            if (IsStruct(rtlModuleType))
+                return false;
+
+            if (HasMultipleConstructors(rtlModuleType))
+                return false;
+
+            if (IsFactoryCreatedModule(rtlModuleType))
+                return false;
+
+            if (HasNonInjectableCtorArguments(rtlModuleType))
+                return false;
+
+            return true;
         }
 
         public static bool CanCreateWithDI(Type rtlModuleType)
         {
-            if (HasInjectableCtorArguments(rtlModuleType))
-                return true;
-
-            if (IsFactoryCreatedModule(rtlModuleType) || HasNonInjectableCtorArguments(rtlModuleType))
-                return false;
-
-            return true;
+            return CanCreateWithDI(rtlModuleType, new HashSet<Type>());
         }
     }
 }

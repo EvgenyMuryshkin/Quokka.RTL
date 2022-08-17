@@ -281,6 +281,48 @@ public partial class vhdEntity
 public partial class vhdEntityInstance
 {
 }
+public abstract partial class vhdEntityInstanceGenericMapping
+{
+}
+public partial class vhdEntityInstanceGenericMappings
+{
+	//vhdComment
+	public vhdEntityInstanceGenericMappings WithComment(vhdComment obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdEntityInstanceGenericMappings WithComment(params String[] Lines)
+	{
+		this.Children.Add(new vhdComment(Lines));
+		return this;
+	}
+	//vhdText
+	public vhdEntityInstanceGenericMappings WithText(vhdText obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdEntityInstanceGenericMappings WithText(params String[] Lines)
+	{
+		this.Children.Add(new vhdText(Lines));
+		return this;
+	}
+	//vhdEntityInstanceNamedGenericMapping
+	public vhdEntityInstanceGenericMappings WithEntityInstanceNamedGenericMapping(vhdEntityInstanceNamedGenericMapping obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdEntityInstanceGenericMappings WithEntityInstanceNamedGenericMapping(String Internal, vhdExpression External)
+	{
+		this.Children.Add(new vhdEntityInstanceNamedGenericMapping(Internal, External));
+		return this;
+	}
+}
+public partial class vhdEntityInstanceNamedGenericMapping
+{
+}
 public partial class vhdEntityInstanceNamedPortMapping
 {
 }
@@ -317,7 +359,7 @@ public partial class vhdEntityInstancePortMappings
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdEntityInstancePortMappings WithEntityInstanceNamedPortMapping(String Internal, vhdExpression External)
+	public vhdEntityInstancePortMappings WithEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External)
 	{
 		this.Children.Add(new vhdEntityInstanceNamedPortMapping(Internal, External));
 		return this;

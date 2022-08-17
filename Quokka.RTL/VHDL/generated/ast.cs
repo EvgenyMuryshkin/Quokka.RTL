@@ -67,6 +67,10 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdEntityInstance
 	///
+	/// vhdEntityInstanceGenericMappings
+	///
+	/// vhdEntityInstanceNamedGenericMapping
+	///
 	/// vhdEntityInstanceNamedPortMapping
 	///
 	/// vhdEntityInstancePortMappings
@@ -837,7 +841,7 @@ public partial class vhdCastResizeExpression : vhdExpression
 	public vhdExpression Length { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdComment : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
+public partial class vhdComment : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdComment() { }
 	public vhdComment(IEnumerable<String> Lines)
@@ -1132,16 +1136,9 @@ public partial class vhdEntity : vhdAbstractObject, vhdFileChild, IEnumerable//<
 	public vhdEntityInterface Interface { get; set; } = new vhdEntityInterface();
 }
 [JsonObjectAttribute]
-public partial class vhdEntityInstance : vhdAbstractObject, vhdArchitectureImplementationBlockChild, IEnumerable//<vhdEntityInstancePortMappingsChild>
+public partial class vhdEntityInstance : vhdAbstractObject, vhdArchitectureImplementationBlockChild
 {
 	public vhdEntityInstance() { }
-	// PortMappings single object collection
-	IEnumerator IEnumerable.GetEnumerator() => (PortMappings as IEnumerable).GetEnumerator();
-	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
-	public void Add(vhdEntityInstancePortMappingsChild child)
-	{
-		PortMappings.Add(child);
-	}
 	public vhdEntityInstance(String Name, String Type)
 	{
 		this.Name = Name;
@@ -1149,18 +1146,58 @@ public partial class vhdEntityInstance : vhdAbstractObject, vhdArchitectureImple
 	}
 	public String Name { get; set; }
 	public String Type { get; set; }
+	public vhdEntityInstanceGenericMappings GenericMappings { get; set; } = new vhdEntityInstanceGenericMappings();
 	public vhdEntityInstancePortMappings PortMappings { get; set; } = new vhdEntityInstancePortMappings();
 }
 [JsonObjectAttribute]
-public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping, vhdEntityInstancePortMappingsChild
+public abstract partial class vhdEntityInstanceGenericMapping : vhdAbstractObject
 {
-	public vhdEntityInstanceNamedPortMapping() { }
-	public vhdEntityInstanceNamedPortMapping(String Internal, vhdExpression External)
+	public vhdEntityInstanceGenericMapping() { }
+}
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdEntityInstanceNamedGenericMapping
+/// </summary>
+public interface vhdEntityInstanceGenericMappingsChild
+{
+}
+[JsonObjectAttribute]
+public partial class vhdEntityInstanceGenericMappings : vhdAbstractCollection, IEnumerable//<vhdEntityInstanceGenericMappingsChild>
+{
+	public vhdEntityInstanceGenericMappings() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdEntityInstanceGenericMappingsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
+}
+[JsonObjectAttribute]
+public partial class vhdEntityInstanceNamedGenericMapping : vhdEntityInstanceGenericMapping, vhdEntityInstanceGenericMappingsChild
+{
+	public vhdEntityInstanceNamedGenericMapping() { }
+	public vhdEntityInstanceNamedGenericMapping(String Internal, vhdExpression External)
 	{
 		this.Internal = Internal;
 		this.External = External;
 	}
 	public String Internal { get; set; }
+	public vhdExpression External { get; set; }
+}
+[JsonObjectAttribute]
+public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping, vhdEntityInstancePortMappingsChild
+{
+	public vhdEntityInstanceNamedPortMapping() { }
+	public vhdEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External)
+	{
+		this.Internal = Internal;
+		this.External = External;
+	}
+	public vhdIdentifier Internal { get; set; } = new vhdIdentifier();
 	public vhdExpression External { get; set; }
 }
 [JsonObjectAttribute]
@@ -2057,7 +2094,7 @@ public partial class vhdTernaryExpression : vhdExpression
 	public vhdExpression Rhs { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdText : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
+public partial class vhdText : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdText() { }
 	public vhdText(IEnumerable<String> Lines)

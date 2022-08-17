@@ -102,6 +102,14 @@ public abstract class vhdEntityInstanceVisitorGeneratedImplementation : vhdVisit
 {
 	public vhdEntityInstanceVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdEntityInstanceGenericMappingsVisitorGeneratedImplementation : vhdVisitorImplementation<vhdEntityInstanceGenericMappings>, vhdEntityInstanceGenericMappingsVisitorInterface
+{
+	public vhdEntityInstanceGenericMappingsVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdEntityInstanceNamedGenericMappingVisitorGeneratedImplementation : vhdVisitorImplementation<vhdEntityInstanceNamedGenericMapping>, vhdEntityInstanceNamedGenericMappingVisitorInterface
+{
+	public vhdEntityInstanceNamedGenericMappingVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdEntityInstanceNamedPortMappingVisitorGeneratedImplementation : vhdVisitorImplementation<vhdEntityInstanceNamedPortMapping>, vhdEntityInstanceNamedPortMappingVisitorInterface
 {
 	public vhdEntityInstanceNamedPortMappingVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -319,6 +327,14 @@ public partial class vhdEntityInstanceVisitorImplementation : vhdEntityInstanceV
 {
 	public vhdEntityInstanceVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdEntityInstanceGenericMappingsVisitorImplementation : vhdEntityInstanceGenericMappingsVisitorGeneratedImplementation
+{
+	public vhdEntityInstanceGenericMappingsVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdEntityInstanceNamedGenericMappingVisitorImplementation : vhdEntityInstanceNamedGenericMappingVisitorGeneratedImplementation
+{
+	public vhdEntityInstanceNamedGenericMappingVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdEntityInstanceNamedPortMappingVisitorImplementation : vhdEntityInstanceNamedPortMappingVisitorGeneratedImplementation
 {
 	public vhdEntityInstanceNamedPortMappingVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -470,6 +486,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdDefaultSignal o: return vhdDefaultSignalVisitor(o);
 			case vhdEntity o: return vhdEntityVisitor(o);
 			case vhdEntityInstance o: return vhdEntityInstanceVisitor(o);
+			case vhdEntityInstanceGenericMappings o: return vhdEntityInstanceGenericMappingsVisitor(o);
+			case vhdEntityInstanceNamedGenericMapping o: return vhdEntityInstanceNamedGenericMappingVisitor(o);
 			case vhdEntityInstanceNamedPortMapping o: return vhdEntityInstanceNamedPortMappingVisitor(o);
 			case vhdEntityInstancePortMappings o: return vhdEntityInstancePortMappingsVisitor(o);
 			case vhdEntityInterface o: return vhdEntityInterfaceVisitor(o);
@@ -602,6 +620,14 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	private vhdEntityInstanceVisitorInterface vhdEntityInstanceVisitor(vhdEntityInstance obj)
 	{
 		return vhdEntityInstanceVisitor(_deps, obj);
+	}
+	private vhdEntityInstanceGenericMappingsVisitorInterface vhdEntityInstanceGenericMappingsVisitor(vhdEntityInstanceGenericMappings obj)
+	{
+		return vhdEntityInstanceGenericMappingsVisitor(_deps, obj);
+	}
+	private vhdEntityInstanceNamedGenericMappingVisitorInterface vhdEntityInstanceNamedGenericMappingVisitor(vhdEntityInstanceNamedGenericMapping obj)
+	{
+		return vhdEntityInstanceNamedGenericMappingVisitor(_deps, obj);
 	}
 	private vhdEntityInstanceNamedPortMappingVisitorInterface vhdEntityInstanceNamedPortMappingVisitor(vhdEntityInstanceNamedPortMapping obj)
 	{
@@ -771,6 +797,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdEntityVisitorImplementation(deps);
 	protected virtual vhdEntityInstanceVisitorInterface vhdEntityInstanceVisitor(vhdVisitorImplementationDeps deps, vhdEntityInstance obj)
 		=> new vhdEntityInstanceVisitorImplementation(deps);
+	protected virtual vhdEntityInstanceGenericMappingsVisitorInterface vhdEntityInstanceGenericMappingsVisitor(vhdVisitorImplementationDeps deps, vhdEntityInstanceGenericMappings obj)
+		=> new vhdEntityInstanceGenericMappingsVisitorImplementation(deps);
+	protected virtual vhdEntityInstanceNamedGenericMappingVisitorInterface vhdEntityInstanceNamedGenericMappingVisitor(vhdVisitorImplementationDeps deps, vhdEntityInstanceNamedGenericMapping obj)
+		=> new vhdEntityInstanceNamedGenericMappingVisitorImplementation(deps);
 	protected virtual vhdEntityInstanceNamedPortMappingVisitorInterface vhdEntityInstanceNamedPortMappingVisitor(vhdVisitorImplementationDeps deps, vhdEntityInstanceNamedPortMapping obj)
 		=> new vhdEntityInstanceNamedPortMappingVisitorImplementation(deps);
 	protected virtual vhdEntityInstancePortMappingsVisitorInterface vhdEntityInstancePortMappingsVisitor(vhdVisitorImplementationDeps deps, vhdEntityInstancePortMappings obj)

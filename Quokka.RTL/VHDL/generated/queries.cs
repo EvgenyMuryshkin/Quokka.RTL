@@ -339,7 +339,44 @@ public partial class vhdEntityInstance
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{
 		var result = new List<vhdAbstractObject>() { this };
+		if (GenericMappings != null) result.AddRange(GenericMappings.SelfWithChildren());
 		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren());
+		return result;
+	}
+}
+public abstract partial class vhdEntityInstanceGenericMapping
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		return result;
+	}
+}
+public partial class vhdEntityInstanceGenericMappings
+{
+	[JsonIgnore]
+	public IEnumerable<vhdComment> AsComment => Children.OfType<vhdComment>();
+	[JsonIgnore]
+	public IEnumerable<vhdText> AsText => Children.OfType<vhdText>();
+	[JsonIgnore]
+	public IEnumerable<vhdEntityInstanceNamedGenericMapping> AsEntityInstanceNamedGenericMapping => Children.OfType<vhdEntityInstanceNamedGenericMapping>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
+	[JsonIgnore]
+	public IEnumerable<vhdEntityInstanceGenericMapping> AsEntityInstanceGenericMapping => Children.OfType<vhdEntityInstanceGenericMapping>();
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vhdEntityInstanceNamedGenericMapping
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (External != null) result.AddRange(External.SelfWithChildren());
 		return result;
 	}
 }
@@ -348,6 +385,7 @@ public partial class vhdEntityInstanceNamedPortMapping
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{
 		var result = new List<vhdAbstractObject>() { this };
+		if (Internal != null) result.AddRange(Internal.SelfWithChildren());
 		if (External != null) result.AddRange(External.SelfWithChildren());
 		return result;
 	}

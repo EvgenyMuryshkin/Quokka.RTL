@@ -27,6 +27,7 @@ namespace Quokka.RTL
         RTLSignalInfo SizeOfValue(object value);
 
         event EventHandler Scheduled;
+        IRTLModuleTranslator InstanceTranslator(IRTLModuleTranslatorDeps deps);
     }
 
     public interface IRTLCombinationalModule<TInput> : IRTLCombinationalModule

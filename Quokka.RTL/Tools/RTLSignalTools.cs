@@ -40,7 +40,22 @@ namespace Quokka.RTL.Tools
                         Size = a.Size
                     };
                 default:
-                    return SizeOf(value.GetType());
+                {
+                    var valueType = value.GetType();
+                    if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
+                    {
+                        return new RTLSignalInfo()
+                        {
+                            Type = valueType,
+                            Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
+                            SignalType = RTLSignalType.Unsigned
+                        };
+                    }
+                    else
+                    {
+                        return SizeOf(valueType);
+                    }
+                }
             }
         }
 
@@ -116,6 +131,45 @@ namespace Quokka.RTL.Tools
                 return SizeOf(actualType);
 
             throw exceptionFormatter();
+        }
+
+        static string RawMemoryElementInitializer(object value)
+        {
+            if (value == null) throw new NullReferenceException(nameof(value));
+
+            switch (value)
+            {
+                case bool b: return new RTLBitArray(b).AsBinaryString();
+                case byte b: return new RTLBitArray(b).AsBinaryString();
+                case sbyte b: return new RTLBitArray(b).AsBinaryString();
+                case short b: return new RTLBitArray(b).AsBinaryString();
+                case ushort b: return new RTLBitArray(b).AsBinaryString();
+                case int b: return new RTLBitArray(b).AsBinaryString();
+                case uint b: return new RTLBitArray(b).AsBinaryString();
+                case long b: return new RTLBitArray(b).AsBinaryString();
+                case ulong b: return new RTLBitArray(b).AsBinaryString();
+                case RTLBitArray b: return b.AsBinaryString();
+                default:
+                    var valueType = value.GetType();
+                    if (RTLTypeCheck.IsSynthesizableObject(valueType))
+                    {
+                        var orderedMembers = RTLReflectionTools.OrderedSerializableMembers(valueType);
+                        var combinedInitialier = string.Join(
+                            "", 
+                            orderedMembers
+                                .Select(m => RawMemoryElementInitializer(m.GetValue(value)))
+                                .Reverse()
+                        );
+                        return combinedInitialier;
+                    }
+
+                    throw new Exception($"MemoryElementInitializer: unsupported value: value - {value}");
+            }
+        }
+
+        public static string MemoryElementInitializer(object value)
+        {
+            return $"bin:{RawMemoryElementInitializer(value)}";
         }
     }
 }

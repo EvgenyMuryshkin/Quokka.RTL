@@ -4,7 +4,7 @@
 	{
 		public override void OnVisit(vhdEntityInstanceNamedPortMapping obj)
 		{
-			_builder.Append($"{obj.Internal} => {Raw(obj.External)}");
+			_builder.AppendIndented($"{Raw(obj.Internal)} => {Raw(obj.External)}");
 		}
 	}
 } // Quokka.RTL.VHDL

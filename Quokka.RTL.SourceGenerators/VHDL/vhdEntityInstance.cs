@@ -6,6 +6,10 @@
         public string Type { get; set; }
 
         [NoCtorInit]
+        public vhdEntityInstanceGenericMappings GenericMappings { get; set; }
+
+
+        [NoCtorInit]
         public vhdEntityInstancePortMappings PortMappings { get; set; }
 
     }

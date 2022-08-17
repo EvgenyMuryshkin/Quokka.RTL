@@ -6,9 +6,44 @@ using System.Text;
 
 namespace Quokka.RTL.Tests
 {
+    public class InjectableClass
+    {
+
+    }
+
+    public class FactoryCreatedClass
+    {
+        public delegate FactoryCreatedClass Factory(ulong clocks);
+    }
+
+    public class DICreatableClass
+    {
+        public DICreatableClass(InjectableClass injectable, FactoryCreatedClass.Factory factory)
+        {
+
+        }
+    }
+
+    public class DINotCreatableClass
+    {
+        public DINotCreatableClass(InjectableClass injectable, FactoryCreatedClass.Factory factory, int value)
+        {
+
+        }
+    }
+
     [TestClass]
     public class RTLTypeCheckTests
     {
+        [TestMethod]
+        public void CanCreateWithDI()
+        {
+            Assert.IsTrue(RTLTypeCheck.CanCreateWithDI(typeof(InjectableClass)), nameof(InjectableClass));
+            Assert.IsTrue(RTLTypeCheck.CanCreateWithDI(typeof(FactoryCreatedClass)), nameof(FactoryCreatedClass));
+            Assert.IsTrue(RTLTypeCheck.CanCreateWithDI(typeof(DICreatableClass)), nameof(DICreatableClass));
+            Assert.IsFalse(RTLTypeCheck.CanCreateWithDI(typeof(DINotCreatableClass)), nameof(DINotCreatableClass));
+        }
+
         [TestMethod]
         public void IsToolkitType()
         {

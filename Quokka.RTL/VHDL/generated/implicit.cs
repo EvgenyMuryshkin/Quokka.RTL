@@ -776,6 +776,15 @@ public partial class vhdEntity : vhdAbstractObject
 public partial class vhdEntityInstance : vhdAbstractObject
 {
 }
+public abstract partial class vhdEntityInstanceGenericMapping : vhdAbstractObject
+{
+}
+public partial class vhdEntityInstanceGenericMappings : vhdAbstractCollection
+{
+}
+public partial class vhdEntityInstanceNamedGenericMapping : vhdEntityInstanceGenericMapping
+{
+}
 public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping
 {
 }

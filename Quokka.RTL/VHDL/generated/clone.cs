@@ -327,7 +327,32 @@ public partial class vhdEntityInstance
 		var result = new vhdEntityInstance();
 		result.Name = Name;
 		result.Type = Type;
+		result.GenericMappings = GenericMappings?.UntypedClone() as vhdEntityInstanceGenericMappings;
 		result.PortMappings = PortMappings?.UntypedClone() as vhdEntityInstancePortMappings;
+		return result;
+	}
+}
+public partial class vhdEntityInstanceGenericMapping
+{
+}
+public partial class vhdEntityInstanceGenericMappings
+{
+	public vhdEntityInstanceGenericMappings Clone() => UntypedClone() as vhdEntityInstanceGenericMappings;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdEntityInstanceGenericMappings();
+		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vhdEntityInstanceNamedGenericMapping
+{
+	public vhdEntityInstanceNamedGenericMapping Clone() => UntypedClone() as vhdEntityInstanceNamedGenericMapping;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdEntityInstanceNamedGenericMapping();
+		result.Internal = Internal;
+		result.External = External?.UntypedClone() as vhdExpression;
 		return result;
 	}
 }
@@ -337,7 +362,7 @@ public partial class vhdEntityInstanceNamedPortMapping
 	public override vhdAbstractObject UntypedClone()
 	{
 		var result = new vhdEntityInstanceNamedPortMapping();
-		result.Internal = Internal;
+		result.Internal = Internal?.UntypedClone() as vhdIdentifier;
 		result.External = External?.UntypedClone() as vhdExpression;
 		return result;
 	}

@@ -363,7 +363,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         [TestMethod]
         public void MulTest()
         {
-            var milValues = Tier6Values;
+            var milValues = Tier10Values;
             var op = new RTLBitArray(int.MaxValue);
 
             Measure(() =>

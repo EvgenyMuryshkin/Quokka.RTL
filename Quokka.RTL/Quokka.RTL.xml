@@ -1318,6 +1318,10 @@
             
              vhdEntityInstance
             
+             vhdEntityInstanceGenericMappings
+            
+             vhdEntityInstanceNamedGenericMapping
+            
              vhdEntityInstanceNamedPortMapping
             
              vhdEntityInstancePortMappings
@@ -2313,6 +2317,13 @@
         <member name="M:Quokka.RTL.VHDL.vhdEntity.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdEntity">
             <summary>
             from vhdEntity
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdEntityInstanceGenericMappingsChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdEntityInstanceNamedGenericMapping
             </summary>
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdEntityInstancePortMappingsChild">
