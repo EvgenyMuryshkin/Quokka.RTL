@@ -49,6 +49,16 @@ namespace Quokka.RTL.Tests
         }
 
         [TestMethod]
+        public void CustomBitArrayMember()
+        {
+            var props = RTLReflectionTools.SynthesizableMembers(typeof(CustomBitArrayClass));
+            var internals = props.Where(p => RTLModuleHelper.IsInternalProperty(p));
+            Assert.AreEqual(1, internals.Count());
+
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(CustomBitArrayClass)));
+        }
+
+        [TestMethod]
         public void SerializedRange_Exception()
         {
             var nonIndexed = new NotIndexedClass();

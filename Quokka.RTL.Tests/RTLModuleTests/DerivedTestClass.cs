@@ -8,4 +8,17 @@
         RTLBitArray DerivedPrivate2;
         RTLBitArray DerivedPrivate3 => DerivedPublic1;
     }
+
+    public class CustomRTLBitArray : RTLBitArray
+    {
+        public CustomRTLBitArray() : base(byte.MinValue)
+        {
+
+        }
+    }
+
+    public class CustomBitArrayClass
+    {
+        CustomRTLBitArray b;
+    }
 }

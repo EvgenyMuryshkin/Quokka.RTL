@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Quokka.RTL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Quokka.RTL.Tools
 {
@@ -26,6 +28,45 @@ namespace Quokka.RTL.Tools
         public static string StringJoin(this IEnumerable<string> source, string separator)
         {
             return string.Join(separator, source.Where(s => s.HasValue()));
+        }
+    }
+}
+
+namespace System
+{
+    public static class SystemExtensions
+    {
+        public static bool IsConstant(this MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly;
+        public static bool IsStruct(this Type type) => type != null && type.IsValueType && !type.IsEnum && !type.IsPrimitive;
+        public static bool IsRTLBitArray(this Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
+        public static bool IsList(this Type type) => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+
+        public static Type GetCollectionItem(this Type type)
+        {
+            if (type == null)
+                return null;
+
+            if (type.IsArray)
+                return type.GetElementType();
+
+            if (type.IsList())
+                return type.GetGenericArguments()[0];
+
+            return null;
+        }
+
+        public static bool IsTuple(this Type type)
+        {
+            if (type.IsConstructedGenericType)
+            {
+                var generic = type.GetGenericTypeDefinition();
+                if (generic.Name.StartsWith(nameof(ValueTuple)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

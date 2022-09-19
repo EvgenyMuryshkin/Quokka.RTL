@@ -3,11 +3,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Quokka.RTL.Tests")]
 
 namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
+        internal void internalAdjust(RTLBitArray source)
+        {
+            if (Size != source.Size || DataType != source.DataType)
+            {
+                internalResize(source.Size);
+                internalChangeType(source.DataType);
+            }
+        }
+
         internal void internalInitFromArray(RTLSignalType dataType, bool[] lsbSource)
         {
             _data = lsbSource;

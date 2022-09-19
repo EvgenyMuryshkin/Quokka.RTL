@@ -109,7 +109,7 @@ namespace Quokka.RTL
             if (IsSynthesizableObject(type))
                 return true;
 
-            return type.IsValueType || type == typeof(RTLBitArray);
+            return type.IsValueType || type.IsRTLBitArray();
         }
 
         static TypeCache<bool> IsSynthesizableArrayTypeCache = new TypeCache<bool>(

@@ -70,7 +70,7 @@ namespace Quokka.RTL.Tools
             if (PredefinedTypes.TypeInfos.ContainsKey(type))
                 return true;
 
-            if (type == typeof(RTLBitArray))
+            if (type.IsRTLBitArray())
                 return true;
 
             if (RTLModuleHelper.IsSynthesizableArrayType(type))
@@ -119,11 +119,9 @@ namespace Quokka.RTL.Tools
             return signedTypes.Contains(type);
         }
 
-        public static bool IsStruct(this Type type) => type.IsValueType && !type.IsEnum && !type.IsPrimitive;
-
         public static bool IsNative(Type type)
         {
-            return type.IsEnum || signedTypes.Contains(type) || unsignedTypes.Contains(type) || type == typeof(float) || type == typeof(RTLBitArray);
+            return type.IsEnum || signedTypes.Contains(type) || unsignedTypes.Contains(type) || type == typeof(float) || type.IsRTLBitArray();
         }
 
         public static bool IsFactory(Type t)
@@ -202,7 +200,7 @@ namespace Quokka.RTL.Tools
             if (IsNative(rtlModuleType))
                 return false;
 
-            if (IsStruct(rtlModuleType))
+            if (rtlModuleType.IsStruct())
                 return false;
 
             if (HasMultipleConstructors(rtlModuleType))
