@@ -107,7 +107,7 @@ namespace Quokka.RTL.VHDL
                     {
                         case vhdDataType.Signed: return "signed";
                         case vhdDataType.Unsigned: return "unsigned";
-                        case vhdDataType.StdLogic: return "std_logic";
+                        case vhdDataType.StdLogic: return "std_logic_vector";
                         default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
                     }
                 case vhdCustomDataType d:

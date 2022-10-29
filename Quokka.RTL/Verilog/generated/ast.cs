@@ -303,6 +303,7 @@ public partial class vlgAssignExpression : vlgExpression
 	public vlgIdentifier Target { get; set; } = new vlgIdentifier();
 	public vlgAssignType Type { get; set; }
 	public vlgExpression Expression { get; set; }
+	public Boolean Debugger { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vlgAttribute : vlgAbstractObject, vlgFileChild
@@ -770,6 +771,8 @@ public abstract partial class vlgDeclarationModulePort : vlgModulePort
 public abstract partial class vlgExpression : vlgAbstractObject
 {
 	public vlgExpression() { }
+	public Nullable<vlgSignType> SignType { get; set; }
+	public Nullable<Int32> Size { get; set; }
 }
 /// <summary>
 /// vlgComment

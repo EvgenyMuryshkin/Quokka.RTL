@@ -466,6 +466,7 @@ public partial class vhdAssignExpression : vhdExpression, vhdArchitectureImpleme
 	public vhdExpression Target { get; set; }
 	public vhdAssignType Type { get; set; }
 	public vhdExpression Source { get; set; }
+	public Boolean Debugger { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdAttribute : vhdAbstractObject, vhdFileChild

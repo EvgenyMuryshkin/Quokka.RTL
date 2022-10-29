@@ -2,12 +2,12 @@
 
 namespace Quokka.RTL.VHDL.Implementation
 {
-    public partial class vhdEntityInstancePortMappingsVisitorImplementation
-	{
-		public override void OnVisit(vhdEntityInstancePortMappings obj)
-		{
-			var portMappings = obj.AsEntityInstancePortMapping.ToList();
-			_builder.AppendLine("port map");
+    public partial class vhdEntityInstanceGenericMappingsVisitorImplementation
+    {
+        public override void OnVisit(vhdEntityInstanceGenericMappings obj)
+        {
+			var portMappings = obj.AsEntityInstanceGenericMapping.ToList();
+			_builder.AppendLine("generic map");
 			_builder.AppendLine("(");
 			using (_builder.Indent())
 			{
@@ -15,7 +15,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				{
 					Visit(c);
 
-					if (c is vhdEntityInstancePortMapping)
+					if (c is vhdEntityInstanceGenericMapping)
 					{
 						if (c == portMappings.Last())
 						{
@@ -30,5 +30,5 @@ namespace Quokka.RTL.VHDL.Implementation
 			}
 			_builder.AppendLine(")");
 		}
-	}
+    }
 } // Quokka.RTL.VHDL

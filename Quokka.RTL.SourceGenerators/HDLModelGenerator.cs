@@ -247,6 +247,10 @@ namespace Quokka.RTL.SourceGenerators
                     ? listProps[0]
                     : null;
                 genericListParameter = singleListProp != null ? singleListProp.PropertyType.GetGenericArguments()[0] : null;
+
+                if (obj.Name == "vlgIdentifierExpression")
+                    Debugger.Break();
+
                 var ctorVariants = ctx.AllCtorVariants(obj);
 
                 if (!obj.IsAbstract && ctx.IsCollection(obj))
@@ -547,9 +551,6 @@ namespace Quokka.RTL.SourceGenerators
                 }
                 builder.AppendLine();
                 builder.AppendLine("{");
-
-                if (obj.Name == "vlgCaseItem")
-                    Debugger.Break();
 
                 var implicitOperators = ctx.ImplicitOperators(obj);
 

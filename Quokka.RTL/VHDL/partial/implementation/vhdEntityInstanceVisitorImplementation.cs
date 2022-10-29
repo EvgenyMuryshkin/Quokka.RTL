@@ -13,6 +13,7 @@ namespace Quokka.RTL.VHDL.Implementation
 			}
 
 			Visit(obj.PortMappings);
+			_builder.AppendLine(";");
 		}
 	}
 } // Quokka.RTL.VHDL

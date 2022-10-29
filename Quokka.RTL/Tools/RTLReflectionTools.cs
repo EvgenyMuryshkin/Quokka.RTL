@@ -123,7 +123,7 @@ namespace Quokka.RTL.Tools
             var memberIndex = members.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
             var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
             if (notIndexed.HasValue())
-                throw new Exception($"Members of type '{type}' should have index: {notIndexed}");
+                throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
 
             return memberIndex.OrderBy(m => m.index.Index).Select(m => m.m).ToList();
         }

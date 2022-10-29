@@ -132,6 +132,7 @@ public partial class vhdAssignExpression
 		result.Target = Target?.UntypedClone() as vhdExpression;
 		result.Type = Type;
 		result.Source = Source?.UntypedClone() as vhdExpression;
+		result.Debugger = Debugger;
 		return result;
 	}
 }

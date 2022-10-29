@@ -211,7 +211,7 @@ namespace Quokka.RTL.SourceGenerators
 
         public PropertyInfo SingleModelProperty(Type obj)
         {
-            var props = AllProperties(obj);
+            var props = AllProperties(obj).Where(p => p.GetCustomAttribute<NoCtorInitAttribute>() == null).ToList();
 
             if (props.Count == 1 && props[0].PropertyType.IsClass && !props[0].PropertyType.IsAbstract)
             {
@@ -330,9 +330,6 @@ namespace Quokka.RTL.SourceGenerators
         List<ImplicitOperator> AllImplicitOperators(Type obj, List<Type> chainedTypes)
         {
             var result = new List<ImplicitOperator>();
-
-            if (obj.Name == "vlgCombBlock")
-                Debugger.Break();
 
             if (obj == null || !objects.Contains(obj))
                 return result;
