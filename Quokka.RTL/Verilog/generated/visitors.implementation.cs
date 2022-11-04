@@ -182,6 +182,10 @@ public abstract class vlgProcedureCallVisitorGeneratedImplementation : vlgVisito
 {
 	public vlgProcedureCallVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vlgProcedureCallExpressionVisitorGeneratedImplementation : vlgVisitorImplementation<vlgProcedureCallExpression>, vlgProcedureCallExpressionVisitorInterface
+{
+	public vlgProcedureCallExpressionVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vlgRangeVisitorGeneratedImplementation : vlgVisitorImplementation<vlgRange>, vlgRangeVisitorInterface
 {
 	public vlgRangeVisitorGeneratedImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -403,6 +407,10 @@ public partial class vlgProcedureCallVisitorImplementation : vlgProcedureCallVis
 {
 	public vlgProcedureCallVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vlgProcedureCallExpressionVisitorImplementation : vlgProcedureCallExpressionVisitorGeneratedImplementation
+{
+	public vlgProcedureCallExpressionVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vlgRangeVisitorImplementation : vlgRangeVisitorGeneratedImplementation
 {
 	public vlgRangeVisitorImplementation(vlgVisitorImplementationDeps deps) : base(deps) { }
@@ -498,6 +506,7 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 			case vlgModuleParameters o: return vlgModuleParametersVisitor(o);
 			case vlgPlaceholderModulePort o: return vlgPlaceholderModulePortVisitor(o);
 			case vlgProcedureCall o: return vlgProcedureCallVisitor(o);
+			case vlgProcedureCallExpression o: return vlgProcedureCallExpressionVisitor(o);
 			case vlgRange o: return vlgRangeVisitor(o);
 			case vlgShiftExpression o: return vlgShiftExpressionVisitor(o);
 			case vlgSimpleForLoop o: return vlgSimpleForLoopVisitor(o);
@@ -692,6 +701,10 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 	{
 		return vlgProcedureCallVisitor(_deps, obj);
 	}
+	private vlgProcedureCallExpressionVisitorInterface vlgProcedureCallExpressionVisitor(vlgProcedureCallExpression obj)
+	{
+		return vlgProcedureCallExpressionVisitor(_deps, obj);
+	}
 	private vlgRangeVisitorInterface vlgRangeVisitor(vlgRange obj)
 	{
 		return vlgRangeVisitor(_deps, obj);
@@ -824,6 +837,8 @@ public partial class vlgVisitorFactoryImplementation : vlgVisitorFactoryInterfac
 		=> new vlgPlaceholderModulePortVisitorImplementation(deps);
 	protected virtual vlgProcedureCallVisitorInterface vlgProcedureCallVisitor(vlgVisitorImplementationDeps deps, vlgProcedureCall obj)
 		=> new vlgProcedureCallVisitorImplementation(deps);
+	protected virtual vlgProcedureCallExpressionVisitorInterface vlgProcedureCallExpressionVisitor(vlgVisitorImplementationDeps deps, vlgProcedureCallExpression obj)
+		=> new vlgProcedureCallExpressionVisitorImplementation(deps);
 	protected virtual vlgRangeVisitorInterface vlgRangeVisitor(vlgVisitorImplementationDeps deps, vlgRange obj)
 		=> new vlgRangeVisitorImplementation(deps);
 	protected virtual vlgShiftExpressionVisitorInterface vlgShiftExpressionVisitor(vlgVisitorImplementationDeps deps, vlgShiftExpression obj)

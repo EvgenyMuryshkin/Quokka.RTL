@@ -153,6 +153,8 @@
             
              vlgProcedureCall
             
+             vlgProcedureCallExpression
+            
              vlgRange
             
              vlgShiftExpression
@@ -226,6 +228,12 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgProcedureCall)">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
+            <param name="Call"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgAggregateExpression.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgShiftExpression
@@ -269,6 +277,8 @@
              vlgLogicExpression
             
              vlgMathExpression
+            
+             vlgProcedureCallExpression
             
              vlgShiftExpression
             
@@ -339,6 +349,12 @@
             <param name="Lhs"></param>
             <param name="Type"></param>
             <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgProcedureCall)">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
+            <param name="Call"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -427,6 +443,16 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgMathExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCallExpression)~Quokka.RTL.Verilog.vlgCase">
+            <summary>
+            from vlgCase
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgCase.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgCase">
             <summary>
             from vlgCase
             </summary>
@@ -579,6 +605,12 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgProcedureCall)">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
+            <param name="Call"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgShiftExpression
@@ -670,6 +702,16 @@
             from vlgConditionalStatement
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCallExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgConditionalStatement">
+            <summary>
+            from vlgConditionalStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgConditionalStatement.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgConditionalStatement">
             <summary>
             from vlgConditionalStatement
@@ -708,6 +750,11 @@
         <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.Verilog.vlgIdentifier)~Quokka.RTL.Verilog.vlgExpression">
             <summary>
             from vlgIdentifierExpression
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgExpression">
+            <summary>
+            from vlgProcedureCallExpression
             </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgExpression.op_Implicit(System.Int32)~Quokka.RTL.Verilog.vlgExpression">
@@ -859,6 +906,16 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCallExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstancePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgModuleInstancePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
@@ -941,6 +998,12 @@
             <param name="Lhs"></param>
             <param name="Type"></param>
             <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgProcedureCall)">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
+            <param name="Call"></param>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -1033,6 +1096,16 @@
             from vlgModuleInstanceSimplePortMapping
             </summary>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCallExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
+            <summary>
+            from vlgModuleInstanceSimplePortMapping
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping.op_Implicit(Quokka.RTL.Verilog.vlgShiftExpression)~Quokka.RTL.Verilog.vlgModuleInstanceSimplePortMapping">
             <summary>
             from vlgModuleInstanceSimplePortMapping
@@ -1100,6 +1173,8 @@
             
              vlgMathExpression
             
+             vlgProcedureCallExpression
+            
              vlgShiftExpression
             
              vlgSizedAggregateExpression
@@ -1109,6 +1184,11 @@
              vlgUnaryExpression
             
              </summary>
+        </member>
+        <member name="M:Quokka.RTL.Verilog.vlgProcedureCallExpression.op_Implicit(Quokka.RTL.Verilog.vlgProcedureCall)~Quokka.RTL.Verilog.vlgProcedureCallExpression">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
         </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgIdentifier,Quokka.RTL.Verilog.vlgAssignType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
@@ -1154,6 +1234,12 @@
             <param name="Type"></param>
             <param name="Rhs"></param>
         </member>
+        <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgProcedureCall)">
+            <summary>
+            from vlgProcedureCallExpression
+            </summary>
+            <param name="Call"></param>
+        </member>
         <member name="M:Quokka.RTL.Verilog.vlgRange.#ctor(Quokka.RTL.Verilog.vlgExpression,Quokka.RTL.Verilog.vlgShiftType,Quokka.RTL.Verilog.vlgExpression)">
             <summary>
             from vlgShiftExpression
@@ -1198,6 +1284,8 @@
             
              vlgMathExpression
             
+             vlgProcedureCallExpression
+            
              vlgShiftExpression
             
              vlgSizedAggregateExpression
@@ -1232,6 +1320,8 @@
              vlgLogicExpression
             
              vlgMathExpression
+            
+             vlgProcedureCallExpression
             
              vlgShiftExpression
             

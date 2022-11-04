@@ -49,6 +49,7 @@ public interface vlgModuleParameterDeclarationVisitorInterface : vlgVisitorInter
 public interface vlgModuleParametersVisitorInterface : vlgVisitorInterface<vlgModuleParameters> { }
 public interface vlgPlaceholderModulePortVisitorInterface : vlgVisitorInterface<vlgPlaceholderModulePort> { }
 public interface vlgProcedureCallVisitorInterface : vlgVisitorInterface<vlgProcedureCall> { }
+public interface vlgProcedureCallExpressionVisitorInterface : vlgVisitorInterface<vlgProcedureCallExpression> { }
 public interface vlgRangeVisitorInterface : vlgVisitorInterface<vlgRange> { }
 public interface vlgShiftExpressionVisitorInterface : vlgVisitorInterface<vlgShiftExpression> { }
 public interface vlgSimpleForLoopVisitorInterface : vlgVisitorInterface<vlgSimpleForLoop> { }

@@ -270,6 +270,12 @@ public partial class vlgProcedureCallVisitorImplementation
 	{
 	}
 }
+public partial class vlgProcedureCallExpressionVisitorImplementation
+{
+	public override void OnVisit(vlgProcedureCallExpression obj)
+	{
+	}
+}
 public partial class vlgRangeVisitorImplementation
 {
 	public override void OnVisit(vlgRange obj)

@@ -99,6 +99,8 @@ public abstract partial class vlgAbstractCollection : vlgAbstractObject
 	///
 	/// vlgProcedureCall
 	///
+	/// vlgProcedureCallExpression
+	///
 	/// vlgRange
 	///
 	/// vlgShiftExpression
@@ -213,6 +215,14 @@ public partial class vlgAggregateExpression : vlgExpression, IEnumerable//<vlgEx
 		this.Expressions.Add(new vlgMathExpression(Lhs, Type, Rhs));
 	}
 	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	/// <param name="Call"></param>
+	public vlgAggregateExpression(vlgProcedureCall Call)
+	{
+		this.Expressions.Add(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
 	/// from vlgShiftExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -264,6 +274,8 @@ public partial class vlgAggregateExpression : vlgExpression, IEnumerable//<vlgEx
 	/// vlgLogicExpression
 	///
 	/// vlgMathExpression
+	///
+	/// vlgProcedureCallExpression
 	///
 	/// vlgShiftExpression
 	///
@@ -420,6 +432,14 @@ public partial class vlgCase : vlgAbstractObject, vlgGenericBlockChild, vlgModul
 	public vlgCase(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.Check = new vlgMathExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	/// <param name="Call"></param>
+	public vlgCase(vlgProcedureCall Call)
+	{
+		this.Check = new vlgProcedureCallExpression(Call);
 	}
 	/// <summary>
 	/// from vlgShiftExpression
@@ -677,6 +697,14 @@ public partial class vlgConditionalStatement : vlgAbstractObject, IEnumerable//<
 	public vlgConditionalStatement(vlgExpression Lhs, vlgMathType Type, vlgExpression Rhs)
 	{
 		this.Condition = new vlgMathExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	/// <param name="Call"></param>
+	public vlgConditionalStatement(vlgProcedureCall Call)
+	{
+		this.Condition = new vlgProcedureCallExpression(Call);
 	}
 	/// <summary>
 	/// from vlgShiftExpression
@@ -1288,6 +1316,14 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 		this.External = new vlgMathExpression(Lhs, Type, Rhs);
 	}
 	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	/// <param name="Call"></param>
+	public vlgModuleInstanceSimplePortMapping(vlgProcedureCall Call)
+	{
+		this.External = new vlgProcedureCallExpression(Call);
+	}
+	/// <summary>
 	/// from vlgShiftExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -1455,6 +1491,8 @@ public partial class vlgProcedureCall : vlgAbstractObject, vlgGenericBlockChild,
 	///
 	/// vlgMathExpression
 	///
+	/// vlgProcedureCallExpression
+	///
 	/// vlgShiftExpression
 	///
 	/// vlgSizedAggregateExpression
@@ -1465,6 +1503,24 @@ public partial class vlgProcedureCall : vlgAbstractObject, vlgGenericBlockChild,
 	///
 	/// </summary>
 	public List<vlgExpression> Parameters { get; set; } = new List<vlgExpression>();
+}
+[JsonObjectAttribute]
+public partial class vlgProcedureCallExpression : vlgExpression
+{
+	public vlgProcedureCallExpression() { }
+	public vlgProcedureCallExpression(String Proc, String Name, IEnumerable<vlgExpression> Parameters)
+	{
+		this.Call = new vlgProcedureCall(Proc, Name, Parameters);
+	}
+	public vlgProcedureCallExpression(String Proc, String Name, params vlgExpression[] Parameters)
+	{
+		this.Call = new vlgProcedureCall(Proc, Name, Parameters);
+	}
+	public vlgProcedureCallExpression(vlgProcedureCall Call)
+	{
+		this.Call = Call;
+	}
+	public vlgProcedureCall Call { get; set; } = new vlgProcedureCall();
 }
 [JsonObjectAttribute]
 public partial class vlgRange : vlgAbstractObject, IEnumerable//<vlgExpression>
@@ -1544,6 +1600,14 @@ public partial class vlgRange : vlgAbstractObject, IEnumerable//<vlgExpression>
 		this.Indexes.Add(new vlgMathExpression(Lhs, Type, Rhs));
 	}
 	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	/// <param name="Call"></param>
+	public vlgRange(vlgProcedureCall Call)
+	{
+		this.Indexes.Add(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
 	/// from vlgShiftExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -1595,6 +1659,8 @@ public partial class vlgRange : vlgAbstractObject, IEnumerable//<vlgExpression>
 	/// vlgLogicExpression
 	///
 	/// vlgMathExpression
+	///
+	/// vlgProcedureCallExpression
 	///
 	/// vlgShiftExpression
 	///
@@ -1694,6 +1760,8 @@ public partial class vlgSizedAggregateExpression : vlgExpression, IEnumerable//<
 	/// vlgLogicExpression
 	///
 	/// vlgMathExpression
+	///
+	/// vlgProcedureCallExpression
 	///
 	/// vlgShiftExpression
 	///

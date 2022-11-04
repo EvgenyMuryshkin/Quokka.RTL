@@ -681,6 +681,9 @@ public partial class vlgPlaceholderModulePort
 public partial class vlgProcedureCall
 {
 }
+public partial class vlgProcedureCallExpression
+{
+}
 public partial class vlgRange
 {
 }

@@ -135,6 +135,20 @@ public partial class vlgCase : vlgAbstractObject
 	/// <summary>
 	/// from vlgCase
 	/// </summary>
+	public static implicit operator vlgCase(vlgProcedureCallExpression source)
+	{
+		return new vlgCase(source);
+	}
+	/// <summary>
+	/// from vlgCase
+	/// </summary>
+	public static implicit operator vlgCase(vlgProcedureCall Call)
+	{
+		return new vlgCase(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
+	/// from vlgCase
+	/// </summary>
 	public static implicit operator vlgCase(vlgShiftExpression source)
 	{
 		return new vlgCase(source);
@@ -324,6 +338,20 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	/// <summary>
 	/// from vlgConditionalStatement
 	/// </summary>
+	public static implicit operator vlgConditionalStatement(vlgProcedureCallExpression source)
+	{
+		return new vlgConditionalStatement(source);
+	}
+	/// <summary>
+	/// from vlgConditionalStatement
+	/// </summary>
+	public static implicit operator vlgConditionalStatement(vlgProcedureCall Call)
+	{
+		return new vlgConditionalStatement(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
+	/// from vlgConditionalStatement
+	/// </summary>
 	public static implicit operator vlgConditionalStatement(vlgShiftExpression source)
 	{
 		return new vlgConditionalStatement(source);
@@ -388,6 +416,13 @@ public abstract partial class vlgExpression : vlgAbstractObject
 	public static implicit operator vlgExpression(vlgIdentifier Source)
 	{
 		return new vlgIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	public static implicit operator vlgExpression(vlgProcedureCall Call)
+	{
+		return new vlgProcedureCallExpression(Call);
 	}
 	/// <summary>
 	/// from vlgSizedAggregateExpression
@@ -617,6 +652,20 @@ public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping
 	/// </summary>
+	public static implicit operator vlgModuleInstancePortMapping(vlgProcedureCallExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
+	public static implicit operator vlgModuleInstancePortMapping(vlgProcedureCall Call)
+	{
+		return new vlgModuleInstanceSimplePortMapping(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
 	public static implicit operator vlgModuleInstancePortMapping(vlgShiftExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
@@ -735,6 +784,20 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping
 	/// </summary>
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgProcedureCallExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgProcedureCall Call)
+	{
+		return new vlgModuleInstanceSimplePortMapping(new vlgProcedureCallExpression(Call));
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
 	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgShiftExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
@@ -799,6 +862,16 @@ public partial class vlgPlaceholderModulePort : vlgModulePort
 }
 public partial class vlgProcedureCall : vlgAbstractObject
 {
+}
+public partial class vlgProcedureCallExpression : vlgExpression
+{
+	/// <summary>
+	/// from vlgProcedureCallExpression
+	/// </summary>
+	public static implicit operator vlgProcedureCallExpression(vlgProcedureCall Call)
+	{
+		return new vlgProcedureCallExpression(Call);
+	}
 }
 public partial class vlgRange : vlgAbstractObject
 {

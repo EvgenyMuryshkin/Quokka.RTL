@@ -632,6 +632,15 @@ public partial class vlgProcedureCall
 		return result;
 	}
 }
+public partial class vlgProcedureCallExpression
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		if (Call != null) result.AddRange(Call.SelfWithChildren());
+		return result;
+	}
+}
 public partial class vlgRange
 {
 	public override IEnumerable<vlgAbstractObject> SelfWithChildren()

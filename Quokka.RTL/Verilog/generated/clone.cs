@@ -541,6 +541,18 @@ public partial class vlgProcedureCall
 		return result;
 	}
 }
+public partial class vlgProcedureCallExpression
+{
+	public vlgProcedureCallExpression Clone() => UntypedClone() as vlgProcedureCallExpression;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgProcedureCallExpression();
+		result.SignType = SignType;
+		result.Size = Size;
+		result.Call = Call?.UntypedClone() as vlgProcedureCall;
+		return result;
+	}
+}
 public partial class vlgRange
 {
 	public vlgRange Clone() => UntypedClone() as vlgRange;
