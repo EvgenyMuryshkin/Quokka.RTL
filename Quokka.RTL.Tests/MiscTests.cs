@@ -2,11 +2,50 @@
 using Quokka.RTL;
 using Quokka.RTL.MemoryTemplates.Generic;
 using Quokka.RTL.Verilog;
+using Quokka.RTL.Verilog.Tools;
 using Quokka.RTL.VHDL;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+namespace Quokka.Verilog
+{
+    [TestClass]
+    public class VerilogGeneratorsTests
+    {
+        VerilogGenerators _generators = new VerilogGenerators();
+
+        [TestMethod]
+        public void Resize_Signed_Up()
+        {
+            var func = _generators.Resize(sbyte.MinValue, short.MinValue);
+            var code = vlgVerilogWriter.WriteObject(func);
+        }
+
+        [TestMethod]
+        public void Resize_Signed_Down()
+        {
+            var func = _generators.Resize(short.MinValue, sbyte.MinValue);
+            var code = vlgVerilogWriter.WriteObject(func);
+        }
+
+        [TestMethod]
+        public void Resize_Unsigned_Up()
+        {
+            var func = _generators.Resize(byte.MinValue, ushort.MinValue);
+            var code = vlgVerilogWriter.WriteObject(func);
+        }
+
+        [TestMethod]
+        public void Resize_Unsigned_Down()
+        {
+            var func = _generators.Resize(ushort.MinValue, byte.MinValue);
+            var code = vlgVerilogWriter.WriteObject(func);
+        }
+
+    }
+}
 
 namespace Quokka.VHDL
 {

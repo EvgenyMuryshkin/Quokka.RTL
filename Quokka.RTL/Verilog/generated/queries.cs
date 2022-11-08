@@ -262,6 +262,83 @@ public partial class vlgForLoop
 		return result;
 	}
 }
+public partial class vlgFunction
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren());
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vlgFunctionDeclaration
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		return result;
+	}
+}
+public partial class vlgFunctionImplementation
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vlgFunctionImplementationBlock
+{
+	[JsonIgnore]
+	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
+	[JsonIgnore]
+	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
+	[JsonIgnore]
+	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
+	[JsonIgnore]
+	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vlgFunctionInterface
+{
+	[JsonIgnore]
+	public IEnumerable<vlgComment> AsComment => Children.OfType<vlgComment>();
+	[JsonIgnore]
+	public IEnumerable<vlgText> AsText => Children.OfType<vlgText>();
+	[JsonIgnore]
+	public IEnumerable<vlgFunctionPortDeclaration> AsFunctionPortDeclaration => Children.OfType<vlgFunctionPortDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
+	[JsonIgnore]
+	public IEnumerable<vlgStandardModulePort> AsStandardModulePort => Children.OfType<vlgStandardModulePort>();
+	[JsonIgnore]
+	public IEnumerable<vlgDeclarationModulePort> AsDeclarationModulePort => Children.OfType<vlgDeclarationModulePort>();
+	[JsonIgnore]
+	public IEnumerable<vlgModulePort> AsModulePort => Children.OfType<vlgModulePort>();
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vlgFunctionPortDeclaration
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
+		return result;
+	}
+}
 public partial class vlgGenerate
 {
 	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
@@ -335,6 +412,14 @@ public partial class vlgInitial
 	{
 		var result = new List<vlgAbstractObject>() { this };
 		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vlgIntegerExpression
+{
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
@@ -458,6 +543,8 @@ public partial class vlgModuleImplementationBlock
 	public IEnumerable<vlgSyncBlock> AsSyncBlock => Children.OfType<vlgSyncBlock>();
 	[JsonIgnore]
 	public IEnumerable<vlgModuleImplementationBlock> AsModuleImplementationBlock => Children.OfType<vlgModuleImplementationBlock>();
+	[JsonIgnore]
+	public IEnumerable<vlgFunction> AsFunction => Children.OfType<vlgFunction>();
 	[JsonIgnore]
 	public IEnumerable<vlgLocalParamName> AsLocalParamName => Children.OfType<vlgLocalParamName>();
 	[JsonIgnore]

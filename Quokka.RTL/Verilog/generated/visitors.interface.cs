@@ -21,6 +21,12 @@ public interface vlgCustomDeclarationVisitorInterface : vlgVisitorInterface<vlgC
 public interface vlgCustomModulePortDeclarationVisitorInterface : vlgVisitorInterface<vlgCustomModulePortDeclaration> { }
 public interface vlgFileVisitorInterface : vlgVisitorInterface<vlgFile> { }
 public interface vlgForLoopVisitorInterface : vlgVisitorInterface<vlgForLoop> { }
+public interface vlgFunctionVisitorInterface : vlgVisitorInterface<vlgFunction> { }
+public interface vlgFunctionDeclarationVisitorInterface : vlgVisitorInterface<vlgFunctionDeclaration> { }
+public interface vlgFunctionImplementationVisitorInterface : vlgVisitorInterface<vlgFunctionImplementation> { }
+public interface vlgFunctionImplementationBlockVisitorInterface : vlgVisitorInterface<vlgFunctionImplementationBlock> { }
+public interface vlgFunctionInterfaceVisitorInterface : vlgVisitorInterface<vlgFunctionInterface> { }
+public interface vlgFunctionPortDeclarationVisitorInterface : vlgVisitorInterface<vlgFunctionPortDeclaration> { }
 public interface vlgGenerateVisitorInterface : vlgVisitorInterface<vlgGenerate> { }
 public interface vlgGenericBlockVisitorInterface : vlgVisitorInterface<vlgGenericBlock> { }
 public interface vlgGenvarVisitorInterface : vlgVisitorInterface<vlgGenvar> { }
@@ -28,6 +34,7 @@ public interface vlgIdentifierVisitorInterface : vlgVisitorInterface<vlgIdentifi
 public interface vlgIdentifierExpressionVisitorInterface : vlgVisitorInterface<vlgIdentifierExpression> { }
 public interface vlgIfVisitorInterface : vlgVisitorInterface<vlgIf> { }
 public interface vlgInitialVisitorInterface : vlgVisitorInterface<vlgInitial> { }
+public interface vlgIntegerExpressionVisitorInterface : vlgVisitorInterface<vlgIntegerExpression> { }
 public interface vlgIteratorVisitorInterface : vlgVisitorInterface<vlgIterator> { }
 public interface vlgLocalParamNameBinaryValueVisitorInterface : vlgVisitorInterface<vlgLocalParamNameBinaryValue> { }
 public interface vlgLocalParamNameExplicitValueVisitorInterface : vlgVisitorInterface<vlgLocalParamNameExplicitValue> { }

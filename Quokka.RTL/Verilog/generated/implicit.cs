@@ -8,6 +8,13 @@ using Quokka.RTL.Tools;
 public abstract partial class vlgAbstractCollection : vlgAbstractObject
 {
 	/// <summary>
+	/// from vlgFunction
+	/// </summary>
+	public static implicit operator vlgAbstractCollection(vlgFunctionDeclaration Declaration)
+	{
+		return new vlgFunction(Declaration);
+	}
+	/// <summary>
 	/// from vlgInitial
 	/// </summary>
 	public static implicit operator vlgAbstractCollection(String Name)
@@ -121,6 +128,13 @@ public partial class vlgCase : vlgAbstractObject
 	/// <summary>
 	/// from vlgCase
 	/// </summary>
+	public static implicit operator vlgCase(vlgIntegerExpression source)
+	{
+		return new vlgCase(source);
+	}
+	/// <summary>
+	/// from vlgCase
+	/// </summary>
 	public static implicit operator vlgCase(vlgLogicExpression source)
 	{
 		return new vlgCase(source);
@@ -159,13 +173,6 @@ public partial class vlgCase : vlgAbstractObject
 	public static implicit operator vlgCase(vlgSizedAggregateExpression source)
 	{
 		return new vlgCase(source);
-	}
-	/// <summary>
-	/// from vlgCase
-	/// </summary>
-	public static implicit operator vlgCase(Int32 Size)
-	{
-		return new vlgCase(new vlgSizedAggregateExpression(Size));
 	}
 	/// <summary>
 	/// from vlgCase
@@ -324,6 +331,13 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	/// <summary>
 	/// from vlgConditionalStatement
 	/// </summary>
+	public static implicit operator vlgConditionalStatement(vlgIntegerExpression source)
+	{
+		return new vlgConditionalStatement(source);
+	}
+	/// <summary>
+	/// from vlgConditionalStatement
+	/// </summary>
 	public static implicit operator vlgConditionalStatement(vlgLogicExpression source)
 	{
 		return new vlgConditionalStatement(source);
@@ -362,13 +376,6 @@ public partial class vlgConditionalStatement : vlgAbstractObject
 	public static implicit operator vlgConditionalStatement(vlgSizedAggregateExpression source)
 	{
 		return new vlgConditionalStatement(source);
-	}
-	/// <summary>
-	/// from vlgConditionalStatement
-	/// </summary>
-	public static implicit operator vlgConditionalStatement(Int32 Size)
-	{
-		return new vlgConditionalStatement(new vlgSizedAggregateExpression(Size));
 	}
 	/// <summary>
 	/// from vlgConditionalStatement
@@ -424,18 +431,43 @@ public abstract partial class vlgExpression : vlgAbstractObject
 	{
 		return new vlgProcedureCallExpression(Call);
 	}
-	/// <summary>
-	/// from vlgSizedAggregateExpression
-	/// </summary>
-	public static implicit operator vlgExpression(Int32 Size)
-	{
-		return new vlgSizedAggregateExpression(Size);
-	}
 }
 public partial class vlgFile : vlgAbstractCollection
 {
 }
 public partial class vlgForLoop : vlgAbstractForLoop
+{
+}
+public partial class vlgFunction : vlgAbstractCollection
+{
+	/// <summary>
+	/// from vlgFunction
+	/// </summary>
+	public static implicit operator vlgFunction(vlgFunctionDeclaration Declaration)
+	{
+		return new vlgFunction(Declaration);
+	}
+}
+public partial class vlgFunctionDeclaration : vlgAbstractObject
+{
+}
+public partial class vlgFunctionImplementation : vlgAbstractObject
+{
+	/// <summary>
+	/// from vlgFunctionImplementation
+	/// </summary>
+	public static implicit operator vlgFunctionImplementation(vlgFunctionImplementationBlock Block)
+	{
+		return new vlgFunctionImplementation(Block);
+	}
+}
+public partial class vlgFunctionImplementationBlock : vlgAbstractCollection
+{
+}
+public partial class vlgFunctionInterface : vlgAbstractCollection
+{
+}
+public partial class vlgFunctionPortDeclaration : vlgStandardModulePort
 {
 }
 public partial class vlgGenerate : vlgAbstractObject
@@ -499,6 +531,16 @@ public partial class vlgInitial : vlgAbstractCollection
 	public static implicit operator vlgInitial(String Name)
 	{
 		return new vlgInitial(Name);
+	}
+}
+public partial class vlgIntegerExpression : vlgExpression
+{
+	/// <summary>
+	/// from vlgIntegerExpression
+	/// </summary>
+	public static implicit operator vlgIntegerExpression(Int32 Value)
+	{
+		return new vlgIntegerExpression(Value);
 	}
 }
 public partial class vlgIterator : vlgAbstractObject
@@ -638,6 +680,13 @@ public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping
 	/// </summary>
+	public static implicit operator vlgModuleInstancePortMapping(vlgIntegerExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
 	public static implicit operator vlgModuleInstancePortMapping(vlgLogicExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
@@ -676,13 +725,6 @@ public abstract partial class vlgModuleInstancePortMapping : vlgAbstractObject
 	public static implicit operator vlgModuleInstancePortMapping(vlgSizedAggregateExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
-	}
-	/// <summary>
-	/// from vlgModuleInstanceSimplePortMapping
-	/// </summary>
-	public static implicit operator vlgModuleInstancePortMapping(Int32 Size)
-	{
-		return new vlgModuleInstanceSimplePortMapping(new vlgSizedAggregateExpression(Size));
 	}
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping
@@ -770,6 +812,13 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping
 	/// </summary>
+	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgIntegerExpression source)
+	{
+		return new vlgModuleInstanceSimplePortMapping(source);
+	}
+	/// <summary>
+	/// from vlgModuleInstanceSimplePortMapping
+	/// </summary>
 	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgLogicExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
@@ -808,13 +857,6 @@ public partial class vlgModuleInstanceSimplePortMapping : vlgModuleInstancePortM
 	public static implicit operator vlgModuleInstanceSimplePortMapping(vlgSizedAggregateExpression source)
 	{
 		return new vlgModuleInstanceSimplePortMapping(source);
-	}
-	/// <summary>
-	/// from vlgModuleInstanceSimplePortMapping
-	/// </summary>
-	public static implicit operator vlgModuleInstanceSimplePortMapping(Int32 Size)
-	{
-		return new vlgModuleInstanceSimplePortMapping(new vlgSizedAggregateExpression(Size));
 	}
 	/// <summary>
 	/// from vlgModuleInstanceSimplePortMapping

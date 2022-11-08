@@ -248,7 +248,7 @@ namespace Quokka.RTL.SourceGenerators
                     : null;
                 genericListParameter = singleListProp != null ? singleListProp.PropertyType.GetGenericArguments()[0] : null;
 
-                if (obj.Name == "vlgIdentifierExpression")
+                if (obj.Name == "vlgFunction")
                     Debugger.Break();
 
                 var ctorVariants = ctx.AllCtorVariants(obj);

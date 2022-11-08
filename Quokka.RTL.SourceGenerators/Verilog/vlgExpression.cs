@@ -7,8 +7,8 @@ namespace Quokka.RTL.SourceGenerators.Verilog
     public abstract class vlgExpression : vlgAbstractObject
     {
         [NoCtorInit]
-        public vlgSignType? SignType { get; set; }
+        public vlgSignType? ExpressionSignType { get; set; }
         [NoCtorInit]
-        public int? Size { get; set; }
+        public int? ExpressionSize { get; set; }
     }
 }

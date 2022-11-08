@@ -21,8 +21,8 @@ public partial class vlgAggregateExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgAggregateExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Expressions = Expressions.Select(i => i.UntypedClone() as vlgExpression).ToList();
 		return result;
 	}
@@ -43,8 +43,8 @@ public partial class vlgAssignExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgAssignExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Target = Target?.UntypedClone() as vlgIdentifier;
 		result.Type = Type;
 		result.Expression = Expression?.UntypedClone() as vlgExpression;
@@ -69,8 +69,8 @@ public partial class vlgBinaryValueExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgBinaryValueExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Value = Value;
 		return result;
 	}
@@ -141,8 +141,8 @@ public partial class vlgCompareExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgCompareExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Lhs = Lhs?.UntypedClone() as vlgExpression;
 		result.Type = Type;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
@@ -215,6 +215,74 @@ public partial class vlgForLoop
 		return result;
 	}
 }
+public partial class vlgFunction
+{
+	public vlgFunction Clone() => UntypedClone() as vlgFunction;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunction();
+		result.Children = Children.Select(i => i.UntypedClone() as vlgAbstractObject).ToList();
+		result.Declaration = Declaration?.UntypedClone() as vlgFunctionDeclaration;
+		result.Interface = Interface?.UntypedClone() as vlgFunctionInterface;
+		result.Implementation = Implementation?.UntypedClone() as vlgFunctionImplementation;
+		return result;
+	}
+}
+public partial class vlgFunctionDeclaration
+{
+	public vlgFunctionDeclaration Clone() => UntypedClone() as vlgFunctionDeclaration;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunctionDeclaration();
+		result.Name = Name;
+		result.Width = Width;
+		return result;
+	}
+}
+public partial class vlgFunctionImplementation
+{
+	public vlgFunctionImplementation Clone() => UntypedClone() as vlgFunctionImplementation;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunctionImplementation();
+		result.Block = Block?.UntypedClone() as vlgFunctionImplementationBlock;
+		return result;
+	}
+}
+public partial class vlgFunctionImplementationBlock
+{
+	public vlgFunctionImplementationBlock Clone() => UntypedClone() as vlgFunctionImplementationBlock;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunctionImplementationBlock();
+		result.Children = Children.Select(i => i.UntypedClone() as vlgAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vlgFunctionInterface
+{
+	public vlgFunctionInterface Clone() => UntypedClone() as vlgFunctionInterface;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunctionInterface();
+		result.Children = Children.Select(i => i.UntypedClone() as vlgAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vlgFunctionPortDeclaration
+{
+	public vlgFunctionPortDeclaration Clone() => UntypedClone() as vlgFunctionPortDeclaration;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgFunctionPortDeclaration();
+		result.Direction = Direction;
+		result.NetType = NetType;
+		result.Sign = Sign;
+		result.Width = Width;
+		result.Name = Name;
+		return result;
+	}
+}
 public partial class vlgGenerate
 {
 	public vlgGenerate Clone() => UntypedClone() as vlgGenerate;
@@ -262,8 +330,8 @@ public partial class vlgIdentifierExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgIdentifierExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Source = Source?.UntypedClone() as vlgIdentifier;
 		return result;
 	}
@@ -286,6 +354,18 @@ public partial class vlgInitial
 		var result = new vlgInitial();
 		result.Children = Children.Select(i => i.UntypedClone() as vlgAbstractObject).ToList();
 		result.Name = Name;
+		return result;
+	}
+}
+public partial class vlgIntegerExpression
+{
+	public vlgIntegerExpression Clone() => UntypedClone() as vlgIntegerExpression;
+	public override vlgAbstractObject UntypedClone()
+	{
+		var result = new vlgIntegerExpression();
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
+		result.Value = Value;
 		return result;
 	}
 }
@@ -333,8 +413,8 @@ public partial class vlgLogicExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgLogicExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Lhs = Lhs?.UntypedClone() as vlgExpression;
 		result.Type = Type;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
@@ -361,8 +441,8 @@ public partial class vlgMathExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgMathExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Lhs = Lhs?.UntypedClone() as vlgExpression;
 		result.Type = Type;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
@@ -547,8 +627,8 @@ public partial class vlgProcedureCallExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgProcedureCallExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Call = Call?.UntypedClone() as vlgProcedureCall;
 		return result;
 	}
@@ -569,8 +649,8 @@ public partial class vlgShiftExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgShiftExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Lhs = Lhs?.UntypedClone() as vlgExpression;
 		result.Type = Type;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
@@ -600,8 +680,8 @@ public partial class vlgSizedAggregateExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgSizedAggregateExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Size = Size;
 		result.Expressions = Expressions.Select(i => i.UntypedClone() as vlgExpression).ToList();
 		return result;
@@ -666,8 +746,8 @@ public partial class vlgTernaryExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgTernaryExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Condition = Condition?.UntypedClone() as vlgExpression;
 		result.Lhs = Lhs?.UntypedClone() as vlgExpression;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
@@ -690,8 +770,8 @@ public partial class vlgUnaryExpression
 	public override vlgAbstractObject UntypedClone()
 	{
 		var result = new vlgUnaryExpression();
-		result.SignType = SignType;
-		result.Size = Size;
+		result.ExpressionSignType = ExpressionSignType;
+		result.ExpressionSize = ExpressionSize;
 		result.Type = Type;
 		result.Rhs = Rhs?.UntypedClone() as vlgExpression;
 		return result;

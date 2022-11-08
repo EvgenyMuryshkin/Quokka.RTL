@@ -133,6 +133,7 @@ namespace Quokka.RTL.SourceGenerators
         }
 
         public bool IsCollection(Type p) => ImplementedCollectionType(p) != null;
+        public bool IsList(Type p) => p.IsConstructedGenericType && p.GetGenericTypeDefinition() == typeof(List<>);
 
         public Type ChildrenType(Type p)
         {
@@ -211,7 +212,13 @@ namespace Quokka.RTL.SourceGenerators
 
         public PropertyInfo SingleModelProperty(Type obj)
         {
-            var props = AllProperties(obj).Where(p => p.GetCustomAttribute<NoCtorInitAttribute>() == null).ToList();
+            var ctorInitProps = AllProperties(obj)
+                .Where(p => p.GetCustomAttribute<NoCtorInitAttribute>() == null)
+                .ToList();
+
+            var props = ctorInitProps
+                .Where(p => !IsList(p.PropertyType))
+                .ToList();
 
             if (props.Count == 1 && props[0].PropertyType.IsClass && !props[0].PropertyType.IsAbstract)
             {

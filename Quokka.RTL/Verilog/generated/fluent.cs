@@ -272,6 +272,95 @@ public partial class vlgFile
 public partial class vlgForLoop
 {
 }
+public partial class vlgFunction
+{
+}
+public partial class vlgFunctionDeclaration
+{
+}
+public partial class vlgFunctionImplementation
+{
+}
+public partial class vlgFunctionImplementationBlock
+{
+	//vlgComment
+	public vlgFunctionImplementationBlock WithComment(vlgComment obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionImplementationBlock WithComment(params String[] Lines)
+	{
+		this.Children.Add(new vlgComment(Lines));
+		return this;
+	}
+	//vlgText
+	public vlgFunctionImplementationBlock WithText(vlgText obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionImplementationBlock WithText(params String[] Lines)
+	{
+		this.Children.Add(new vlgText(Lines));
+		return this;
+	}
+	//vlgAssign
+	public vlgFunctionImplementationBlock WithAssign(vlgAssign obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionImplementationBlock WithAssign(vlgAssignExpression Expression)
+	{
+		this.Children.Add(new vlgAssign(Expression));
+		return this;
+	}
+	public vlgFunctionImplementationBlock WithAssign(vlgIdentifier Target, vlgAssignType Type, vlgExpression Expression)
+	{
+		this.Children.Add(new vlgAssign(Target, Type, Expression));
+		return this;
+	}
+}
+public partial class vlgFunctionInterface
+{
+	//vlgComment
+	public vlgFunctionInterface WithComment(vlgComment obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionInterface WithComment(params String[] Lines)
+	{
+		this.Children.Add(new vlgComment(Lines));
+		return this;
+	}
+	//vlgText
+	public vlgFunctionInterface WithText(vlgText obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionInterface WithText(params String[] Lines)
+	{
+		this.Children.Add(new vlgText(Lines));
+		return this;
+	}
+	//vlgFunctionPortDeclaration
+	public vlgFunctionInterface WithFunctionPortDeclaration(vlgFunctionPortDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgFunctionInterface WithFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
+	{
+		this.Children.Add(new vlgFunctionPortDeclaration(Direction, NetType, Sign, Width, Name));
+		return this;
+	}
+}
+public partial class vlgFunctionPortDeclaration
+{
+}
 public partial class vlgGenerate
 {
 }
@@ -341,6 +430,9 @@ public partial class vlgInitial
 		this.Children.Add(new vlgAssign(Target, Type, Expression));
 		return this;
 	}
+}
+public partial class vlgIntegerExpression
+{
 }
 public partial class vlgIterator
 {
@@ -491,6 +583,22 @@ public partial class vlgModuleImplementationBlock
 	public vlgModuleImplementationBlock WithModuleImplementationBlock(vlgModuleImplementationBlock obj)
 	{
 		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	//vlgFunction
+	public vlgModuleImplementationBlock WithFunction(vlgFunction obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vlgModuleImplementationBlock WithFunction(vlgFunctionDeclaration Declaration)
+	{
+		this.Children.Add(new vlgFunction(Declaration));
+		return this;
+	}
+	public vlgModuleImplementationBlock WithFunction(String Name, Int32 Width)
+	{
+		this.Children.Add(new vlgFunction(Name, Width));
 		return this;
 	}
 }

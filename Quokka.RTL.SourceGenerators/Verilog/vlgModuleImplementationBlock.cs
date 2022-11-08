@@ -9,6 +9,7 @@
     [FluentType(typeof(vlgCombBlock))]
     [FluentType(typeof(vlgSyncBlock))]
     [FluentType(typeof(vlgModuleImplementationBlock))]
+    [FluentType(typeof(vlgFunction))]
     public class vlgModuleImplementationBlock : vlgBlock
     {
     }

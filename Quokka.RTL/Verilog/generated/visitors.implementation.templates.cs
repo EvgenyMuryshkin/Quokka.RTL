@@ -102,6 +102,42 @@ public partial class vlgForLoopVisitorImplementation
 	{
 	}
 }
+public partial class vlgFunctionVisitorImplementation
+{
+	public override void OnVisit(vlgFunction obj)
+	{
+	}
+}
+public partial class vlgFunctionDeclarationVisitorImplementation
+{
+	public override void OnVisit(vlgFunctionDeclaration obj)
+	{
+	}
+}
+public partial class vlgFunctionImplementationVisitorImplementation
+{
+	public override void OnVisit(vlgFunctionImplementation obj)
+	{
+	}
+}
+public partial class vlgFunctionImplementationBlockVisitorImplementation
+{
+	public override void OnVisit(vlgFunctionImplementationBlock obj)
+	{
+	}
+}
+public partial class vlgFunctionInterfaceVisitorImplementation
+{
+	public override void OnVisit(vlgFunctionInterface obj)
+	{
+	}
+}
+public partial class vlgFunctionPortDeclarationVisitorImplementation
+{
+	public override void OnVisit(vlgFunctionPortDeclaration obj)
+	{
+	}
+}
 public partial class vlgGenerateVisitorImplementation
 {
 	public override void OnVisit(vlgGenerate obj)
@@ -141,6 +177,12 @@ public partial class vlgIfVisitorImplementation
 public partial class vlgInitialVisitorImplementation
 {
 	public override void OnVisit(vlgInitial obj)
+	{
+	}
+}
+public partial class vlgIntegerExpressionVisitorImplementation
+{
+	public override void OnVisit(vlgIntegerExpression obj)
 	{
 	}
 }
