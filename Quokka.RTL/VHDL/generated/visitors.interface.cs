@@ -35,6 +35,12 @@ public interface vhdEntityInstanceNamedPortMappingVisitorInterface : vhdVisitorI
 public interface vhdEntityInstancePortMappingsVisitorInterface : vhdVisitorInterface<vhdEntityInstancePortMappings> { }
 public interface vhdEntityInterfaceVisitorInterface : vhdVisitorInterface<vhdEntityInterface> { }
 public interface vhdFileVisitorInterface : vhdVisitorInterface<vhdFile> { }
+public interface vhdFunctionVisitorInterface : vhdVisitorInterface<vhdFunction> { }
+public interface vhdFunctionDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionDeclaration> { }
+public interface vhdFunctionImplementationVisitorInterface : vhdVisitorInterface<vhdFunctionImplementation> { }
+public interface vhdFunctionImplementationBlockVisitorInterface : vhdVisitorInterface<vhdFunctionImplementationBlock> { }
+public interface vhdFunctionInterfaceVisitorInterface : vhdVisitorInterface<vhdFunctionInterface> { }
+public interface vhdFunctionPortDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionPortDeclaration> { }
 public interface vhdGenericBlockVisitorInterface : vhdVisitorInterface<vhdGenericBlock> { }
 public interface vhdIdentifierVisitorInterface : vhdVisitorInterface<vhdIdentifier> { }
 public interface vhdIdentifierExpressionVisitorInterface : vhdVisitorInterface<vhdIdentifierExpression> { }
@@ -53,6 +59,7 @@ public interface vhdProcessVisitorInterface : vhdVisitorInterface<vhdProcess> { 
 public interface vhdProcessDeclarationsVisitorInterface : vhdVisitorInterface<vhdProcessDeclarations> { }
 public interface vhdRangeVisitorInterface : vhdVisitorInterface<vhdRange> { }
 public interface vhdResizeExpressionVisitorInterface : vhdVisitorInterface<vhdResizeExpression> { }
+public interface vhdReturnExpressionVisitorInterface : vhdVisitorInterface<vhdReturnExpression> { }
 public interface vhdShiftExpressionVisitorInterface : vhdVisitorInterface<vhdShiftExpression> { }
 public interface vhdSimpleForLoopVisitorInterface : vhdVisitorInterface<vhdSimpleForLoop> { }
 public interface vhdStandardEntityPortVisitorInterface : vhdVisitorInterface<vhdStandardEntityPort> { }

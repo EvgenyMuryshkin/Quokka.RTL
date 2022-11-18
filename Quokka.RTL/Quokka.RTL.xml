@@ -1446,6 +1446,18 @@
             
              vhdFile
             
+             vhdFunction
+            
+             vhdFunctionDeclaration
+            
+             vhdFunctionImplementation
+            
+             vhdFunctionImplementationBlock
+            
+             vhdFunctionInterface
+            
+             vhdFunctionPortDeclaration
+            
              vhdGenericBlock
             
              vhdIdentifier
@@ -1481,6 +1493,8 @@
              vhdRange
             
              vhdResizeExpression
+            
+             vhdReturnExpression
             
              vhdShiftExpression
             
@@ -1714,6 +1728,11 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdAggregateOthersConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.op_Implicit(Quokka.RTL.VHDL.vhdReturnExpression)~Quokka.RTL.VHDL.vhdAggregateOthersConnection">
             <summary>
             from vhdAggregateOthersConnection
             </summary>
@@ -1957,6 +1976,11 @@
             from vhdCase
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdReturnExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdCase">
             <summary>
             from vhdCase
@@ -2167,6 +2191,11 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdReturnExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
             <summary>
             from vhdCaseStatement
             </summary>
@@ -2385,6 +2414,11 @@
             from vhdConditionalStatement
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdReturnExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
             <summary>
             from vhdConditionalStatement
@@ -2486,6 +2520,31 @@
             vhdEntity
             vhdArchitecture
             vhdAttribute
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdFunction.op_Implicit(Quokka.RTL.VHDL.vhdFunctionDeclaration)~Quokka.RTL.VHDL.vhdFunction">
+            <summary>
+            from vhdFunction
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdFunctionImplementation.op_Implicit(Quokka.RTL.VHDL.vhdFunctionImplementationBlock)~Quokka.RTL.VHDL.vhdFunctionImplementation">
+            <summary>
+            from vhdFunctionImplementation
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdFunctionImplementationBlockChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdAssignExpression
+            vhdIf
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdFunctionInterfaceChild">
+            <summary>
+            vhdComment
+            vhdText
+            vhdFunctionPortDeclaration
             </summary>
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdGenericBlockChild">
@@ -2662,6 +2721,8 @@
             
              vhdResizeExpression
             
+             vhdReturnExpression
+            
              vhdShiftExpression
             
              vhdTernaryExpression
@@ -2704,6 +2765,8 @@
              vhdProcedureCallExpression
             
              vhdResizeExpression
+            
+             vhdReturnExpression
             
              vhdShiftExpression
             
@@ -2870,6 +2933,8 @@
             
              vhdResizeExpression
             
+             vhdReturnExpression
+            
              vhdShiftExpression
             
              vhdTernaryExpression
@@ -2882,6 +2947,115 @@
             <summary>
             from vhdRange
             </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdAggregate)">
+            <summary>
+            from vhdAggregateExpression
+            </summary>
+            <param name="Aggregate"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdAssignType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdAssignExpression
+            </summary>
+            <param name="Target"></param>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.RTLBitArray)">
+            <summary>
+            from vhdBinaryValueExpression
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdCastType,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCastResizeExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdCompareType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdCompareExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdIdentifier)">
+            <summary>
+            from vhdIdentifierExpression
+            </summary>
+            <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdLogicExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdMathType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdMathExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdPredefinedAttribute)">
+            <summary>
+            from vhdPredefinedAttributeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Attribute"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(System.String,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdExpression})">
+            <summary>
+            from vhdProcedureCallExpression
+            </summary>
+            <param name="Proc"></param>
+            <param name="Parameters"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdResizeExpression
+            </summary>
+            <param name="Source"></param>
+            <param name="Length"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdShiftType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdShiftExpression
+            </summary>
+            <param name="Lhs"></param>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdTernaryExpression
+            </summary>
+            <param name="Condition"></param>
+            <param name="Lhs"></param>
+            <param name="Rhs"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdUnaryType,Quokka.RTL.VHDL.vhdExpression)">
+            <summary>
+            from vhdUnaryExpression
+            </summary>
+            <param name="Type"></param>
+            <param name="Rhs"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdUse.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdUse">
             <summary>

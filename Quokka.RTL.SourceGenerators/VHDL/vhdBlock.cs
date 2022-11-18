@@ -10,6 +10,7 @@
     [FluentType(typeof(vhdProcedureCall))]
     [FluentType(typeof(vhdSimpleForLoop))]
     [FluentType(typeof(vhdNull))]
+    [FluentType(typeof(vhdReturnExpression))]
     public abstract class vhdBlock : vhdAbstractCollection
     {
     }

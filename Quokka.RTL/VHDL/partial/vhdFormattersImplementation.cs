@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quokka.RTL.Tools;
+using System;
 
 namespace Quokka.RTL.VHDL
 {
@@ -65,8 +66,8 @@ namespace Quokka.RTL.VHDL
 
             switch (value.DataType)
             {
-                case Tools.RTLSignalType.Signed: return "signed";
-                case Tools.RTLSignalType.Unsigned: return "unsigned";
+                case RTLSignalType.Signed: return "signed";
+                case RTLSignalType.Unsigned: return "unsigned";
                 default: throw new Exception($"unsupported sign type ({signalName}): {value.DataType}");
             }
         }
@@ -97,12 +98,15 @@ namespace Quokka.RTL.VHDL
 
         public string DataType(string signalName, int width, vhdDataTypeSource type)
         {
-            if (width == 1)
-                return "std_logic";
-
             switch (type)
             {
                 case vhdDefaultDataType d:
+                    if (d.DataType == vhdDataType.Boolean)
+                        return "boolean";
+
+                    if (width == 1)
+                        return "std_logic";
+
                     switch (d.DataType)
                     {
                         case vhdDataType.Signed: return "signed";

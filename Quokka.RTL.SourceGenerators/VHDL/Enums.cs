@@ -15,7 +15,8 @@ namespace Quokka.RTL.SourceGenerators.VHDL
     {
         Unsigned,
         Signed,
-        StdLogic
+        StdLogic,
+        Boolean
     }
 
     public enum vhdCastType

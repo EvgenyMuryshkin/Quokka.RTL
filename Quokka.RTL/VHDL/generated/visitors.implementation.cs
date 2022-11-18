@@ -126,6 +126,30 @@ public abstract class vhdFileVisitorGeneratedImplementation : vhdVisitorImplemen
 {
 	public vhdFileVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdFunctionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunction>, vhdFunctionVisitorInterface
+{
+	public vhdFunctionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdFunctionDeclarationVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionDeclaration>, vhdFunctionDeclarationVisitorInterface
+{
+	public vhdFunctionDeclarationVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdFunctionImplementationVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionImplementation>, vhdFunctionImplementationVisitorInterface
+{
+	public vhdFunctionImplementationVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdFunctionImplementationBlockVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionImplementationBlock>, vhdFunctionImplementationBlockVisitorInterface
+{
+	public vhdFunctionImplementationBlockVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdFunctionInterfaceVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionInterface>, vhdFunctionInterfaceVisitorInterface
+{
+	public vhdFunctionInterfaceVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdFunctionPortDeclarationVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionPortDeclaration>, vhdFunctionPortDeclarationVisitorInterface
+{
+	public vhdFunctionPortDeclarationVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdGenericBlockVisitorGeneratedImplementation : vhdVisitorImplementation<vhdGenericBlock>, vhdGenericBlockVisitorInterface
 {
 	public vhdGenericBlockVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -197,6 +221,10 @@ public abstract class vhdRangeVisitorGeneratedImplementation : vhdVisitorImpleme
 public abstract class vhdResizeExpressionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdResizeExpression>, vhdResizeExpressionVisitorInterface
 {
 	public vhdResizeExpressionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public abstract class vhdReturnExpressionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdReturnExpression>, vhdReturnExpressionVisitorInterface
+{
+	public vhdReturnExpressionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
 public abstract class vhdShiftExpressionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdShiftExpression>, vhdShiftExpressionVisitorInterface
 {
@@ -351,6 +379,30 @@ public partial class vhdFileVisitorImplementation : vhdFileVisitorGeneratedImple
 {
 	public vhdFileVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdFunctionVisitorImplementation : vhdFunctionVisitorGeneratedImplementation
+{
+	public vhdFunctionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdFunctionDeclarationVisitorImplementation : vhdFunctionDeclarationVisitorGeneratedImplementation
+{
+	public vhdFunctionDeclarationVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdFunctionImplementationVisitorImplementation : vhdFunctionImplementationVisitorGeneratedImplementation
+{
+	public vhdFunctionImplementationVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdFunctionImplementationBlockVisitorImplementation : vhdFunctionImplementationBlockVisitorGeneratedImplementation
+{
+	public vhdFunctionImplementationBlockVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdFunctionInterfaceVisitorImplementation : vhdFunctionInterfaceVisitorGeneratedImplementation
+{
+	public vhdFunctionInterfaceVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
+public partial class vhdFunctionPortDeclarationVisitorImplementation : vhdFunctionPortDeclarationVisitorGeneratedImplementation
+{
+	public vhdFunctionPortDeclarationVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdGenericBlockVisitorImplementation : vhdGenericBlockVisitorGeneratedImplementation
 {
 	public vhdGenericBlockVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -423,6 +475,10 @@ public partial class vhdResizeExpressionVisitorImplementation : vhdResizeExpress
 {
 	public vhdResizeExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdReturnExpressionVisitorImplementation : vhdReturnExpressionVisitorGeneratedImplementation
+{
+	public vhdReturnExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdShiftExpressionVisitorImplementation : vhdShiftExpressionVisitorGeneratedImplementation
 {
 	public vhdShiftExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -492,6 +548,12 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdEntityInstancePortMappings o: return vhdEntityInstancePortMappingsVisitor(o);
 			case vhdEntityInterface o: return vhdEntityInterfaceVisitor(o);
 			case vhdFile o: return vhdFileVisitor(o);
+			case vhdFunction o: return vhdFunctionVisitor(o);
+			case vhdFunctionDeclaration o: return vhdFunctionDeclarationVisitor(o);
+			case vhdFunctionImplementation o: return vhdFunctionImplementationVisitor(o);
+			case vhdFunctionImplementationBlock o: return vhdFunctionImplementationBlockVisitor(o);
+			case vhdFunctionInterface o: return vhdFunctionInterfaceVisitor(o);
+			case vhdFunctionPortDeclaration o: return vhdFunctionPortDeclarationVisitor(o);
 			case vhdGenericBlock o: return vhdGenericBlockVisitor(o);
 			case vhdIdentifier o: return vhdIdentifierVisitor(o);
 			case vhdIdentifierExpression o: return vhdIdentifierExpressionVisitor(o);
@@ -510,6 +572,7 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdProcessDeclarations o: return vhdProcessDeclarationsVisitor(o);
 			case vhdRange o: return vhdRangeVisitor(o);
 			case vhdResizeExpression o: return vhdResizeExpressionVisitor(o);
+			case vhdReturnExpression o: return vhdReturnExpressionVisitor(o);
 			case vhdShiftExpression o: return vhdShiftExpressionVisitor(o);
 			case vhdSimpleForLoop o: return vhdSimpleForLoopVisitor(o);
 			case vhdStandardEntityPort o: return vhdStandardEntityPortVisitor(o);
@@ -645,6 +708,30 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	{
 		return vhdFileVisitor(_deps, obj);
 	}
+	private vhdFunctionVisitorInterface vhdFunctionVisitor(vhdFunction obj)
+	{
+		return vhdFunctionVisitor(_deps, obj);
+	}
+	private vhdFunctionDeclarationVisitorInterface vhdFunctionDeclarationVisitor(vhdFunctionDeclaration obj)
+	{
+		return vhdFunctionDeclarationVisitor(_deps, obj);
+	}
+	private vhdFunctionImplementationVisitorInterface vhdFunctionImplementationVisitor(vhdFunctionImplementation obj)
+	{
+		return vhdFunctionImplementationVisitor(_deps, obj);
+	}
+	private vhdFunctionImplementationBlockVisitorInterface vhdFunctionImplementationBlockVisitor(vhdFunctionImplementationBlock obj)
+	{
+		return vhdFunctionImplementationBlockVisitor(_deps, obj);
+	}
+	private vhdFunctionInterfaceVisitorInterface vhdFunctionInterfaceVisitor(vhdFunctionInterface obj)
+	{
+		return vhdFunctionInterfaceVisitor(_deps, obj);
+	}
+	private vhdFunctionPortDeclarationVisitorInterface vhdFunctionPortDeclarationVisitor(vhdFunctionPortDeclaration obj)
+	{
+		return vhdFunctionPortDeclarationVisitor(_deps, obj);
+	}
 	private vhdGenericBlockVisitorInterface vhdGenericBlockVisitor(vhdGenericBlock obj)
 	{
 		return vhdGenericBlockVisitor(_deps, obj);
@@ -716,6 +803,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	private vhdResizeExpressionVisitorInterface vhdResizeExpressionVisitor(vhdResizeExpression obj)
 	{
 		return vhdResizeExpressionVisitor(_deps, obj);
+	}
+	private vhdReturnExpressionVisitorInterface vhdReturnExpressionVisitor(vhdReturnExpression obj)
+	{
+		return vhdReturnExpressionVisitor(_deps, obj);
 	}
 	private vhdShiftExpressionVisitorInterface vhdShiftExpressionVisitor(vhdShiftExpression obj)
 	{
@@ -809,6 +900,18 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdEntityInterfaceVisitorImplementation(deps);
 	protected virtual vhdFileVisitorInterface vhdFileVisitor(vhdVisitorImplementationDeps deps, vhdFile obj)
 		=> new vhdFileVisitorImplementation(deps);
+	protected virtual vhdFunctionVisitorInterface vhdFunctionVisitor(vhdVisitorImplementationDeps deps, vhdFunction obj)
+		=> new vhdFunctionVisitorImplementation(deps);
+	protected virtual vhdFunctionDeclarationVisitorInterface vhdFunctionDeclarationVisitor(vhdVisitorImplementationDeps deps, vhdFunctionDeclaration obj)
+		=> new vhdFunctionDeclarationVisitorImplementation(deps);
+	protected virtual vhdFunctionImplementationVisitorInterface vhdFunctionImplementationVisitor(vhdVisitorImplementationDeps deps, vhdFunctionImplementation obj)
+		=> new vhdFunctionImplementationVisitorImplementation(deps);
+	protected virtual vhdFunctionImplementationBlockVisitorInterface vhdFunctionImplementationBlockVisitor(vhdVisitorImplementationDeps deps, vhdFunctionImplementationBlock obj)
+		=> new vhdFunctionImplementationBlockVisitorImplementation(deps);
+	protected virtual vhdFunctionInterfaceVisitorInterface vhdFunctionInterfaceVisitor(vhdVisitorImplementationDeps deps, vhdFunctionInterface obj)
+		=> new vhdFunctionInterfaceVisitorImplementation(deps);
+	protected virtual vhdFunctionPortDeclarationVisitorInterface vhdFunctionPortDeclarationVisitor(vhdVisitorImplementationDeps deps, vhdFunctionPortDeclaration obj)
+		=> new vhdFunctionPortDeclarationVisitorImplementation(deps);
 	protected virtual vhdGenericBlockVisitorInterface vhdGenericBlockVisitor(vhdVisitorImplementationDeps deps, vhdGenericBlock obj)
 		=> new vhdGenericBlockVisitorImplementation(deps);
 	protected virtual vhdIdentifierVisitorInterface vhdIdentifierVisitor(vhdVisitorImplementationDeps deps, vhdIdentifier obj)
@@ -845,6 +948,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdRangeVisitorImplementation(deps);
 	protected virtual vhdResizeExpressionVisitorInterface vhdResizeExpressionVisitor(vhdVisitorImplementationDeps deps, vhdResizeExpression obj)
 		=> new vhdResizeExpressionVisitorImplementation(deps);
+	protected virtual vhdReturnExpressionVisitorInterface vhdReturnExpressionVisitor(vhdVisitorImplementationDeps deps, vhdReturnExpression obj)
+		=> new vhdReturnExpressionVisitorImplementation(deps);
 	protected virtual vhdShiftExpressionVisitorInterface vhdShiftExpressionVisitor(vhdVisitorImplementationDeps deps, vhdShiftExpression obj)
 		=> new vhdShiftExpressionVisitorImplementation(deps);
 	protected virtual vhdSimpleForLoopVisitorInterface vhdSimpleForLoopVisitor(vhdVisitorImplementationDeps deps, vhdSimpleForLoop obj)

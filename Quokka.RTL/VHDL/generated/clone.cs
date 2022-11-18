@@ -407,6 +407,72 @@ public partial class vhdFile
 		return result;
 	}
 }
+public partial class vhdFunction
+{
+	public vhdFunction Clone() => UntypedClone() as vhdFunction;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunction();
+		result.Declaration = Declaration?.UntypedClone() as vhdFunctionDeclaration;
+		result.Interface = Interface?.UntypedClone() as vhdFunctionInterface;
+		result.Implementation = Implementation?.UntypedClone() as vhdFunctionImplementation;
+		return result;
+	}
+}
+public partial class vhdFunctionDeclaration
+{
+	public vhdFunctionDeclaration Clone() => UntypedClone() as vhdFunctionDeclaration;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionDeclaration();
+		result.Name = Name;
+		result.Type = Type;
+		result.Width = Width;
+		return result;
+	}
+}
+public partial class vhdFunctionImplementation
+{
+	public vhdFunctionImplementation Clone() => UntypedClone() as vhdFunctionImplementation;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionImplementation();
+		result.Block = Block?.UntypedClone() as vhdFunctionImplementationBlock;
+		return result;
+	}
+}
+public partial class vhdFunctionImplementationBlock
+{
+	public vhdFunctionImplementationBlock Clone() => UntypedClone() as vhdFunctionImplementationBlock;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionImplementationBlock();
+		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vhdFunctionInterface
+{
+	public vhdFunctionInterface Clone() => UntypedClone() as vhdFunctionInterface;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionInterface();
+		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vhdFunctionPortDeclaration
+{
+	public vhdFunctionPortDeclaration Clone() => UntypedClone() as vhdFunctionPortDeclaration;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionPortDeclaration();
+		result.Name = Name;
+		result.Type = Type;
+		result.Width = Width;
+		return result;
+	}
+}
 public partial class vhdGenericBlock
 {
 	public vhdGenericBlock Clone() => UntypedClone() as vhdGenericBlock;
@@ -601,6 +667,16 @@ public partial class vhdResizeExpression
 		var result = new vhdResizeExpression();
 		result.Source = Source?.UntypedClone() as vhdExpression;
 		result.Length = Length?.UntypedClone() as vhdExpression;
+		return result;
+	}
+}
+public partial class vhdReturnExpression
+{
+	public vhdReturnExpression Clone() => UntypedClone() as vhdReturnExpression;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdReturnExpression();
+		result.Result = Result?.UntypedClone() as vhdExpression;
 		return result;
 	}
 }

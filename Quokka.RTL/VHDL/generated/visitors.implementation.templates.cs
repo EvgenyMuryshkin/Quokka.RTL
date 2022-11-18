@@ -186,6 +186,42 @@ public partial class vhdFileVisitorImplementation
 	{
 	}
 }
+public partial class vhdFunctionVisitorImplementation
+{
+	public override void OnVisit(vhdFunction obj)
+	{
+	}
+}
+public partial class vhdFunctionDeclarationVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionDeclaration obj)
+	{
+	}
+}
+public partial class vhdFunctionImplementationVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionImplementation obj)
+	{
+	}
+}
+public partial class vhdFunctionImplementationBlockVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionImplementationBlock obj)
+	{
+	}
+}
+public partial class vhdFunctionInterfaceVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionInterface obj)
+	{
+	}
+}
+public partial class vhdFunctionPortDeclarationVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionPortDeclaration obj)
+	{
+	}
+}
 public partial class vhdGenericBlockVisitorImplementation
 {
 	public override void OnVisit(vhdGenericBlock obj)
@@ -291,6 +327,12 @@ public partial class vhdRangeVisitorImplementation
 public partial class vhdResizeExpressionVisitorImplementation
 {
 	public override void OnVisit(vhdResizeExpression obj)
+	{
+	}
+}
+public partial class vhdReturnExpressionVisitorImplementation
+{
+	public override void OnVisit(vhdReturnExpression obj)
 	{
 	}
 }

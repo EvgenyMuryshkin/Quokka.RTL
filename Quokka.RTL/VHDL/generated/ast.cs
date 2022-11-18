@@ -79,6 +79,18 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdFile
 	///
+	/// vhdFunction
+	///
+	/// vhdFunctionDeclaration
+	///
+	/// vhdFunctionImplementation
+	///
+	/// vhdFunctionImplementationBlock
+	///
+	/// vhdFunctionInterface
+	///
+	/// vhdFunctionPortDeclaration
+	///
 	/// vhdGenericBlock
 	///
 	/// vhdIdentifier
@@ -114,6 +126,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	/// vhdRange
 	///
 	/// vhdResizeExpression
+	///
+	/// vhdReturnExpression
 	///
 	/// vhdShiftExpression
 	///
@@ -312,6 +326,8 @@ public partial class vhdAggregateOthersConnection : vhdAbstractObject
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
+	// from vhdReturnExpression
+	// ignored vhdAggregateOthersConnection(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -454,7 +470,7 @@ public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration, vhdArchitectu
 	public Int32 Width { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdAssignExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild
+public partial class vhdAssignExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdFunctionImplementationBlockChild, vhdGenericBlockChild
 {
 	public vhdAssignExpression() { }
 	public vhdAssignExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
@@ -624,6 +640,8 @@ public partial class vhdCase : vhdAbstractObject, vhdArchitectureImplementationB
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
+	// from vhdReturnExpression
+	// ignored vhdCase(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -783,6 +801,8 @@ public partial class vhdCaseStatement : vhdAbstractObject, IEnumerable//<vhdGene
 	{
 		this.When = new vhdResizeExpression(Source, Length);
 	}
+	// from vhdReturnExpression
+	// ignored vhdCaseStatement(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -842,7 +862,7 @@ public partial class vhdCastResizeExpression : vhdExpression
 	public vhdExpression Length { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdComment : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
+public partial class vhdComment : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdFunctionImplementationBlockChild, vhdFunctionInterfaceChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdComment() { }
 	public vhdComment(IEnumerable<String> Lines)
@@ -996,6 +1016,8 @@ public partial class vhdConditionalStatement : vhdAbstractObject, IEnumerable//<
 	{
 		this.Condition = new vhdResizeExpression(Source, Length);
 	}
+	// from vhdReturnExpression
+	// ignored vhdConditionalStatement(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -1294,6 +1316,119 @@ public partial class vhdFile : vhdAbstractCollection, IEnumerable//<vhdFileChild
 		Children.Add(typed);
 	}
 }
+[JsonObjectAttribute]
+public partial class vhdFunction : vhdAbstractObject, IEnumerable//<vhdFunctionInterfaceChild>
+{
+	public vhdFunction() { }
+	// Interface single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Interface as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionInterfaceChild child)
+	{
+		Interface.Add(child);
+	}
+	public vhdFunction(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Declaration = new vhdFunctionDeclaration(Name, Type, Width);
+	}
+	public vhdFunction(vhdFunctionDeclaration Declaration)
+	{
+		this.Declaration = Declaration;
+	}
+	public vhdFunctionDeclaration Declaration { get; set; } = new vhdFunctionDeclaration();
+	public vhdFunctionInterface Interface { get; set; } = new vhdFunctionInterface();
+	public vhdFunctionImplementation Implementation { get; set; } = new vhdFunctionImplementation();
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionDeclaration : vhdAbstractObject
+{
+	public vhdFunctionDeclaration() { }
+	public vhdFunctionDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Name = Name;
+		this.Type = Type;
+		this.Width = Width;
+	}
+	public String Name { get; set; }
+	public vhdDataType Type { get; set; }
+	public Int32 Width { get; set; }
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionImplementation : vhdAbstractObject, IEnumerable//<vhdFunctionImplementationBlockChild>
+{
+	public vhdFunctionImplementation() { }
+	// Block single object collection
+	IEnumerator IEnumerable.GetEnumerator() => (Block as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionImplementationBlockChild child)
+	{
+		Block.Add(child);
+	}
+	public vhdFunctionImplementation(vhdFunctionImplementationBlock Block)
+	{
+		this.Block = Block;
+	}
+	public vhdFunctionImplementationBlock Block { get; set; } = new vhdFunctionImplementationBlock();
+}
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdAssignExpression
+/// vhdIf
+/// </summary>
+public interface vhdFunctionImplementationBlockChild
+{
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionImplementationBlock : vhdAbstractCollection, IEnumerable//<vhdFunctionImplementationBlockChild>
+{
+	public vhdFunctionImplementationBlock() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionImplementationBlockChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
+}
+/// <summary>
+/// vhdComment
+/// vhdText
+/// vhdFunctionPortDeclaration
+/// </summary>
+public interface vhdFunctionInterfaceChild
+{
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionInterface : vhdAbstractCollection, IEnumerable//<vhdFunctionInterfaceChild>
+{
+	public vhdFunctionInterface() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionInterfaceChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionPortDeclaration : vhdAbstractObject, vhdFunctionInterfaceChild
+{
+	public vhdFunctionPortDeclaration() { }
+	public vhdFunctionPortDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Name = Name;
+		this.Type = Type;
+		this.Width = Width;
+	}
+	public String Name { get; set; }
+	public vhdDataType Type { get; set; }
+	public Int32 Width { get; set; }
+}
 /// <summary>
 /// vhdGenericBlock
 /// </summary>
@@ -1361,7 +1496,7 @@ public partial class vhdIdentifierExpression : vhdExpression
 	public vhdIdentifier Source { get; set; } = new vhdIdentifier();
 }
 [JsonObjectAttribute]
-public partial class vhdIf : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdConditionalStatement>
+public partial class vhdIf : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdFunctionImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdConditionalStatement>
 {
 	public vhdIf() { }
 	// vhdConditionalStatement single list member
@@ -1581,6 +1716,8 @@ public partial class vhdParenthesizedExpression : vhdExpression
 	{
 		this.Expression = new vhdResizeExpression(Source, Length);
 	}
+	// from vhdReturnExpression
+	// ignored vhdParenthesizedExpression(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -1679,6 +1816,8 @@ public partial class vhdProcedureCall : vhdAbstractObject, vhdArchitectureImplem
 	///
 	/// vhdResizeExpression
 	///
+	/// vhdReturnExpression
+	///
 	/// vhdShiftExpression
 	///
 	/// vhdTernaryExpression
@@ -1738,6 +1877,8 @@ public partial class vhdProcedureCallExpression : vhdExpression, IEnumerable//<v
 	/// vhdProcedureCallExpression
 	///
 	/// vhdResizeExpression
+	///
+	/// vhdReturnExpression
 	///
 	/// vhdShiftExpression
 	///
@@ -1937,6 +2078,8 @@ public partial class vhdRange : vhdAbstractObject, IEnumerable//<vhdExpression>
 	}
 	// from vhdResizeExpression
 	// ignored vhdRange(vhdExpression Source, vhdExpression Length)
+	// from vhdReturnExpression
+	// ignored vhdRange(vhdExpression Result)
 	/// <summary>
 	/// from vhdShiftExpression
 	/// </summary>
@@ -1987,6 +2130,8 @@ public partial class vhdRange : vhdAbstractObject, IEnumerable//<vhdExpression>
 	///
 	/// vhdResizeExpression
 	///
+	/// vhdReturnExpression
+	///
 	/// vhdShiftExpression
 	///
 	/// vhdTernaryExpression
@@ -2007,6 +2152,159 @@ public partial class vhdResizeExpression : vhdExpression
 	}
 	public vhdExpression Source { get; set; }
 	public vhdExpression Length { get; set; }
+}
+[JsonObjectAttribute]
+public partial class vhdReturnExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild
+{
+	public vhdReturnExpression() { }
+	public vhdReturnExpression(vhdExpression Result)
+	{
+		this.Result = Result;
+	}
+	/// <summary>
+	/// from vhdAggregateExpression
+	/// </summary>
+	/// <param name="Aggregate"></param>
+	public vhdReturnExpression(vhdAggregate Aggregate)
+	{
+		this.Result = new vhdAggregateExpression(Aggregate);
+	}
+	/// <summary>
+	/// from vhdAssignExpression
+	/// </summary>
+	/// <param name="Target"></param>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	public vhdReturnExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
+	{
+		this.Result = new vhdAssignExpression(Target, Type, Source);
+	}
+	/// <summary>
+	/// from vhdBinaryValueExpression
+	/// </summary>
+	/// <param name="Value"></param>
+	public vhdReturnExpression(RTLBitArray Value)
+	{
+		this.Result = new vhdBinaryValueExpression(Value);
+	}
+	/// <summary>
+	/// from vhdCastExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	public vhdReturnExpression(vhdCastType Type, vhdExpression Source)
+	{
+		this.Result = new vhdCastExpression(Type, Source);
+	}
+	/// <summary>
+	/// from vhdCastResizeExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
+	public vhdReturnExpression(vhdCastType Type, vhdExpression Source, vhdExpression Length)
+	{
+		this.Result = new vhdCastResizeExpression(Type, Source, Length);
+	}
+	/// <summary>
+	/// from vhdCompareExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdExpression Lhs, vhdCompareType Type, vhdExpression Rhs)
+	{
+		this.Result = new vhdCompareExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vhdIdentifierExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	public vhdReturnExpression(vhdIdentifier Source)
+	{
+		this.Result = new vhdIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vhdLogicExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdExpression Lhs, vhdLogicType Type, vhdExpression Rhs)
+	{
+		this.Result = new vhdLogicExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vhdMathExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdExpression Lhs, vhdMathType Type, vhdExpression Rhs)
+	{
+		this.Result = new vhdMathExpression(Lhs, Type, Rhs);
+	}
+	// from vhdParenthesizedExpression
+	// ignored vhdReturnExpression(vhdExpression Expression)
+	/// <summary>
+	/// from vhdPredefinedAttributeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Attribute"></param>
+	public vhdReturnExpression(vhdExpression Source, vhdPredefinedAttribute Attribute)
+	{
+		this.Result = new vhdPredefinedAttributeExpression(Source, Attribute);
+	}
+	/// <summary>
+	/// from vhdProcedureCallExpression
+	/// </summary>
+	/// <param name="Proc"></param>
+	/// <param name="Parameters"></param>
+	public vhdReturnExpression(String Proc, IEnumerable<vhdExpression> Parameters)
+	{
+		this.Result = new vhdProcedureCallExpression(Proc, Parameters);
+	}
+	/// <summary>
+	/// from vhdResizeExpression
+	/// </summary>
+	/// <param name="Source"></param>
+	/// <param name="Length"></param>
+	public vhdReturnExpression(vhdExpression Source, vhdExpression Length)
+	{
+		this.Result = new vhdResizeExpression(Source, Length);
+	}
+	// from vhdReturnExpression
+	// ignored vhdReturnExpression(vhdExpression Result)
+	/// <summary>
+	/// from vhdShiftExpression
+	/// </summary>
+	/// <param name="Lhs"></param>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdExpression Lhs, vhdShiftType Type, vhdExpression Rhs)
+	{
+		this.Result = new vhdShiftExpression(Lhs, Type, Rhs);
+	}
+	/// <summary>
+	/// from vhdTernaryExpression
+	/// </summary>
+	/// <param name="Condition"></param>
+	/// <param name="Lhs"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdExpression Condition, vhdExpression Lhs, vhdExpression Rhs)
+	{
+		this.Result = new vhdTernaryExpression(Condition, Lhs, Rhs);
+	}
+	/// <summary>
+	/// from vhdUnaryExpression
+	/// </summary>
+	/// <param name="Type"></param>
+	/// <param name="Rhs"></param>
+	public vhdReturnExpression(vhdUnaryType Type, vhdExpression Rhs)
+	{
+		this.Result = new vhdUnaryExpression(Type, Rhs);
+	}
+	public vhdExpression Result { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdShiftExpression : vhdExpression
@@ -2095,7 +2393,7 @@ public partial class vhdTernaryExpression : vhdExpression
 	public vhdExpression Rhs { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdText : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
+public partial class vhdText : vhdAbstractObject, vhdArchitectureDeclarationsChild, vhdArchitectureImplementationBlockChild, vhdEntityInstanceGenericMappingsChild, vhdEntityInstancePortMappingsChild, vhdEntityInterfaceChild, vhdFileChild, vhdFunctionImplementationBlockChild, vhdFunctionInterfaceChild, vhdGenericBlockChild, vhdProcessDeclarationsChild
 {
 	public vhdText() { }
 	public vhdText(IEnumerable<String> Lines)

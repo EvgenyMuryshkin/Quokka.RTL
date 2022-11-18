@@ -232,6 +232,22 @@ public abstract partial class vhdBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vhdReturnExpression
+	public vhdBlock WithReturnExpression(vhdReturnExpression obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdBlock WithReturnExpression(vhdExpression Result)
+	{
+		this.Children.Add(new vhdReturnExpression(Result));
+		return this;
+	}
+	public vhdBlock WithReturnExpression()
+	{
+		this.Children.Add(new vhdReturnExpression());
+		return this;
+	}
 }
 public partial class vhdCase
 {
@@ -498,6 +514,96 @@ public partial class vhdFile
 		return this;
 	}
 }
+public partial class vhdFunction
+{
+}
+public partial class vhdFunctionDeclaration
+{
+}
+public partial class vhdFunctionImplementation
+{
+}
+public partial class vhdFunctionImplementationBlock
+{
+	//vhdComment
+	public vhdFunctionImplementationBlock WithComment(vhdComment obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionImplementationBlock WithComment(params String[] Lines)
+	{
+		this.Children.Add(new vhdComment(Lines));
+		return this;
+	}
+	//vhdText
+	public vhdFunctionImplementationBlock WithText(vhdText obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionImplementationBlock WithText(params String[] Lines)
+	{
+		this.Children.Add(new vhdText(Lines));
+		return this;
+	}
+	//vhdAssignExpression
+	public vhdFunctionImplementationBlock WithAssignExpression(vhdAssignExpression obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionImplementationBlock WithAssignExpression(vhdExpression Target, vhdAssignType Type, vhdExpression Source)
+	{
+		this.Children.Add(new vhdAssignExpression(Target, Type, Source));
+		return this;
+	}
+	//vhdIf
+	public vhdFunctionImplementationBlock WithIf(vhdIf obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+}
+public partial class vhdFunctionInterface
+{
+	//vhdComment
+	public vhdFunctionInterface WithComment(vhdComment obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionInterface WithComment(params String[] Lines)
+	{
+		this.Children.Add(new vhdComment(Lines));
+		return this;
+	}
+	//vhdText
+	public vhdFunctionInterface WithText(vhdText obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionInterface WithText(params String[] Lines)
+	{
+		this.Children.Add(new vhdText(Lines));
+		return this;
+	}
+	//vhdFunctionPortDeclaration
+	public vhdFunctionInterface WithFunctionPortDeclaration(vhdFunctionPortDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionInterface WithFunctionPortDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Children.Add(new vhdFunctionPortDeclaration(Name, Type, Width));
+		return this;
+	}
+}
+public partial class vhdFunctionPortDeclaration
+{
+}
 public partial class vhdGenericBlock
 {
 	//vhdGenericBlock
@@ -628,6 +734,9 @@ public partial class vhdRange
 {
 }
 public partial class vhdResizeExpression
+{
+}
+public partial class vhdReturnExpression
 {
 }
 public partial class vhdShiftExpression

@@ -30,6 +30,7 @@ public enum vhdDataType
 	Unsigned = 0,
 	Signed = 1,
 	StdLogic = 2,
+	Boolean = 3,
 }
 public enum vhdEdgeType
 {

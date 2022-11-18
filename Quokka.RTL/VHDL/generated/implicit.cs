@@ -175,6 +175,13 @@ public partial class vhdAggregateOthersConnection : vhdAbstractObject
 	/// <summary>
 	/// from vhdAggregateOthersConnection
 	/// </summary>
+	public static implicit operator vhdAggregateOthersConnection(vhdReturnExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
 	public static implicit operator vhdAggregateOthersConnection(vhdShiftExpression source)
 	{
 		return new vhdAggregateOthersConnection(source);
@@ -369,6 +376,13 @@ public partial class vhdCase : vhdAbstractObject
 	/// <summary>
 	/// from vhdCase
 	/// </summary>
+	public static implicit operator vhdCase(vhdReturnExpression source)
+	{
+		return new vhdCase(source);
+	}
+	/// <summary>
+	/// from vhdCase
+	/// </summary>
 	public static implicit operator vhdCase(vhdShiftExpression source)
 	{
 		return new vhdCase(source);
@@ -513,6 +527,13 @@ public partial class vhdCaseStatement : vhdAbstractObject
 	/// from vhdCaseStatement
 	/// </summary>
 	public static implicit operator vhdCaseStatement(vhdResizeExpression source)
+	{
+		return new vhdCaseStatement(source);
+	}
+	/// <summary>
+	/// from vhdCaseStatement
+	/// </summary>
+	public static implicit operator vhdCaseStatement(vhdReturnExpression source)
 	{
 		return new vhdCaseStatement(source);
 	}
@@ -681,6 +702,13 @@ public partial class vhdConditionalStatement : vhdAbstractObject
 	/// <summary>
 	/// from vhdConditionalStatement
 	/// </summary>
+	public static implicit operator vhdConditionalStatement(vhdReturnExpression source)
+	{
+		return new vhdConditionalStatement(source);
+	}
+	/// <summary>
+	/// from vhdConditionalStatement
+	/// </summary>
 	public static implicit operator vhdConditionalStatement(vhdShiftExpression source)
 	{
 		return new vhdConditionalStatement(source);
@@ -834,6 +862,38 @@ public abstract partial class vhdExpression : vhdAbstractObject
 public partial class vhdFile : vhdAbstractCollection
 {
 }
+public partial class vhdFunction : vhdAbstractObject
+{
+	/// <summary>
+	/// from vhdFunction
+	/// </summary>
+	public static implicit operator vhdFunction(vhdFunctionDeclaration Declaration)
+	{
+		return new vhdFunction(Declaration);
+	}
+}
+public partial class vhdFunctionDeclaration : vhdAbstractObject
+{
+}
+public partial class vhdFunctionImplementation : vhdAbstractObject
+{
+	/// <summary>
+	/// from vhdFunctionImplementation
+	/// </summary>
+	public static implicit operator vhdFunctionImplementation(vhdFunctionImplementationBlock Block)
+	{
+		return new vhdFunctionImplementation(Block);
+	}
+}
+public partial class vhdFunctionImplementationBlock : vhdAbstractCollection
+{
+}
+public partial class vhdFunctionInterface : vhdAbstractCollection
+{
+}
+public partial class vhdFunctionPortDeclaration : vhdAbstractObject
+{
+}
 public partial class vhdGenericBlock : vhdBlock
 {
 }
@@ -962,6 +1022,9 @@ public partial class vhdRange : vhdAbstractObject
 	}
 }
 public partial class vhdResizeExpression : vhdExpression
+{
+}
+public partial class vhdReturnExpression : vhdExpression
 {
 }
 public partial class vhdShiftExpression : vhdExpression

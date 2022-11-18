@@ -190,6 +190,8 @@ public abstract partial class vhdBlock
 	[JsonIgnore]
 	public IEnumerable<vhdNull> AsNull => Children.OfType<vhdNull>();
 	[JsonIgnore]
+	public IEnumerable<vhdReturnExpression> AsReturnExpression => Children.OfType<vhdReturnExpression>();
+	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdExpression> AsExpression => Children.OfType<vhdExpression>();
@@ -479,6 +481,80 @@ public partial class vhdFile
 		return result;
 	}
 }
+public partial class vhdFunction
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren());
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vhdFunctionDeclaration
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		return result;
+	}
+}
+public partial class vhdFunctionImplementation
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vhdFunctionImplementationBlock
+{
+	[JsonIgnore]
+	public IEnumerable<vhdComment> AsComment => Children.OfType<vhdComment>();
+	[JsonIgnore]
+	public IEnumerable<vhdText> AsText => Children.OfType<vhdText>();
+	[JsonIgnore]
+	public IEnumerable<vhdAssignExpression> AsAssignExpression => Children.OfType<vhdAssignExpression>();
+	[JsonIgnore]
+	public IEnumerable<vhdIf> AsIf => Children.OfType<vhdIf>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
+	[JsonIgnore]
+	public IEnumerable<vhdExpression> AsExpression => Children.OfType<vhdExpression>();
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vhdFunctionInterface
+{
+	[JsonIgnore]
+	public IEnumerable<vhdComment> AsComment => Children.OfType<vhdComment>();
+	[JsonIgnore]
+	public IEnumerable<vhdText> AsText => Children.OfType<vhdText>();
+	[JsonIgnore]
+	public IEnumerable<vhdFunctionPortDeclaration> AsFunctionPortDeclaration => Children.OfType<vhdFunctionPortDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		return result;
+	}
+}
+public partial class vhdFunctionPortDeclaration
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		return result;
+	}
+}
 public partial class vhdGenericBlock
 {
 	[JsonIgnore]
@@ -681,6 +757,15 @@ public partial class vhdResizeExpression
 		var result = new List<vhdAbstractObject>() { this };
 		if (Source != null) result.AddRange(Source.SelfWithChildren());
 		if (Length != null) result.AddRange(Length.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vhdReturnExpression
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Result != null) result.AddRange(Result.SelfWithChildren());
 		return result;
 	}
 }

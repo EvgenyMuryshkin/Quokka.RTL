@@ -4,6 +4,7 @@ using Quokka.RTL.MemoryTemplates.Generic;
 using Quokka.RTL.Verilog;
 using Quokka.RTL.Verilog.Tools;
 using Quokka.RTL.VHDL;
+using Quokka.RTL.VHDL.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,6 +50,19 @@ namespace Quokka.Verilog
 
 namespace Quokka.VHDL
 {
+    [TestClass]
+    public class VHDLGeneratorsTests
+    {
+        VHDLGenerators _generators = new VHDLGenerators();
+
+        [TestMethod]
+        public void Ternary()
+        {
+            var function = _generators.Ternary(byte.MinValue, byte.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+    }
+
     [TestClass]
     public class vhdWriteTests
     {
