@@ -89,6 +89,22 @@ public partial class vhdArchitectureDeclarations
 		this.Children.Add(new vhdArrayTypeDeclaration(Name, Depth, Type, Width));
 		return this;
 	}
+	//vhdFunction
+	public vhdArchitectureDeclarations WithFunction(vhdFunction obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdArchitectureDeclarations WithFunction(vhdFunctionDeclaration Declaration)
+	{
+		this.Children.Add(new vhdFunction(Declaration));
+		return this;
+	}
+	public vhdArchitectureDeclarations WithFunction(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Children.Add(new vhdFunction(Name, Type, Width));
+		return this;
+	}
 }
 public partial class vhdArchitectureImplementation
 {

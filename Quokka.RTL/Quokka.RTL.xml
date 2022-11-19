@@ -1759,6 +1759,7 @@
             vhdDefaultSignal
             vhdLogicSignal
             vhdArrayTypeDeclaration
+            vhdFunction
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdArchitectureImplementation.op_Implicit(Quokka.RTL.VHDL.vhdArchitectureImplementationBlock)~Quokka.RTL.VHDL.vhdArchitectureImplementation">

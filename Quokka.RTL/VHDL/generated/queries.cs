@@ -95,6 +95,8 @@ public partial class vhdArchitectureDeclarations
 	[JsonIgnore]
 	public IEnumerable<vhdArrayTypeDeclaration> AsArrayTypeDeclaration => Children.OfType<vhdArrayTypeDeclaration>();
 	[JsonIgnore]
+	public IEnumerable<vhdFunction> AsFunction => Children.OfType<vhdFunction>();
+	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdNet> AsNet => Children.OfType<vhdNet>();

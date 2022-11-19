@@ -398,6 +398,7 @@ public partial class vhdArchitecture : vhdAbstractObject, vhdFileChild, IEnumera
 /// vhdDefaultSignal
 /// vhdLogicSignal
 /// vhdArrayTypeDeclaration
+/// vhdFunction
 /// </summary>
 public interface vhdArchitectureDeclarationsChild
 {
@@ -1317,7 +1318,7 @@ public partial class vhdFile : vhdAbstractCollection, IEnumerable//<vhdFileChild
 	}
 }
 [JsonObjectAttribute]
-public partial class vhdFunction : vhdAbstractObject, IEnumerable//<vhdFunctionInterfaceChild>
+public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclarationsChild, IEnumerable//<vhdFunctionInterfaceChild>
 {
 	public vhdFunction() { }
 	// Interface single object collection
