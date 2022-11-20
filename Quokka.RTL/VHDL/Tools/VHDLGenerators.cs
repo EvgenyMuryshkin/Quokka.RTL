@@ -16,21 +16,39 @@ namespace Quokka.RTL.VHDL.Tools
                 default: throw new Exception($"Unsupported type in VHDLGenerators: {type}");
             }
         }
+        public vhdSubTypeDeclaration Subtype(RTLBitArray type)
+        {
+            return new vhdSubTypeDeclaration(
+                $"{type.DataType}{type.Size}".ToLower(),
+                Map(type.DataType),
+                type.Size
+            );
+        }
+
         public vhdFunction Ternary(RTLBitArray whenTrue, RTLBitArray whenFalse)
         {
+            var whenTrueType = Subtype(whenTrue);
+            var whenFalseType = Subtype(whenFalse);
+
             var result = new vhdFunction()
             {
                 Declaration =
                 {
                     Name = $"ternary_{whenTrue.DataType}_{whenTrue.Size}".ToLower(),
                     Type = Map(whenTrue.DataType),
-                    Width = whenTrue.Size
+                    Width = whenTrue.Size,
+                    CustomType = whenTrueType.Name
+                },
+                TypeDeclarations =
+                {
+                    whenTrueType,
+                    whenFalseType
                 },
                 Interface =
                 {
                     new vhdFunctionPortDeclaration("condition", vhdDataType.Boolean, 1),
-                    new vhdFunctionPortDeclaration("whenTrue", Map(whenTrue.DataType), whenTrue.Size),
-                    new vhdFunctionPortDeclaration("whenFalse", Map(whenFalse.DataType), whenFalse.Size),
+                    new vhdFunctionCustomPortDeclaration("whenTrue", whenTrueType.Name),
+                    new vhdFunctionCustomPortDeclaration("whenFalse", whenFalseType.Name),
                 },
                 Implementation =
                 {
@@ -47,6 +65,107 @@ namespace Quokka.RTL.VHDL.Tools
                     }
                 }
             };
+
+            return result;
+        }
+
+        public vhdFunction ToBoolean(RTLBitArray source)
+        {
+            if (source.Size == 1)
+            {
+                var result = new vhdFunction()
+                {
+                    Declaration =
+                    {
+                        Name = $"bit_to_boolean".ToLower(),
+                        Type = vhdDataType.Boolean,
+                        Width = 1
+                    },
+                    Interface =
+                    {
+                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), source.Size)
+                    },
+                    Implementation =
+                    {
+                        new vhdReturnExpression(
+                            new vhdCompareExpression(nameof(source), vhdCompareType.NotEqual, new RTLBitArray(0).Resized(1))
+                        )
+                    }
+                };
+
+                return result;
+            }
+            else
+            {
+                var result = new vhdFunction()
+                {
+                    Declaration =
+                    {
+                        Name = $"{source.DataType}_to_boolean".ToLower(),
+                        Type = vhdDataType.Boolean,
+                        Width = 1
+                    },
+                    Interface =
+                    {
+                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), source.Size)
+                    },
+                    Implementation =
+                    {
+                        new vhdReturnExpression(
+                            new vhdCompareExpression(nameof(source), vhdCompareType.NotEqual, new vhdIdentifierExpression("0"))
+                        )
+                    }
+                };
+
+                return result;
+            }
+        }
+
+        public vhdFunction Resize(RTLBitArray source, RTLBitArray target)
+        {
+            var sourceType = Subtype(source);
+            var targetType = Subtype(target);
+
+            var result = new vhdFunction()
+            {
+                Declaration =
+                {
+                    Name = $"resize_{source.DataType}_{source.Size}_{target.Size}".ToLower(),
+                    Type = Map(source.DataType),
+                    Width = target.Size,
+                    CustomType = targetType.Name
+                },
+                TypeDeclarations =
+                {
+                    sourceType, 
+                    targetType,
+                },
+                Interface =
+                {
+                    new vhdFunctionCustomPortDeclaration(nameof(source), sourceType.Name)
+                }
+            };
+
+            if (source.Size == 1)
+            {
+                result.Implementation.Add(
+                    new vhdReturnExpression(
+                    new vhdAggregate()
+                        {
+                            new vhdAggregateBitConnection(0, nameof(source)),
+                            new vhdAggregateOthersConnection(false)
+                        }
+                    )
+                );
+            }
+            else
+            {
+                result.Implementation.Add(
+                    new vhdReturnExpression(
+                        new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString())
+                    )
+                );
+            }
 
             return result;
         }

@@ -13,6 +13,33 @@ public abstract partial class vhdAbstractObject
 }
 public partial class vhdAggregate
 {
+	//vhdAggregateBitConnection
+	public vhdAggregate WithAggregateBitConnection(vhdAggregateBitConnection obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdAggregate WithAggregateBitConnection(Int32 Bit, vhdExpression Value)
+	{
+		this.Children.Add(new vhdAggregateBitConnection(Bit, Value));
+		return this;
+	}
+	//vhdAggregateOthersConnection
+	public vhdAggregate WithAggregateOthersConnection(vhdAggregateOthersConnection obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdAggregate WithAggregateOthersConnection(vhdExpression Expression)
+	{
+		this.Children.Add(new vhdAggregateOthersConnection(Expression));
+		return this;
+	}
+	public vhdAggregate WithAggregateOthersConnection()
+	{
+		this.Children.Add(new vhdAggregateOthersConnection());
+		return this;
+	}
 }
 public partial class vhdAggregateBitConnection
 {
@@ -87,6 +114,17 @@ public partial class vhdArchitectureDeclarations
 	public vhdArchitectureDeclarations WithArrayTypeDeclaration(String Name, Int32 Depth, vhdDataType Type, Int32 Width)
 	{
 		this.Children.Add(new vhdArrayTypeDeclaration(Name, Depth, Type, Width));
+		return this;
+	}
+	//vhdSubTypeDeclaration
+	public vhdArchitectureDeclarations WithSubTypeDeclaration(vhdSubTypeDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdArchitectureDeclarations WithSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Children.Add(new vhdSubTypeDeclaration(Name, Type, Width));
 		return this;
 	}
 	//vhdFunction
@@ -533,6 +571,9 @@ public partial class vhdFile
 public partial class vhdFunction
 {
 }
+public partial class vhdFunctionCustomPortDeclaration
+{
+}
 public partial class vhdFunctionDeclaration
 {
 }
@@ -580,6 +621,22 @@ public partial class vhdFunctionImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
+	//vhdReturnExpression
+	public vhdFunctionImplementationBlock WithReturnExpression(vhdReturnExpression obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionImplementationBlock WithReturnExpression(vhdExpression Result)
+	{
+		this.Children.Add(new vhdReturnExpression(Result));
+		return this;
+	}
+	public vhdFunctionImplementationBlock WithReturnExpression()
+	{
+		this.Children.Add(new vhdReturnExpression());
+		return this;
+	}
 }
 public partial class vhdFunctionInterface
 {
@@ -616,9 +673,45 @@ public partial class vhdFunctionInterface
 		this.Children.Add(new vhdFunctionPortDeclaration(Name, Type, Width));
 		return this;
 	}
+	//vhdFunctionCustomPortDeclaration
+	public vhdFunctionInterface WithFunctionCustomPortDeclaration(vhdFunctionCustomPortDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionInterface WithFunctionCustomPortDeclaration(String Name, String Type)
+	{
+		this.Children.Add(new vhdFunctionCustomPortDeclaration(Name, Type));
+		return this;
+	}
 }
 public partial class vhdFunctionPortDeclaration
 {
+}
+public partial class vhdFunctionTypeDeclarations
+{
+	//vhdArrayTypeDeclaration
+	public vhdFunctionTypeDeclarations WithArrayTypeDeclaration(vhdArrayTypeDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionTypeDeclarations WithArrayTypeDeclaration(String Name, Int32 Depth, vhdDataType Type, Int32 Width)
+	{
+		this.Children.Add(new vhdArrayTypeDeclaration(Name, Depth, Type, Width));
+		return this;
+	}
+	//vhdSubTypeDeclaration
+	public vhdFunctionTypeDeclarations WithSubTypeDeclaration(vhdSubTypeDeclaration obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionTypeDeclarations WithSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Children.Add(new vhdSubTypeDeclaration(Name, Type, Width));
+		return this;
+	}
 }
 public partial class vhdGenericBlock
 {
@@ -762,6 +855,9 @@ public partial class vhdSimpleForLoop
 {
 }
 public partial class vhdStandardEntityPort
+{
+}
+public partial class vhdSubTypeDeclaration
 {
 }
 public partial class vhdSyncBlock

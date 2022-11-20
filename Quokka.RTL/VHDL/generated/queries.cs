@@ -21,6 +21,14 @@ public abstract partial class vhdAbstractObject
 }
 public partial class vhdAggregate
 {
+	[JsonIgnore]
+	public IEnumerable<vhdAggregateBitConnection> AsAggregateBitConnection => Children.OfType<vhdAggregateBitConnection>();
+	[JsonIgnore]
+	public IEnumerable<vhdAggregateOthersConnection> AsAggregateOthersConnection => Children.OfType<vhdAggregateOthersConnection>();
+	[JsonIgnore]
+	public IEnumerable<vhdAggregateConnection> AsAggregateConnection => Children.OfType<vhdAggregateConnection>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{
 		var result = new List<vhdAbstractObject>() { this };
@@ -94,6 +102,8 @@ public partial class vhdArchitectureDeclarations
 	public IEnumerable<vhdLogicSignal> AsLogicSignal => Children.OfType<vhdLogicSignal>();
 	[JsonIgnore]
 	public IEnumerable<vhdArrayTypeDeclaration> AsArrayTypeDeclaration => Children.OfType<vhdArrayTypeDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdSubTypeDeclaration> AsSubTypeDeclaration => Children.OfType<vhdSubTypeDeclaration>();
 	[JsonIgnore]
 	public IEnumerable<vhdFunction> AsFunction => Children.OfType<vhdFunction>();
 	[JsonIgnore]
@@ -489,8 +499,17 @@ public partial class vhdFunction
 	{
 		var result = new List<vhdAbstractObject>() { this };
 		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren());
+		if (TypeDeclarations != null) result.AddRange(TypeDeclarations.SelfWithChildren());
 		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
 		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		return result;
+	}
+}
+public partial class vhdFunctionCustomPortDeclaration
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
@@ -522,6 +541,8 @@ public partial class vhdFunctionImplementationBlock
 	[JsonIgnore]
 	public IEnumerable<vhdIf> AsIf => Children.OfType<vhdIf>();
 	[JsonIgnore]
+	public IEnumerable<vhdReturnExpression> AsReturnExpression => Children.OfType<vhdReturnExpression>();
+	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdExpression> AsExpression => Children.OfType<vhdExpression>();
@@ -541,6 +562,8 @@ public partial class vhdFunctionInterface
 	[JsonIgnore]
 	public IEnumerable<vhdFunctionPortDeclaration> AsFunctionPortDeclaration => Children.OfType<vhdFunctionPortDeclaration>();
 	[JsonIgnore]
+	public IEnumerable<vhdFunctionCustomPortDeclaration> AsFunctionCustomPortDeclaration => Children.OfType<vhdFunctionCustomPortDeclaration>();
+	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{
@@ -554,6 +577,23 @@ public partial class vhdFunctionPortDeclaration
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{
 		var result = new List<vhdAbstractObject>() { this };
+		return result;
+	}
+}
+public partial class vhdFunctionTypeDeclarations
+{
+	[JsonIgnore]
+	public IEnumerable<vhdArrayTypeDeclaration> AsArrayTypeDeclaration => Children.OfType<vhdArrayTypeDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdSubTypeDeclaration> AsSubTypeDeclaration => Children.OfType<vhdSubTypeDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdTypeDeclaration> AsTypeDeclaration => Children.OfType<vhdTypeDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
 		return result;
 	}
 }
@@ -791,6 +831,14 @@ public partial class vhdSimpleForLoop
 	}
 }
 public partial class vhdStandardEntityPort
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	{
+		var result = new List<vhdAbstractObject>() { this };
+		return result;
+	}
+}
+public partial class vhdSubTypeDeclaration
 {
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
 	{

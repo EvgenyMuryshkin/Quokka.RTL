@@ -192,6 +192,12 @@ public partial class vhdFunctionVisitorImplementation
 	{
 	}
 }
+public partial class vhdFunctionCustomPortDeclarationVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionCustomPortDeclaration obj)
+	{
+	}
+}
 public partial class vhdFunctionDeclarationVisitorImplementation
 {
 	public override void OnVisit(vhdFunctionDeclaration obj)
@@ -219,6 +225,12 @@ public partial class vhdFunctionInterfaceVisitorImplementation
 public partial class vhdFunctionPortDeclarationVisitorImplementation
 {
 	public override void OnVisit(vhdFunctionPortDeclaration obj)
+	{
+	}
+}
+public partial class vhdFunctionTypeDeclarationsVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionTypeDeclarations obj)
 	{
 	}
 }
@@ -351,6 +363,12 @@ public partial class vhdSimpleForLoopVisitorImplementation
 public partial class vhdStandardEntityPortVisitorImplementation
 {
 	public override void OnVisit(vhdStandardEntityPort obj)
+	{
+	}
+}
+public partial class vhdSubTypeDeclarationVisitorImplementation
+{
+	public override void OnVisit(vhdSubTypeDeclaration obj)
 	{
 	}
 }

@@ -28,11 +28,165 @@ public abstract partial class vhdAbstractObject
 public partial class vhdAggregate : vhdAbstractCollection
 {
 }
-public partial class vhdAggregateBitConnection : vhdAbstractObject
+public partial class vhdAggregateBitConnection : vhdAggregateConnection
 {
 }
 public abstract partial class vhdAggregateConnection : vhdAbstractObject
 {
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdAggregateExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdAggregate Aggregate)
+	{
+		return new vhdAggregateOthersConnection(new vhdAggregateExpression(Aggregate));
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdAssignExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdBinaryValueExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(RTLBitArray Value)
+	{
+		return new vhdAggregateOthersConnection(new vhdBinaryValueExpression(Value));
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdCastExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdCastResizeExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdCompareExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdIdentifierExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(String Name)
+	{
+		return new vhdAggregateOthersConnection(new vhdIdentifierExpression(new vhdIdentifier(Name)));
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdIdentifier Source)
+	{
+		return new vhdAggregateOthersConnection(new vhdIdentifierExpression(Source));
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdLogicExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdMathExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdOthersExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdParenthesizedExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdPredefinedAttributeExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdProcedureCallExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdResizeExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdReturnExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdShiftExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdTernaryExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
+	/// <summary>
+	/// from vhdAggregateOthersConnection
+	/// </summary>
+	public static implicit operator vhdAggregateConnection(vhdUnaryExpression source)
+	{
+		return new vhdAggregateOthersConnection(source);
+	}
 }
 public partial class vhdAggregateExpression : vhdExpression
 {
@@ -44,7 +198,7 @@ public partial class vhdAggregateExpression : vhdExpression
 		return new vhdAggregateExpression(Aggregate);
 	}
 }
-public partial class vhdAggregateOthersConnection : vhdAbstractObject
+public partial class vhdAggregateOthersConnection : vhdAggregateConnection
 {
 	/// <summary>
 	/// from vhdAggregateOthersConnection
@@ -872,6 +1026,9 @@ public partial class vhdFunction : vhdAbstractObject
 		return new vhdFunction(Declaration);
 	}
 }
+public partial class vhdFunctionCustomPortDeclaration : vhdAbstractObject
+{
+}
 public partial class vhdFunctionDeclaration : vhdAbstractObject
 {
 }
@@ -892,6 +1049,9 @@ public partial class vhdFunctionInterface : vhdAbstractCollection
 {
 }
 public partial class vhdFunctionPortDeclaration : vhdAbstractObject
+{
+}
+public partial class vhdFunctionTypeDeclarations : vhdAbstractCollection
 {
 }
 public partial class vhdGenericBlock : vhdBlock
@@ -1034,6 +1194,9 @@ public partial class vhdSimpleForLoop : vhdAbstractObject
 {
 }
 public partial class vhdStandardEntityPort : vhdEntityPort
+{
+}
+public partial class vhdSubTypeDeclaration : vhdTypeDeclaration
 {
 }
 public partial class vhdSyncBlock : vhdAbstractObject

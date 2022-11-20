@@ -25,6 +25,11 @@ namespace Quokka.RTL.Tools
             return string.Join(", ", source.Where(s => s.HasValue()));
         }
 
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+        {
+            return new HashSet<T>(source);
+        }
+
         public static string StringJoin(this IEnumerable<string> source, string separator)
         {
             return string.Join(separator, source.Where(s => s.HasValue()));

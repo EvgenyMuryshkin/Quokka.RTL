@@ -61,6 +61,34 @@ namespace Quokka.VHDL
             var function = _generators.Ternary(byte.MinValue, byte.MinValue);
             var code = vhdVHDLWriter.WriteObject(function);
         }
+
+        [TestMethod]
+        public void Resize_Bit()
+        {
+            var function = _generators.Resize(false, byte.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+
+        [TestMethod]
+        public void Resize_Byte()
+        {
+            var function = _generators.Resize(byte.MinValue, ushort.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+
+        [TestMethod]
+        public void BitToBoolean()
+        {
+            var function = _generators.ToBoolean(false);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+
+        [TestMethod]
+        public void ByteToBoolean()
+        {
+            var function = _generators.ToBoolean(byte.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
     }
 
     [TestClass]

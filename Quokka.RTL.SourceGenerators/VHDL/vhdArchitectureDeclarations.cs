@@ -4,6 +4,7 @@
     [FluentType(typeof(vhdText))]
     [FluentType(typeof(vhdNet))]
     [FluentType(typeof(vhdArrayTypeDeclaration))]
+    [FluentType(typeof(vhdSubTypeDeclaration))]
     [FluentType(typeof(vhdFunction))]
     public class vhdArchitectureDeclarations : vhdAbstractCollection
     {

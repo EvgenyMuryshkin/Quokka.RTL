@@ -5,5 +5,7 @@
         public string Name { get; set; }
         public vhdDataType Type { get; set; }
         public int Width { get; set; }
+        [NoCtorInit]
+        public string CustomType { get; set; }
     }
 }

@@ -414,8 +414,20 @@ public partial class vhdFunction
 	{
 		var result = new vhdFunction();
 		result.Declaration = Declaration?.UntypedClone() as vhdFunctionDeclaration;
+		result.TypeDeclarations = TypeDeclarations?.UntypedClone() as vhdFunctionTypeDeclarations;
 		result.Interface = Interface?.UntypedClone() as vhdFunctionInterface;
 		result.Implementation = Implementation?.UntypedClone() as vhdFunctionImplementation;
+		return result;
+	}
+}
+public partial class vhdFunctionCustomPortDeclaration
+{
+	public vhdFunctionCustomPortDeclaration Clone() => UntypedClone() as vhdFunctionCustomPortDeclaration;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionCustomPortDeclaration();
+		result.Name = Name;
+		result.Type = Type;
 		return result;
 	}
 }
@@ -428,6 +440,7 @@ public partial class vhdFunctionDeclaration
 		result.Name = Name;
 		result.Type = Type;
 		result.Width = Width;
+		result.CustomType = CustomType;
 		return result;
 	}
 }
@@ -470,6 +483,16 @@ public partial class vhdFunctionPortDeclaration
 		result.Name = Name;
 		result.Type = Type;
 		result.Width = Width;
+		return result;
+	}
+}
+public partial class vhdFunctionTypeDeclarations
+{
+	public vhdFunctionTypeDeclarations Clone() => UntypedClone() as vhdFunctionTypeDeclarations;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionTypeDeclarations();
+		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
 		return result;
 	}
 }
@@ -716,6 +739,18 @@ public partial class vhdStandardEntityPort
 		result.Sign = Sign;
 		result.Width = Width;
 		result.Initializer = Initializer;
+		return result;
+	}
+}
+public partial class vhdSubTypeDeclaration
+{
+	public vhdSubTypeDeclaration Clone() => UntypedClone() as vhdSubTypeDeclaration;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdSubTypeDeclaration();
+		result.Name = Name;
+		result.Type = Type;
+		result.Width = Width;
 		return result;
 	}
 }

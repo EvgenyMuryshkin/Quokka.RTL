@@ -3,7 +3,7 @@ using System;
 
 namespace Quokka.RTL.VHDL.Implementation
 {
-	public partial class vhdArrayTypeDeclarationVisitorImplementation
+    public partial class vhdArrayTypeDeclarationVisitorImplementation
 	{
 		public override void OnVisit(vhdArrayTypeDeclaration obj)
 		{

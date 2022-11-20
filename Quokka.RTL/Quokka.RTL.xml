@@ -1448,6 +1448,8 @@
             
              vhdFunction
             
+             vhdFunctionCustomPortDeclaration
+            
              vhdFunctionDeclaration
             
              vhdFunctionImplementation
@@ -1457,6 +1459,8 @@
              vhdFunctionInterface
             
              vhdFunctionPortDeclaration
+            
+             vhdFunctionTypeDeclarations
             
              vhdGenericBlock
             
@@ -1502,6 +1506,8 @@
             
              vhdStandardEntityPort
             
+             vhdSubTypeDeclaration
+            
              vhdSyncBlock
             
              vhdTernaryExpression
@@ -1526,6 +1532,118 @@
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdAggregateChild">
             <summary>
+            vhdAggregateBitConnection
+            vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdAggregateExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdAssignExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdBinaryValueExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.RTLBitArray)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdCastExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdCastResizeExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdCompareExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdIdentifierExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdMathExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdOthersExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdParenthesizedExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdPredefinedAttributeExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdProcedureCallExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdResizeExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdReturnExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdShiftExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdTernaryExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdUnaryExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateExpression.op_Implicit(Quokka.RTL.VHDL.vhdAggregate)~Quokka.RTL.VHDL.vhdAggregateExpression">
@@ -1759,6 +1877,7 @@
             vhdDefaultSignal
             vhdLogicSignal
             vhdArrayTypeDeclaration
+            vhdSubTypeDeclaration
             vhdFunction
             </summary>
         </member>
@@ -2539,6 +2658,7 @@
             vhdText
             vhdAssignExpression
             vhdIf
+            vhdReturnExpression
             </summary>
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdFunctionInterfaceChild">
@@ -2546,6 +2666,13 @@
             vhdComment
             vhdText
             vhdFunctionPortDeclaration
+            vhdFunctionCustomPortDeclaration
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdFunctionTypeDeclarationsChild">
+            <summary>
+            vhdArrayTypeDeclaration
+            vhdSubTypeDeclaration
             </summary>
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdGenericBlockChild">

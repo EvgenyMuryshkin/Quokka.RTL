@@ -29,7 +29,10 @@ namespace Quokka.RTL.Verilog.Tools
                 result.Implementation.Block.WithAssign(
                     result.Declaration.Name,
                     vlgAssignType.Equal,
-                    new vlgIdentifierExpression(nameof(source), new vlgRange(new vlgIntegerExpression(target.Size - 1), new vlgIntegerExpression(0)))
+                    new vlgIdentifierExpression(
+                        nameof(source), 
+                        new vlgRange(new vlgIntegerExpression(target.Size - 1), new vlgIntegerExpression(0))
+                    )
                 );
             }
             else if (extensionSize > 0)
@@ -43,7 +46,10 @@ namespace Quokka.RTL.Verilog.Tools
                             new vlgAggregateExpression(
                                 new vlgSizedAggregateExpression(
                                     extensionSize, 
-                                    new vlgIdentifierExpression(nameof(source), new vlgRange(new vlgIntegerExpression(source.Size - 1)))
+                                    new vlgIdentifierExpression(
+                                        nameof(source), 
+                                        new vlgRange(new vlgIntegerExpression(source.Size - 1))
+                                    )
                                 ),
                                 nameof(source)
                             )
@@ -54,7 +60,10 @@ namespace Quokka.RTL.Verilog.Tools
                             result.Declaration.Name,
                             vlgAssignType.Equal,
                             new vlgAggregateExpression(
-                                new vlgSizedAggregateExpression(extensionSize, new vlgBinaryValueExpression(false)),
+                                new vlgSizedAggregateExpression(
+                                    extensionSize, 
+                                    new vlgBinaryValueExpression(false)
+                                ),
                                 nameof(source)
                             )
                         );

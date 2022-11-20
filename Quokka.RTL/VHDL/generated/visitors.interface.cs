@@ -36,11 +36,13 @@ public interface vhdEntityInstancePortMappingsVisitorInterface : vhdVisitorInter
 public interface vhdEntityInterfaceVisitorInterface : vhdVisitorInterface<vhdEntityInterface> { }
 public interface vhdFileVisitorInterface : vhdVisitorInterface<vhdFile> { }
 public interface vhdFunctionVisitorInterface : vhdVisitorInterface<vhdFunction> { }
+public interface vhdFunctionCustomPortDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionCustomPortDeclaration> { }
 public interface vhdFunctionDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionDeclaration> { }
 public interface vhdFunctionImplementationVisitorInterface : vhdVisitorInterface<vhdFunctionImplementation> { }
 public interface vhdFunctionImplementationBlockVisitorInterface : vhdVisitorInterface<vhdFunctionImplementationBlock> { }
 public interface vhdFunctionInterfaceVisitorInterface : vhdVisitorInterface<vhdFunctionInterface> { }
 public interface vhdFunctionPortDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionPortDeclaration> { }
+public interface vhdFunctionTypeDeclarationsVisitorInterface : vhdVisitorInterface<vhdFunctionTypeDeclarations> { }
 public interface vhdGenericBlockVisitorInterface : vhdVisitorInterface<vhdGenericBlock> { }
 public interface vhdIdentifierVisitorInterface : vhdVisitorInterface<vhdIdentifier> { }
 public interface vhdIdentifierExpressionVisitorInterface : vhdVisitorInterface<vhdIdentifierExpression> { }
@@ -63,6 +65,7 @@ public interface vhdReturnExpressionVisitorInterface : vhdVisitorInterface<vhdRe
 public interface vhdShiftExpressionVisitorInterface : vhdVisitorInterface<vhdShiftExpression> { }
 public interface vhdSimpleForLoopVisitorInterface : vhdVisitorInterface<vhdSimpleForLoop> { }
 public interface vhdStandardEntityPortVisitorInterface : vhdVisitorInterface<vhdStandardEntityPort> { }
+public interface vhdSubTypeDeclarationVisitorInterface : vhdVisitorInterface<vhdSubTypeDeclaration> { }
 public interface vhdSyncBlockVisitorInterface : vhdVisitorInterface<vhdSyncBlock> { }
 public interface vhdTernaryExpressionVisitorInterface : vhdVisitorInterface<vhdTernaryExpression> { }
 public interface vhdTextVisitorInterface : vhdVisitorInterface<vhdText> { }

@@ -81,6 +81,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdFunction
 	///
+	/// vhdFunctionCustomPortDeclaration
+	///
 	/// vhdFunctionDeclaration
 	///
 	/// vhdFunctionImplementation
@@ -90,6 +92,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	/// vhdFunctionInterface
 	///
 	/// vhdFunctionPortDeclaration
+	///
+	/// vhdFunctionTypeDeclarations
 	///
 	/// vhdGenericBlock
 	///
@@ -135,6 +139,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdStandardEntityPort
 	///
+	/// vhdSubTypeDeclaration
+	///
 	/// vhdSyncBlock
 	///
 	/// vhdTernaryExpression
@@ -154,6 +160,8 @@ public abstract partial class vhdAbstractObject
 	public vhdAbstractObject() { }
 }
 /// <summary>
+/// vhdAggregateBitConnection
+/// vhdAggregateOthersConnection
 /// </summary>
 public interface vhdAggregateChild
 {
@@ -173,7 +181,7 @@ public partial class vhdAggregate : vhdAbstractCollection, IEnumerable//<vhdAggr
 	}
 }
 [JsonObjectAttribute]
-public partial class vhdAggregateBitConnection : vhdAbstractObject
+public partial class vhdAggregateBitConnection : vhdAggregateConnection, vhdAggregateChild
 {
 	public vhdAggregateBitConnection() { }
 	public vhdAggregateBitConnection(Int32 Bit, vhdExpression Value)
@@ -207,7 +215,7 @@ public partial class vhdAggregateExpression : vhdExpression, IEnumerable//<vhdAg
 	public vhdAggregate Aggregate { get; set; } = new vhdAggregate();
 }
 [JsonObjectAttribute]
-public partial class vhdAggregateOthersConnection : vhdAbstractObject
+public partial class vhdAggregateOthersConnection : vhdAggregateConnection, vhdAggregateChild
 {
 	public vhdAggregateOthersConnection() { }
 	public vhdAggregateOthersConnection(vhdExpression Expression)
@@ -398,6 +406,7 @@ public partial class vhdArchitecture : vhdAbstractObject, vhdFileChild, IEnumera
 /// vhdDefaultSignal
 /// vhdLogicSignal
 /// vhdArrayTypeDeclaration
+/// vhdSubTypeDeclaration
 /// vhdFunction
 /// </summary>
 public interface vhdArchitectureDeclarationsChild
@@ -456,7 +465,7 @@ public partial class vhdArchitectureImplementationBlock : vhdBlock, IEnumerable/
 	}
 }
 [JsonObjectAttribute]
-public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
+public partial class vhdArrayTypeDeclaration : vhdTypeDeclaration, vhdArchitectureDeclarationsChild, vhdFunctionTypeDeclarationsChild, vhdProcessDeclarationsChild
 {
 	public vhdArrayTypeDeclaration() { }
 	public vhdArrayTypeDeclaration(String Name, Int32 Depth, vhdDataType Type, Int32 Width)
@@ -1318,16 +1327,9 @@ public partial class vhdFile : vhdAbstractCollection, IEnumerable//<vhdFileChild
 	}
 }
 [JsonObjectAttribute]
-public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclarationsChild, IEnumerable//<vhdFunctionInterfaceChild>
+public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclarationsChild
 {
 	public vhdFunction() { }
-	// Interface single object collection
-	IEnumerator IEnumerable.GetEnumerator() => (Interface as IEnumerable).GetEnumerator();
-	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
-	public void Add(vhdFunctionInterfaceChild child)
-	{
-		Interface.Add(child);
-	}
 	public vhdFunction(String Name, vhdDataType Type, Int32 Width)
 	{
 		this.Declaration = new vhdFunctionDeclaration(Name, Type, Width);
@@ -1337,8 +1339,21 @@ public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclaration
 		this.Declaration = Declaration;
 	}
 	public vhdFunctionDeclaration Declaration { get; set; } = new vhdFunctionDeclaration();
+	public vhdFunctionTypeDeclarations TypeDeclarations { get; set; } = new vhdFunctionTypeDeclarations();
 	public vhdFunctionInterface Interface { get; set; } = new vhdFunctionInterface();
 	public vhdFunctionImplementation Implementation { get; set; } = new vhdFunctionImplementation();
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionCustomPortDeclaration : vhdAbstractObject, vhdFunctionInterfaceChild
+{
+	public vhdFunctionCustomPortDeclaration() { }
+	public vhdFunctionCustomPortDeclaration(String Name, String Type)
+	{
+		this.Name = Name;
+		this.Type = Type;
+	}
+	public String Name { get; set; }
+	public String Type { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdFunctionDeclaration : vhdAbstractObject
@@ -1353,6 +1368,7 @@ public partial class vhdFunctionDeclaration : vhdAbstractObject
 	public String Name { get; set; }
 	public vhdDataType Type { get; set; }
 	public Int32 Width { get; set; }
+	public String CustomType { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdFunctionImplementation : vhdAbstractObject, IEnumerable//<vhdFunctionImplementationBlockChild>
@@ -1376,6 +1392,7 @@ public partial class vhdFunctionImplementation : vhdAbstractObject, IEnumerable/
 /// vhdText
 /// vhdAssignExpression
 /// vhdIf
+/// vhdReturnExpression
 /// </summary>
 public interface vhdFunctionImplementationBlockChild
 {
@@ -1398,6 +1415,7 @@ public partial class vhdFunctionImplementationBlock : vhdAbstractCollection, IEn
 /// vhdComment
 /// vhdText
 /// vhdFunctionPortDeclaration
+/// vhdFunctionCustomPortDeclaration
 /// </summary>
 public interface vhdFunctionInterfaceChild
 {
@@ -1429,6 +1447,27 @@ public partial class vhdFunctionPortDeclaration : vhdAbstractObject, vhdFunction
 	public String Name { get; set; }
 	public vhdDataType Type { get; set; }
 	public Int32 Width { get; set; }
+}
+/// <summary>
+/// vhdArrayTypeDeclaration
+/// vhdSubTypeDeclaration
+/// </summary>
+public interface vhdFunctionTypeDeclarationsChild
+{
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionTypeDeclarations : vhdAbstractCollection, IEnumerable//<vhdFunctionTypeDeclarationsChild>
+{
+	public vhdFunctionTypeDeclarations() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionTypeDeclarationsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
 }
 /// <summary>
 /// vhdGenericBlock
@@ -2155,7 +2194,7 @@ public partial class vhdResizeExpression : vhdExpression
 	public vhdExpression Length { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdReturnExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild
+public partial class vhdReturnExpression : vhdExpression, vhdArchitectureImplementationBlockChild, vhdFunctionImplementationBlockChild, vhdGenericBlockChild
 {
 	public vhdReturnExpression() { }
 	public vhdReturnExpression(vhdExpression Result)
@@ -2358,6 +2397,19 @@ public partial class vhdStandardEntityPort : vhdEntityPort, vhdEntityInterfaceCh
 	public vhdDataType Sign { get; set; }
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
+}
+[JsonObjectAttribute]
+public partial class vhdSubTypeDeclaration : vhdTypeDeclaration, vhdArchitectureDeclarationsChild, vhdFunctionTypeDeclarationsChild
+{
+	public vhdSubTypeDeclaration() { }
+	public vhdSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	{
+		this.Name = Name;
+		this.Type = Type;
+		this.Width = Width;
+	}
+	public vhdDataType Type { get; set; }
+	public Int32 Width { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdSyncBlock : vhdAbstractObject, vhdArchitectureImplementationBlockChild, vhdGenericBlockChild, IEnumerable//<vhdGenericBlockChild>
