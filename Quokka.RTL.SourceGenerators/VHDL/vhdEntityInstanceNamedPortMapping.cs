@@ -4,5 +4,6 @@
     {
         public vhdIdentifier Internal { get; set; }
         public vhdExpression External { get; set; }
+        public vhdPortDirection Direction { get; set; }
     }
 }

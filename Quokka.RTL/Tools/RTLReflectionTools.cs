@@ -48,18 +48,12 @@ namespace Quokka.RTL.Tools
 
         public static bool TryResolveTuple(Type candidate, out List<Type> types)
         {
-            if (candidate.IsConstructedGenericType)
-            {
-                var generic = candidate.GetGenericTypeDefinition();
-                if (generic.Name.StartsWith(nameof(ValueTuple)))
-                {
-                    types = candidate.GetGenericArguments().ToList();
-                    return true;
-                }
-            }
-
             types = null;
-            return false;
+            if (!candidate.IsTuple())
+                return false;
+
+            types = candidate.GetGenericArguments().ToList();
+            return true;
         }
 
         public static List<MemberInfo> SerializableMembers(Type type, bool throwIfNotSerializable = false)

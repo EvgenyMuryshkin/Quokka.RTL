@@ -24,6 +24,7 @@ public interface vhdCastExpressionVisitorInterface : vhdVisitorInterface<vhdCast
 public interface vhdCastResizeExpressionVisitorInterface : vhdVisitorInterface<vhdCastResizeExpression> { }
 public interface vhdCommentVisitorInterface : vhdVisitorInterface<vhdComment> { }
 public interface vhdCompareExpressionVisitorInterface : vhdVisitorInterface<vhdCompareExpression> { }
+public interface vhdComponentInstanceVisitorInterface : vhdVisitorInterface<vhdComponentInstance> { }
 public interface vhdConditionalStatementVisitorInterface : vhdVisitorInterface<vhdConditionalStatement> { }
 public interface vhdCustomEntityPortVisitorInterface : vhdVisitorInterface<vhdCustomEntityPort> { }
 public interface vhdDefaultSignalVisitorInterface : vhdVisitorInterface<vhdDefaultSignal> { }

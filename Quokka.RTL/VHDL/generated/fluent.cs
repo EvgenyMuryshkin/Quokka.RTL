@@ -160,6 +160,17 @@ public partial class vhdArchitectureImplementationBlock
 		this.Children.Add(new vhdEntityInstance(Name, Type));
 		return this;
 	}
+	//vhdComponentInstance
+	public vhdArchitectureImplementationBlock WithComponentInstance(vhdComponentInstance obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdArchitectureImplementationBlock WithComponentInstance(String Name, String Type)
+	{
+		this.Children.Add(new vhdComponentInstance(Name, Type));
+		return this;
+	}
 	//vhdGenericBlock
 	public vhdArchitectureImplementationBlock WithGenericBlock(vhdGenericBlock obj)
 	{
@@ -321,6 +332,9 @@ public partial class vhdComment
 public partial class vhdCompareExpression
 {
 }
+public partial class vhdComponentInstance
+{
+}
 public partial class vhdConditionalStatement
 {
 }
@@ -429,9 +443,9 @@ public partial class vhdEntityInstancePortMappings
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdEntityInstancePortMappings WithEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External)
+	public vhdEntityInstancePortMappings WithEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External, vhdPortDirection Direction)
 	{
-		this.Children.Add(new vhdEntityInstanceNamedPortMapping(Internal, External));
+		this.Children.Add(new vhdEntityInstanceNamedPortMapping(Internal, External, Direction));
 		return this;
 	}
 }

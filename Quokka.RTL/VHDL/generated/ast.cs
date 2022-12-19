@@ -49,6 +49,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdCompareExpression
 	///
+	/// vhdComponentInstance
+	///
 	/// vhdConditionalStatement
 	///
 	/// vhdCustomDataType
@@ -445,6 +447,7 @@ public partial class vhdArchitectureImplementation : vhdAbstractObject, IEnumera
 }
 /// <summary>
 /// vhdEntityInstance
+/// vhdComponentInstance
 /// vhdGenericBlock
 /// </summary>
 public interface vhdArchitectureImplementationBlockChild
@@ -900,6 +903,20 @@ public partial class vhdCompareExpression : vhdExpression
 	public vhdExpression Rhs { get; set; }
 }
 [JsonObjectAttribute]
+public partial class vhdComponentInstance : vhdAbstractObject, vhdArchitectureImplementationBlockChild
+{
+	public vhdComponentInstance() { }
+	public vhdComponentInstance(String Name, String Type)
+	{
+		this.Name = Name;
+		this.Type = Type;
+	}
+	public String Name { get; set; }
+	public String Type { get; set; }
+	public vhdEntityInstanceGenericMappings GenericMappings { get; set; } = new vhdEntityInstanceGenericMappings();
+	public vhdEntityInstancePortMappings PortMappings { get; set; } = new vhdEntityInstancePortMappings();
+}
+[JsonObjectAttribute]
 public partial class vhdConditionalStatement : vhdAbstractObject, IEnumerable//<vhdGenericBlockChild>
 {
 	public vhdConditionalStatement() { }
@@ -1225,13 +1242,15 @@ public partial class vhdEntityInstanceNamedGenericMapping : vhdEntityInstanceGen
 public partial class vhdEntityInstanceNamedPortMapping : vhdEntityInstancePortMapping, vhdEntityInstancePortMappingsChild
 {
 	public vhdEntityInstanceNamedPortMapping() { }
-	public vhdEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External)
+	public vhdEntityInstanceNamedPortMapping(vhdIdentifier Internal, vhdExpression External, vhdPortDirection Direction)
 	{
 		this.Internal = Internal;
 		this.External = External;
+		this.Direction = Direction;
 	}
 	public vhdIdentifier Internal { get; set; } = new vhdIdentifier();
 	public vhdExpression External { get; set; }
+	public vhdPortDirection Direction { get; set; }
 }
 [JsonObjectAttribute]
 public abstract partial class vhdEntityInstancePortMapping : vhdAbstractObject
@@ -1488,6 +1507,7 @@ public partial class vhdGenericBlock : vhdBlock, vhdArchitectureImplementationBl
 		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
 		Children.Add(typed);
 	}
+	public Boolean IsDefaultValuesAssign { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdIdentifier : vhdAbstractObject, IEnumerable//<vhdRange>

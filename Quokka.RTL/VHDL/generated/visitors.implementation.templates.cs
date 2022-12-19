@@ -120,6 +120,12 @@ public partial class vhdCompareExpressionVisitorImplementation
 	{
 	}
 }
+public partial class vhdComponentInstanceVisitorImplementation
+{
+	public override void OnVisit(vhdComponentInstance obj)
+	{
+	}
+}
 public partial class vhdConditionalStatementVisitorImplementation
 {
 	public override void OnVisit(vhdConditionalStatement obj)

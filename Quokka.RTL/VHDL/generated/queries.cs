@@ -8,16 +8,17 @@ using Quokka.RTL.Tools;
 using Newtonsoft.Json;
 public abstract partial class vhdAbstractCollection
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vhdAbstractObject
 {
-	public abstract IEnumerable<vhdAbstractObject> SelfWithChildren();
+	public abstract IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null);
 }
 public partial class vhdAggregate
 {
@@ -29,64 +30,71 @@ public partial class vhdAggregate
 	public IEnumerable<vhdAggregateConnection> AsAggregateConnection => Children.OfType<vhdAggregateConnection>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdAggregateBitConnection
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Value != null) result.AddRange(Value.SelfWithChildren());
+		if (Value != null) result.AddRange(Value.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vhdAggregateConnection
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdAggregateExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Aggregate != null) result.AddRange(Aggregate.SelfWithChildren());
+		if (Aggregate != null) result.AddRange(Aggregate.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdAggregateOthersConnection
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdAlias
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdArchitecture
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Declarations != null) result.AddRange(Declarations.SelfWithChildren());
-		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		if (Declarations != null) result.AddRange(Declarations.SelfWithChildren(filter));
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -112,19 +120,21 @@ public partial class vhdArchitectureDeclarations
 	public IEnumerable<vhdNet> AsNet => Children.OfType<vhdNet>();
 	[JsonIgnore]
 	public IEnumerable<vhdTypeDeclaration> AsTypeDeclaration => Children.OfType<vhdTypeDeclaration>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdArchitectureImplementation
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -133,48 +143,55 @@ public partial class vhdArchitectureImplementationBlock
 	[JsonIgnore]
 	public IEnumerable<vhdEntityInstance> AsEntityInstance => Children.OfType<vhdEntityInstance>();
 	[JsonIgnore]
+	public IEnumerable<vhdComponentInstance> AsComponentInstance => Children.OfType<vhdComponentInstance>();
+	[JsonIgnore]
 	public IEnumerable<vhdGenericBlock> AsGenericBlock => Children.OfType<vhdGenericBlock>();
 	[JsonIgnore]
 	public IEnumerable<vhdBlock> AsBlock => Children.OfType<vhdBlock>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractCollection> AsAbstractCollection => Children.OfType<vhdAbstractCollection>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdArrayTypeDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdAssignExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Target != null) result.AddRange(Target.SelfWithChildren());
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
+		if (Target != null) result.AddRange(Target.SelfWithChildren(filter));
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdAttribute
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdBinaryValueExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
@@ -207,161 +224,190 @@ public abstract partial class vhdBlock
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdExpression> AsExpression => Children.OfType<vhdExpression>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdCase
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
-		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren()));
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
+		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdCaseStatement
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (When != null) result.AddRange(When.SelfWithChildren());
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (When != null) result.AddRange(When.SelfWithChildren(filter));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdCastExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdCastResizeExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
-		if (Length != null) result.AddRange(Length.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
+		if (Length != null) result.AddRange(Length.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdComment
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdCompareExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
+		return result;
+	}
+}
+public partial class vhdComponentInstance
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
+	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
+		var result = new List<vhdAbstractObject>() { this };
+		if (GenericMappings != null) result.AddRange(GenericMappings.SelfWithChildren(filter));
+		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdConditionalStatement
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Condition != null) result.AddRange(Condition.SelfWithChildren());
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Condition != null) result.AddRange(Condition.SelfWithChildren(filter));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdCustomDataType
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdCustomEntityPort
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdCustomNetType
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vhdDataTypeSource
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdDefaultDataType
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdDefaultNetType
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdDefaultSignal
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (NetType != null) result.AddRange(NetType.SelfWithChildren());
-		if (DataType != null) result.AddRange(DataType.SelfWithChildren());
+		if (NetType != null) result.AddRange(NetType.SelfWithChildren(filter));
+		if (DataType != null) result.AddRange(DataType.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdEntity
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdEntityInstance
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (GenericMappings != null) result.AddRange(GenericMappings.SelfWithChildren());
-		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren());
+		if (GenericMappings != null) result.AddRange(GenericMappings.SelfWithChildren(filter));
+		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vhdEntityInstanceGenericMapping
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
@@ -378,36 +424,40 @@ public partial class vhdEntityInstanceGenericMappings
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdEntityInstanceGenericMapping> AsEntityInstanceGenericMapping => Children.OfType<vhdEntityInstanceGenericMapping>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdEntityInstanceNamedGenericMapping
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (External != null) result.AddRange(External.SelfWithChildren());
+		if (External != null) result.AddRange(External.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdEntityInstanceNamedPortMapping
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Internal != null) result.AddRange(Internal.SelfWithChildren());
-		if (External != null) result.AddRange(External.SelfWithChildren());
+		if (Internal != null) result.AddRange(Internal.SelfWithChildren(filter));
+		if (External != null) result.AddRange(External.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vhdEntityInstancePortMapping
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
@@ -424,10 +474,11 @@ public partial class vhdEntityInstancePortMappings
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdEntityInstancePortMapping> AsEntityInstancePortMapping => Children.OfType<vhdEntityInstancePortMapping>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -445,25 +496,28 @@ public partial class vhdEntityInterface
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdEntityPort> AsEntityPort => Children.OfType<vhdEntityPort>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vhdEntityPort
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vhdExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
@@ -486,47 +540,52 @@ public partial class vhdFile
 	public IEnumerable<vhdAttribute> AsAttribute => Children.OfType<vhdAttribute>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdFunction
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren());
-		if (TypeDeclarations != null) result.AddRange(TypeDeclarations.SelfWithChildren());
-		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
-		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren(filter));
+		if (TypeDeclarations != null) result.AddRange(TypeDeclarations.SelfWithChildren(filter));
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren(filter));
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdFunctionCustomPortDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdFunctionDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdFunctionImplementation
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -546,10 +605,11 @@ public partial class vhdFunctionImplementationBlock
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vhdExpression> AsExpression => Children.OfType<vhdExpression>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -565,17 +625,19 @@ public partial class vhdFunctionInterface
 	public IEnumerable<vhdFunctionCustomPortDeclaration> AsFunctionCustomPortDeclaration => Children.OfType<vhdFunctionCustomPortDeclaration>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdFunctionPortDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
@@ -590,10 +652,11 @@ public partial class vhdFunctionTypeDeclarations
 	public IEnumerable<vhdTypeDeclaration> AsTypeDeclaration => Children.OfType<vhdTypeDeclaration>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -605,154 +668,171 @@ public partial class vhdGenericBlock
 	public IEnumerable<vhdBlock> AsBlock => Children.OfType<vhdBlock>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractCollection> AsAbstractCollection => Children.OfType<vhdAbstractCollection>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdIdentifier
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren()));
+		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdIdentifierExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdIf
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren()));
+		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdLibraryReference
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdLogicExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdLogicSignal
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (NetType != null) result.AddRange(NetType.SelfWithChildren());
+		if (NetType != null) result.AddRange(NetType.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdMathExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vhdNet
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (NetType != null) result.AddRange(NetType.SelfWithChildren());
+		if (NetType != null) result.AddRange(NetType.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vhdNetTypeSource
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdNull
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdOthersExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdParenthesizedExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdPredefinedAttributeExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdProcedureCall
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren()));
+		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdProcedureCallExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren()));
+		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdProcess
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren()));
-		if (Declarations != null) result.AddRange(Declarations.SelfWithChildren());
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Declarations != null) result.AddRange(Declarations.SelfWithChildren(filter));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -776,126 +856,140 @@ public partial class vhdProcessDeclarations
 	public IEnumerable<vhdNet> AsNet => Children.OfType<vhdNet>();
 	[JsonIgnore]
 	public IEnumerable<vhdTypeDeclaration> AsTypeDeclaration => Children.OfType<vhdTypeDeclaration>();
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdRange
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren()));
+		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vhdResizeExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
-		if (Length != null) result.AddRange(Length.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
+		if (Length != null) result.AddRange(Length.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdReturnExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Result != null) result.AddRange(Result.SelfWithChildren());
+		if (Result != null) result.AddRange(Result.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdShiftExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdSimpleForLoop
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdStandardEntityPort
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdSubTypeDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdSyncBlock
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdTernaryExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Condition != null) result.AddRange(Condition.SelfWithChildren());
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Condition != null) result.AddRange(Condition.SelfWithChildren(filter));
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdText
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vhdTypeDeclaration
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vhdUnaryExpression
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vhdUse
 {
-	public override IEnumerable<vhdAbstractObject> SelfWithChildren()
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
 		var result = new List<vhdAbstractObject>() { this };
 		return result;
 	}

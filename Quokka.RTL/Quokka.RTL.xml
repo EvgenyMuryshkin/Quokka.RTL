@@ -1416,6 +1416,8 @@
             
              vhdCompareExpression
             
+             vhdComponentInstance
+            
              vhdConditionalStatement
             
              vhdCustomDataType
@@ -1889,6 +1891,7 @@
         <member name="T:Quokka.RTL.VHDL.vhdArchitectureImplementationBlockChild">
             <summary>
             vhdEntityInstance
+            vhdComponentInstance
             vhdGenericBlock
             </summary>
         </member>

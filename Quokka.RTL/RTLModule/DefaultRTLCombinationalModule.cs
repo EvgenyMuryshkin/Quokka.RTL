@@ -106,6 +106,8 @@ namespace Quokka.RTL
         object IRTLCombinationalModule.RawInputs => Inputs;
         protected Func<TInput> InputsFactory;
 
+        public virtual RTLModuleAnalizers Analizers => null;
+
         protected virtual void OnSchedule(Func<TInput> inputsFactory)
         {
             InputsFactory = inputsFactory;

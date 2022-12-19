@@ -8,6 +8,7 @@ namespace Quokka.RTL
 {
     public interface IRTLCombinationalModule : IRTLModuleControlFlow
     {
+        RTLModuleAnalizers Analizers { get; }
         Type InputsType { get; }
         object RawInputs { get; }
         string ModuleName { get; }

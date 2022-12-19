@@ -8,10 +8,11 @@ using Quokka.RTL.Tools;
 using Newtonsoft.Json;
 public abstract partial class vlgAbstractCollection
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -27,57 +28,63 @@ public abstract partial class vlgAbstractForLoop
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractCollection> AsAbstractCollection => Children.OfType<vlgAbstractCollection>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vlgAbstractObject
 {
-	public abstract IEnumerable<vlgAbstractObject> SelfWithChildren();
+	public abstract IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null);
 }
 public partial class vlgAggregateExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Expressions != null) result.AddRange(Expressions.SelectMany(c => c.SelfWithChildren()));
+		if (Expressions != null) result.AddRange(Expressions.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgAssign
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgAssignExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Target != null) result.AddRange(Target.SelfWithChildren());
-		if (Expression != null) result.AddRange(Expression.SelfWithChildren());
+		if (Target != null) result.AddRange(Target.SelfWithChildren(filter));
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgAttribute
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgBinaryValueExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
@@ -116,117 +123,130 @@ public abstract partial class vlgBlock
 	public IEnumerable<vlgBlock> AsBlock => Children.OfType<vlgBlock>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractCollection> AsAbstractCollection => Children.OfType<vlgAbstractCollection>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgCase
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Check != null) result.AddRange(Check.SelfWithChildren());
-		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren()));
-		if (Default != null) result.AddRange(Default.SelfWithChildren());
+		if (Check != null) result.AddRange(Check.SelfWithChildren(filter));
+		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Default != null) result.AddRange(Default.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgCaseDefault
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vlgCaseItem
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgCaseStatement
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgCombBlock
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren()));
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgComment
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgCompareExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgConditionalStatement
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Condition != null) result.AddRange(Condition.SelfWithChildren());
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Condition != null) result.AddRange(Condition.SelfWithChildren(filter));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgCustomDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgCustomModulePortDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vlgDeclarationModulePort
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vlgExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
@@ -243,51 +263,56 @@ public partial class vlgFile
 	public IEnumerable<vlgAttribute> AsAttribute => Children.OfType<vlgAttribute>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgForLoop
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
-		if (Initializer != null) result.AddRange(Initializer.SelfWithChildren());
-		if (Condition != null) result.AddRange(Condition.SelfWithChildren());
-		if (Increment != null) result.AddRange(Increment.SelfWithChildren());
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Initializer != null) result.AddRange(Initializer.SelfWithChildren(filter));
+		if (Condition != null) result.AddRange(Condition.SelfWithChildren(filter));
+		if (Increment != null) result.AddRange(Increment.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgFunction
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
-		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren());
-		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
-		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren(filter));
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren(filter));
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgFunctionDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgFunctionImplementation
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -301,10 +326,11 @@ public partial class vlgFunctionImplementationBlock
 	public IEnumerable<vlgAssign> AsAssign => Children.OfType<vlgAssign>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -324,71 +350,79 @@ public partial class vlgFunctionInterface
 	public IEnumerable<vlgDeclarationModulePort> AsDeclarationModulePort => Children.OfType<vlgDeclarationModulePort>();
 	[JsonIgnore]
 	public IEnumerable<vlgModulePort> AsModulePort => Children.OfType<vlgModulePort>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgFunctionPortDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgGenerate
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgGenericBlock
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgGenvar
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgIdentifier
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren()));
+		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgIdentifierExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Source != null) result.AddRange(Source.SelfWithChildren());
+		if (Source != null) result.AddRange(Source.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgIf
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren()));
+		if (Statements != null) result.AddRange(Statements.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
@@ -408,114 +442,127 @@ public partial class vlgInitial
 	public IEnumerable<vlgAbstractForLoop> AsAbstractForLoop => Children.OfType<vlgAbstractForLoop>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractCollection> AsAbstractCollection => Children.OfType<vlgAbstractCollection>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgIntegerExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgIterator
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vlgLocalParam
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public abstract partial class vlgLocalParamName
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgLocalParamNameBinaryValue
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgLocalParamNameExplicitValue
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgLogicExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgLogicSignal
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgMathExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgMemoryBlock
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgModule
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Parameters != null) result.AddRange(Parameters.SelfWithChildren());
-		if (Interface != null) result.AddRange(Interface.SelfWithChildren());
-		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren());
+		if (Parameters != null) result.AddRange(Parameters.SelfWithChildren(filter));
+		if (Interface != null) result.AddRange(Interface.SelfWithChildren(filter));
+		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgModuleImplementation
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -557,36 +604,40 @@ public partial class vlgModuleImplementationBlock
 	public IEnumerable<vlgDeclarationModulePort> AsDeclarationModulePort => Children.OfType<vlgDeclarationModulePort>();
 	[JsonIgnore]
 	public IEnumerable<vlgModulePort> AsModulePort => Children.OfType<vlgModulePort>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgModuleInstance
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Parameters != null) result.AddRange(Parameters.SelfWithChildren());
-		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren());
+		if (Parameters != null) result.AddRange(Parameters.SelfWithChildren(filter));
+		if (PortMappings != null) result.AddRange(PortMappings.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgModuleInstanceNamedPortMapping
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (External != null) result.AddRange(External.SelfWithChildren());
+		if (External != null) result.AddRange(External.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgModuleInstanceParameter
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
@@ -597,17 +648,19 @@ public partial class vlgModuleInstanceParameters
 	public IEnumerable<vlgModuleInstanceParameter> AsModuleInstanceParameter => Children.OfType<vlgModuleInstanceParameter>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vlgModuleInstancePortMapping
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
@@ -626,19 +679,21 @@ public partial class vlgModuleInstancePortMappings
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
 	[JsonIgnore]
 	public IEnumerable<vlgModuleInstancePortMapping> AsModuleInstancePortMapping => Children.OfType<vlgModuleInstancePortMapping>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgModuleInstanceSimplePortMapping
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (External != null) result.AddRange(External.SelfWithChildren());
+		if (External != null) result.AddRange(External.SelfWithChildren(filter));
 		return result;
 	}
 }
@@ -662,17 +717,19 @@ public partial class vlgModuleInterface
 	public IEnumerable<vlgDeclarationModulePort> AsDeclarationModulePort => Children.OfType<vlgDeclarationModulePort>();
 	[JsonIgnore]
 	public IEnumerable<vlgStandardModulePort> AsStandardModulePort => Children.OfType<vlgStandardModulePort>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgModuleParameterDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
@@ -687,160 +744,178 @@ public partial class vlgModuleParameters
 	public IEnumerable<vlgModuleParameterDeclaration> AsModuleParameterDeclaration => Children.OfType<vlgModuleParameterDeclaration>();
 	[JsonIgnore]
 	public IEnumerable<vlgAbstractObject> AsAbstractObject => Children.OfType<vlgAbstractObject>();
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vlgModulePort
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgPlaceholderModulePort
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgProcedureCall
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren()));
+		if (Parameters != null) result.AddRange(Parameters.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgProcedureCallExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Call != null) result.AddRange(Call.SelfWithChildren());
+		if (Call != null) result.AddRange(Call.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgRange
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren()));
+		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgShiftExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public abstract partial class vlgSignal
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgSimpleForLoop
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren()));
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public partial class vlgSizedAggregateExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Expressions != null) result.AddRange(Expressions.SelectMany(c => c.SelfWithChildren()));
+		if (Expressions != null) result.AddRange(Expressions.SelectMany(c => c.SelfWithChildren(filter)));
 		return result;
 	}
 }
 public abstract partial class vlgStandardModulePort
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgStandardModulePortDeclaration
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgStandardModulePortImplementation
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgSyncBlock
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren()));
-		if (Block != null) result.AddRange(Block.SelfWithChildren());
+		if (SensitivityList != null) result.AddRange(SensitivityList.SelectMany(c => c.SelfWithChildren(filter)));
+		if (Block != null) result.AddRange(Block.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgSyncBlockSensitivityItem
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Identifier != null) result.AddRange(Identifier.SelfWithChildren());
+		if (Identifier != null) result.AddRange(Identifier.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgTernaryExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Condition != null) result.AddRange(Condition.SelfWithChildren());
-		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren());
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Condition != null) result.AddRange(Condition.SelfWithChildren(filter));
+		if (Lhs != null) result.AddRange(Lhs.SelfWithChildren(filter));
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }
 public partial class vlgText
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
 		return result;
 	}
 }
 public partial class vlgUnaryExpression
 {
-	public override IEnumerable<vlgAbstractObject> SelfWithChildren()
+	public override IEnumerable<vlgAbstractObject> SelfWithChildren(Func<vlgAbstractObject, bool> filter = null)
 	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vlgAbstractObject>();
 		var result = new List<vlgAbstractObject>() { this };
-		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren());
+		if (Rhs != null) result.AddRange(Rhs.SelfWithChildren(filter));
 		return result;
 	}
 }

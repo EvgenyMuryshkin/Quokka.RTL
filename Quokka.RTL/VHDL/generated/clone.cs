@@ -228,6 +228,19 @@ public partial class vhdCompareExpression
 		return result;
 	}
 }
+public partial class vhdComponentInstance
+{
+	public vhdComponentInstance Clone() => UntypedClone() as vhdComponentInstance;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdComponentInstance();
+		result.Name = Name;
+		result.Type = Type;
+		result.GenericMappings = GenericMappings?.UntypedClone() as vhdEntityInstanceGenericMappings;
+		result.PortMappings = PortMappings?.UntypedClone() as vhdEntityInstancePortMappings;
+		return result;
+	}
+}
 public partial class vhdConditionalStatement
 {
 	public vhdConditionalStatement Clone() => UntypedClone() as vhdConditionalStatement;
@@ -365,6 +378,7 @@ public partial class vhdEntityInstanceNamedPortMapping
 		var result = new vhdEntityInstanceNamedPortMapping();
 		result.Internal = Internal?.UntypedClone() as vhdIdentifier;
 		result.External = External?.UntypedClone() as vhdExpression;
+		result.Direction = Direction;
 		return result;
 	}
 }
@@ -503,6 +517,7 @@ public partial class vhdGenericBlock
 	{
 		var result = new vhdGenericBlock();
 		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
+		result.IsDefaultValuesAssign = IsDefaultValuesAssign;
 		return result;
 	}
 }

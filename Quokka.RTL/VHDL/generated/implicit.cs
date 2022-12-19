@@ -725,6 +725,9 @@ public partial class vhdComment : vhdAbstractObject
 public partial class vhdCompareExpression : vhdExpression
 {
 }
+public partial class vhdComponentInstance : vhdAbstractObject
+{
+}
 public partial class vhdConditionalStatement : vhdAbstractObject
 {
 	/// <summary>

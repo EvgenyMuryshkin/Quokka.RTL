@@ -65,13 +65,28 @@ namespace System
             if (type.IsConstructedGenericType)
             {
                 var generic = type.GetGenericTypeDefinition();
-                if (generic.Name.StartsWith(nameof(ValueTuple)))
+                if (generic.Name.StartsWith(nameof(ValueTuple)) || generic.Name.StartsWith(nameof(Tuple)))
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public static MemberInfo SingleMember(this Type source, string name)
+        {
+            return source.GetMember(name).Single();
+        }
+
+        public static MemberInfo SingleOrDefaultMember(this Type source, string name)
+        {
+            return source.GetMember(name).SingleOrDefault();
+        }
+
+        public static MemberInfo SingleMember(this object source, string name)
+        {
+            return source.GetType().GetMember(name).Single();
         }
     }
 }

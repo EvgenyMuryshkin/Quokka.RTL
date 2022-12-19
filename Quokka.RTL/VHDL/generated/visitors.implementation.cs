@@ -82,6 +82,10 @@ public abstract class vhdCompareExpressionVisitorGeneratedImplementation : vhdVi
 {
 	public vhdCompareExpressionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdComponentInstanceVisitorGeneratedImplementation : vhdVisitorImplementation<vhdComponentInstance>, vhdComponentInstanceVisitorInterface
+{
+	public vhdComponentInstanceVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdConditionalStatementVisitorGeneratedImplementation : vhdVisitorImplementation<vhdConditionalStatement>, vhdConditionalStatementVisitorInterface
 {
 	public vhdConditionalStatementVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -347,6 +351,10 @@ public partial class vhdCompareExpressionVisitorImplementation : vhdCompareExpre
 {
 	public vhdCompareExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdComponentInstanceVisitorImplementation : vhdComponentInstanceVisitorGeneratedImplementation
+{
+	public vhdComponentInstanceVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdConditionalStatementVisitorImplementation : vhdConditionalStatementVisitorGeneratedImplementation
 {
 	public vhdConditionalStatementVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -561,6 +569,7 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdCastResizeExpression o: return vhdCastResizeExpressionVisitor(o);
 			case vhdComment o: return vhdCommentVisitor(o);
 			case vhdCompareExpression o: return vhdCompareExpressionVisitor(o);
+			case vhdComponentInstance o: return vhdComponentInstanceVisitor(o);
 			case vhdConditionalStatement o: return vhdConditionalStatementVisitor(o);
 			case vhdCustomEntityPort o: return vhdCustomEntityPortVisitor(o);
 			case vhdDefaultSignal o: return vhdDefaultSignalVisitor(o);
@@ -690,6 +699,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	private vhdCompareExpressionVisitorInterface vhdCompareExpressionVisitor(vhdCompareExpression obj)
 	{
 		return vhdCompareExpressionVisitor(_deps, obj);
+	}
+	private vhdComponentInstanceVisitorInterface vhdComponentInstanceVisitor(vhdComponentInstance obj)
+	{
+		return vhdComponentInstanceVisitor(_deps, obj);
 	}
 	private vhdConditionalStatementVisitorInterface vhdConditionalStatementVisitor(vhdConditionalStatement obj)
 	{
@@ -917,6 +930,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdCommentVisitorImplementation(deps);
 	protected virtual vhdCompareExpressionVisitorInterface vhdCompareExpressionVisitor(vhdVisitorImplementationDeps deps, vhdCompareExpression obj)
 		=> new vhdCompareExpressionVisitorImplementation(deps);
+	protected virtual vhdComponentInstanceVisitorInterface vhdComponentInstanceVisitor(vhdVisitorImplementationDeps deps, vhdComponentInstance obj)
+		=> new vhdComponentInstanceVisitorImplementation(deps);
 	protected virtual vhdConditionalStatementVisitorInterface vhdConditionalStatementVisitor(vhdVisitorImplementationDeps deps, vhdConditionalStatement obj)
 		=> new vhdConditionalStatementVisitorImplementation(deps);
 	protected virtual vhdCustomEntityPortVisitorInterface vhdCustomEntityPortVisitor(vhdVisitorImplementationDeps deps, vhdCustomEntityPort obj)

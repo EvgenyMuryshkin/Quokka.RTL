@@ -7,7 +7,8 @@ namespace Quokka.RTL.Tools
         Unsigned,
         Signed,
         Floating,
-        Iterator
+        SignedIterator,
+        UnsignedIterator
     }
 
     public enum RTLOrderType : byte

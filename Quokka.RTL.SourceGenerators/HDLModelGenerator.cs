@@ -626,23 +626,24 @@ namespace Quokka.RTL.SourceGenerators
 
                 if (obj == ctx.baseType)
                 {
-                    builder.AppendLine($"\tpublic abstract IEnumerable<{ctx.baseType.Name}> SelfWithChildren();");
+                    builder.AppendLine($"\tpublic abstract IEnumerable<{ctx.baseType.Name}> SelfWithChildren(Func<{ctx.baseType.Name}, bool> filter = null);");
                 }
                 else
                 {
-                    builder.AppendLine($"\tpublic override IEnumerable<{ctx.baseType.Name}> SelfWithChildren()");
+                    builder.AppendLine($"\tpublic override IEnumerable<{ctx.baseType.Name}> SelfWithChildren(Func<{ctx.baseType.Name}, bool> filter = null)");
                     builder.AppendLine("\t{");
+                    builder.AppendLine($"\t\tif (filter != null && !filter(this)) return Enumerable.Empty<{ctx.baseType.Name}>();");
                     builder.AppendLine($"\t\tvar result = new List<{ctx.baseType.Name}>() {{ this }};");
 
                     foreach (var prop in ctx.AllProperties(obj))
                     {
                         if (ctx.objects.Contains(prop.PropertyType))
                         {
-                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelfWithChildren());");
+                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelfWithChildren(filter));");
                         }
                         else if (prop.PropertyType.IsList() && ctx.objects.Contains(prop.PropertyType.GetGenericArguments()[0]))
                         {
-                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelectMany(c => c.SelfWithChildren()));");
+                            builder.AppendLine($"\t\tif ({prop.Name} != null) result.AddRange({prop.Name}.SelectMany(c => c.SelfWithChildren(filter)));");
                         }
                     }
 

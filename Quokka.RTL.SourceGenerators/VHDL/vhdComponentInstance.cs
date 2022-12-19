@@ -1,6 +1,6 @@
 ﻿namespace Quokka.RTL.SourceGenerators.VHDL
 {
-    public class vhdEntityInstance : vhdAbstractObject
+    public class vhdComponentInstance : vhdAbstractObject
     {
         public string Name { get; set; }
         public string Type { get; set; }

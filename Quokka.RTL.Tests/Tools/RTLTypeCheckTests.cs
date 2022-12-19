@@ -66,6 +66,9 @@ namespace Quokka.RTL.Tests
             Assert.IsTrue(RTLTypeCheck.IsTuple(typeof((int, bool))));
             Assert.IsTrue(RTLTypeCheck.IsTuple(typeof((int, ulong, bool))));
             Assert.IsTrue(RTLTypeCheck.IsTuple(typeof((int, RTLBitArray, bool))));
+
+            var tuple = new Tuple<bool, bool>(false, false);
+            Assert.IsTrue(RTLTypeCheck.IsTuple(tuple.GetType()));
         }
 
         [TestMethod]

@@ -76,6 +76,9 @@ namespace Quokka.RTL.Tools
             if (RTLModuleHelper.IsSynthesizableArrayType(type))
                 return true;
 
+            if (RTLReflectionTools.TryResolveTuple(type, out var types))
+                return types.All(IsTypeSerializable);
+
             // TODO: add check for IsSynthesizableObject
 
             if (RTLReflectionTools.TryGetNullableType(type, out var actualType))

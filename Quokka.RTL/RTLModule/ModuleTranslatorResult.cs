@@ -21,6 +21,12 @@ namespace Quokka.RTL
             Result[name].Add(implememntation);
         }
 
+        public void Add(string name, vhdFile file)
+        {
+            EnsureHasKey(name);
+            Result[name].Add(file);
+
+        }
         public void Add(string name, vhdArchitectureImplementation implememntation)
         {
             EnsureHasKey(name);
