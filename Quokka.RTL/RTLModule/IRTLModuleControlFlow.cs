@@ -6,10 +6,15 @@
         Unstable
     }
 
+    public class RTLModuleResetOptions
+    {
+        public MemoryBlockResetTypeAttribute MemoryBlockResetType { get; set; }
+    }
+
     public interface IRTLModuleControlFlow
     {
         RTLModuleStageResult DeltaCycle(int deltaCycle);
         void Commit();
-        void Reset();
+        void Reset(RTLModuleResetOptions resetOptions = null);
     }
 }

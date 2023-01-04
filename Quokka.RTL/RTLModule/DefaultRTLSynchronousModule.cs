@@ -112,9 +112,9 @@ namespace Quokka.RTL
             return RTLModuleStageResult.Unstable;
         }
 
-        public override void Reset()
+        public override void Reset(RTLModuleResetOptions resetOptions = null)
         {
-            base.Reset();
+            base.Reset(resetOptions);
 
             if (Equals(DefaultState, default(TState)))
             {

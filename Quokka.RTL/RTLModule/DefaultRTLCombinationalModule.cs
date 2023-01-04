@@ -158,11 +158,11 @@ namespace Quokka.RTL
             }
         }
 
-        public virtual void Reset()
+        public virtual void Reset(RTLModuleResetOptions resetOptions = null)
         {
             foreach (var child in Modules)
             {
-                child.Commit();
+                child.Reset(resetOptions);
             }
         }
 
