@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Quokka.RTL.Tools;
 using System;
 
 namespace Quokka.RTL.Tests
@@ -141,34 +142,34 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void SynthesizableStructTest()
         {
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableStruct)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(SynthesizableStruct)));
         }
         [TestMethod]
         public void SynthesizableClassTest()
         {
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass1)));
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClass2)));
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(SynthesizableClassWithNullables)));
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(Stage0PipelineState)));            
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(SynthesizableClass1)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(SynthesizableClass2)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(SynthesizableClassWithNullables)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(Stage0PipelineState)));            
         }
 
         [TestMethod]
         public void NonSynthesizableStructTest()
         {
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableStruct)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(NonSynthesizableStruct)));
         }
 
         [TestMethod]
         public void NonSynthesizableClassTest()
         {
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass1)));
-            Assert.IsTrue(RTLModuleHelper.IsSynthesizableObject(typeof(NonSynthesizableClass2)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(NonSynthesizableClass1)));
+            Assert.IsTrue(RTLTypeCheck.IsSynthesizableObject(typeof(NonSynthesizableClass2)));
         }
 
         [TestMethod]
         public void SynthesizableNullableType()
         {
-            Assert.IsFalse(RTLModuleHelper.IsSynthesizableObject(typeof(bool?)));
+            Assert.IsFalse(RTLTypeCheck.IsSynthesizableObject(typeof(bool?)));
         }
 
         [TestMethod]

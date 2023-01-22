@@ -9,6 +9,20 @@ namespace Quokka.RTL.Tools
 {
     public static class RTLReflectionTools
     {
+        public static Type GetCollectionItemType(Type type)
+        {
+            if (type == null)
+                return null;
+
+            if (type.IsArray)
+                return type.GetElementType();
+
+            if (type.IsList())
+                return type.GetGenericArguments()[0];
+
+            return null;
+        }
+
         public static IEnumerable<MemberInfo> RecursiveMembers(Type type)
         {
             if (type == null || type == typeof(object))

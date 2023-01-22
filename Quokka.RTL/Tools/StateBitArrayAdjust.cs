@@ -41,7 +41,7 @@ namespace Quokka.RTL.Tools
                     var memberType = member.GetMemberType();
                     if (memberType.IsArray || memberType.IsList())
                     {
-                        var elementType = memberType.GetCollectionItem();
+                        var elementType = memberType.GetCollectionItemType();
 
                         if (elementType.IsRTLBitArray())
                         {

@@ -1,4 +1,5 @@
 ﻿using Quokka.RTL;
+using Quokka.RTL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,6 @@ namespace Quokka.RTL.Tools
 {
     internal static class Extensions
     {
-        public static bool IsList(this Type t)
-        {
-            return t.IsConstructedGenericType && t.GetGenericTypeDefinition() == typeof(List<>);
-        }
-
         public static bool HasValue(this string value)
         {
             return !string.IsNullOrWhiteSpace(value);
@@ -41,38 +37,15 @@ namespace System
 {
     public static class SystemExtensions
     {
-        public static bool IsConstant(this MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly;
+        public static bool IsConstant(this MemberInfo memberInfo) => RTLTypeCheck.IsConstant(memberInfo);
         public static bool IsStruct(this Type type) => type != null && type.IsValueType && !type.IsEnum && !type.IsPrimitive;
-        public static bool IsRTLBitArray(this Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
-        public static bool IsList(this Type type) => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+        public static bool IsRTLBitArray(this Type type) => RTLTypeCheck.IsRTLBitArray(type);
+        public static bool IsList(this Type type) => RTLTypeCheck.IsList(type);
+        public static bool IsCollection(this Type type) => RTLTypeCheck.IsCollection(type);
+        public static Type GetCollectionItemType(this Type type) => RTLReflectionTools.GetCollectionItemType(type);
+        public static bool IsTuple(this Type type) => RTLTypeCheck.IsTuple(type);
+        public static bool IsGenericTuple(this Type type) => RTLTypeCheck.IsGenericTuple(type);
 
-        public static Type GetCollectionItem(this Type type)
-        {
-            if (type == null)
-                return null;
-
-            if (type.IsArray)
-                return type.GetElementType();
-
-            if (type.IsList())
-                return type.GetGenericArguments()[0];
-
-            return null;
-        }
-
-        public static bool IsTuple(this Type type)
-        {
-            if (type.IsConstructedGenericType)
-            {
-                var generic = type.GetGenericTypeDefinition();
-                if (generic.Name.StartsWith(nameof(ValueTuple)) || generic.Name.StartsWith(nameof(Tuple)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         public static MemberInfo SingleMember(this Type source, string name)
         {

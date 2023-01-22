@@ -41,14 +41,95 @@ namespace Quokka.RTL.Tools
             return false;
         }
 
+        public static bool IsCollection(Type type) => type != null && (type.IsArray || type.IsList());
+
+        public static bool IsRTLBitArray(Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
+        public static bool IsConstant(MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly;
+        public static bool IsList(Type type) => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+
         public static bool IsTuple(Type type)
         {
-            return RTLReflectionTools.TryResolveTuple(type, out var _);
+            if (type.IsConstructedGenericType)
+            {
+                var generic = type.GetGenericTypeDefinition();
+                if (generic.Name.StartsWith(nameof(ValueTuple)) || generic.Name.StartsWith(nameof(Tuple)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsGenericTuple(Type type)
+        {
+            if (type.Name.StartsWith(nameof(ValueTuple)) || type.Name.StartsWith(nameof(Tuple)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsSynthesizableSignalType(Type type)
+        {
+            if (IsSynthesizableObject(type))
+                return true;
+
+            return type.IsValueType || type.IsRTLBitArray() || type.IsTuple();
+        }
+
+        public static bool IsSynthesizableArrayType(Type type)
+        {
+            return type != null && type.IsArray && (IsSynthesizableSignalType(type.GetElementType()) || IsSynthesizableArrayType(type.GetElementType()));
         }
 
         public static bool IsSynthesizableObject(Type type)
         {
-            return RTLModuleHelper.IsSynthesizableObject(type) && !IsTuple(type);
+            if (IsTuple(type))
+                return false;
+
+            if (!type.IsClass && !type.IsStruct())
+                return false;
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return false;
+
+            var getSetMembers = new HashSet<MethodInfo>(
+                RTLReflectionTools.SynthesizableMembers(type)
+                .OfType<PropertyInfo>()
+                .SelectMany(p => new[] { p.GetGetMethod(), p.GetSetMethod() })
+                .Where(m => m != null));
+
+            foreach (var m in type.GetMembers())
+            {
+                switch (m)
+                {
+                    case FieldInfo fi:
+                        if (!IsSynthesizableSignalType(fi.FieldType) && !IsSynthesizableArrayType(fi.FieldType))
+                            return false;
+                        break;
+                    case PropertyInfo pi:
+                        if (!IsSynthesizableSignalType(pi.PropertyType) && !IsSynthesizableArrayType(pi.PropertyType))
+                            return false;
+                        break;
+                    case MethodInfo mi:
+                        if (getSetMembers.Contains(mi))
+                            continue;
+
+                        // methods on data classes\structs are not synthesizable yet
+                        var baseType = mi.DeclaringType.BaseType ?? mi.DeclaringType;
+                        if (baseType == typeof(object) || baseType == typeof(ValueType))
+                            continue;
+
+                        return false;
+                    case ConstructorInfo ci:
+                        // constructors are allowed, but they are not translated into HDL
+                        break;
+                }
+            }
+
+            return true;
         }
 
         public static bool IsAnonymousType(Type type)

@@ -59,64 +59,12 @@ namespace Quokka.RTL
             return !isPublic && isPropertyOrField && !isToolkitType;
         }
 
-        public static bool IsSynthesizableObject(Type type)
-        {
-            if (!type.IsClass && !type.IsStruct())
-                return false;
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return false;
-
-            var getSetMembers = new HashSet<MethodInfo>(
-                RTLReflectionTools.SynthesizableMembers(type)
-                .OfType<PropertyInfo>()
-                .SelectMany(p => new[] { p.GetGetMethod(), p.GetSetMethod() })
-                .Where(m => m != null));
-
-            foreach (var m in type.GetMembers())
-            {
-                switch(m)
-                {
-                    case FieldInfo fi:
-                        if (!IsSynthesizableSignalType(fi.FieldType) && !IsSynthesizableArrayType(fi.FieldType))
-                            return false;
-                        break;
-                    case PropertyInfo pi:
-                        if (!IsSynthesizableSignalType(pi.PropertyType) && !IsSynthesizableArrayType(pi.PropertyType))
-                            return false;
-                        break;
-                    case MethodInfo mi:
-                        if (getSetMembers.Contains(mi))
-                            continue;
-
-                        // methods on data classes\structs are not synthesizable yet
-                        var baseType = mi.DeclaringType.BaseType ?? mi.DeclaringType;
-                        if (baseType == typeof(object) || baseType == typeof(ValueType))
-                            continue;
-
-                        return false;
-                    case ConstructorInfo ci:
-                        // constructors are allowed, but they are not translated into HDL
-                        break;
-                }
-            }
-
-            return true;
-        }
-
-        public static bool IsSynthesizableSignalType(Type type)
-        {
-            if (IsSynthesizableObject(type))
-                return true;
-
-            return type.IsValueType || type.IsRTLBitArray();
-        }
-
         static TypeCache<bool> IsSynthesizableArrayTypeCache = new TypeCache<bool>(
             (type) =>
             {
-                return type.IsArray && (IsSynthesizableSignalType(type.GetElementType()) || IsSynthesizableArrayType(type.GetElementType()));
+                return RTLTypeCheck.IsSynthesizableArrayType(type);
             });
+
         public static bool IsSynthesizableArrayType(Type type) => IsSynthesizableArrayTypeCache[type];
 
         static TypeCache<List<MemberInfo>> signalPropertiesCache = new TypeCache<List<MemberInfo>>(
@@ -124,7 +72,7 @@ namespace Quokka.RTL
             {
                 return RTLReflectionTools
                     .SynthesizableMembers(type)
-                    .Where(m => IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
+                    .Where(m => RTLTypeCheck.IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
                     .ToList();
             });
 
