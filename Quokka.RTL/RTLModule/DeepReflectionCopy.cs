@@ -41,6 +41,10 @@ namespace Quokka.RTL
             {
                 return DeepCopy(value);
             }
+            else if (valueType.IsTuple())
+            {
+                return DeepCopy(value);
+            }
             else if (value is RTLBitArray bitArray)
             {
                 return new RTLBitArray(bitArray);

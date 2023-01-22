@@ -22,6 +22,22 @@ namespace Quokka.RTL.Tests
         public byte ByteValue;
     }
 
+    public class IOTupleModuleInputsObjectL2
+    {
+        public bool L2Flag;
+    }
+
+    public class IOTupleModuleInputsObjectL1
+    {
+        public bool L1Flag;
+        public IOTupleModuleInputsObjectL2 L2 = new IOTupleModuleInputsObjectL2();
+    }
+
+    public class IOTupleModuleInputs
+    {
+        public Tuple<bool, byte, RTLBitArray, IOTupleModuleInputsObjectL1> iTuple = new Tuple<bool, byte, RTLBitArray, IOTupleModuleInputsObjectL1>(false, byte.MinValue, new RTLBitArray().Resized(4), new IOTupleModuleInputsObjectL1());
+    }
+
     [TestClass]
     public class RTLReflectionToolsTests
     {
@@ -36,6 +52,18 @@ namespace Quokka.RTL.Tests
         {
             Assert.AreEqual(3, RTLReflectionTools.SynthesizableMembers(typeof(BaseMembersTestClass)).Count());
             Assert.AreEqual(7, RTLReflectionTools.SynthesizableMembers(typeof(DerivedTestClass)).Count());
+        }
+
+        [TestMethod]
+        public void SynthesizableMembersTupleTest()
+        {
+            Assert.AreEqual(1, RTLReflectionTools.SynthesizableMembers(typeof(IOTupleModuleInputs)).Count());
+            Assert.AreEqual(1, RTLReflectionTools.SerializableMembers(typeof(IOTupleModuleInputs)).Count());
+
+            Assert.AreEqual(2, RTLReflectionTools.SynthesizableMembers(typeof(IOTupleModuleInputsObjectL1)).Count());
+            Assert.AreEqual(2, RTLReflectionTools.SerializableMembers(typeof(IOTupleModuleInputsObjectL1)).Count());
+
+            Assert.AreEqual(3, RTLReflectionTools.SerializableMembers(typeof(Tuple<bool, byte, int>)).Count());
         }
 
         [TestMethod]

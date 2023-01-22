@@ -1,6 +1,7 @@
 ﻿using FPGA;
 using Quokka.RTL.Tools;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -42,7 +43,25 @@ namespace Quokka.RTL.Tools
                 default:
                 {
                     var valueType = value.GetType();
-                    if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
+                    if (value is IEnumerable valueList)
+                    {
+                        return new RTLSignalInfo()
+                        {
+                            Type = valueType,
+                            Size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum(),
+                            SignalType = RTLSignalType.Unsigned
+                        };
+                    }
+                    else if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
+                    {
+                        return new RTLSignalInfo()
+                        {
+                            Type = valueType,
+                            Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
+                            SignalType = RTLSignalType.Unsigned
+                        };
+                    }
+                    else if (RTLTypeCheck.IsTuple(valueType))
                     {
                         return new RTLSignalInfo()
                         {

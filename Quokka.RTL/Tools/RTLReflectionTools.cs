@@ -46,6 +46,7 @@ namespace Quokka.RTL.Tools
                 return Enumerable.Empty<MemberInfo>();
 
             return RecursiveMembers(type)
+                .Where(p => includeToolkitTypes || !RTLTypeCheck.IsToolkitType(p.GetMemberType()))
                 .Where(p => p.GetCustomAttribute<NonSerializedAttribute>() == null)
                 .Where(p => p.GetMemberType().GetCustomAttribute<NonSerializedAttribute>() == null)
                 .Where(p => !p.IsAbstract());
@@ -78,18 +79,23 @@ namespace Quokka.RTL.Tools
                 .Where(m => !m.Name.Contains("__BackingField"))
                 .Where(m => !m.Name.Contains("__Field"));
 
+            if (type.IsTuple())
+            {
+                return members.Where(m => m.Name.StartsWith("Item")).ToList();
+            }
+
             foreach (var m in members)
             {
                 switch (m)
                 {
                     case FieldInfo fi:
-                        if (RTLTypeCheck.IsTypeSerializable(fi.FieldType) || RTLTypeCheck.IsSynthesizableObject(fi.FieldType))
+                        if (RTLTypeCheck.IsTypeSerializable(fi.FieldType))
                             result.Add(m);
                         else if (throwIfNotSerializable)
                             throw new Exception($"Member '{type.Name}.{m.Name}' of type '{fi.FieldType}' is not serializable");
                         break;
                     case PropertyInfo pi:
-                        if (RTLTypeCheck.IsTypeSerializable(pi.PropertyType) || RTLTypeCheck.IsSynthesizableObject(pi.PropertyType))
+                        if (RTLTypeCheck.IsTypeSerializable(pi.PropertyType))
                             result.Add(m);
                         else if (throwIfNotSerializable)
                             throw new Exception($"Member '{type.Name}.{m.Name}' of type '{pi.PropertyType}' is not serializable");
@@ -149,6 +155,75 @@ namespace Quokka.RTL.Tools
             from = leading.Sum(m => RTLSignalTools.SizeOfValue(m.GetValue(target)).Size);
 
             return (from + RTLSignalTools.SizeOfValue(mi.GetValue(target)).Size - 1, from);
+        }
+
+
+        public static List<List<MemberInfo>> UnwrapMemberInfo(MemberInfo source)
+        {
+            switch (source)
+            {
+                case Type memberType:
+                {
+                    if (RTLTypeCheck.IsSynthesizableObject(memberType) || RTLTypeCheck.IsTuple(memberType))
+                    {
+                        var members = SerializableMembers(memberType, true);
+                        return members.SelectMany(m =>
+                        {
+                            return UnwrapMemberInfo(m);
+
+                            var childMemberType = m.GetMemberType();
+                            var result = new List<MemberInfo>() { m };
+                            var unwrapped = UnwrapMemberInfo(childMemberType);
+
+                            if (unwrapped.Any())
+                            {
+                                return unwrapped.Select(r =>
+                                {
+                                    var path = result.ToList();
+                                    path.AddRange(r);
+
+                                    return path;
+                                });
+                            }
+                            else
+                            {
+                                return new[] { result };
+                            }
+                        }).ToList();
+                    }
+                    else if (RTLModuleHelper.IsSynthesizableArrayType(memberType))
+                    {
+                        var elementType = memberType.GetCollectionItemType();
+                        if (RTLTypeCheck.IsSynthesizableObject(elementType) || RTLTypeCheck.IsTuple(elementType))
+                        {
+                            return UnwrapMemberInfo(elementType);
+                        }
+                    }
+
+                    return new List<List<MemberInfo>>();
+                }
+                case MemberInfo memberInfo:
+                {
+                    var unwrapped = UnwrapMemberInfo(memberInfo.GetMemberType());
+                    if (unwrapped.Any())
+                    {
+                        return unwrapped.Select(m =>
+                        {
+                            var result = new List<MemberInfo>() { memberInfo };
+                            result.AddRange(m);
+                            return result;
+                        }).ToList();
+                    }
+                    else
+                    {
+                        return new List<List<MemberInfo>>() { new List<MemberInfo>() { memberInfo } };
+                    }
+                }
+                default:
+                {
+                    return new List<List<MemberInfo>>();
+                }
+            }
         }
     }
 }

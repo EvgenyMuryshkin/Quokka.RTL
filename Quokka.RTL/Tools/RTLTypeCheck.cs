@@ -77,11 +77,6 @@ namespace Quokka.RTL.Tools
                 return false;
 
             return IsTypeSerializable(type);
-
-            if (IsSynthesizableObject(type))
-                return true;
-
-            return type.IsValueType || type.IsRTLBitArray() || type.IsTuple();
         }
 
         public static bool IsSynthesizableArrayType(Type type)
@@ -95,6 +90,12 @@ namespace Quokka.RTL.Tools
         public static bool IsSynthesizableObject(Type type)
         {
             if (IsTuple(type))
+                return false;
+
+            if (IsNative(type))
+                return false;
+
+            if (IsCollection(type))
                 return false;
 
             if (!type.IsClass && !type.IsStruct())

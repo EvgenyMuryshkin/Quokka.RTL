@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace Quokka.RTL.Tests
@@ -44,9 +45,26 @@ namespace Quokka.RTL.Tests
         public byte[][] Data;
     }
 
+    class ClassWithTupleForReflCopy
+    {
+        public Tuple<bool, int> Value = new Tuple<bool, int>(true, 42);
+    }
+
     [TestClass]
     public class DeepReflectionCopyTests
     {
+        [TestMethod]
+        public void TupleCopy()
+        {
+            var reflCopy = DeepReflectionCopy.DeepCopy(new Tuple<bool, int>(true, 42));
+            Assert.AreEqual(true, reflCopy.Item1);
+            Assert.AreEqual(42, reflCopy.Item2);
+
+            var classCopy = DeepReflectionCopy.DeepCopy(new ClassWithTupleForReflCopy());
+            Assert.AreEqual(true, classCopy.Value.Item1);
+            Assert.AreEqual(42, classCopy.Value.Item2);
+        }
+
         [TestMethod]
         public void ArrayOfArrays()
         {

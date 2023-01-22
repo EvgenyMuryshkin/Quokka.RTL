@@ -72,7 +72,7 @@ namespace Quokka.RTL
             {
                 return RTLReflectionTools
                     .SynthesizableMembers(type)
-                    .Where(m => RTLTypeCheck.IsSynthesizableSignalType(m.GetMemberType()) || IsSynthesizableArrayType(m.GetMemberType()))
+                    .Where(m => RTLTypeCheck.IsTypeSerializable(m.GetMemberType()))
                     .ToList();
             });
 
