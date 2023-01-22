@@ -34,7 +34,8 @@ namespace Quokka.RTL
             }
             else if(valueType.IsArray)
             {
-                throw new Exception();
+                unsupported(valueType);
+                return null;
             }
             else if (valueType.IsStruct())
             {

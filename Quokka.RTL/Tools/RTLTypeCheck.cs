@@ -73,6 +73,11 @@ namespace Quokka.RTL.Tools
 
         public static bool IsSynthesizableSignalType(Type type)
         {
+            if (type.IsCollection())
+                return false;
+
+            return IsTypeSerializable(type);
+
             if (IsSynthesizableObject(type))
                 return true;
 
@@ -81,7 +86,10 @@ namespace Quokka.RTL.Tools
 
         public static bool IsSynthesizableArrayType(Type type)
         {
-            return type != null && type.IsArray && (IsSynthesizableSignalType(type.GetElementType()) || IsSynthesizableArrayType(type.GetElementType()));
+            if (!type.IsCollection())
+                return false;
+
+            return IsSynthesizableSignalType(type.GetCollectionItemType()) || IsSynthesizableArrayType(type.GetCollectionItemType());
         }
 
         public static bool IsSynthesizableObject(Type type)
@@ -145,13 +153,7 @@ namespace Quokka.RTL.Tools
 
         public static bool IsTypeSerializable(Type type)
         {
-            if (type.IsEnum)
-                return true;
-
-            if (PredefinedTypes.TypeInfos.ContainsKey(type))
-                return true;
-
-            if (type.IsRTLBitArray())
+            if (type.IsNative())
                 return true;
 
             if (RTLModuleHelper.IsSynthesizableArrayType(type))
@@ -160,7 +162,8 @@ namespace Quokka.RTL.Tools
             if (RTLReflectionTools.TryResolveTuple(type, out var types))
                 return types.All(IsTypeSerializable);
 
-            // TODO: add check for IsSynthesizableObject
+            if (RTLTypeCheck.IsSynthesizableObject(type))
+                return true;
 
             if (RTLReflectionTools.TryGetNullableType(type, out var actualType))
                 return IsTypeSerializable(actualType);

@@ -37,6 +37,7 @@ namespace System
 {
     public static class SystemExtensions
     {
+        public static bool IsNative(this Type type) => RTLTypeCheck.IsNative(type);
         public static bool IsConstant(this MemberInfo memberInfo) => RTLTypeCheck.IsConstant(memberInfo);
         public static bool IsStruct(this Type type) => type != null && type.IsValueType && !type.IsEnum && !type.IsPrimitive;
         public static bool IsRTLBitArray(this Type type) => RTLTypeCheck.IsRTLBitArray(type);
