@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -23,33 +24,47 @@ namespace Quokka.RTL.Tools
             return null;
         }
 
-        public static IEnumerable<MemberInfo> RecursiveMembers(Type type)
+        public static IEnumerable<MemberInfo> RecursiveMembers(Type type, bool includeToolkitTypes = false)
         {
-            if (type == null || type == typeof(object))
+            if (type == null || type == typeof(object) || (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(type)))
                 return Enumerable.Empty<MemberInfo>();
 
-            var baseMembers = SynthesizableMembers(type.BaseType);
+            var baseMembers = RecursiveMembers(type.BaseType).ToList();
 
             var props = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
             var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
-
-            return baseMembers
-                .Concat(props)
+            var thisMembers = props
                 .Concat(fields)
+                //.OrderBy(x => x.MetadataToken) // https://stackoverflow.com/questions/9062235/get-properties-in-order-of-declaration-using-reflection
+                ;
+
+            return baseMembers.Concat(thisMembers)
+                //thisMembers
                 // exclude backing fields
                 .Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
         }
 
         public static IEnumerable<MemberInfo> SynthesizableMembers(Type type, bool includeToolkitTypes = false)
         {
-            if (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(type))
-                return Enumerable.Empty<MemberInfo>();
+            return RecursiveMembers(type, includeToolkitTypes)
+                .Where(p =>
+                {
+                    if (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(p.GetMemberType()))
+                        return false;
 
-            return RecursiveMembers(type)
-                .Where(p => includeToolkitTypes || !RTLTypeCheck.IsToolkitType(p.GetMemberType()))
-                .Where(p => p.GetCustomAttribute<NonSerializedAttribute>() == null)
-                .Where(p => p.GetMemberType().GetCustomAttribute<NonSerializedAttribute>() == null)
-                .Where(p => !p.IsAbstract());
+                    if (p.GetCustomAttribute<NonSerializedAttribute>() != null)
+                        return false;
+
+                    if (p.GetMemberType().GetCustomAttribute<NonSerializedAttribute>() != null)
+                        return false;
+
+                    // TODO: should include members of interface
+                    //if (p.IsAbstract())
+                    //    return false;
+
+                    return true;
+                })
+                ;
         }
 
         public static bool TryGetNullableType(Type type, out Type actualType)
@@ -74,8 +89,8 @@ namespace Quokka.RTL.Tools
         public static List<MemberInfo> SerializableMembers(Type type, bool throwIfNotSerializable = false)
         {
             var result = new List<MemberInfo>();
-            var members = type
-                .GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+
+            var members = RecursiveMembers(type)
                 .Where(m => !m.Name.Contains("__BackingField"))
                 .Where(m => !m.Name.Contains("__Field"));
 
@@ -100,18 +115,14 @@ namespace Quokka.RTL.Tools
                         else if (throwIfNotSerializable)
                             throw new Exception($"Member '{type.Name}.{m.Name}' of type '{pi.PropertyType}' is not serializable");
                         break;
+                    case ConstructorInfo ctor:
+                        break;
                     default:
                         if (m.DeclaringType == typeof(object) || m.DeclaringType == typeof(ValueType))
                             continue;
 
                         if (RTLTypeCheck.IsAnonymousType(type))
                             continue;
-
-                        if (m is ConstructorInfo c)
-                        {
-                            continue;
-                        }
-
 
                         // TODO: sort out getter and setter later
                         if (m.Name.StartsWith("<>c") || m.Name.StartsWith("get_") || m.Name.StartsWith("set_"))
@@ -122,9 +133,23 @@ namespace Quokka.RTL.Tools
                         if (throwIfNotSerializable)
                             throw new Exception($"Member '{type.Name}.{m.Name}' of type '{m.GetType().Name}' is not serializable");
 
-
                         continue;
                 }
+            }
+
+            if (result.Any(m => m.GetCustomAttribute<MemberIndexAttribute>() != null))
+            {
+                var memberIndex = result.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
+                var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
+                if (notIndexed.HasValue())
+                    throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
+
+                return memberIndex.OrderBy(m => m.index.Order).Select(m => m.m).ToList();
+            }
+            else
+            {
+                // default order by name
+                //result = result.OrderBy(m => m.Name).ToList();
             }
 
             return result;
@@ -134,12 +159,14 @@ namespace Quokka.RTL.Tools
         {
             var members = SerializableMembers(type, throwIfNotSerializable);
 
+            return members;
+
             var memberIndex = members.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
             var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
             if (notIndexed.HasValue())
                 throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
 
-            return memberIndex.OrderBy(m => m.index.Index).Select(m => m.m).ToList();
+            return memberIndex.OrderBy(m => m.index.Order).Select(m => m.m).ToList();
         }
 
         public static (int, int) SerializedRange(object target, MemberInfo mi)
@@ -150,7 +177,7 @@ namespace Quokka.RTL.Tools
             var orderedMembers = OrderedSerializableMembers(target.GetType());
 
             var from = 0;
-            var leading = orderedMembers.TakeWhile(m => m != mi);
+            var leading = orderedMembers.TakeWhile(m => m.Name != mi.Name);
 
             from = leading.Sum(m => RTLSignalTools.SizeOfValue(m.GetValue(target)).Size);
 
@@ -167,41 +194,10 @@ namespace Quokka.RTL.Tools
                     if (RTLTypeCheck.IsSynthesizableObject(memberType) || RTLTypeCheck.IsTuple(memberType))
                     {
                         var members = SerializableMembers(memberType, true);
-                        return members.SelectMany(m =>
-                        {
-                            return UnwrapMemberInfo(m);
-
-                            var childMemberType = m.GetMemberType();
-                            var result = new List<MemberInfo>() { m };
-                            var unwrapped = UnwrapMemberInfo(childMemberType);
-
-                            if (unwrapped.Any())
-                            {
-                                return unwrapped.Select(r =>
-                                {
-                                    var path = result.ToList();
-                                    path.AddRange(r);
-
-                                    return path;
-                                });
-                            }
-                            else
-                            {
-                                return new[] { result };
-                            }
-                        }).ToList();
+                        return members.SelectMany(m => UnwrapMemberInfo(m)).ToList();
                     }
-                    else if (RTLModuleHelper.IsSynthesizableArrayType(memberType))
-                    {
-                        var elementType = memberType.GetCollectionItemType();
-                        if (RTLTypeCheck.IsSynthesizableObject(elementType) || RTLTypeCheck.IsTuple(elementType))
-                        {
-                            return UnwrapMemberInfo(elementType);
-                        }
-                    }
-
-                    return new List<List<MemberInfo>>();
                 }
+                break;
                 case MemberInfo memberInfo:
                 {
                     var unwrapped = UnwrapMemberInfo(memberInfo.GetMemberType());
@@ -219,11 +215,9 @@ namespace Quokka.RTL.Tools
                         return new List<List<MemberInfo>>() { new List<MemberInfo>() { memberInfo } };
                     }
                 }
-                default:
-                {
-                    return new List<List<MemberInfo>>();
-                }
             }
+
+            return new List<List<MemberInfo>>();
         }
     }
 }

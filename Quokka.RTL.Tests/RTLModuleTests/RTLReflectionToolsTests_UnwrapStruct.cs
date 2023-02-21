@@ -35,6 +35,21 @@ namespace Quokka.RTL.Tests
     {
     }
 
+    [TestClass]
+    public class ExtensionsTests
+    {
+        [TestMethod]
+        public void ValueByPath()
+        {
+            var instance = new UnwrapStructL2();
+            var result = RTLReflectionTools.UnwrapMemberInfo(typeof(UnwrapStructL2));
+            var allItems = result.Select(c => c.Path()).ToList();
+
+            var path = result.Where(p => p.Path() == "L3.Array").Single();
+            var value = instance.ValueByPath(path);
+            Assert.IsNotNull(value);
+        }
+    }
 
     [TestClass]
     public class RTLReflectionToolsTests_UnwrapStruct
@@ -69,8 +84,8 @@ namespace Quokka.RTL.Tests
             var result = RTLReflectionTools.UnwrapMemberInfo(typeof(UnwrapStructL3));
             Assert.IsNotNull(result);
             Assert.AreEqual(5, result.Count);
-            Assert.AreEqual("Native", result[0].Path());
-            Assert.AreEqual("Array", result[1].Path());
+            Assert.AreEqual("Array", result[0].Path());
+            Assert.AreEqual("Native", result[1].Path());
             Assert.AreEqual("Tuple.Item1", result[2].Path());
             Assert.AreEqual("Tuple.Item2.Item1", result[3].Path());
             Assert.AreEqual("Tuple.Item2.Item2", result[4].Path());
@@ -83,30 +98,22 @@ namespace Quokka.RTL.Tests
             Assert.IsNotNull(result);
             var allItems = result.Select(c => c.Path()).ToList();
 
-            Assert.AreEqual(20, result.Count);
-            Assert.AreEqual("L3.Native", result[0].Path());
-            Assert.AreEqual("L3.Array", result[1].Path());
+            Assert.AreEqual(12, result.Count);
+            Assert.AreEqual("L3.Array", result[0].Path());
+            Assert.AreEqual("L3.Native", result[1].Path());
             Assert.AreEqual("L3.Tuple.Item1", result[2].Path());
             Assert.AreEqual("L3.Tuple.Item2.Item1", result[3].Path());
             Assert.AreEqual("L3.Tuple.Item2.Item2", result[4].Path());
 
-            Assert.AreEqual("L3Array.Native", result[5].Path());
-            Assert.AreEqual("L3Array.Array", result[6].Path());
-            Assert.AreEqual("L3Array.Tuple.Item1", result[7].Path());
-            Assert.AreEqual("L3Array.Tuple.Item2.Item1", result[8].Path());
-            Assert.AreEqual("L3Array.Tuple.Item2.Item2", result[9].Path());
+            Assert.AreEqual("L3Array", result[5].Path());
 
-            Assert.AreEqual("L3Tuple.Item1.Native", result[10].Path());
-            Assert.AreEqual("L3Tuple.Item1.Array", result[11].Path());
-            Assert.AreEqual("L3Tuple.Item1.Tuple.Item1", result[12].Path());
-            Assert.AreEqual("L3Tuple.Item1.Tuple.Item2.Item1", result[13].Path());
-            Assert.AreEqual("L3Tuple.Item1.Tuple.Item2.Item2", result[14].Path());
+            Assert.AreEqual("L3Tuple.Item1.Array", result[6].Path());
+            Assert.AreEqual("L3Tuple.Item1.Native", result[7].Path());
+            Assert.AreEqual("L3Tuple.Item1.Tuple.Item1", result[8].Path());
+            Assert.AreEqual("L3Tuple.Item1.Tuple.Item2.Item1", result[9].Path());
+            Assert.AreEqual("L3Tuple.Item1.Tuple.Item2.Item2", result[10].Path());
 
-            Assert.AreEqual("L3Tuple.Item2.Native", result[15].Path());
-            Assert.AreEqual("L3Tuple.Item2.Array", result[16].Path());
-            Assert.AreEqual("L3Tuple.Item2.Tuple.Item1", result[17].Path());
-            Assert.AreEqual("L3Tuple.Item2.Tuple.Item2.Item1", result[18].Path());
-            Assert.AreEqual("L3Tuple.Item2.Tuple.Item2.Item2", result[19].Path());
+            Assert.AreEqual("L3Tuple.Item2", result[11].Path());
         }
 
     }

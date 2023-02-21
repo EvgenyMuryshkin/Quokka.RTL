@@ -46,7 +46,7 @@ namespace System
         public static Type GetCollectionItemType(this Type type) => RTLReflectionTools.GetCollectionItemType(type);
         public static bool IsTuple(this Type type) => RTLTypeCheck.IsTuple(type);
         public static bool IsGenericTuple(this Type type) => RTLTypeCheck.IsGenericTuple(type);
-
+        public static bool IsSynthesizableObject(this Type type) => RTLTypeCheck.IsSynthesizableObject(type);
 
         public static MemberInfo SingleMember(this Type source, string name)
         {
@@ -61,6 +61,15 @@ namespace System
         public static MemberInfo SingleMember(this object source, string name)
         {
             return source.GetType().GetMember(name).Single();
+        }
+
+        public static object ValueByPath(this object source, IEnumerable<MemberInfo> path)
+        {
+            if (source == null) return null;
+            if (path == null || !path.Any()) return source;
+
+            var memberValue = path.First().GetValue(source);
+            return memberValue.ValueByPath(path.Skip(1));
         }
     }
 }

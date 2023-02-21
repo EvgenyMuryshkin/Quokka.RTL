@@ -26,7 +26,7 @@ namespace Quokka.RTL
             return $"{(DataType == RTLSignalType.Signed ? "S" : "U")}:{AsBinaryString()}";
         }
 
-        public override string ToString()
+        public string AsNotPrefixedHex(bool trimLeadingZeroes)
         {
             List<List<bool>> parts = new List<List<bool>>();
             IEnumerable<bool> source = LSB;
@@ -44,11 +44,20 @@ namespace Quokka.RTL
                 .Select(p => Convert.ToByte(p, 2))
                 .ToList();
 
-            var result = string.Join("", byteParts.Select(p => p.ToString("X02"))).TrimStart(new[] { '0' });
+            var result = string.Join("", byteParts.Select(p => p.ToString("X02")));
+            
+            if (trimLeadingZeroes)
+                result = result.TrimStart(new[] { '0' });
+
             if (result == "")
                 result = "0";
 
-            return $"0x{result}";
+            return result;
+        }
+
+        public override string ToString()
+        {
+            return $"0x{AsNotPrefixedHex(true)}";
         }
 
         public override int GetHashCode()

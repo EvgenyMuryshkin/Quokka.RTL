@@ -44,7 +44,7 @@ namespace Quokka.RTL.Tools
         public static bool IsCollection(Type type) => type != null && (type.IsArray || type.IsList());
 
         public static bool IsRTLBitArray(Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
-        public static bool IsConstant(MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly;
+        public static bool IsConstant(MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly/* && f.GetRawConstantValue() != null*/;
         public static bool IsList(Type type) => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
 
         public static bool IsTuple(Type type)

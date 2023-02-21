@@ -1,6 +1,5 @@
 ﻿namespace Quokka.RTL
 {
-    [RTLToolkitType]
     public class RTLPipelineStageRequestSignals : IRTLPipelineStageRequestSignals
     {
         public bool? StallPipeline { get; set; }

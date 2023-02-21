@@ -5,6 +5,26 @@ using System.Linq;
 
 namespace Quokka.RTL.Tests
 {
+    public class t_iq
+    {
+        public t_iq(int size)
+        {
+            i = new RTLBitArray().Resized(size);
+            q = new RTLBitArray().Resized(size);
+        }
+
+        [MemberIndex(0)]
+        public RTLBitArray i;
+
+        [MemberIndex(1)]
+        public RTLBitArray q;
+    }
+
+    public class t_iq16 : t_iq
+    {
+        public t_iq16() : base(16) { }
+    }
+
     public class NotIndexedClass
     {
         public int Value;
@@ -42,9 +62,15 @@ namespace Quokka.RTL.Tests
     public class RTLReflectionToolsTests
     {
         [TestMethod]
+        public void PiplineRequestMembers()
+        {
+            Assert.AreEqual(3, RTLReflectionTools.SerializableMembers(typeof(RTLPipelineStageRequestSignals)).Count);
+        }
+
+        [TestMethod]
         public void InterfaceMembers()
         {
-            Assert.AreEqual(1, RTLReflectionTools.RecursiveMembers(typeof(IRTLPipelinePreviewSignals)).Count());
+            Assert.AreEqual(1, RTLReflectionTools.SynthesizableMembers(typeof(IRTLPipelinePreviewSignals)).Count());
         }
 
         [TestMethod]
@@ -77,6 +103,22 @@ namespace Quokka.RTL.Tests
         }
 
         [TestMethod]
+        public void t_iq16()
+        {
+            var value = new t_iq16();
+            var i = value.GetType().GetMember("i")[0];
+            var q = value.GetType().GetMember("q")[0];
+
+            var i_range = RTLReflectionTools.SerializedRange(value, i);
+            Assert.AreEqual(15, i_range.Item1);
+            Assert.AreEqual(0, i_range.Item2);
+
+            var q_range = RTLReflectionTools.SerializedRange(value, q);
+            Assert.AreEqual(31, q_range.Item1);
+            Assert.AreEqual(16, q_range.Item2);
+        }
+
+        [TestMethod]
         public void CustomBitArrayMember()
         {
             var props = RTLReflectionTools.SynthesizableMembers(typeof(CustomBitArrayClass));
@@ -94,7 +136,9 @@ namespace Quokka.RTL.Tests
 
             Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(null, null));
             Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(nonIndexed, null));
-            Assert.ThrowsException<Exception>(() => RTLReflectionTools.SerializedRange(nonIndexed, nonIndexedMember));
+            var range = RTLReflectionTools.SerializedRange(nonIndexed, nonIndexedMember);
+            Assert.AreEqual(31, range.Item1);
+            Assert.AreEqual(0, range.Item2);
         }
 
         [TestMethod]
