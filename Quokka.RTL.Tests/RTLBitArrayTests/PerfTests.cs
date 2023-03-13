@@ -94,6 +94,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         {
             var lhs = new DeepComparePerfClassWithInit() { Enabled = false };
             var rhs = new DeepComparePerfClassWithInit() { Enabled = true };
+            DeepDiff.DeepEquals(lhs, rhs);
 
             Measure(() =>
             {

@@ -172,12 +172,34 @@ namespace Quokka.RTL.Tools
                     var valueType = value.GetType();
                     if (RTLTypeCheck.IsSynthesizableObject(valueType))
                     {
-                        var orderedMembers = RTLReflectionTools.OrderedSerializableMembers(valueType);
+                        var orderedMembers = RTLReflectionTools.SerializableMembers(valueType);
                         var combinedInitialier = string.Join(
                             "", 
                             orderedMembers
                                 .Select(m => RawMemoryElementInitializer(m.GetValue(value)))
                                 .Reverse()
+                        );
+                        return combinedInitialier;
+                    }
+                    else if (valueType.IsCollection())
+                    {
+                        var combinedInitialier = string.Join(
+                            "",
+                            (value as IEnumerable)
+                                .OfType<object>()
+                                .Select(m => RawMemoryElementInitializer(m))
+                                .Reverse()
+                        );
+                        return combinedInitialier;
+
+                    }
+                    else if (valueType.IsTuple())
+                    {
+                        var orderedMembers = RTLReflectionTools.SerializableMembers(valueType);
+                        var combinedInitialier = string.Join(
+                            "",
+                            orderedMembers
+                                .Select(m => RawMemoryElementInitializer(m.GetValue(value)))
                         );
                         return combinedInitialier;
                     }

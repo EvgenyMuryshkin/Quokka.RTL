@@ -8,7 +8,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 {
     public class RAMTemplateReadData<TExpr>
     {
-        public TExpr Target;
+        public List<TExpr> Targets = new List<TExpr>();
         public TExpr Source;
     }
 
@@ -16,7 +16,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
     {
         public TExpr WriteEnable;
         public TExpr Target;
-        public TExpr Source;
+        public List<TExpr> Sources = new List<TExpr>();
     }
 
     public class RAMTemplateData<TExpr>

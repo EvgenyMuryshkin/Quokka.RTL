@@ -8,12 +8,18 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 {
     public class VHDLRAMTemplates : GenericRAMTemplates
     {
+        protected readonly IRTLSignalInfoProvider _rtlSignalInfoProvider;
         protected readonly vhdArchitectureDeclarations _declarations;
         protected readonly vhdArchitectureImplementation _implementation;
 
-        public VHDLRAMTemplates(vhdArchitectureDeclarations declarations, vhdArchitectureImplementation implementation)
+        public VHDLRAMTemplates(
+            IRTLSignalInfoProvider rtlSignalInfoProvider,
+            vhdArchitectureDeclarations declarations, 
+            vhdArchitectureImplementation implementation
+        )
             : base()
         {
+            _rtlSignalInfoProvider = rtlSignalInfoProvider;
             _declarations = declarations;
             _implementation = implementation;
         }
@@ -120,7 +126,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     process.SensitivityList.Add(write.WriteEnable);
 
                 process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
-                process.SensitivityList.AddRange(Identifiers(write.Source));
+                process.SensitivityList.AddRange(Identifiers(write.Sources.Single()));
 
                 if (write.WriteEnable != null)
                 {
@@ -132,7 +138,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                                 new vhdAssignExpression(
                                     new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Signal,
-                                    write.Source
+                                    write.Sources.Single()
                                 )
                             }
                         }
@@ -143,7 +149,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     syncBlock.Block.WithAssignExpression(
                         new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Signal,
-                        write.Source
+                        write.Sources.Single()
                     );
                 }
             }
@@ -153,7 +159,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 process.SensitivityList.AddRange(Identifiers(read.Source));
 
                 syncBlock.Block.WithAssignExpression(
-                    read.Target,
+                    read.Targets.Single(),
                     vhdAssignType.Signal,
                     new vhdIdentifierExpression(read.Source.Name, MemoryIndexing(read.Source.Indexes))
                 );
@@ -196,7 +202,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     process.SensitivityList.Add(write.WriteEnable);
 
                 process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
-                process.SensitivityList.AddRange(Identifiers(write.Source));
+                process.SensitivityList.AddRange(Identifiers(write.Sources.Single()));
 
                 if (write.WriteEnable != null)
                 {
@@ -208,7 +214,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                                 new vhdAssignExpression(
                                     new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Signal,
-                                    write.Source
+                                    write.Sources.Single()
                                 )
                             }
                         }
@@ -219,7 +225,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     syncBlock.Block.WithAssignExpression(
                         new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Signal,
-                        write.Source
+                        write.Sources.Single()
                     );
                 }
             }
@@ -248,7 +254,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 }
 
                 process.Block.WithAssignExpression(
-                    read.Target,
+                    read.Targets.Single(),
                     vhdAssignType.Signal,
                     new vhdIdentifierExpression(read.Source.Name, new vhdProcedureCallExpression("TO_INTEGER", readAddrReg))
                 );
@@ -277,7 +283,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     process.SensitivityList.Add(write.WriteEnable);
 
                 process.SensitivityList.AddRange(IndexIdentifiers(write.Target));
-                process.SensitivityList.AddRange(IndexIdentifiers(write.Source));
+                process.SensitivityList.AddRange(IndexIdentifiers(write.Sources.Single()));
 
                 if (write.WriteEnable != null)
                 {
@@ -289,7 +295,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                                 new vhdAssignExpression(
                                     new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                                     vhdAssignType.Variable,
-                                    write.Source
+                                    write.Sources.Single()
                                 )
                             }
                         }
@@ -300,18 +306,18 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                     syncBlock.Block.WithAssignExpression(
                         new vhdIdentifierExpression(write.Target.Name, MemoryIndexing(write.Target.Indexes)),
                         vhdAssignType.Variable,
-                        write.Source
+                        write.Sources.Single()
                     );
                 }
             }
 
             foreach (var read in data.Read)
             {
-                process.SensitivityList.AddRange(IndexIdentifiers(read.Target));
+                process.SensitivityList.AddRange(IndexIdentifiers(read.Targets.Single()));
                 process.SensitivityList.AddRange(IndexIdentifiers(read.Source));
 
                 syncBlock.Block.WithAssignExpression(
-                    read.Target,
+                    read.Targets.Single(),
                     vhdAssignType.Signal,
                     new vhdIdentifierExpression(read.Source.Name, MemoryIndexing(read.Source.Indexes))
                 );

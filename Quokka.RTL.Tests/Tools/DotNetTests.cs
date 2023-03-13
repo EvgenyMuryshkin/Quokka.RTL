@@ -37,7 +37,7 @@ namespace Quokka.RTL.Tests
         {
             for(var i = 0; i < 100; i++)
             {
-                var ordered = RTLReflectionTools.OrderedSerializableMembers(typeof(DerivedClass));
+                var ordered = RTLReflectionTools.SerializableMembers(typeof(DerivedClass));
                 Assert.AreEqual(8, ordered.Count);
                 Assert.AreEqual("Field5", ordered[0].Name);
                 Assert.AreEqual("Prop5", ordered[1].Name);

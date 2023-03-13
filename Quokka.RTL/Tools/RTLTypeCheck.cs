@@ -84,7 +84,8 @@ namespace Quokka.RTL.Tools
             if (!type.IsCollection())
                 return false;
 
-            return IsSynthesizableSignalType(type.GetCollectionItemType()) || IsSynthesizableArrayType(type.GetCollectionItemType());
+            var collectinItemType = type.GetCollectionItemType();
+            return IsSynthesizableSignalType(collectinItemType) || IsSynthesizableArrayType(collectinItemType);
         }
 
         public static bool IsSynthesizableObject(Type type)
@@ -105,7 +106,7 @@ namespace Quokka.RTL.Tools
                 return false;
 
             var getSetMembers = new HashSet<MethodInfo>(
-                RTLReflectionTools.SynthesizableMembers(type)
+                RTLReflectionTools.SynthesizableMembers(type, sort: false)
                 .OfType<PropertyInfo>()
                 .SelectMany(p => new[] { p.GetGetMethod(), p.GetSetMethod() })
                 .Where(m => m != null));

@@ -100,7 +100,7 @@ namespace Quokka.RTL
 
             // TODO: build code generator for type compare
 
-            foreach (var prop in RTLModuleHelper.SignalProperties(lhs.GetType()))
+            foreach (var prop in RTLModuleHelper.SignalProperties(lhs.GetType(), sort: false))
             {
                 var lhsValue = prop.GetValue(lhs);
                 var rhsValue = prop.GetValue(rhs);

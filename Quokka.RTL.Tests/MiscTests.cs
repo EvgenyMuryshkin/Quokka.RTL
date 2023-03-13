@@ -128,7 +128,7 @@ namespace Quokka.VCD.Tests
             var file = new vhdFile();
             var arch = new vhdArchitecture();
 
-            var generator = new VHDLRAMTemplates(arch.Declarations, arch.Implementation);
+            var generator = new VHDLRAMTemplates(null, arch.Declarations, arch.Implementation);
             var templateData = new RAMTemplateData<vhdIdentifier>()
             {
                 Clock = "clock",
@@ -137,7 +137,7 @@ namespace Quokka.VCD.Tests
                     new RAMTemplateWriteData<vhdIdentifier>()
                     {
                         WriteEnable = "we",
-                        Source = new vhdIdentifier("mem", new vhdRange("w_addr")),
+                        Sources = { new vhdIdentifier("mem", new vhdRange("w_addr")) },
                         Target = "w_data"
                     }
                 },
@@ -146,7 +146,7 @@ namespace Quokka.VCD.Tests
                     new RAMTemplateReadData<vhdIdentifier>()
                     {
                         Source = new vhdIdentifier("mem", new vhdRange("r_addr")),
-                        Target = "rdata"
+                        Targets = { "rdata" }
                     }
                 },
                 RAM = "mem",

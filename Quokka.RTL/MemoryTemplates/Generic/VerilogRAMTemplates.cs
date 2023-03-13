@@ -8,11 +8,13 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 {
     public class VerilogRAMTemplates : GenericRAMTemplates
     {
+        protected readonly IRTLSignalInfoProvider _rtlSignalInfoProvider;
         protected readonly vlgModuleImplementation _implementation;
 
-        public VerilogRAMTemplates(vlgModuleImplementation implementation)
+        public VerilogRAMTemplates(IRTLSignalInfoProvider rtlSignalInfoProvider, vlgModuleImplementation implementation)
             : base()
         {
+            _rtlSignalInfoProvider = rtlSignalInfoProvider;
             _implementation = implementation;
         }
 
@@ -73,7 +75,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 var assign = new vlgAssign(
                     write.Target,
                     vlgAssignType.NonBlocking,
-                    write.Source
+                    write.Sources.Single()
                 );
 
                 if (writeEnable == null)
@@ -98,7 +100,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             {
                 block.Add(
                     new vlgAssign(
-                        read.Target,
+                        read.Targets.Single(),
                         vlgAssignType.NonBlocking,
                         read.Source
                     )
@@ -138,7 +140,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 var assign = new vlgAssign(
                     write.Target,
                     vlgAssignType.NonBlocking,
-                    write.Source
+                    write.Sources.Single()
                 );
 
                 if (writeEnable == null)
@@ -190,7 +192,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
 
                 _implementation.Block.WithAssign(
                     new vlgAssign(
-                        read.Target,
+                        read.Targets.Single(),
                         vlgAssignType.Assign,
                         new vlgIdentifierExpression(read.Source.Name, new vlgIdentifierExpression(addrReg))
                     )
@@ -220,18 +222,18 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                             new vlgAssign(
                                 write.Target,
                                 vlgAssignType.NonBlocking,
-                                write.Source
+                                write.Sources.Single()
                             ),
                             new vlgAssign(
-                                read.Target,
+                                read.Targets.Single(),
                                 vlgAssignType.NonBlocking,
-                                new vlgIdentifierExpression(write.Source)
+                                new vlgIdentifierExpression(write.Sources.Single())
                             )
                         },
                         new vlgConditionalStatement()
                         {
                             new vlgAssign(
-                                read.Target,
+                                read.Targets.Single(),
                                 vlgAssignType.NonBlocking,
                                 read.Source
                             )

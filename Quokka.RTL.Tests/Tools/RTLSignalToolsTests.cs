@@ -13,7 +13,10 @@ namespace Quokka.RTL.Tests
             bitArray = new RTLBitArray().Resized(bitArraySize);
         }
 
+        [MemberIndex(0)]
         public bool boolValue;
+
+        [MemberIndex(1)]
         public RTLBitArray bitArray;
     }
 
@@ -25,9 +28,13 @@ namespace Quokka.RTL.Tests
             l2Array = Enumerable.Range(0, l2Size).Select(i => new NestedClassL2(bitArray)).ToArray();
         }
 
+        [MemberIndex(0)]
         public NestedClassL2 l2;
 
+        [MemberIndex(1)]
         public NestedClassL2[] l2Array;
+
+        [MemberIndex(2)]
         public byte byteValue;
     }
 
@@ -39,9 +46,13 @@ namespace Quokka.RTL.Tests
             l1Array = Enumerable.Range(0, l1Size).Select(i => new NestedClassL1(l2Size, bitArray)).ToArray();
         }
 
+        [MemberIndex(0)]
         public NestedClassL1 l1;
 
+        [MemberIndex(1)]
         public NestedClassL1[] l1Array;
+
+        [MemberIndex(2)]
         public int intValue;
     }
 
@@ -53,6 +64,24 @@ namespace Quokka.RTL.Tests
         }
 
         public Tuple<bool, byte, TopLevelClass> Tuple;
+    }
+
+    class BaseClassWithArray
+    {
+        [MemberIndex(0)]
+        public byte[] baseArray = new byte[4];
+
+        [MemberIndex(1)]
+        public bool baseBoolean;
+    }
+
+    class ClassWithArray : BaseClassWithArray
+    {
+        [MemberIndex(0)]
+        public byte[] topLevelArray = new byte[4];
+
+        [MemberIndex(1)]
+        public ClassWithTuple ClassWithTuple = new ClassWithTuple(2, 3, 8);
     }
 
     [TestClass]
@@ -85,21 +114,6 @@ namespace Quokka.RTL.Tests
             Assert.AreEqual(20, RTLSignalTools.SizeOfValue(new RTLBitArray().Resized(20)).Size);
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => RTLSignalTools.SizeOfValue(""));
-        }
-
-        [TestMethod]
-        public void MemoryElementInitializer()
-        {
-            Assert.AreEqual("bin:1", RTLSignalTools.MemoryElementInitializer(true));
-            Assert.AreEqual("bin:10000010", RTLSignalTools.MemoryElementInitializer((byte)0x82));
-            Assert.AreEqual("bin:1000000000000000", RTLSignalTools.MemoryElementInitializer(new RTLBitArray(short.MinValue)));
-
-            var indexedClass = new IndexedClass() { 
-                IntValue = 42, 
-                BitArray = new RTLBitArray(short.MaxValue).Resized(10), 
-                ByteValue = 0x82 
-            };
-            Assert.AreEqual("bin:10000010111111111100000000000000000000000000101010", RTLSignalTools.MemoryElementInitializer(indexedClass));
         }
     }
 }

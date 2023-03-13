@@ -67,7 +67,7 @@ namespace Quokka.RTL
 
         public static bool IsSynthesizableArrayType(Type type) => IsSynthesizableArrayTypeCache[type];
 
-        static TypeCache<List<MemberInfo>> signalPropertiesCache = new TypeCache<List<MemberInfo>>(
+        static TypeCache<List<MemberInfo>> sortedSignalPropertiesCache = new TypeCache<List<MemberInfo>>(
             (type) =>
             {
                 return RTLReflectionTools
@@ -76,7 +76,39 @@ namespace Quokka.RTL
                     .ToList();
             });
 
-        public static List<MemberInfo> SignalProperties(Type type) => signalPropertiesCache[type];
+        static TypeCache<List<MemberInfo>> unsortedSignalPropertiesCache = new TypeCache<List<MemberInfo>>(
+            (type) =>
+            {
+                return RTLReflectionTools
+                    .SynthesizableMembers(type, sort: false)
+                    .Where(m => RTLTypeCheck.IsTypeSerializable(m.GetMemberType()))
+                    .ToList();
+            });
+
+        public static List<MemberInfo> SignalProperties(Type type, bool sort = true)
+        {
+            if (sort)
+                return sortedSignalPropertiesCache[type];
+
+            return unsortedSignalPropertiesCache[type];
+        }
+
+        public static MemberInfoCache<MemberIndexAttribute> memberIndexCache = new MemberInfoCache<MemberIndexAttribute>(
+            (memberInfo) =>
+            {
+                return memberInfo.GetCustomAttribute<MemberIndexAttribute>();
+            });
+
+        public static MemberIndexAttribute MemberIndex(MemberInfo memberInfo) => memberIndexCache[memberInfo];
+
+        public static MemberInfoCache<CompilerGeneratedAttribute> compilerGeneratedCache = new MemberInfoCache<CompilerGeneratedAttribute>(
+            (memberInfo) =>
+            {
+                return memberInfo.GetCustomAttribute<CompilerGeneratedAttribute>();
+            });
+
+        public static CompilerGeneratedAttribute CompilerGenerated(MemberInfo memberInfo) => compilerGeneratedCache[memberInfo];
+
 
         static TypeCache<List<MemberInfo>> pipelinePropertiesCache = new TypeCache<List<MemberInfo>>(
             (type) =>

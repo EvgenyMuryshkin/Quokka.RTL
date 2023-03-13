@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +9,30 @@ using System.Text;
 
 namespace Quokka.RTL.Tools
 {
+    public class SerializedRangeInfo
+    {
+        public MemberInfo Member { get; set; }
+        public int? Index { get; set; }
+
+        public bool MemberOnly => Member != null && Index == null;
+        public bool IndexOnly => Member == null && Index != null;
+
+        public static implicit operator SerializedRangeInfo(MemberInfo member)
+        {
+            return new SerializedRangeInfo() { Member = member };
+        }
+
+        public static implicit operator SerializedRangeInfo(int index)
+        {
+            return new SerializedRangeInfo() { Index = index };
+        }
+
+        public static implicit operator SerializedRangeInfo((MemberInfo, int) set)
+        {
+            return new SerializedRangeInfo() { Member = set.Item1, Index = set.Item2 };
+        }
+    }
+
     public static class RTLReflectionTools
     {
         public static Type GetCollectionItemType(Type type)
@@ -24,29 +49,54 @@ namespace Quokka.RTL.Tools
             return null;
         }
 
-        public static IEnumerable<MemberInfo> RecursiveMembers(Type type, bool includeToolkitTypes = false)
+        public static IEnumerable<MemberInfo> RecursiveMembers(
+            Type type, 
+            bool includeToolkitTypes = false,
+            bool sort = true)
         {
             if (type == null || type == typeof(object) || (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(type)))
                 return Enumerable.Empty<MemberInfo>();
 
-            var baseMembers = RecursiveMembers(type.BaseType).ToList();
+            var baseMembers = RecursiveMembers(type.BaseType, includeToolkitTypes, sort).ToList();
 
             var props = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
             var fields = type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).OfType<MemberInfo>();
+            
             var thisMembers = props
                 .Concat(fields)
+                .Where(p => RTLModuleHelper.CompilerGenerated(p) == null)
+                .Where(m => !m.Name.Contains("__BackingField"))
+                .Where(m => !m.Name.Contains("__Field"))
                 //.OrderBy(x => x.MetadataToken) // https://stackoverflow.com/questions/9062235/get-properties-in-order-of-declaration-using-reflection
                 ;
 
-            return baseMembers.Concat(thisMembers)
-                //thisMembers
-                // exclude backing fields
-                .Where(p => p.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
+            if (sort)
+            {
+                if (thisMembers.Any(m => RTLModuleHelper.MemberIndex(m) != null))
+                {
+                    var memberIndex = thisMembers.Select(m => new { m, index = RTLModuleHelper.MemberIndex(m) }).ToList();
+                    var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
+                    if (notIndexed.HasValue())
+                        throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
+
+                    thisMembers = memberIndex.OrderBy(m => m.index.Order).Select(m => m.m).ToList();
+                }
+                else
+                {
+                    // default order by name
+                    thisMembers = thisMembers.OrderBy(m => m.Name).ToList();
+                }
+            }
+
+            return baseMembers.Concat(thisMembers);
         }
 
-        public static IEnumerable<MemberInfo> SynthesizableMembers(Type type, bool includeToolkitTypes = false)
+        public static IEnumerable<MemberInfo> SynthesizableMembers(
+            Type type, 
+            bool includeToolkitTypes = false,
+            bool sort = true)
         {
-            return RecursiveMembers(type, includeToolkitTypes)
+            return RecursiveMembers(type, includeToolkitTypes, sort)
                 .Where(p =>
                 {
                     if (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(p.GetMemberType()))
@@ -90,9 +140,7 @@ namespace Quokka.RTL.Tools
         {
             var result = new List<MemberInfo>();
 
-            var members = RecursiveMembers(type)
-                .Where(m => !m.Name.Contains("__BackingField"))
-                .Where(m => !m.Name.Contains("__Field"));
+            var members = RecursiveMembers(type);
 
             if (type.IsTuple())
             {
@@ -137,51 +185,72 @@ namespace Quokka.RTL.Tools
                 }
             }
 
-            if (result.Any(m => m.GetCustomAttribute<MemberIndexAttribute>() != null))
-            {
-                var memberIndex = result.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
-                var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
-                if (notIndexed.HasValue())
-                    throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
-
-                return memberIndex.OrderBy(m => m.index.Order).Select(m => m.m).ToList();
-            }
-            else
-            {
-                // default order by name
-                //result = result.OrderBy(m => m.Name).ToList();
-            }
-
             return result;
         }
 
-        public static List<MemberInfo> OrderedSerializableMembers(Type type, bool throwIfNotSerializable = false)
-        {
-            var members = SerializableMembers(type, throwIfNotSerializable);
-
-            return members;
-
-            var memberIndex = members.Select(m => new { m, index = m.GetCustomAttribute<MemberIndexAttribute>() }).ToList();
-            var notIndexed = memberIndex.Where(m => m.index == null).Select(m => m.m.Name).ToCSV();
-            if (notIndexed.HasValue())
-                throw new Exception($"Members of type '{type}' should have index: {notIndexed} (MemberIndexAttribute)");
-
-            return memberIndex.OrderBy(m => m.index.Order).Select(m => m.m).ToList();
-        }
-
-        public static (int, int) SerializedRange(object target, MemberInfo mi)
+        public static (int, int) SerializedRange(object target, params SerializedRangeInfo[] path)
         {
             if (target == null) throw new NullReferenceException(nameof(target));
-            if (mi == null) throw new NullReferenceException(nameof(mi));
+            if (path == null) throw new NullReferenceException(nameof(path));
+            if (!path.Any())
+                return (RTLSignalTools.SizeOfValue(target).Size - 1, 0);
 
-            var orderedMembers = OrderedSerializableMembers(target.GetType());
+            var firstMember = path.First();
+            var targetType = target.GetType();
 
-            var from = 0;
-            var leading = orderedMembers.TakeWhile(m => m.Name != mi.Name);
+            if (targetType.IsCollection())
+            {
+                if (firstMember.Member != null)
+                    throw new Exception($"Collection target range should not have member. Got {firstMember.Member.Name}");
 
-            from = leading.Sum(m => RTLSignalTools.SizeOfValue(m.GetValue(target)).Size);
+                if (firstMember.Index == null)
+                    return (RTLSignalTools.SizeOfValue(target).Size - 1, 0);
 
-            return (from + RTLSignalTools.SizeOfValue(mi.GetValue(target)).Size - 1, from);
+                var collection = (target as IEnumerable).OfType<object>().ToList();
+                if (firstMember.Index < 0 || firstMember.Index >= collection.Count)
+                    throw new IndexOutOfRangeException($"Index: {firstMember.Index}, collection size: {collection.Count}");
+
+                var collectionItem = collection[firstMember.Index.Value];
+                var collectionItemSize = RTLSignalTools.SizeOfValue(collectionItem).Size;
+                var from = firstMember.Index.Value * collectionItemSize;
+
+                var collectionItemRange = SerializedRange(collectionItem, path.Skip(1).ToArray());
+                return (from + collectionItemRange.Item1, from + collectionItemRange.Item2);
+            }
+            else
+            {
+                if (firstMember.Member == null)
+                    throw new Exception($"Object target range needs member accessor");
+
+                var firstMemberValue = firstMember.Member.GetValue(target);
+                if (firstMemberValue == null)
+                    throw new NullReferenceException($"{firstMember.Member.Name} is null");
+
+                var orderedMembers = SerializableMembers(targetType);
+                if (targetType.IsTuple())
+                    orderedMembers.Reverse();
+
+                var leading = orderedMembers.TakeWhile(m => m.Name != firstMember.Member.Name);
+                var from = leading.Sum(m => RTLSignalTools.SizeOfValue(m.GetValue(target)).Size);
+
+                if (firstMemberValue.GetType().IsCollection())
+                {
+                    var chainedRange = new List<SerializedRangeInfo>();
+                    chainedRange.Add(new SerializedRangeInfo() { Index = firstMember.Index });
+                    chainedRange.AddRange(path.Skip(1));
+
+                    var collectionItemRange = SerializedRange(firstMemberValue, chainedRange.ToArray());
+                    return (from + collectionItemRange.Item1, from + collectionItemRange.Item2);
+                }
+                else
+                {
+                    if (firstMember.Index != null)
+                        throw new Exception($"Non-collection range should not have index, got {firstMember.Index}");
+
+                    var memberRange = SerializedRange(firstMemberValue, path.Skip(1).ToArray());
+                    return (from + memberRange.Item1, from + memberRange.Item2);
+                }
+            }
         }
 
 
