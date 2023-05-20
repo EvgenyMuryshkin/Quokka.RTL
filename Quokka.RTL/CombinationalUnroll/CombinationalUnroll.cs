@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    class CombinationalUnroll
+    public class CombinationalUnroll
     {
         public CombinationalUnroll() { }
 
@@ -41,22 +41,13 @@ namespace Quokka.RTL
                 for (var idx = 0; idx < types.Count; idx++)
                 {
                     var tupleItemName = $"Item{idx + 1}";
-                    object tupleItemValue = null;
 
-                    var tupleItemField = type.GetField(tupleItemName);
-                    if (tupleItemField != null)
-                    {
-                        tupleItemValue = tupleItemField.GetValue(instance);
-                    }
-                    else
-                    {
-                        var tupleItemProperty = type.SingleOrDefaultMember(tupleItemName);
-                        tupleItemValue = tupleItemProperty.GetValue(instance);
-                    }
+                    var tupleItemMember = type.GetField(tupleItemName) ?? type.SingleOrDefaultMember(tupleItemName);
+                    var tupleItemValue = tupleItemMember.GetValue(instance);
 
                     if (tupleItemValue != null)
                     {
-                        var unrolled = UnrollInstance(tupleItemName, tupleItemField, tupleItemValue);
+                        var unrolled = UnrollInstance(tupleItemName, tupleItemMember, tupleItemValue);
 
                         foreach (var p in unrolled)
                         {
@@ -115,7 +106,7 @@ namespace Quokka.RTL
                     if (memberValue == null)
                         throw new Exception($"Member value is null: {member.Name}");
 
-                    var unrolled = UnrollInstance(member.Name, memberInfo, memberValue);
+                    var unrolled = UnrollInstance(member.Name, member, memberValue);
 
                     foreach (var p in unrolled)
                     {
