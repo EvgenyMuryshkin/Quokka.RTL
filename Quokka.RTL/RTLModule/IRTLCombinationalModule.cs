@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Quokka.RTL
 {
-    public interface IRTLCombinationalModule : IRTLModuleControlFlow
+    public interface IRTLCombinationalModule : IRTLModuleControlFlow, IRTLMembersProvider
     {
         RTLModuleAnalizers Analizers { get; }
         Type InputsType { get; }

@@ -96,7 +96,18 @@ namespace Quokka.RTL.Tools
             bool includeToolkitTypes = false,
             bool sort = true)
         {
-            return RecursiveMembers(type, includeToolkitTypes, sort)
+            var members = new List<MemberInfo>();
+
+            if (type.IsTuple())
+            {
+                members.AddRange(SerializableMembers(type));
+            }
+            else
+            {
+                members.AddRange(RecursiveMembers(type, includeToolkitTypes, sort));
+            }
+
+            return members
                 .Where(p =>
                 {
                     if (!includeToolkitTypes && RTLTypeCheck.IsToolkitType(p.GetMemberType()))

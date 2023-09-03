@@ -43,6 +43,7 @@ namespace System
         public static bool IsRTLBitArray(this Type type) => RTLTypeCheck.IsRTLBitArray(type);
         public static bool IsList(this Type type) => RTLTypeCheck.IsList(type);
         public static bool IsCollection(this Type type) => RTLTypeCheck.IsCollection(type);
+        public static IEnumerable<object> AsEnumerableOfObjects(this object source) => RTLTypeCheck.AsEnumerableOfObjects(source);
         public static Type GetCollectionItemType(this Type type) => RTLReflectionTools.GetCollectionItemType(type);
         public static bool IsTuple(this Type type) => RTLTypeCheck.IsTuple(type);
         public static bool IsGenericTuple(this Type type) => RTLTypeCheck.IsGenericTuple(type);

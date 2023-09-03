@@ -105,6 +105,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdIf
 	///
+	/// vhdIndexedExpression
+	///
 	/// vhdLibraryReference
 	///
 	/// vhdLogicExpression
@@ -286,6 +288,15 @@ public partial class vhdAggregateOthersConnection : vhdAggregateConnection, vhdA
 	public vhdAggregateOthersConnection(vhdIdentifier Source)
 	{
 		this.Expression = new vhdIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdAggregateOthersConnection(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Expression = new vhdIndexedExpression(Expression, Indexes);
 	}
 	/// <summary>
 	/// from vhdLogicExpression
@@ -605,6 +616,15 @@ public partial class vhdCase : vhdAbstractObject, vhdArchitectureImplementationB
 		this.Expression = new vhdIdentifierExpression(Source);
 	}
 	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdCase(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Expression = new vhdIndexedExpression(Expression, Indexes);
+	}
+	/// <summary>
 	/// from vhdLogicExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -764,6 +784,15 @@ public partial class vhdCaseStatement : vhdAbstractObject, IEnumerable//<vhdGene
 	public vhdCaseStatement(vhdIdentifier Source)
 	{
 		this.When = new vhdIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdCaseStatement(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.When = new vhdIndexedExpression(Expression, Indexes);
 	}
 	/// <summary>
 	/// from vhdLogicExpression
@@ -993,6 +1022,15 @@ public partial class vhdConditionalStatement : vhdAbstractObject, IEnumerable//<
 	public vhdConditionalStatement(vhdIdentifier Source)
 	{
 		this.Condition = new vhdIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdConditionalStatement(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Condition = new vhdIndexedExpression(Expression, Indexes);
 	}
 	/// <summary>
 	/// from vhdLogicExpression
@@ -1569,6 +1607,30 @@ public partial class vhdIf : vhdAbstractObject, vhdArchitectureImplementationBlo
 	public List<vhdConditionalStatement> Statements { get; set; } = new List<vhdConditionalStatement>();
 }
 [JsonObjectAttribute]
+public partial class vhdIndexedExpression : vhdExpression, IEnumerable//<vhdRange>
+{
+	public vhdIndexedExpression() { }
+	// vhdRange single list member
+	IEnumerator IEnumerable.GetEnumerator() => (Indexes as IEnumerable).GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdRange);
+	public void Add(vhdRange child)
+	{
+		Indexes.Add(child);
+	}
+	public vhdIndexedExpression(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Expression = Expression;
+		this.Indexes = (Indexes ?? Enumerable.Empty<vhdRange>()).Where(s => s != null).ToList();
+	}
+	public vhdIndexedExpression(vhdExpression Expression, params vhdRange[] Indexes)
+	{
+		this.Expression = Expression;
+		this.Indexes = (Indexes ?? Enumerable.Empty<vhdRange>()).Where(s => s != null).ToList();
+	}
+	public vhdExpression Expression { get; set; }
+	public List<vhdRange> Indexes { get; set; } = new List<vhdRange>();
+}
+[JsonObjectAttribute]
 public partial class vhdLibraryReference : vhdAbstractObject, vhdFileChild
 {
 	public vhdLibraryReference() { }
@@ -1728,6 +1790,15 @@ public partial class vhdParenthesizedExpression : vhdExpression
 		this.Expression = new vhdIdentifierExpression(Source);
 	}
 	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdParenthesizedExpression(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Expression = new vhdIndexedExpression(Expression, Indexes);
+	}
+	/// <summary>
 	/// from vhdLogicExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -1862,6 +1933,8 @@ public partial class vhdProcedureCall : vhdAbstractObject, vhdArchitectureImplem
 	///
 	/// vhdIdentifierExpression
 	///
+	/// vhdIndexedExpression
+	///
 	/// vhdLogicExpression
 	///
 	/// vhdMathExpression
@@ -1923,6 +1996,8 @@ public partial class vhdProcedureCallExpression : vhdExpression, IEnumerable//<v
 	/// vhdCompareExpression
 	///
 	/// vhdIdentifierExpression
+	///
+	/// vhdIndexedExpression
 	///
 	/// vhdLogicExpression
 	///
@@ -2097,6 +2172,15 @@ public partial class vhdRange : vhdAbstractObject, IEnumerable//<vhdExpression>
 		this.Indexes.Add(new vhdIdentifierExpression(Source));
 	}
 	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdRange(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Indexes.Add(new vhdIndexedExpression(Expression, Indexes));
+	}
+	/// <summary>
 	/// from vhdLogicExpression
 	/// </summary>
 	/// <param name="Lhs"></param>
@@ -2175,6 +2259,8 @@ public partial class vhdRange : vhdAbstractObject, IEnumerable//<vhdExpression>
 	/// vhdCompareExpression
 	///
 	/// vhdIdentifierExpression
+	///
+	/// vhdIndexedExpression
 	///
 	/// vhdLogicExpression
 	///
@@ -2283,6 +2369,15 @@ public partial class vhdReturnExpression : vhdExpression, vhdArchitectureImpleme
 	public vhdReturnExpression(vhdIdentifier Source)
 	{
 		this.Result = new vhdIdentifierExpression(Source);
+	}
+	/// <summary>
+	/// from vhdIndexedExpression
+	/// </summary>
+	/// <param name="Expression"></param>
+	/// <param name="Indexes"></param>
+	public vhdReturnExpression(vhdExpression Expression, IEnumerable<vhdRange> Indexes)
+	{
+		this.Result = new vhdIndexedExpression(Expression, Indexes);
 	}
 	/// <summary>
 	/// from vhdLogicExpression

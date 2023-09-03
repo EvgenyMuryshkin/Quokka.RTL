@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +43,30 @@ namespace Quokka.RTL.Tools
         }
 
         public static bool IsCollection(Type type) => type != null && (type.IsArray || type.IsList());
+        public static IEnumerable<object> AsEnumerableOfObjects(object source)
+        {
+            if (source == null)
+                throw new NullReferenceException("AsEnumerableOfObjects.source");
+
+            var sourceType = source.GetType();
+
+            if (sourceType.IsArray)
+            {
+                var arr = (Array)source;
+                foreach (var item in arr)
+                    yield return item;
+
+            }
+            else if (sourceType.IsList())
+            {
+                foreach (var item in source as IEnumerable)
+                    yield return item;
+            }
+            else
+            {
+                throw new Exception($"AsEnumerableOfObjects.source expected to be array, got {source}");
+            }
+        }
 
         public static bool IsRTLBitArray(Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
         public static bool IsConstant(MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly/* && f.GetRawConstantValue() != null*/;

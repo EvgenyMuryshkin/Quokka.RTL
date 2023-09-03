@@ -23,7 +23,8 @@ namespace Quokka.RTL.SourceGenerators.VHDL
     {
         Unsigned,
         Signed,
-        Integer
+        Integer,
+        BitToInteger
     }
 
     public enum vhdNetType

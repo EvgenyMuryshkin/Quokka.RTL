@@ -5,6 +5,25 @@ using System.Linq;
 
 namespace Quokka.RTL.Tests
 {
+    public interface IRFT1
+    {
+        int IRFT1Prop { get; set; }
+    }
+
+    public interface IRFT2
+    {
+        int IRFT2Prop { get; }
+    }
+
+    public class RFTClass : IRFT1, IRFT2
+    {
+        public int RFTClassField;
+        public RTLBitArray RFTClassProp { get; set; }
+        public int IRFT1Prop { get; set; }
+
+        int IRFT2.IRFT2Prop => 0;
+    }
+
     public class t_iq
     {
         public t_iq(int size)
@@ -71,6 +90,17 @@ namespace Quokka.RTL.Tests
         public void InterfaceMembers()
         {
             Assert.AreEqual(1, RTLReflectionTools.SynthesizableMembers(typeof(IRTLPipelinePreviewSignals)).Count());
+        }
+
+        [TestMethod]
+        public void TupleMembers()
+        {
+            Assert.AreEqual(
+                5, 
+                RTLReflectionTools.SynthesizableMembers(
+                    typeof((int, bool, (int, bool), RTLBitArray, BaseMembersTestClass))
+                    ).Count()
+            );
         }
 
         [TestMethod]
@@ -150,5 +180,11 @@ namespace Quokka.RTL.Tests
             Assert.AreEqual((49, 42), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.ByteValue))[0]));
         }
 
+        [TestMethod]
+        public void RecursiveMembers()
+        {
+            var members = RTLReflectionTools.RecursiveMembers(typeof(RFTClass));
+            Assert.AreEqual(4, members.Count());
+        }
     }
 }

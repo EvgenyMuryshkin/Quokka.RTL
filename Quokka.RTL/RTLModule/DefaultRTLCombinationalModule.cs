@@ -278,5 +278,11 @@ namespace Quokka.RTL
         }
 
         public IRTLModuleTranslator InstanceTranslator(IRTLModuleTranslatorDeps deps) => null;
+
+        public List<MemberInfo> GetMembers()
+        {
+            var members = GetType().GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy).ToList();// RTLReflectionTools.SerializableMembers(topType);
+            return members;
+        }
     }
 }

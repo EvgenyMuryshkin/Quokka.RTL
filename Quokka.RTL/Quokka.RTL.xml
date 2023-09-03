@@ -1472,6 +1472,8 @@
             
              vhdIf
             
+             vhdIndexedExpression
+            
              vhdLibraryReference
             
              vhdLogicExpression
@@ -1593,6 +1595,11 @@
             from vhdAggregateOthersConnection
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateConnection.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdAggregateConnection">
             <summary>
             from vhdAggregateOthersConnection
@@ -1701,6 +1708,13 @@
             from vhdIdentifierExpression
             </summary>
             <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
@@ -1813,6 +1827,11 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdAggregateOthersConnection">
+            <summary>
+            from vhdAggregateOthersConnection
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdAggregateOthersConnection.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdAggregateOthersConnection">
             <summary>
             from vhdAggregateOthersConnection
             </summary>
@@ -1949,6 +1968,13 @@
             </summary>
             <param name="Source"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdLogicExpression
@@ -2064,6 +2090,11 @@
             from vhdCase
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdCase">
+            <summary>
+            from vhdCase
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCase.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdCase">
             <summary>
             from vhdCase
@@ -2167,6 +2198,13 @@
             from vhdIdentifierExpression
             </summary>
             <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
@@ -2283,6 +2321,11 @@
             from vhdCaseStatement
             </summary>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
+            <summary>
+            from vhdCaseStatement
+            </summary>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdCaseStatement.op_Implicit(Quokka.RTL.VHDL.vhdLogicExpression)~Quokka.RTL.VHDL.vhdCaseStatement">
             <summary>
             from vhdCaseStatement
@@ -2386,6 +2429,13 @@
             from vhdIdentifierExpression
             </summary>
             <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
@@ -2498,6 +2548,11 @@
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdIdentifier)~Quokka.RTL.VHDL.vhdConditionalStatement">
+            <summary>
+            from vhdConditionalStatement
+            </summary>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdConditionalStatement.op_Implicit(Quokka.RTL.VHDL.vhdIndexedExpression)~Quokka.RTL.VHDL.vhdConditionalStatement">
             <summary>
             from vhdConditionalStatement
             </summary>
@@ -2762,6 +2817,13 @@
             </summary>
             <param name="Source"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdParenthesizedExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdLogicExpression
@@ -2838,6 +2900,8 @@
             
              vhdIdentifierExpression
             
+             vhdIndexedExpression
+            
              vhdLogicExpression
             
              vhdMathExpression
@@ -2882,6 +2946,8 @@
              vhdCompareExpression
             
              vhdIdentifierExpression
+            
+             vhdIndexedExpression
             
              vhdLogicExpression
             
@@ -2989,6 +3055,13 @@
             </summary>
             <param name="Source"></param>
         </member>
+        <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
+        </member>
         <member name="M:Quokka.RTL.VHDL.vhdRange.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>
             from vhdLogicExpression
@@ -3049,6 +3122,8 @@
              vhdCompareExpression
             
              vhdIdentifierExpression
+            
+             vhdIndexedExpression
             
              vhdLogicExpression
             
@@ -3127,6 +3202,13 @@
             from vhdIdentifierExpression
             </summary>
             <param name="Source"></param>
+        </member>
+        <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,System.Collections.Generic.IEnumerable{Quokka.RTL.VHDL.vhdRange})">
+            <summary>
+            from vhdIndexedExpression
+            </summary>
+            <param name="Expression"></param>
+            <param name="Indexes"></param>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdReturnExpression.#ctor(Quokka.RTL.VHDL.vhdExpression,Quokka.RTL.VHDL.vhdLogicType,Quokka.RTL.VHDL.vhdExpression)">
             <summary>

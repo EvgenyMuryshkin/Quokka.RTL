@@ -178,6 +178,10 @@ public abstract class vhdIfVisitorGeneratedImplementation : vhdVisitorImplementa
 {
 	public vhdIfVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdIndexedExpressionVisitorGeneratedImplementation : vhdVisitorImplementation<vhdIndexedExpression>, vhdIndexedExpressionVisitorInterface
+{
+	public vhdIndexedExpressionVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdLibraryReferenceVisitorGeneratedImplementation : vhdVisitorImplementation<vhdLibraryReference>, vhdLibraryReferenceVisitorInterface
 {
 	public vhdLibraryReferenceVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -447,6 +451,10 @@ public partial class vhdIfVisitorImplementation : vhdIfVisitorGeneratedImplement
 {
 	public vhdIfVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdIndexedExpressionVisitorImplementation : vhdIndexedExpressionVisitorGeneratedImplementation
+{
+	public vhdIndexedExpressionVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdLibraryReferenceVisitorImplementation : vhdLibraryReferenceVisitorGeneratedImplementation
 {
 	public vhdLibraryReferenceVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -593,6 +601,7 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdIdentifier o: return vhdIdentifierVisitor(o);
 			case vhdIdentifierExpression o: return vhdIdentifierExpressionVisitor(o);
 			case vhdIf o: return vhdIfVisitor(o);
+			case vhdIndexedExpression o: return vhdIndexedExpressionVisitor(o);
 			case vhdLibraryReference o: return vhdLibraryReferenceVisitor(o);
 			case vhdLogicExpression o: return vhdLogicExpressionVisitor(o);
 			case vhdLogicSignal o: return vhdLogicSignalVisitor(o);
@@ -796,6 +805,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	{
 		return vhdIfVisitor(_deps, obj);
 	}
+	private vhdIndexedExpressionVisitorInterface vhdIndexedExpressionVisitor(vhdIndexedExpression obj)
+	{
+		return vhdIndexedExpressionVisitor(_deps, obj);
+	}
 	private vhdLibraryReferenceVisitorInterface vhdLibraryReferenceVisitor(vhdLibraryReference obj)
 	{
 		return vhdLibraryReferenceVisitor(_deps, obj);
@@ -978,6 +991,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdIdentifierExpressionVisitorImplementation(deps);
 	protected virtual vhdIfVisitorInterface vhdIfVisitor(vhdVisitorImplementationDeps deps, vhdIf obj)
 		=> new vhdIfVisitorImplementation(deps);
+	protected virtual vhdIndexedExpressionVisitorInterface vhdIndexedExpressionVisitor(vhdVisitorImplementationDeps deps, vhdIndexedExpression obj)
+		=> new vhdIndexedExpressionVisitorImplementation(deps);
 	protected virtual vhdLibraryReferenceVisitorInterface vhdLibraryReferenceVisitor(vhdVisitorImplementationDeps deps, vhdLibraryReference obj)
 		=> new vhdLibraryReferenceVisitorImplementation(deps);
 	protected virtual vhdLogicExpressionVisitorInterface vhdLogicExpressionVisitor(vhdVisitorImplementationDeps deps, vhdLogicExpression obj)

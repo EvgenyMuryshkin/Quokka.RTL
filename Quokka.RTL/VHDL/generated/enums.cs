@@ -15,6 +15,7 @@ public enum vhdCastType
 	Unsigned = 0,
 	Signed = 1,
 	Integer = 2,
+	BitToInteger = 3,
 }
 public enum vhdCompareType
 {

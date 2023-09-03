@@ -552,6 +552,17 @@ public partial class vhdIf
 		return result;
 	}
 }
+public partial class vhdIndexedExpression
+{
+	public vhdIndexedExpression Clone() => UntypedClone() as vhdIndexedExpression;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdIndexedExpression();
+		result.Expression = Expression?.UntypedClone() as vhdExpression;
+		result.Indexes = Indexes.Select(i => i.UntypedClone() as vhdRange).ToList();
+		return result;
+	}
+}
 public partial class vhdLibraryReference
 {
 	public vhdLibraryReference Clone() => UntypedClone() as vhdLibraryReference;

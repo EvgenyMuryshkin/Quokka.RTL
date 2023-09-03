@@ -264,6 +264,12 @@ public partial class vhdIfVisitorImplementation
 	{
 	}
 }
+public partial class vhdIndexedExpressionVisitorImplementation
+{
+	public override void OnVisit(vhdIndexedExpression obj)
+	{
+	}
+}
 public partial class vhdLibraryReferenceVisitorImplementation
 {
 	public override void OnVisit(vhdLibraryReference obj)

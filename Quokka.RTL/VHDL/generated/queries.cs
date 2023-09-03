@@ -706,6 +706,17 @@ public partial class vhdIf
 		return result;
 	}
 }
+public partial class vhdIndexedExpression
+{
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
+	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
+		var result = new List<vhdAbstractObject>() { this };
+		if (Expression != null) result.AddRange(Expression.SelfWithChildren(filter));
+		if (Indexes != null) result.AddRange(Indexes.SelectMany(c => c.SelfWithChildren(filter)));
+		return result;
+	}
+}
 public partial class vhdLibraryReference
 {
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)

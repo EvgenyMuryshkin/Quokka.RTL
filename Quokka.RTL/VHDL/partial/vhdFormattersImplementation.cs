@@ -79,6 +79,7 @@ namespace Quokka.RTL.VHDL
                 case vhdCastType.Signed: return "signed";
                 case vhdCastType.Unsigned: return "unsigned";
                 case vhdCastType.Integer: return "to_integer";
+                case vhdCastType.BitToInteger: return "bit_to_integer";
                 default: throw new Exception($"unsupported sign type {type}");
             }
 
