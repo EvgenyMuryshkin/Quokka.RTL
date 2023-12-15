@@ -58,7 +58,7 @@ namespace Quokka.RTL
                 carry = carry >> 1;
             }
 
-            return new RTLBitArray(op1.DataType == op2.DataType ? op1.DataType : RTLSignalType.Signed, buff, true);
+            return new RTLBitArray(op1.DataType == op2.DataType ? op1.DataType : RTLDataType.Signed, buff, true);
         }
 
         public static RTLBitArray operator -(RTLBitArray op1, RTLBitArray op2)
@@ -76,16 +76,16 @@ namespace Quokka.RTL
                 carry = carry >> 1;
             }
 
-            return new RTLBitArray(RTLSignalType.Signed, buff, true);
+            return new RTLBitArray(RTLDataType.Signed, buff, true);
         }
 
         public static RTLBitArray operator *(RTLBitArray op1, RTLBitArray op2)
         {
-            var dataType = op1.DataType == RTLSignalType.Signed || op2.DataType == RTLSignalType.Signed ? RTLSignalType.Signed : RTLSignalType.Unsigned;
+            var dataType = op1.DataType == RTLDataType.Signed || op2.DataType == RTLDataType.Signed ? RTLDataType.Signed : RTLDataType.Unsigned;
             var resultSize = op1.Size + op2.Size;
 
-            var op1Neg = op1.DataType == RTLSignalType.Signed & op1.VirtualBit(op1.Size - 1);
-            var op2Neg = op2.DataType == RTLSignalType.Signed & op2.VirtualBit(op2.Size - 1);
+            var op1Neg = op1.DataType == RTLDataType.Signed & op1.VirtualBit(op1.Size - 1);
+            var op2Neg = op2.DataType == RTLDataType.Signed & op2.VirtualBit(op2.Size - 1);
 
             var op1Bits = new bool[resultSize];
             CopyBits(op1, op1Bits);

@@ -25,7 +25,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(byte value)
         {
             return new RTLBitArray(
-                RTLSignalType.Unsigned,
+                RTLDataType.Unsigned,
                 Convert.ToString(value, 2),
                 8,
                 true);
@@ -38,7 +38,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(sbyte value)
         {
             return new RTLBitArray(
-                RTLSignalType.Signed,
+                RTLDataType.Signed,
                 Convert.ToString((byte)value, 2),
                 8,
                 true);
@@ -51,7 +51,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(ushort value)
         {
             return new RTLBitArray(
-                RTLSignalType.Unsigned,
+                RTLDataType.Unsigned,
                 Convert.ToString((short)value, 2),
                 16,
                 true);
@@ -65,7 +65,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(short value)
         {
             return new RTLBitArray(
-                RTLSignalType.Signed,
+                RTLDataType.Signed,
                 Convert.ToString(value, 2),
                 16,
                 true);
@@ -79,7 +79,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(uint value)
         {
             return new RTLBitArray(
-                RTLSignalType.Unsigned,
+                RTLDataType.Unsigned,
                 Convert.ToString((int)value, 2),
                 32,
                 true);
@@ -93,7 +93,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(int value)
         {
             return new RTLBitArray(
-                RTLSignalType.Signed,
+                RTLDataType.Signed,
                 Convert.ToString(value, 2),
                 32,
                 true);
@@ -107,7 +107,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(ulong value)
         {
             return new RTLBitArray(
-                RTLSignalType.Unsigned,
+                RTLDataType.Unsigned,
                 Convert.ToString((long)value, 2),
                 64,
                 true);
@@ -121,7 +121,7 @@ namespace Quokka.RTL
         public static implicit operator RTLBitArray(long value)
         {
             return new RTLBitArray(
-                RTLSignalType.Signed,
+                RTLDataType.Signed,
                 Convert.ToString(value, 2),
                 64,
                 true);

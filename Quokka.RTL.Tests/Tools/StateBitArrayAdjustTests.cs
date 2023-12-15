@@ -7,7 +7,7 @@ namespace Quokka.RTL.Tests
 {
     public class StateBitArrayAdjustChild
     {
-        public StateBitArrayAdjustChild(int bits, RTLSignalType type)
+        public StateBitArrayAdjustChild(int bits, RTLDataType type)
         {
             Field = new RTLBitArray().Resized(bits).TypeChanged(type);
             FieldArray = new[] { new RTLBitArray().Resized(bits).TypeChanged(type), new RTLBitArray().Resized(bits).TypeChanged(type) };
@@ -23,7 +23,7 @@ namespace Quokka.RTL.Tests
 
     public class StateBitArrayAdjustParent
     {
-        public StateBitArrayAdjustParent(int bits, RTLSignalType type)
+        public StateBitArrayAdjustParent(int bits, RTLDataType type)
         {
             Field = new RTLBitArray().Resized(bits).TypeChanged(type);
             FieldArray = new[] { new RTLBitArray().Resized(bits).TypeChanged(type), new RTLBitArray().Resized(bits).TypeChanged(type) };
@@ -69,19 +69,19 @@ namespace Quokka.RTL.Tests
     [TestClass]
     public class StateBitArrayAdjustTests
     {
-        void assertBitArray(RTLBitArray source, int bits, RTLSignalType type)
+        void assertBitArray(RTLBitArray source, int bits, RTLDataType type)
         {
             Assert.AreEqual(bits, source.Size);
             Assert.AreEqual(type, source.DataType);
         }
 
-        void assertBitArray(IEnumerable<RTLBitArray> source, int bits, RTLSignalType type)
+        void assertBitArray(IEnumerable<RTLBitArray> source, int bits, RTLDataType type)
         {
             foreach (var i in source)
                 assertBitArray(i, bits, type);
         }
 
-        void assertObject(StateBitArrayAdjustChild source, int bits, RTLSignalType type)
+        void assertObject(StateBitArrayAdjustChild source, int bits, RTLDataType type)
         {
             assertBitArray(source.Field, bits, type);
             assertBitArray(source.FieldArray, bits, type);
@@ -89,7 +89,7 @@ namespace Quokka.RTL.Tests
             assertBitArray(source.PropertyArray, bits, type);
         }
 
-        void assertObject(StateBitArrayAdjustParent source, int bits, RTLSignalType type)
+        void assertObject(StateBitArrayAdjustParent source, int bits, RTLDataType type)
         {
             assertBitArray(source.Field, bits, type);
             assertBitArray(source.FieldArray, bits, type);
@@ -115,16 +115,16 @@ namespace Quokka.RTL.Tests
         [TestMethod]
         public void RunTest()
         {
-            var state = new StateBitArrayAdjustParent(10, RTLSignalType.Unsigned);
-            var nextState = new StateBitArrayAdjustParent(11, RTLSignalType.Signed);
+            var state = new StateBitArrayAdjustParent(10, RTLDataType.Unsigned);
+            var nextState = new StateBitArrayAdjustParent(11, RTLDataType.Signed);
 
-            assertObject(state, 10, RTLSignalType.Unsigned);
-            assertObject(nextState, 11, RTLSignalType.Signed);
+            assertObject(state, 10, RTLDataType.Unsigned);
+            assertObject(nextState, 11, RTLDataType.Signed);
 
             var adjust = new StateBitArrayAdjust<StateBitArrayAdjustParent>();
             adjust.Run(state, nextState);
 
-            assertObject(nextState, 10, RTLSignalType.Unsigned);
+            assertObject(nextState, 10, RTLDataType.Unsigned);
         }
     }
 }

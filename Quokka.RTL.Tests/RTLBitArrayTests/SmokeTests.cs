@@ -36,8 +36,8 @@ namespace Quokka.RTL.RTLBitArrayTests
             {
                 // multiple F...F to itself
                 var op = string.Join("", Enumerable.Range(0, bytes).Select(b => Convert.ToString(0xFF, 2)));
-                var op1 = new RTLBitArray(RTLSignalType.Unsigned, op, bytes * 8);
-                var op2 = new RTLBitArray(RTLSignalType.Unsigned, op, bytes * 8);
+                var op1 = new RTLBitArray(RTLDataType.Unsigned, op, bytes * 8);
+                var op2 = new RTLBitArray(RTLDataType.Unsigned, op, bytes * 8);
 
                 var repeats = bytes * 2 - 1;
 
@@ -209,10 +209,10 @@ namespace Quokka.RTL.RTLBitArrayTests
         [TestMethod]
         public void TypedCtor()
         {
-            var signed = new RTLBitArray(RTLSignalType.Signed, "11111111");
+            var signed = new RTLBitArray(RTLDataType.Signed, "11111111");
             Assert.AreEqual((short)-1, (short)signed.Resized(16));
 
-            var unsigned = new RTLBitArray(RTLSignalType.Unsigned, "11111111");
+            var unsigned = new RTLBitArray(RTLDataType.Unsigned, "11111111");
             Assert.AreEqual((short)255, (short)unsigned.Resized(16));
         }
 
@@ -315,7 +315,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         public void TypeChangedTest()
         {
             var source = new RTLBitArray((byte)0x8BU);
-            var typeChanged = source.TypeChanged(RTLSignalType.Signed).Resized(16);
+            var typeChanged = source.TypeChanged(RTLDataType.Signed).Resized(16);
 
             Assert.AreEqual("1111111110001011", typeChanged.AsBinaryString());
 

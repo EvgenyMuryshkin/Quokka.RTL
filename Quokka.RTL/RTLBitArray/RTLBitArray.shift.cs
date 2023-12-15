@@ -35,7 +35,7 @@ namespace Quokka.RTL
             // keep original size of bit array
             var padding = Enumerable
                 .Range(0, Size - remaining.Length)
-                .Select(idx => DataType == RTLSignalType.Signed ? list[Size - 1] : false);
+                .Select(idx => DataType == RTLDataType.Signed ? list[Size - 1] : false);
 
             //_data = new BitArray(remaining.Concat(padding).ToArray());
             _data = remaining.Concat(padding).ToArray();

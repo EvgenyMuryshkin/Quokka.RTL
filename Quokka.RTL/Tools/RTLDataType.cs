@@ -2,7 +2,7 @@
 
 namespace Quokka.RTL.Tools
 {
-    public enum RTLSignalType : byte
+    public enum RTLDataType : byte
     {
         Unsigned,
         Signed,

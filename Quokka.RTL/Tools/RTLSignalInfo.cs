@@ -6,14 +6,14 @@ namespace Quokka.RTL.Tools
     {
         public Type Type { get; set; }
         public int Size { get; set; }
-        public RTLSignalType SignalType { get; set; } = RTLSignalType.Unsigned;
+        public RTLDataType SignalType { get; set; } = RTLDataType.Unsigned;
 
         public RTLSignalInfo() { }
 
         public RTLSignalInfo(
             Type type,
             int size,
-            RTLSignalType signalType)
+            RTLDataType signalType)
         {
             Type = type;
             Size = size;

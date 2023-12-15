@@ -23,7 +23,7 @@ namespace Quokka.RTL
 
         public string AsJSONValue()
         {
-            return $"{(DataType == RTLSignalType.Signed ? "S" : "U")}:{AsBinaryString()}";
+            return $"{(DataType == RTLDataType.Signed ? "S" : "U")}:{AsBinaryString()}";
         }
 
         public string AsNotPrefixedHex(bool trimLeadingZeroes)

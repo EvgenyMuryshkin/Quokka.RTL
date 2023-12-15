@@ -7,12 +7,12 @@ namespace Quokka.RTL.VHDL.Tools
 {
     public class VHDLGenerators
     {
-        vhdDataType Map(RTLSignalType type)
+        vhdDataType Map(RTLDataType type)
         {
             switch (type)
             {
-                case RTLSignalType.Signed: return vhdDataType.Signed;
-                case RTLSignalType.Unsigned: return vhdDataType.Unsigned;
+                case RTLDataType.Signed: return vhdDataType.Signed;
+                case RTLDataType.Unsigned: return vhdDataType.Unsigned;
                 default: throw new Exception($"Unsupported type in VHDLGenerators: {type}");
             }
         }

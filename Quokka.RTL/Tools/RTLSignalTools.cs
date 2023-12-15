@@ -49,7 +49,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum(),
-                            SignalType = RTLSignalType.Unsigned
+                            SignalType = RTLDataType.Unsigned
                         };
                     }
                     else if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
@@ -58,7 +58,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            SignalType = RTLSignalType.Unsigned
+                            SignalType = RTLDataType.Unsigned
                         };
                     }
                     else if (RTLTypeCheck.IsTuple(valueType))
@@ -67,7 +67,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            SignalType = RTLSignalType.Unsigned
+                            SignalType = RTLDataType.Unsigned
                         };
                     }
                     else
@@ -104,7 +104,7 @@ namespace Quokka.RTL.Tools
             {
                 var underlyingSize = SizeOf(type.GetEnumUnderlyingType());
 
-                if (underlyingSize.SignalType != RTLSignalType.Unsigned)
+                if (underlyingSize.SignalType != RTLDataType.Unsigned)
                 {
                     // check if any value is negative and use underlying type
                     var signedValues = Enum.GetValues(type).OfType<object>().Select(v => Convert.ToInt64(v));
@@ -125,7 +125,7 @@ namespace Quokka.RTL.Tools
                 {
                     Type = type,
                     Size = bits,
-                    SignalType = RTLSignalType.Unsigned
+                    SignalType = RTLDataType.Unsigned
                 };
             }
 
@@ -138,7 +138,7 @@ namespace Quokka.RTL.Tools
                 {
                     Type = type,
                     Size = RTLReflectionTools.SerializableMembers(type).Sum(m => SizeOf(m).Size),
-                    SignalType = RTLSignalType.Unsigned
+                    SignalType = RTLDataType.Unsigned
                 };
             }
 

@@ -66,8 +66,8 @@ namespace Quokka.RTL.VHDL
 
             switch (value.DataType)
             {
-                case RTLSignalType.Signed: return "signed";
-                case RTLSignalType.Unsigned: return "unsigned";
+                case RTLDataType.Signed: return "signed";
+                case RTLDataType.Unsigned: return "unsigned";
                 default: throw new Exception($"unsupported sign type ({signalName}): {value.DataType}");
             }
         }

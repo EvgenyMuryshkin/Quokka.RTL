@@ -13,12 +13,12 @@ namespace Quokka.RTL
         /// </summary>
         public RTLBitArray()
         {
-            internalInit(RTLSignalType.Unsigned, false);
+            internalInit(RTLDataType.Unsigned, false);
         }
 
         private RTLBitArray(params bool[] msbBits)
         {
-            internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());
+            internalInit(RTLDataType.Unsigned, msbBits.Reverse().ToArray());
         }
 
         public RTLBitArray(params RTLBitArray[] msbSources)
@@ -54,33 +54,33 @@ namespace Quokka.RTL
 
         public RTLBitArray(IEnumerable<bool> msbBits)
         {
-            internalInit(RTLSignalType.Unsigned, msbBits.Reverse().ToArray());
+            internalInit(RTLDataType.Unsigned, msbBits.Reverse().ToArray());
         }
 
-        public RTLBitArray(RTLSignalType type, string msbBitString, int size)
+        public RTLBitArray(RTLDataType type, string msbBitString, int size)
         {
             FromBinaryString(type, msbBitString, size);
         }
 
-        internal RTLBitArray(RTLSignalType type, bool[] lsb, bool fromCast)
+        internal RTLBitArray(RTLDataType type, bool[] lsb, bool fromCast)
         {
             internalInitWithBuffer(type, lsb);
             _fromCast = fromCast;
         }
 
-        internal RTLBitArray(RTLSignalType type, string msbBitString, int size, bool fromCast)
+        internal RTLBitArray(RTLDataType type, string msbBitString, int size, bool fromCast)
         {
             FromBinaryString(type, msbBitString, size);
             _fromCast = fromCast;
         }
 
-        public RTLBitArray(RTLSignalType type, string msbBitString)
+        public RTLBitArray(RTLDataType type, string msbBitString)
             : this(type, msbBitString, msbBitString.Length)
         {
         }
 
         public RTLBitArray(string msbBitString) 
-            : this(RTLSignalType.Unsigned, msbBitString, msbBitString.Length)
+            : this(RTLDataType.Unsigned, msbBitString, msbBitString.Length)
         {
         }
     }

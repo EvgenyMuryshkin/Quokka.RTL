@@ -12,7 +12,7 @@ namespace Quokka.RTL
         internal bool[] _data = new bool[1];
         internal bool _fromCast;
 
-        public RTLSignalType DataType { get; private set; } = RTLSignalType.Unsigned;
+        public RTLDataType DataType { get; private set; } = RTLDataType.Unsigned;
 
         public int Size => _data.Length;
         public IEnumerable<bool> MSB => LSB.Reverse();

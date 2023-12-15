@@ -20,28 +20,28 @@ namespace Quokka.RTL
             }
         }
 
-        internal void internalInitFromArray(RTLSignalType dataType, bool[] lsbSource)
+        internal void internalInitFromArray(RTLDataType dataType, bool[] lsbSource)
         {
             _data = lsbSource;
             //_data = new BitArray(lsbSource);
             DataType = dataType;
         }
 
-        internal void internalInitWithBuffer(RTLSignalType dataType, bool[] lsbSource)
+        internal void internalInitWithBuffer(RTLDataType dataType, bool[] lsbSource)
         {
             _data = lsbSource;
             //_data = new BitArray(lsbSource);
             DataType = dataType;
         }
 
-        internal void internalInit(RTLSignalType dataType, params bool[] lsbSource)
+        internal void internalInit(RTLDataType dataType, params bool[] lsbSource)
         {
             _data = lsbSource.ToArray();
             //_data = new BitArray(lsbSource);
             DataType = dataType;
         }
 
-        internal void FromBinaryString(RTLSignalType dataType, string msbBitString, int size)
+        internal void FromBinaryString(RTLDataType dataType, string msbBitString, int size)
         {
             var bits = new bool[size];
             var chars = msbBitString.ToCharArray();
@@ -57,7 +57,7 @@ namespace Quokka.RTL
             //internalInit(dataType, msbBitString.Reverse().Select(b => b == '0' ? false : true).ToArray());
         }
 
-        internal void internalChangeType(RTLSignalType dataType)
+        internal void internalChangeType(RTLDataType dataType)
         {
             DataType = dataType;
         }
@@ -70,7 +70,7 @@ namespace Quokka.RTL
             if (index < Size)
                 return _data[index];
 
-            if (DataType == RTLSignalType.Unsigned)
+            if (DataType == RTLDataType.Unsigned)
                 return false;
 
             return _data[Size - 1];
@@ -105,7 +105,7 @@ namespace Quokka.RTL
 
                 switch (DataType)
                 {
-                    case RTLSignalType.Signed:
+                    case RTLDataType.Signed:
                         {
                             // expand with sign
                             if (_data[Size - 1])
@@ -115,7 +115,7 @@ namespace Quokka.RTL
                             }
                         }
                         break;
-                    case RTLSignalType.Unsigned:
+                    case RTLDataType.Unsigned:
                         // expand with zeros, already filled with zeros
                         break;
                     default:
@@ -127,8 +127,8 @@ namespace Quokka.RTL
                 // truncate
                 switch (DataType)
                 {
-                    case RTLSignalType.Signed:
-                    case RTLSignalType.Unsigned:
+                    case RTLDataType.Signed:
+                    case RTLDataType.Unsigned:
                         for (var i = 0; i < newSize; i++)
                             newData[i] = _data[i];
                         break;
@@ -183,7 +183,7 @@ namespace Quokka.RTL
         internal void internalToSigned()
         {
             internalResize(Size + 1);
-            internalChangeType(RTLSignalType.Signed);
+            internalChangeType(RTLDataType.Signed);
         }
     }
 }

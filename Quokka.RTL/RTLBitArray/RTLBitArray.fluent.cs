@@ -8,7 +8,7 @@ namespace Quokka.RTL
 {
     public partial class RTLBitArray
     {
-        internal RTLBitArray Resized(int newSize, RTLSignalType dataType)
+        internal RTLBitArray Resized(int newSize, RTLDataType dataType)
         {
             var result = this.Resized(newSize);
             result.internalChangeType(dataType);
@@ -31,7 +31,7 @@ namespace Quokka.RTL
             return Resized((int)newSize);
         }
 
-        public RTLBitArray TypeChanged(RTLSignalType dataType)
+        public RTLBitArray TypeChanged(RTLDataType dataType)
         {
             var result = new RTLBitArray(this);
             result.internalChangeType(dataType);
@@ -41,13 +41,13 @@ namespace Quokka.RTL
         public RTLBitArray Signed()
         {
             var result = new RTLBitArray(this);
-            result.internalChangeType(RTLSignalType.Signed);
+            result.internalChangeType(RTLDataType.Signed);
             return result;
         }
         public RTLBitArray Unsigned()
         {
             var result = new RTLBitArray(this);
-            result.internalChangeType(RTLSignalType.Unsigned);
+            result.internalChangeType(RTLDataType.Unsigned);
             return result;
         }
 

@@ -193,7 +193,7 @@ namespace Quokka.RTL.RTLBitArrayTests
                 var source = new RTLBitArray(int.MaxValue);
                 foreach (var idx in Enumerable.Range(-Tier1Size / 2, Tier1Size))
                 {
-                    var t = source.TypeChanged(RTLSignalType.Unsigned);
+                    var t = source.TypeChanged(RTLDataType.Unsigned);
                 }
             }, 1000);
         }
@@ -494,7 +494,7 @@ namespace Quokka.RTL.RTLBitArrayTests
                 foreach (var idx in Enumerable.Range(0, Tier1Size))
                 {
                     var bits = Convert.ToString(idx, 2);
-                    var v = new RTLBitArray(RTLSignalType.Unsigned, bits, 32);
+                    var v = new RTLBitArray(RTLDataType.Unsigned, bits, 32);
                 }
             }, 1000);
         }

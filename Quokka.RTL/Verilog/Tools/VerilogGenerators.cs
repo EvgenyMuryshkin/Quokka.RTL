@@ -18,7 +18,7 @@ namespace Quokka.RTL.Verilog.Tools
             result.Interface.WithFunctionPortDeclaration(
                 vlgPortDirection.Input,
                 vlgNetType.Wire, 
-                source.DataType == RTLSignalType.Signed ? vlgSignType.Signed : vlgSignType.Unsigned,
+                source.DataType == RTLDataType.Signed ? vlgSignType.Signed : vlgSignType.Unsigned,
                 source.Size,
                 nameof(source)
             );
@@ -39,7 +39,7 @@ namespace Quokka.RTL.Verilog.Tools
             {
                 switch (source.DataType)
                 {
-                    case RTLSignalType.Signed:
+                    case RTLDataType.Signed:
                         result.Implementation.Block.WithAssign(
                             result.Declaration.Name,
                             vlgAssignType.Equal,
@@ -55,7 +55,7 @@ namespace Quokka.RTL.Verilog.Tools
                             )
                         );
                         break;
-                    case RTLSignalType.Unsigned:
+                    case RTLDataType.Unsigned:
                         result.Implementation.Block.WithAssign(
                             result.Declaration.Name,
                             vlgAssignType.Equal,
