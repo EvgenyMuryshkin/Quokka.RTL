@@ -122,9 +122,9 @@ public partial class vhdArchitectureDeclarations
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdArchitectureDeclarations WithSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdArchitectureDeclarations WithSubTypeDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
-		this.Children.Add(new vhdSubTypeDeclaration(Name, Type, Width));
+		this.Children.Add(new vhdSubTypeDeclaration(Name, DataType, SignalType, Width));
 		return this;
 	}
 	//vhdFunction
@@ -138,9 +138,9 @@ public partial class vhdArchitectureDeclarations
 		this.Children.Add(new vhdFunction(Declaration));
 		return this;
 	}
-	public vhdArchitectureDeclarations WithFunction(String Name, vhdDataType Type, Int32 Width)
+	public vhdArchitectureDeclarations WithFunction(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
-		this.Children.Add(new vhdFunction(Name, Type, Width));
+		this.Children.Add(new vhdFunction(Name, DataType, SignalType, Width));
 		return this;
 	}
 }
@@ -490,9 +490,9 @@ public partial class vhdEntityInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdEntityInterface WithStandardEntityPort(String Name, vhdPortDirection Direction, vhdDataType Sign, Int32 Width, String Initializer)
+	public vhdEntityInterface WithStandardEntityPort(String Name, vhdPortDirection Direction, vhdDataType DataType, vhdSignalType SignalType, Int32 Width, String Initializer)
 	{
-		this.Children.Add(new vhdStandardEntityPort(Name, Direction, Sign, Width, Initializer));
+		this.Children.Add(new vhdStandardEntityPort(Name, Direction, DataType, SignalType, Width, Initializer));
 		return this;
 	}
 }
@@ -682,9 +682,9 @@ public partial class vhdFunctionInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdFunctionInterface WithFunctionPortDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdFunctionInterface WithFunctionPortDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
-		this.Children.Add(new vhdFunctionPortDeclaration(Name, Type, Width));
+		this.Children.Add(new vhdFunctionPortDeclaration(Name, DataType, SignalType, Width));
 		return this;
 	}
 	//vhdFunctionCustomPortDeclaration
@@ -721,9 +721,9 @@ public partial class vhdFunctionTypeDeclarations
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vhdFunctionTypeDeclarations WithSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdFunctionTypeDeclarations WithSubTypeDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
-		this.Children.Add(new vhdSubTypeDeclaration(Name, Type, Width));
+		this.Children.Add(new vhdSubTypeDeclaration(Name, DataType, SignalType, Width));
 		return this;
 	}
 }

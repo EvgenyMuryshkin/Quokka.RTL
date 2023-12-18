@@ -10,7 +10,7 @@
 				{
 					$"{obj.Name} :",
 					_formatters.DirectionType(obj.Name, obj.Direction),
-					_formatters.DataType(obj.Name, obj.Width, obj.Sign),
+					_formatters.DataType(obj.Name, obj.Width, new vhdDefaultDataType(obj.DataType, obj.SignalType)),
 					obj.Width == 1 ? null : $"({obj.Width - 1} downto {0})",
 					obj.Initializer.HasValue() ? $":= {obj.Initializer}" : null
 				};

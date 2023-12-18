@@ -8,7 +8,10 @@ namespace Quokka.RTL.VHDL.Implementation
         {
             var parts = new string[]
             {
-                obj.Declaration.CustomType ?? _formatters.DataType(obj.Declaration.Name, obj.Declaration.Width, obj.Declaration.Type)
+                obj.Declaration.CustomType ?? _formatters.DataType(
+                    obj.Declaration.Name, 
+                    obj.Declaration.Width, 
+                    new vhdDefaultDataType(obj.Declaration.DataType, obj.Declaration.SignalType))
                 //,obj.Declaration.Width == 1 ? null : $"({obj.Declaration.Width - 1} downto {0})",
             };
 

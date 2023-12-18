@@ -59,6 +59,12 @@ public enum vlgShiftType
 	RightArith = 1,
 	Left = 2,
 }
+public enum vlgSignalType
+{
+	Auto = 0,
+	Signal = 1,
+	Bus = 2,
+}
 public enum vlgSignType
 {
 	Unsigned = 0,

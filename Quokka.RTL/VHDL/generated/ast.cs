@@ -1158,11 +1158,13 @@ public abstract partial class vhdDataTypeSource : vhdAbstractObject
 public partial class vhdDefaultDataType : vhdDataTypeSource
 {
 	public vhdDefaultDataType() { }
-	public vhdDefaultDataType(vhdDataType DataType)
+	public vhdDefaultDataType(vhdDataType DataType, vhdSignalType SignalType)
 	{
 		this.DataType = DataType;
+		this.SignalType = SignalType;
 	}
 	public vhdDataType DataType { get; set; }
+	public vhdSignalType SignalType { get; set; }
 }
 [JsonObjectAttribute]
 public partial class vhdDefaultNetType : vhdNetTypeSource
@@ -1387,9 +1389,9 @@ public partial class vhdFile : vhdAbstractCollection, IEnumerable//<vhdFileChild
 public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclarationsChild
 {
 	public vhdFunction() { }
-	public vhdFunction(String Name, vhdDataType Type, Int32 Width)
+	public vhdFunction(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
-		this.Declaration = new vhdFunctionDeclaration(Name, Type, Width);
+		this.Declaration = new vhdFunctionDeclaration(Name, DataType, SignalType, Width);
 	}
 	public vhdFunction(vhdFunctionDeclaration Declaration)
 	{
@@ -1416,14 +1418,16 @@ public partial class vhdFunctionCustomPortDeclaration : vhdAbstractObject, vhdFu
 public partial class vhdFunctionDeclaration : vhdAbstractObject
 {
 	public vhdFunctionDeclaration() { }
-	public vhdFunctionDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdFunctionDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
 		this.Name = Name;
-		this.Type = Type;
+		this.DataType = DataType;
+		this.SignalType = SignalType;
 		this.Width = Width;
 	}
 	public String Name { get; set; }
-	public vhdDataType Type { get; set; }
+	public vhdDataType DataType { get; set; }
+	public vhdSignalType SignalType { get; set; }
 	public Int32 Width { get; set; }
 	public String CustomType { get; set; }
 }
@@ -1495,14 +1499,16 @@ public partial class vhdFunctionInterface : vhdAbstractCollection, IEnumerable//
 public partial class vhdFunctionPortDeclaration : vhdAbstractObject, vhdFunctionInterfaceChild
 {
 	public vhdFunctionPortDeclaration() { }
-	public vhdFunctionPortDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdFunctionPortDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
 		this.Name = Name;
-		this.Type = Type;
+		this.DataType = DataType;
+		this.SignalType = SignalType;
 		this.Width = Width;
 	}
 	public String Name { get; set; }
-	public vhdDataType Type { get; set; }
+	public vhdDataType DataType { get; set; }
+	public vhdSignalType SignalType { get; set; }
 	public Int32 Width { get; set; }
 }
 /// <summary>
@@ -2501,15 +2507,17 @@ public partial class vhdSimpleForLoop : vhdAbstractObject, vhdArchitectureImplem
 public partial class vhdStandardEntityPort : vhdEntityPort, vhdEntityInterfaceChild
 {
 	public vhdStandardEntityPort() { }
-	public vhdStandardEntityPort(String Name, vhdPortDirection Direction, vhdDataType Sign, Int32 Width, String Initializer)
+	public vhdStandardEntityPort(String Name, vhdPortDirection Direction, vhdDataType DataType, vhdSignalType SignalType, Int32 Width, String Initializer)
 	{
 		this.Name = Name;
 		this.Direction = Direction;
-		this.Sign = Sign;
+		this.DataType = DataType;
+		this.SignalType = SignalType;
 		this.Width = Width;
 		this.Initializer = Initializer;
 	}
-	public vhdDataType Sign { get; set; }
+	public vhdDataType DataType { get; set; }
+	public vhdSignalType SignalType { get; set; }
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
 }
@@ -2517,13 +2525,15 @@ public partial class vhdStandardEntityPort : vhdEntityPort, vhdEntityInterfaceCh
 public partial class vhdSubTypeDeclaration : vhdTypeDeclaration, vhdArchitectureDeclarationsChild, vhdFunctionTypeDeclarationsChild
 {
 	public vhdSubTypeDeclaration() { }
-	public vhdSubTypeDeclaration(String Name, vhdDataType Type, Int32 Width)
+	public vhdSubTypeDeclaration(String Name, vhdDataType DataType, vhdSignalType SignalType, Int32 Width)
 	{
 		this.Name = Name;
-		this.Type = Type;
+		this.DataType = DataType;
+		this.SignalType = SignalType;
 		this.Width = Width;
 	}
-	public vhdDataType Type { get; set; }
+	public vhdDataType DataType { get; set; }
+	public vhdSignalType SignalType { get; set; }
 	public Int32 Width { get; set; }
 }
 [JsonObjectAttribute]

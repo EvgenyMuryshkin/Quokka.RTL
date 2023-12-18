@@ -1524,11 +1524,6 @@
             
              </summary>
         </member>
-        <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdAbstractObject">
-            <summary>
-            from vhdDefaultDataType
-            </summary>
-        </member>
         <member name="M:Quokka.RTL.VHDL.vhdAbstractObject.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdAbstractObject">
             <summary>
             from vhdDefaultNetType
@@ -2625,16 +2620,6 @@
         <member name="M:Quokka.RTL.VHDL.vhdDataTypeSource.op_Implicit(System.String)~Quokka.RTL.VHDL.vhdDataTypeSource">
             <summary>
             from vhdCustomDataType
-            </summary>
-        </member>
-        <member name="M:Quokka.RTL.VHDL.vhdDataTypeSource.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdDataTypeSource">
-            <summary>
-            from vhdDefaultDataType
-            </summary>
-        </member>
-        <member name="M:Quokka.RTL.VHDL.vhdDefaultDataType.op_Implicit(Quokka.RTL.VHDL.vhdDataType)~Quokka.RTL.VHDL.vhdDefaultDataType">
-            <summary>
-            from vhdDefaultDataType
             </summary>
         </member>
         <member name="M:Quokka.RTL.VHDL.vhdDefaultNetType.op_Implicit(Quokka.RTL.VHDL.vhdNetType)~Quokka.RTL.VHDL.vhdDefaultNetType">

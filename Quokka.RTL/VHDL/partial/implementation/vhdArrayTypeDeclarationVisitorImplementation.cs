@@ -14,7 +14,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				"is array",
 				$"(0 to {obj.Depth - 1})",
 				"of",
-				_formatters.DataType(obj.Name, obj.Width, obj.Type),
+				_formatters.DataType(obj.Name, obj.Width, new vhdDefaultDataType(obj.Type, vhdSignalType.Auto)),
 				obj.Width <= 1 ? null : $"({obj.Width - 1} downto 0)"
 			};
 

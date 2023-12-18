@@ -429,6 +429,7 @@ public partial class vlgLogicSignal
 		var result = new vlgLogicSignal();
 		result.NetType = NetType;
 		result.Sign = Sign;
+		result.SignalType = SignalType;
 		result.Name = Name;
 		result.Width = Width;
 		result.Initializer = Initializer;

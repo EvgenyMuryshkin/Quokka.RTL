@@ -2,7 +2,9 @@
 {
     public class vhdSubTypeDeclaration : vhdTypeDeclaration
     {
-        public vhdDataType Type { get; set; }
+        public vhdDataType DataType { get; set; }
+        public vhdSignalType SignalType { get; set; }
+
         public int Width { get; set; }
     }
 }

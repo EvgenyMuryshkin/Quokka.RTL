@@ -97,6 +97,54 @@ namespace Quokka.RTL.VHDL
             }
         }
 
+        public vhdSignalType SignalType(string signalName, int width, vhdDataTypeSource type)
+        {
+            switch (type)
+            {
+                case vhdDefaultDataType d:
+                    if (d.DataType == vhdDataType.Boolean)
+                        return vhdSignalType.Auto;
+
+                    switch (d.DataType)
+                    {
+                        case vhdDataType.Signed:
+                            {
+                                if (width == 1)
+                                    return vhdSignalType.Signal;
+
+                                return vhdSignalType.Auto;
+                            }
+                        case vhdDataType.Unsigned:
+                            {
+                                if (width == 1)
+                                    return vhdSignalType.Signal;
+
+                                return vhdSignalType.Auto;
+                            }
+                        case vhdDataType.StdLogic:
+                            {
+                                switch (d.SignalType)
+                                {
+                                    case vhdSignalType.Auto:
+                                        {
+                                            if (width == 1)
+                                                return vhdSignalType.Signal;
+
+                                            return vhdSignalType.Bus;
+                                        }
+                                    default:
+                                        return d.SignalType;
+                                }
+                            }
+                        default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
+                    }
+                case vhdCustomDataType d:
+                    return vhdSignalType.Auto;
+                default:
+                    throw new Exception($"unsupported data type ({signalName}): {type}");
+            }
+        }
+
         public string DataType(string signalName, int width, vhdDataTypeSource type)
         {
             switch (type)
@@ -105,14 +153,21 @@ namespace Quokka.RTL.VHDL
                     if (d.DataType == vhdDataType.Boolean)
                         return "boolean";
 
-                    if (width == 1)
-                        return "std_logic";
+                    var signalType = SignalType(signalName, width, type);
+                    switch (signalType)
+                    {
+                        case vhdSignalType.Signal: return "std_logic";
+                        case vhdSignalType.Bus: return "std_logic_vector";
+                    }
 
                     switch (d.DataType)
                     {
                         case vhdDataType.Signed: return "signed";
                         case vhdDataType.Unsigned: return "unsigned";
-                        case vhdDataType.StdLogic: return "std_logic_vector";
+                        case vhdDataType.StdLogic:
+                            {
+                                throw new Exception($"Signal type was not resolved for '{signalName}'");
+                            }
                         default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
                     }
                 case vhdCustomDataType d:

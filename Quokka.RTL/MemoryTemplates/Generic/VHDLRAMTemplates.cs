@@ -185,7 +185,12 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             foreach (var read in data.Read)
             {
                 var readAddrReg = RegName(data, read.Source);
-                _declarations.WithDefaultSignal(vhdNetType.Signal, readAddrReg, vhdDataType.Unsigned, ramAddressBits);
+                _declarations.WithDefaultSignal(
+                    vhdNetType.Signal, 
+                    readAddrReg, 
+                    new vhdDefaultDataType(vhdDataType.Unsigned, vhdSignalType.Auto), 
+                    ramAddressBits
+                );
             }
 
             var syncBlock = new vhdSyncBlock(vhdEdgeType.Rising, clock);

@@ -19,6 +19,13 @@ namespace Quokka.RTL.SourceGenerators.VHDL
         Boolean
     }
 
+    public enum vhdSignalType
+    {
+        Auto,
+        Signal,
+        Bus
+    }
+
     public enum vhdCastType
     {
         Unsigned,

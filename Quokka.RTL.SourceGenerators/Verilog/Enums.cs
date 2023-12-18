@@ -26,6 +26,13 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         Reg
     }
 
+    public enum vlgSignalType
+    {
+        Auto,
+        Signal,
+        Bus
+    }
+
     public enum vlgPortDirection
     {
         Input,

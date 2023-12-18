@@ -103,6 +103,12 @@ public enum vhdShiftType
 	Right = 0,
 	Left = 1,
 }
+public enum vhdSignalType
+{
+	Auto = 0,
+	Signal = 1,
+	Bus = 2,
+}
 public enum vhdUnaryType
 {
 	Not = 0,

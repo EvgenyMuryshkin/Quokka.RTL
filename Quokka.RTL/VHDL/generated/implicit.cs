@@ -11,13 +11,6 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 public abstract partial class vhdAbstractObject
 {
 	/// <summary>
-	/// from vhdDefaultDataType
-	/// </summary>
-	public static implicit operator vhdAbstractObject(vhdDataType DataType)
-	{
-		return new vhdDefaultDataType(DataType);
-	}
-	/// <summary>
 	/// from vhdDefaultNetType
 	/// </summary>
 	public static implicit operator vhdAbstractObject(vhdNetType NetType)
@@ -952,23 +945,9 @@ public abstract partial class vhdDataTypeSource : vhdAbstractObject
 	{
 		return new vhdCustomDataType(DataType);
 	}
-	/// <summary>
-	/// from vhdDefaultDataType
-	/// </summary>
-	public static implicit operator vhdDataTypeSource(vhdDataType DataType)
-	{
-		return new vhdDefaultDataType(DataType);
-	}
 }
 public partial class vhdDefaultDataType : vhdDataTypeSource
 {
-	/// <summary>
-	/// from vhdDefaultDataType
-	/// </summary>
-	public static implicit operator vhdDefaultDataType(vhdDataType DataType)
-	{
-		return new vhdDefaultDataType(DataType);
-	}
 }
 public partial class vhdDefaultNetType : vhdNetTypeSource
 {

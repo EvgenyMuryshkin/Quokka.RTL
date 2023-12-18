@@ -519,9 +519,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithLogicSignal(vlgNetType NetType, vlgSignType Sign, String Name, Int32 Width, String Initializer)
+	public vlgModuleImplementationBlock WithLogicSignal(vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, String Name, Int32 Width, String Initializer)
 	{
-		this.Children.Add(new vlgLogicSignal(NetType, Sign, Name, Width, Initializer));
+		this.Children.Add(new vlgLogicSignal(NetType, Sign, SignalType, Name, Width, Initializer));
 		return this;
 	}
 	//vlgMemoryBlock

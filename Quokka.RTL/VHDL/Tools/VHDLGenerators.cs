@@ -21,6 +21,7 @@ namespace Quokka.RTL.VHDL.Tools
             return new vhdSubTypeDeclaration(
                 $"{type.DataType}{type.Size}".ToLower(),
                 Map(type.DataType),
+                vhdSignalType.Auto,
                 type.Size
             );
         }
@@ -35,7 +36,8 @@ namespace Quokka.RTL.VHDL.Tools
                 Declaration =
                 {
                     Name = $"ternary_{whenTrue.DataType}_{whenTrue.Size}".ToLower(),
-                    Type = Map(whenTrue.DataType),
+                    DataType = Map(whenTrue.DataType),
+                    SignalType = vhdSignalType.Auto,
                     Width = whenTrue.Size,
                     CustomType = whenTrueType.Name
                 },
@@ -46,7 +48,7 @@ namespace Quokka.RTL.VHDL.Tools
                 },
                 Interface =
                 {
-                    new vhdFunctionPortDeclaration("condition", vhdDataType.Boolean, 1),
+                    new vhdFunctionPortDeclaration("condition", vhdDataType.Boolean, vhdSignalType.Auto, 1),
                     new vhdFunctionCustomPortDeclaration("whenTrue", whenTrueType.Name),
                     new vhdFunctionCustomPortDeclaration("whenFalse", whenFalseType.Name),
                 },
@@ -78,12 +80,13 @@ namespace Quokka.RTL.VHDL.Tools
                     Declaration =
                     {
                         Name = $"bit_to_boolean".ToLower(),
-                        Type = vhdDataType.Boolean,
+                        DataType = vhdDataType.Boolean,
+                        SignalType = vhdSignalType.Auto,
                         Width = 1
                     },
                     Interface =
                     {
-                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), source.Size)
+                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), vhdSignalType.Auto, source.Size)
                     },
                     Implementation =
                     {
@@ -102,12 +105,13 @@ namespace Quokka.RTL.VHDL.Tools
                     Declaration =
                     {
                         Name = $"{source.DataType}_to_boolean".ToLower(),
-                        Type = vhdDataType.Boolean,
+                        DataType = vhdDataType.Boolean,
+                        SignalType = vhdSignalType.Auto,
                         Width = 1
                     },
                     Interface =
                     {
-                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), source.Size)
+                        new vhdFunctionPortDeclaration(nameof(source), Map(source.DataType), vhdSignalType.Auto, source.Size)
                     },
                     Implementation =
                     {
@@ -131,7 +135,8 @@ namespace Quokka.RTL.VHDL.Tools
                 Declaration =
                 {
                     Name = $"resize_{source.DataType}_{source.Size}_{target.Size}".ToLower(),
-                    Type = Map(source.DataType),
+                    DataType = Map(source.DataType),
+                    SignalType = vhdSignalType.Auto,
                     Width = target.Size,
                     CustomType = targetType.Name
                 },

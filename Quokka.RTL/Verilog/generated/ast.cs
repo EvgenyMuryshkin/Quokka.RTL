@@ -1181,16 +1181,18 @@ public partial class vlgLogicExpression : vlgExpression
 public partial class vlgLogicSignal : vlgSignal, vlgModuleImplementationBlockChild
 {
 	public vlgLogicSignal() { }
-	public vlgLogicSignal(vlgNetType NetType, vlgSignType Sign, String Name, Int32 Width, String Initializer)
+	public vlgLogicSignal(vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, String Name, Int32 Width, String Initializer)
 	{
 		this.NetType = NetType;
 		this.Sign = Sign;
+		this.SignalType = SignalType;
 		this.Name = Name;
 		this.Width = Width;
 		this.Initializer = Initializer;
 	}
 	public vlgNetType NetType { get; set; }
 	public vlgSignType Sign { get; set; }
+	public vlgSignalType SignalType { get; set; }
 	public String Name { get; set; }
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
