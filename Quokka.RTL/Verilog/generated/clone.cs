@@ -278,6 +278,7 @@ public partial class vlgFunctionPortDeclaration
 		result.Direction = Direction;
 		result.NetType = NetType;
 		result.Sign = Sign;
+		result.SignalType = SignalType;
 		result.Width = Width;
 		result.Name = Name;
 		return result;
@@ -700,6 +701,7 @@ public partial class vlgStandardModulePortDeclaration
 		result.Direction = Direction;
 		result.NetType = NetType;
 		result.Sign = Sign;
+		result.SignalType = SignalType;
 		result.Width = Width;
 		result.Name = Name;
 		return result;
@@ -714,6 +716,7 @@ public partial class vlgStandardModulePortImplementation
 		result.Direction = Direction;
 		result.NetType = NetType;
 		result.Sign = Sign;
+		result.SignalType = SignalType;
 		result.Width = Width;
 		result.Name = Name;
 		return result;

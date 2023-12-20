@@ -352,9 +352,9 @@ public partial class vlgFunctionInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgFunctionInterface WithFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
+	public vlgFunctionInterface WithFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgFunctionPortDeclaration(Direction, NetType, Sign, Width, Name));
+		this.Children.Add(new vlgFunctionPortDeclaration(Direction, NetType, Sign, SignalType, Width, Name));
 		return this;
 	}
 }
@@ -497,9 +497,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
+	public vlgModuleImplementationBlock WithStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgStandardModulePortImplementation(Direction, NetType, Sign, Width, Name));
+		this.Children.Add(new vlgStandardModulePortImplementation(Direction, NetType, Sign, SignalType, Width, Name));
 		return this;
 	}
 	//vlgCustomDeclaration
@@ -735,9 +735,9 @@ public partial class vlgModuleInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleInterface WithStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, Int32 Width, String Name)
+	public vlgModuleInterface WithStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgStandardModulePortDeclaration(Direction, NetType, Sign, Width, Name));
+		this.Children.Add(new vlgStandardModulePortDeclaration(Direction, NetType, Sign, SignalType, Width, Name));
 		return this;
 	}
 }
