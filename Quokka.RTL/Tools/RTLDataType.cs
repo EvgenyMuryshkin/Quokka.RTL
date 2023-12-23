@@ -16,4 +16,11 @@ namespace Quokka.RTL.Tools
         LBS,
         MSB
     }
+
+    public enum RTLSignalType
+    {
+        Auto,
+        Signal,
+        Bus
+    }
 }

@@ -6,23 +6,26 @@ namespace Quokka.RTL.Tools
     {
         public Type Type { get; set; }
         public int Size { get; set; }
-        public RTLDataType SignalType { get; set; } = RTLDataType.Unsigned;
+        public RTLDataType DataType { get; set; } = RTLDataType.Unsigned;
+        public RTLSignalType SignalType { get; set; } = RTLSignalType.Auto;
 
         public RTLSignalInfo() { }
 
         public RTLSignalInfo(
             Type type,
             int size,
-            RTLDataType signalType)
+            RTLDataType dataType,
+            RTLSignalType signalType)
         {
             Type = type;
             Size = size;
+            DataType = dataType;
             SignalType = signalType;
         }
 
         public override string ToString()
         {
-            return $"Type: {(Type?.Name ?? "null")}, {Size} bits, {SignalType}";
+            return $"Type: {(Type?.Name ?? "null")}, {Size} bits, {DataType}";
         }
 
         public override bool Equals(object obj)
@@ -31,7 +34,7 @@ namespace Quokka.RTL.Tools
                 return true;
 
             if (obj is RTLSignalInfo s)
-                return Type == s.Type && Size == s.Size && SignalType == s.SignalType;
+                return Type == s.Type && Size == s.Size && DataType == s.DataType;
 
             return false;
         }
@@ -61,7 +64,7 @@ namespace Quokka.RTL.Tools
 
         public override int GetHashCode()
         {
-            return (Type?.GetHashCode() ?? 0) ^ Size.GetHashCode() ^ SignalType.GetHashCode();
+            return (Type?.GetHashCode() ?? 0) ^ Size.GetHashCode() ^ DataType.GetHashCode();
         }
     }
 }

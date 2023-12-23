@@ -28,7 +28,7 @@ namespace Quokka.RTL.VHDL
             if (l == r)
                 return null;
 
-            if (l > r)
+            if (l >= r)
                 return $"({l} downto {r})";
             else
                 return $"({l} to {r})";
@@ -109,6 +109,9 @@ namespace Quokka.RTL.VHDL
                     {
                         case vhdDataType.Signed:
                             {
+                                if (d.SignalType != vhdSignalType.Auto)
+                                    return d.SignalType;
+
                                 if (width == 1)
                                     return vhdSignalType.Signal;
 
@@ -116,6 +119,9 @@ namespace Quokka.RTL.VHDL
                             }
                         case vhdDataType.Unsigned:
                             {
+                                if (d.SignalType != vhdSignalType.Auto)
+                                    return d.SignalType;
+
                                 if (width == 1)
                                     return vhdSignalType.Signal;
 
@@ -123,18 +129,13 @@ namespace Quokka.RTL.VHDL
                             }
                         case vhdDataType.StdLogic:
                             {
-                                switch (d.SignalType)
-                                {
-                                    case vhdSignalType.Auto:
-                                        {
-                                            if (width == 1)
-                                                return vhdSignalType.Signal;
+                                if (d.SignalType != vhdSignalType.Auto)
+                                    return d.SignalType;
 
-                                            return vhdSignalType.Bus;
-                                        }
-                                    default:
-                                        return d.SignalType;
-                                }
+                                if (width == 1)
+                                    return vhdSignalType.Signal;
+
+                                return vhdSignalType.Bus;
                             }
                         default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
                     }
