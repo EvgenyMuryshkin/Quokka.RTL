@@ -15,17 +15,17 @@ namespace Quokka.RTL.VHDL
             }
         }
 
-        public string Range(int size)
+        public string Range(int size, bool explicitRange = false)
         {
-            if (size == 0)
+            if (size == 0 && !explicitRange)
                 return null;
 
-            return Range(size - 1, 0);
+            return Range(size - 1, 0, explicitRange);
         }
 
-        public string Range(int l, int r)
+        public string Range(int l, int r, bool explicitRange = false)
         {
-            if (l == r)
+            if (l == r && !explicitRange)
                 return null;
 
             if (l >= r)
@@ -155,19 +155,29 @@ namespace Quokka.RTL.VHDL
                         return "boolean";
 
                     var signalType = SignalType(signalName, width, type);
-                    switch (signalType)
-                    {
-                        case vhdSignalType.Signal: return "std_logic";
-                        case vhdSignalType.Bus: return "std_logic_vector";
-                    }
 
                     switch (d.DataType)
                     {
-                        case vhdDataType.Signed: return "signed";
-                        case vhdDataType.Unsigned: return "unsigned";
+                        case vhdDataType.Signed:
+                            {
+                                if (signalType == vhdSignalType.Bus || width != 1)
+                                    return "signed";
+
+                                return "std_logic";
+                            }
+                        case vhdDataType.Unsigned:
+                            {
+                                if (signalType == vhdSignalType.Bus || width != 1)
+                                    return "unsigned";
+
+                                return "std_logic";
+                            }
                         case vhdDataType.StdLogic:
                             {
-                                throw new Exception($"Signal type was not resolved for '{signalName}'");
+                                if (signalType == vhdSignalType.Bus || width != 1)
+                                    return "std_logic_vector";
+
+                                return "std_logic";
                             }
                         default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
                     }

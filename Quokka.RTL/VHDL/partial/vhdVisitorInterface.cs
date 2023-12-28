@@ -32,8 +32,8 @@ namespace Quokka.RTL.VHDL
         /*
         string DirectionType(string signalName, vlgPortDirection type);
         */
-        string Range(int l, int r);
-        string Range(int size);
+        string Range(int l, int r, bool explicitRange = false);
+        string Range(int size, bool explicitRange = false);
 
     }
 }
