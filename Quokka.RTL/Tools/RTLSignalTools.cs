@@ -38,7 +38,6 @@ namespace Quokka.RTL.Tools
                     {
                         Type = a.GetType(),
                         DataType = a.DataType,
-                        SignalType = RTLSignalType.Bus,
                         Size = a.Size
                     };
                 default:
@@ -50,8 +49,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum(),
-                            DataType = RTLDataType.Unsigned,
-                            SignalType = RTLSignalType.Bus
+                            DataType = RTLDataType.Unsigned
                         };
                     }
                     else if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
@@ -60,8 +58,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            DataType = RTLDataType.Unsigned,
-                            SignalType = RTLSignalType.Bus
+                            DataType = RTLDataType.Unsigned
                         };
                     }
                     else if (RTLTypeCheck.IsTuple(valueType))
@@ -70,8 +67,7 @@ namespace Quokka.RTL.Tools
                         {
                             Type = valueType,
                             Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            DataType = RTLDataType.Unsigned,
-                            SignalType = RTLSignalType.Bus
+                            DataType = RTLDataType.Unsigned
                         };
                     }
                     else

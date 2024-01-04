@@ -30,8 +30,9 @@ public enum vhdDataType
 {
 	Unsigned = 0,
 	Signed = 1,
-	StdLogic = 2,
-	Boolean = 3,
+	Boolean = 2,
+	StdLogic = 3,
+	StdLogicVector = 4,
 }
 public enum vhdEdgeType
 {
@@ -102,12 +103,6 @@ public enum vhdShiftType
 {
 	Right = 0,
 	Left = 1,
-}
-public enum vhdSignalType
-{
-	Auto = 0,
-	Signal = 1,
-	Bus = 2,
 }
 public enum vhdUnaryType
 {

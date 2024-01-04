@@ -803,7 +803,7 @@ public abstract partial class vlgDeclarationModulePort : vlgModulePort
 public abstract partial class vlgExpression : vlgAbstractObject
 {
 	public vlgExpression() { }
-	public Nullable<vlgSignType> ExpressionSignType { get; set; }
+	public Nullable<vlgDataType> ExpressionDataType { get; set; }
 	public Nullable<Int32> ExpressionSize { get; set; }
 }
 /// <summary>
@@ -964,12 +964,11 @@ public partial class vlgFunctionInterface : vlgAbstractCollection, IEnumerable//
 public partial class vlgFunctionPortDeclaration : vlgStandardModulePort, vlgFunctionInterfaceChild
 {
 	public vlgFunctionPortDeclaration() { }
-	public vlgFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
 		this.Direction = Direction;
 		this.NetType = NetType;
-		this.Sign = Sign;
-		this.SignalType = SignalType;
+		this.DataType = DataType;
 		this.Width = Width;
 		this.Name = Name;
 	}
@@ -1182,18 +1181,16 @@ public partial class vlgLogicExpression : vlgExpression
 public partial class vlgLogicSignal : vlgSignal, vlgModuleImplementationBlockChild
 {
 	public vlgLogicSignal() { }
-	public vlgLogicSignal(vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, String Name, Int32 Width, String Initializer)
+	public vlgLogicSignal(vlgNetType NetType, vlgDataType DataType, String Name, Int32 Width, String Initializer)
 	{
 		this.NetType = NetType;
-		this.Sign = Sign;
-		this.SignalType = SignalType;
+		this.DataType = DataType;
 		this.Name = Name;
 		this.Width = Width;
 		this.Initializer = Initializer;
 	}
 	public vlgNetType NetType { get; set; }
-	public vlgSignType Sign { get; set; }
-	public vlgSignalType SignalType { get; set; }
+	public vlgDataType DataType { get; set; }
 	public String Name { get; set; }
 	public Int32 Width { get; set; }
 	public String Initializer { get; set; }
@@ -1216,17 +1213,17 @@ public partial class vlgMathExpression : vlgExpression
 public partial class vlgMemoryBlock : vlgSignal, vlgModuleImplementationBlockChild
 {
 	public vlgMemoryBlock() { }
-	public vlgMemoryBlock(vlgNetType NetType, String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
+	public vlgMemoryBlock(vlgNetType NetType, String Name, vlgDataType DataType, Int32 Width, Int32 Depth)
 	{
 		this.NetType = NetType;
 		this.Name = Name;
-		this.Sign = Sign;
+		this.DataType = DataType;
 		this.Width = Width;
 		this.Depth = Depth;
 	}
 	public vlgNetType NetType { get; set; }
 	public String Name { get; set; }
-	public vlgSignType Sign { get; set; }
+	public vlgDataType DataType { get; set; }
 	public Int32 Width { get; set; }
 	public Int32 Depth { get; set; }
 }
@@ -1910,17 +1907,15 @@ public partial class vlgSizedAggregateExpression : vlgExpression, IEnumerable//<
 public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 {
 	public vlgStandardModulePort() { }
-	public vlgStandardModulePort(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgStandardModulePort(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
 		this.Direction = Direction;
 		this.NetType = NetType;
-		this.Sign = Sign;
-		this.SignalType = SignalType;
+		this.DataType = DataType;
 		this.Width = Width;
 		this.Name = Name;
 	}
-	public vlgSignType Sign { get; set; }
-	public vlgSignalType SignalType { get; set; }
+	public vlgDataType DataType { get; set; }
 	public Int32 Width { get; set; }
 	public String Name { get; set; }
 }
@@ -1928,12 +1923,11 @@ public abstract partial class vlgStandardModulePort : vlgDeclarationModulePort
 public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, vlgModuleInterfaceChild
 {
 	public vlgStandardModulePortDeclaration() { }
-	public vlgStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
 		this.Direction = Direction;
 		this.NetType = NetType;
-		this.Sign = Sign;
-		this.SignalType = SignalType;
+		this.DataType = DataType;
 		this.Width = Width;
 		this.Name = Name;
 	}
@@ -1942,12 +1936,11 @@ public partial class vlgStandardModulePortDeclaration : vlgStandardModulePort, v
 public partial class vlgStandardModulePortImplementation : vlgStandardModulePort, vlgModuleImplementationBlockChild
 {
 	public vlgStandardModulePortImplementation() { }
-	public vlgStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
 		this.Direction = Direction;
 		this.NetType = NetType;
-		this.Sign = Sign;
-		this.SignalType = SignalType;
+		this.DataType = DataType;
 		this.Width = Width;
 		this.Name = Name;
 	}

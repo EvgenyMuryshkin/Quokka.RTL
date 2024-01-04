@@ -10,8 +10,8 @@ namespace Quokka.RTL.Verilog.Implementation
             {
                 _formatters.DirectionType(obj.Name, obj.Direction),
                 _formatters.NetType(obj.Name, obj.NetType),
-                _formatters.SignType(obj.Name, obj.Sign),
-                obj.Width == 1 ? "" : Raw(new vlgRange(new vlgExpression[] { $"{obj.Width - 1}", "0" })),
+                _formatters.DataType(obj.Name, obj.DataType),
+                _formatters.IsBus(obj.DataType) ? $"[{obj.Width - 1}:0]" : "",
                 obj.Name,
             };
 

@@ -4,10 +4,12 @@ using System.Text;
 
 namespace Quokka.RTL.SourceGenerators.Verilog
 {
-    public enum vlgSignType
+    public enum vlgDataType
     {
         Unsigned,
-        Signed
+        Signed,
+        StdLogic,
+        StdLogicVector
     }
 
     public enum vlgAssignType
@@ -24,13 +26,6 @@ namespace Quokka.RTL.SourceGenerators.Verilog
         Auto,
         Wire,
         Reg
-    }
-
-    public enum vlgSignalType
-    {
-        Auto,
-        Signal,
-        Bus
     }
 
     public enum vlgPortDirection

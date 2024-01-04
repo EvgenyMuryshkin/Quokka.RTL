@@ -85,6 +85,29 @@ namespace Quokka.RTL.VHDL
 
         }
 
+        public bool IsBus(vhdDataTypeSource type)
+        {
+            switch (type)
+            {
+                case vhdDefaultDataType d:
+                    switch (d.DataType)
+                    {
+                        case vhdDataType.Signed:
+                        case vhdDataType.Unsigned:
+                        case vhdDataType.StdLogicVector:
+                            return true;
+                        case vhdDataType.Boolean:
+                        case vhdDataType.StdLogic:
+                            return false;
+                        default:
+                            throw new Exception($"unsupported data type ({d.DataType}): {type}");
+                    }
+                case vhdCustomDataType d:
+                    return false;
+                default:
+                    throw new Exception($"unsupported data type source: {type}");
+            }
+        }
 
         public string DataType(vhdDataType dataType)
         {
@@ -97,88 +120,18 @@ namespace Quokka.RTL.VHDL
             }
         }
 
-        public vhdSignalType SignalType(string signalName, int width, vhdDataTypeSource type)
-        {
-            switch (type)
-            {
-                case vhdDefaultDataType d:
-                    if (d.DataType == vhdDataType.Boolean)
-                        return vhdSignalType.Auto;
-
-                    switch (d.DataType)
-                    {
-                        case vhdDataType.Signed:
-                            {
-                                if (d.SignalType != vhdSignalType.Auto)
-                                    return d.SignalType;
-
-                                if (width == 1)
-                                    return vhdSignalType.Signal;
-
-                                return vhdSignalType.Auto;
-                            }
-                        case vhdDataType.Unsigned:
-                            {
-                                if (d.SignalType != vhdSignalType.Auto)
-                                    return d.SignalType;
-
-                                if (width == 1)
-                                    return vhdSignalType.Signal;
-
-                                return vhdSignalType.Auto;
-                            }
-                        case vhdDataType.StdLogic:
-                            {
-                                if (d.SignalType != vhdSignalType.Auto)
-                                    return d.SignalType;
-
-                                if (width == 1)
-                                    return vhdSignalType.Signal;
-
-                                return vhdSignalType.Bus;
-                            }
-                        default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
-                    }
-                case vhdCustomDataType d:
-                    return vhdSignalType.Auto;
-                default:
-                    throw new Exception($"unsupported data type ({signalName}): {type}");
-            }
-        }
-
         public string DataType(string signalName, int width, vhdDataTypeSource type)
         {
             switch (type)
             {
                 case vhdDefaultDataType d:
-                    if (d.DataType == vhdDataType.Boolean)
-                        return "boolean";
-
-                    var signalType = SignalType(signalName, width, type);
-
                     switch (d.DataType)
                     {
-                        case vhdDataType.Signed:
-                            {
-                                if (signalType == vhdSignalType.Bus || width != 1)
-                                    return "signed";
-
-                                return "std_logic";
-                            }
-                        case vhdDataType.Unsigned:
-                            {
-                                if (signalType == vhdSignalType.Bus || width != 1)
-                                    return "unsigned";
-
-                                return "std_logic";
-                            }
-                        case vhdDataType.StdLogic:
-                            {
-                                if (signalType == vhdSignalType.Bus || width != 1)
-                                    return "std_logic_vector";
-
-                                return "std_logic";
-                            }
+                        case vhdDataType.Boolean: return "boolean";
+                        case vhdDataType.Signed: return "signed";
+                        case vhdDataType.Unsigned: return "unsigned";
+                        case vhdDataType.StdLogic: return "std_logic";
+                        case vhdDataType.StdLogicVector: return "std_logic_vector";
                         default: throw new Exception($"unsupported sign type ({signalName}): {d.DataType}");
                     }
                 case vhdCustomDataType d:

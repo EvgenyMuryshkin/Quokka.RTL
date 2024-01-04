@@ -10,7 +10,7 @@ namespace Quokka.RTL.VHDL.Implementation
             {
                 obj.Name,
                 ":",
-                _formatters.DataType(obj.Name, obj.Width, new vhdDefaultDataType(obj.DataType, obj.SignalType))
+                _formatters.DataType(obj.Name, obj.Width, obj.DataType)
                 //,obj.Width == 1 ? null : $"({obj.Width - 1} downto {0})",
             };
             _builder.Append(parts.StringJoin(" "));

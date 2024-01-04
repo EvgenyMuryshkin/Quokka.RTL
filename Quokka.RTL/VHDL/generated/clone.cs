@@ -295,7 +295,6 @@ public partial class vhdDefaultDataType
 	{
 		var result = new vhdDefaultDataType();
 		result.DataType = DataType;
-		result.SignalType = SignalType;
 		return result;
 	}
 }
@@ -454,7 +453,6 @@ public partial class vhdFunctionDeclaration
 		var result = new vhdFunctionDeclaration();
 		result.Name = Name;
 		result.DataType = DataType;
-		result.SignalType = SignalType;
 		result.Width = Width;
 		result.CustomType = CustomType;
 		return result;
@@ -498,7 +496,6 @@ public partial class vhdFunctionPortDeclaration
 		var result = new vhdFunctionPortDeclaration();
 		result.Name = Name;
 		result.DataType = DataType;
-		result.SignalType = SignalType;
 		result.Width = Width;
 		return result;
 	}
@@ -766,7 +763,6 @@ public partial class vhdStandardEntityPort
 		result.Name = Name;
 		result.Direction = Direction;
 		result.DataType = DataType;
-		result.SignalType = SignalType;
 		result.Width = Width;
 		result.Initializer = Initializer;
 		return result;
@@ -780,7 +776,6 @@ public partial class vhdSubTypeDeclaration
 		var result = new vhdSubTypeDeclaration();
 		result.Name = Name;
 		result.DataType = DataType;
-		result.SignalType = SignalType;
 		result.Width = Width;
 		return result;
 	}

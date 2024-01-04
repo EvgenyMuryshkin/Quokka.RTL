@@ -11,7 +11,7 @@ namespace Quokka.RTL.VHDL.Implementation
                 "subtype",
                 obj.Name,
                 "is",
-                _formatters.DataType(obj.Name, obj.Width, new vhdDefaultDataType(obj.DataType, obj.SignalType)),
+                _formatters.DataType(obj.Name, obj.Width, obj.DataType),
                 obj.Width <= 1 ? null : $"({obj.Width - 1} downto 0)"
             };
 

@@ -18,8 +18,7 @@ namespace Quokka.RTL.Verilog.Tools
             result.Interface.WithFunctionPortDeclaration(
                 vlgPortDirection.Input,
                 vlgNetType.Wire, 
-                source.DataType == RTLDataType.Signed ? vlgSignType.Signed : vlgSignType.Unsigned,
-                vlgSignalType.Auto,
+                source.DataType == RTLDataType.Signed ? vlgDataType.Signed : vlgDataType.Unsigned,
                 source.Size,
                 nameof(source)
             );

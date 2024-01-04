@@ -22,6 +22,13 @@ public enum vlgCompareType
 	Less = 4,
 	LessOrEqual = 5,
 }
+public enum vlgDataType
+{
+	Unsigned = 0,
+	Signed = 1,
+	StdLogic = 2,
+	StdLogicVector = 3,
+}
 public enum vlgEdgeType
 {
 	Pos = 0,
@@ -58,17 +65,6 @@ public enum vlgShiftType
 	RightLogic = 0,
 	RightArith = 1,
 	Left = 2,
-}
-public enum vlgSignalType
-{
-	Auto = 0,
-	Signal = 1,
-	Bus = 2,
-}
-public enum vlgSignType
-{
-	Unsigned = 0,
-	Signed = 1,
 }
 public enum vlgUnaryType
 {

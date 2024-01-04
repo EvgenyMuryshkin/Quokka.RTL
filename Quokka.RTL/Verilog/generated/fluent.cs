@@ -352,9 +352,9 @@ public partial class vlgFunctionInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgFunctionInterface WithFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgFunctionInterface WithFunctionPortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgFunctionPortDeclaration(Direction, NetType, Sign, SignalType, Width, Name));
+		this.Children.Add(new vlgFunctionPortDeclaration(Direction, NetType, DataType, Width, Name));
 		return this;
 	}
 }
@@ -497,9 +497,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgModuleImplementationBlock WithStandardModulePortImplementation(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgStandardModulePortImplementation(Direction, NetType, Sign, SignalType, Width, Name));
+		this.Children.Add(new vlgStandardModulePortImplementation(Direction, NetType, DataType, Width, Name));
 		return this;
 	}
 	//vlgCustomDeclaration
@@ -519,9 +519,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithLogicSignal(vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, String Name, Int32 Width, String Initializer)
+	public vlgModuleImplementationBlock WithLogicSignal(vlgNetType NetType, vlgDataType DataType, String Name, Int32 Width, String Initializer)
 	{
-		this.Children.Add(new vlgLogicSignal(NetType, Sign, SignalType, Name, Width, Initializer));
+		this.Children.Add(new vlgLogicSignal(NetType, DataType, Name, Width, Initializer));
 		return this;
 	}
 	//vlgMemoryBlock
@@ -530,9 +530,9 @@ public partial class vlgModuleImplementationBlock
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleImplementationBlock WithMemoryBlock(vlgNetType NetType, String Name, vlgSignType Sign, Int32 Width, Int32 Depth)
+	public vlgModuleImplementationBlock WithMemoryBlock(vlgNetType NetType, String Name, vlgDataType DataType, Int32 Width, Int32 Depth)
 	{
-		this.Children.Add(new vlgMemoryBlock(NetType, Name, Sign, Width, Depth));
+		this.Children.Add(new vlgMemoryBlock(NetType, Name, DataType, Width, Depth));
 		return this;
 	}
 	//vlgInitial
@@ -735,9 +735,9 @@ public partial class vlgModuleInterface
 		if (obj != null) Children.Add(obj);
 		return this;
 	}
-	public vlgModuleInterface WithStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgSignType Sign, vlgSignalType SignalType, Int32 Width, String Name)
+	public vlgModuleInterface WithStandardModulePortDeclaration(vlgPortDirection Direction, vlgNetType NetType, vlgDataType DataType, Int32 Width, String Name)
 	{
-		this.Children.Add(new vlgStandardModulePortDeclaration(Direction, NetType, Sign, SignalType, Width, Name));
+		this.Children.Add(new vlgStandardModulePortDeclaration(Direction, NetType, DataType, Width, Name));
 		return this;
 	}
 }

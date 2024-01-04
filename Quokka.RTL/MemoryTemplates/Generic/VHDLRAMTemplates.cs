@@ -188,7 +188,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
                 _declarations.WithDefaultSignal(
                     vhdNetType.Signal, 
                     readAddrReg, 
-                    new vhdDefaultDataType(vhdDataType.Unsigned, vhdSignalType.Auto), 
+                    vhdDataType.Unsigned, 
                     ramAddressBits
                 );
             }

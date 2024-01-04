@@ -24,6 +24,7 @@ namespace Quokka.RTL.Verilog
         string EdgeType(string signalName, vlgEdgeType edgeType);
         string DirectionType(string signalName, vlgPortDirection type);
         string NetType(string signalName, vlgNetType type);
-        string SignType(string signalName, vlgSignType sign);
+        string DataType(string signalName, vlgDataType dataType);
+        bool IsBus(vlgDataType dataType);
     }
 }

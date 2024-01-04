@@ -8,19 +8,13 @@ namespace Quokka.RTL.Tools
         Signed,
         Floating,
         SignedIterator,
-        UnsignedIterator
+        UnsignedIterator,
+        StdLogic
     }
 
     public enum RTLOrderType : byte
     {
         LBS,
         MSB
-    }
-
-    public enum RTLSignalType
-    {
-        Auto,
-        Signal,
-        Bus
     }
 }

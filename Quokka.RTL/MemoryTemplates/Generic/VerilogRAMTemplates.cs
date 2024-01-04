@@ -127,7 +127,7 @@ namespace Quokka.RTL.MemoryTemplates.Generic
             foreach (var read in data.Read)
             {
                 var addrReg = RegName(data, read.Source);
-                _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgSignType.Unsigned, vlgSignalType.Auto, addrReg, ramAddressBits, null);
+                _implementation.Block.WithLogicSignal(vlgNetType.Reg, vlgDataType.Unsigned, addrReg, ramAddressBits, null);
             }
 
 

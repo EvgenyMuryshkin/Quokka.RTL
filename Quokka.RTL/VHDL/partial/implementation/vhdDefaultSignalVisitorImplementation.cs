@@ -6,19 +6,17 @@ namespace Quokka.RTL.VHDL.Implementation
 	{
 		public override void OnVisit(vhdDefaultSignal obj)
 		{
-			var signalType = _formatters.SignalType(obj.Name, obj.Width, obj.DataType);
-
 			var parts = new string[]
 			{
 				_formatters.NetType(obj.Name, obj.NetType),
 				$"{obj.Name} :",
                 _formatters.DataType(obj.Name, obj.Width, obj.DataType),
-                _formatters.Range(obj.Width, signalType == vhdSignalType.Bus)
+                _formatters.Range(obj.Width, _formatters.IsBus(obj.DataType))
             };
 
 			//var declaration = parts.StringJoin(" ");
 
-            var declaration = $"{_formatters.NetType(obj.Name, obj.NetType)} {obj.Name} : {_formatters.DataType(obj.Name, obj.Width, obj.DataType)}{_formatters.Range(obj.Width, signalType == vhdSignalType.Bus)}";
+            var declaration = $"{_formatters.NetType(obj.Name, obj.NetType)} {obj.Name} : {_formatters.DataType(obj.Name, obj.Width, obj.DataType)}{_formatters.Range(obj.Width, _formatters.IsBus(obj.DataType))}";
 
 			switch (obj.Initializer.Count)
 			{
@@ -30,7 +28,7 @@ namespace Quokka.RTL.VHDL.Implementation
 				case 1:
 					{
 						var initializer = obj.Initializer[0];
-						if (signalType == vhdSignalType.Bus)
+						if (_formatters.IsBus(obj.DataType))
 						{
 							if (initializer.StartsWith("'"))
                                 initializer = initializer.Replace("'", "\"");

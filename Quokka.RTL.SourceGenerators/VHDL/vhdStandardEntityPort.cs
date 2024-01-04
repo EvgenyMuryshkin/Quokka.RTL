@@ -3,8 +3,6 @@
     public class vhdStandardEntityPort : vhdEntityPort
     {
         public vhdDataType DataType { get; set; }
-        public vhdSignalType SignalType { get; set; }
-
         public int Width { get; set; }
         public string Initializer { get; set; }
     }

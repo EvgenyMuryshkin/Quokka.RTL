@@ -23,16 +23,16 @@ namespace Quokka.RTL.Tools
 
         public static Dictionary<Type, RTLSignalInfo> TypeInfos = new RTLSignalInfo[]
         {
-            new RTLSignalInfo(typeof(bool), 1, RTLDataType.Unsigned, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(byte), 8, RTLDataType.Unsigned, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(sbyte), 8, RTLDataType.Signed, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(short), 16, RTLDataType.Signed, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(ushort), 16, RTLDataType.Unsigned, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(int), 32, RTLDataType.Signed, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(uint), 32, RTLDataType.Unsigned, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(long), 64, RTLDataType.Signed, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(ulong), 64, RTLDataType.Unsigned, RTLSignalType.Auto ),
-            new RTLSignalInfo(typeof(float), 32, RTLDataType.Floating, RTLSignalType.Auto ),
+            new RTLSignalInfo(typeof(bool), 1, RTLDataType.StdLogic),
+            new RTLSignalInfo(typeof(byte), 8, RTLDataType.Unsigned),
+            new RTLSignalInfo(typeof(sbyte), 8, RTLDataType.Signed),
+            new RTLSignalInfo(typeof(short), 16, RTLDataType.Signed),
+            new RTLSignalInfo(typeof(ushort), 16, RTLDataType.Unsigned),
+            new RTLSignalInfo(typeof(int), 32, RTLDataType.Signed),
+            new RTLSignalInfo(typeof(uint), 32, RTLDataType.Unsigned),
+            new RTLSignalInfo(typeof(long), 64, RTLDataType.Signed),
+            new RTLSignalInfo(typeof(ulong), 64, RTLDataType.Unsigned),
+            new RTLSignalInfo(typeof(float), 32, RTLDataType.Floating),
         }.ToDictionary(p => p.Type);
     }
 }

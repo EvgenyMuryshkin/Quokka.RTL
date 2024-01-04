@@ -7,20 +7,17 @@ namespace Quokka.RTL.Tools
         public Type Type { get; set; }
         public int Size { get; set; }
         public RTLDataType DataType { get; set; } = RTLDataType.Unsigned;
-        public RTLSignalType SignalType { get; set; } = RTLSignalType.Auto;
 
         public RTLSignalInfo() { }
 
         public RTLSignalInfo(
             Type type,
             int size,
-            RTLDataType dataType,
-            RTLSignalType signalType)
+            RTLDataType dataType)
         {
             Type = type;
             Size = size;
             DataType = dataType;
-            SignalType = signalType;
         }
 
         public override string ToString()
