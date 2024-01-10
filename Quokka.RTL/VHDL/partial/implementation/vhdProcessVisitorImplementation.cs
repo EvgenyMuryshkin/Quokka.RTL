@@ -7,7 +7,11 @@ namespace Quokka.RTL.VHDL.Implementation
 	{
 		public override void OnVisit(vhdProcess obj)
 		{
-			_builder.AppendLine($"process ({obj.SensitivityList.Select(Raw).Distinct().StringJoin(", ")})");
+			var sensitivity = obj.SensitivityList.Select(Raw).Distinct().StringJoin(", ");
+			if (string.IsNullOrWhiteSpace(sensitivity))
+				sensitivity = "all";
+
+            _builder.AppendLine($"process ({sensitivity})");
 			using (_builder.Indent())
             {
 				Visit(obj.Declarations);
