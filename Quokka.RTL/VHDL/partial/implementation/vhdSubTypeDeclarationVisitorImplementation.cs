@@ -12,7 +12,8 @@ namespace Quokka.RTL.VHDL.Implementation
                 obj.Name,
                 "is",
                 _formatters.DataType(obj.Name, obj.Width, obj.DataType),
-                obj.Width <= 1 ? null : $"({obj.Width - 1} downto 0)"
+                _formatters.Range(obj.Width, _formatters.IsBus(obj.DataType)),
+                //obj.Width <= 1 ? null : $"({obj.Width - 1} downto 0)"
             };
 
             _builder.AppendLine($"{parts.StringJoin(" ")};");

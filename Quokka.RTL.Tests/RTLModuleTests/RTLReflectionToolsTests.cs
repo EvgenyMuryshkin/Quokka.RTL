@@ -133,17 +133,31 @@ namespace Quokka.RTL.Tests
         }
 
         [TestMethod]
+        public void BooRange()
+        {
+            var value = new IOTupleModuleInputsObjectL1();
+            var flag = value.GetType().GetMember(nameof(IOTupleModuleInputsObjectL1.L1Flag))[0];
+            var flagRange = RTLReflectionTools.SerializedRange(value, flag);
+            Assert.IsFalse(flagRange.IsRange);
+
+            var l2 = value.GetType().GetMember(nameof(IOTupleModuleInputsObjectL1.L2))[0];
+            var l2Range = RTLReflectionTools.SerializedRange(value, l2);
+            Assert.IsTrue(l2Range.IsRange);
+
+        }
+
+        [TestMethod]
         public void t_iq16()
         {
             var value = new t_iq16();
             var i = value.GetType().GetMember("i")[0];
             var q = value.GetType().GetMember("q")[0];
 
-            var i_range = RTLReflectionTools.SerializedRange(value, i);
+            var i_range = RTLReflectionTools.SerializedRange(value, i).FromTo();
             Assert.AreEqual(15, i_range.Item1);
             Assert.AreEqual(0, i_range.Item2);
 
-            var q_range = RTLReflectionTools.SerializedRange(value, q);
+            var q_range = RTLReflectionTools.SerializedRange(value, q).FromTo();
             Assert.AreEqual(31, q_range.Item1);
             Assert.AreEqual(16, q_range.Item2);
         }
@@ -166,18 +180,18 @@ namespace Quokka.RTL.Tests
 
             Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(null, null));
             Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(nonIndexed, null));
-            var range = RTLReflectionTools.SerializedRange(nonIndexed, nonIndexedMember);
+            var range = RTLReflectionTools.SerializedRange(nonIndexed, nonIndexedMember).FromTo();
             Assert.AreEqual(31, range.Item1);
             Assert.AreEqual(0, range.Item2);
         }
 
         [TestMethod]
-        public void SerializedRange_Valie()
+        public void SerializedRange_Value()
         {
             var indexedClass = new IndexedClass();
-            Assert.AreEqual((31, 0), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.IntValue))[0]));
-            Assert.AreEqual((41, 32), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.BitArray))[0]));
-            Assert.AreEqual((49, 42), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.ByteValue))[0]));
+            Assert.AreEqual((31, 0), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.IntValue))[0]).FromTo());
+            Assert.AreEqual((41, 32), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.BitArray))[0]).FromTo());
+            Assert.AreEqual((49, 42), RTLReflectionTools.SerializedRange(indexedClass, typeof(IndexedClass).GetMember(nameof(IndexedClass.ByteValue))[0]).FromTo());
         }
 
         [TestMethod]

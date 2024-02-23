@@ -34,5 +34,6 @@ namespace Quokka.RTL.VHDL
         string Range(int l, int r, bool explicitRange = false);
         string Range(int size, bool explicitRange = false);
         bool IsBus(vhdDataTypeSource type);
+        bool IsMemory(vhdNetTypeSource type);
     }
 }

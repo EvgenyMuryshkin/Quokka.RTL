@@ -17,7 +17,7 @@ namespace Quokka.RTL.Tests
             var reversed = string.Join("", value.Reverse());
 
             var path = source.FromExpression(expression);
-            var (from, to) = RTLReflectionTools.SerializedRange(source, path.ToArray());
+            var (from, to) = RTLReflectionTools.SerializedRange(source, path.ToArray()).FromTo();
             var actual = string.Join("", reversed.Skip(to).Take(from - to + 1).Reverse());
 
             expected = expected.Replace(" ", "");

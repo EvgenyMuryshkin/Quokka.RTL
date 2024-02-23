@@ -56,9 +56,10 @@ public enum vhdMathType
 public enum vhdNetType
 {
 	Constant = 0,
-	Signal = 1,
-	Variable = 2,
-	SharedVariable = 3,
+	ConstantMemory = 1,
+	Signal = 2,
+	Variable = 3,
+	SharedVariable = 4,
 }
 public enum vhdPortDirection
 {

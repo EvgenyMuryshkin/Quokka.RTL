@@ -31,6 +31,7 @@ namespace Quokka.RTL.SourceGenerators.VHDL
     public enum vhdNetType
     {
         Constant,
+        ConstantMemory,
         Signal,
         Variable,
         SharedVariable

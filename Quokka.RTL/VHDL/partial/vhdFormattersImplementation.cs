@@ -84,6 +84,22 @@ namespace Quokka.RTL.VHDL
             }
 
         }
+        public bool IsMemory(vhdNetTypeSource type)
+        {
+            switch (type)
+            {
+                case vhdDefaultNetType d:
+                    {
+                        switch (d.NetType)
+                        {
+                            case vhdNetType.ConstantMemory: return true;
+                        }
+                    }
+                    break;
+            }
+
+            return false;
+        }
 
         public bool IsBus(vhdDataTypeSource type)
         {
@@ -151,6 +167,7 @@ namespace Quokka.RTL.VHDL
                     switch (d.NetType)
                     {
                         case vhdNetType.Constant: return "constant";
+                        case vhdNetType.ConstantMemory: return "constant";
                         case vhdNetType.Signal: return "signal";
                         case vhdNetType.Variable: return "variable";
                         case vhdNetType.SharedVariable: return "shared variable";

@@ -9,6 +9,40 @@ using System.Text;
 
 namespace Quokka.RTL.Tools
 {
+    public class SerializedRangeResult
+    {
+        public SerializedRangeResult(int index)
+        {
+            From = index;
+            To = index;
+            IsRange = false;
+        }
+
+        public SerializedRangeResult(int from, int to)
+        {
+            From = from;
+            To = to;
+            IsRange = true;
+        }
+
+        public int From { get; set; }
+        public int To { get; set; }
+        public bool IsRange { get; set; }
+
+        public static implicit operator int[] (SerializedRangeResult r)
+        {
+            if (r.IsRange)
+                return new[] { r.From, r.To };
+        
+           return new[] { r.From };
+        }
+
+        public (int, int) FromTo()
+        {
+            return (From, To);
+        }
+    }
+
     public class SerializedRangeInfo
     {
         public MemberInfo Member { get; set; }
@@ -199,12 +233,23 @@ namespace Quokka.RTL.Tools
             return result;
         }
 
-        public static (int, int) SerializedRange(object target, params SerializedRangeInfo[] path)
+        static SerializedRangeResult ToSerializedRangeResult(object target, int from, int to)
+        {
+            if (target is bool)
+                return new SerializedRangeResult(from);
+
+            return new SerializedRangeResult(from, to);
+        }
+
+        public static SerializedRangeResult SerializedRange(object target, params SerializedRangeInfo[] path)
         {
             if (target == null) throw new NullReferenceException(nameof(target));
             if (path == null) throw new NullReferenceException(nameof(path));
+
+            var sizeOfTarget = RTLSignalTools.SizeOfValue(target);
+
             if (!path.Any())
-                return (RTLSignalTools.SizeOfValue(target).Size - 1, 0);
+                return ToSerializedRangeResult(target, sizeOfTarget.Size - 1, 0);
 
             var firstMember = path.First();
             var targetType = target.GetType();
@@ -215,7 +260,7 @@ namespace Quokka.RTL.Tools
                     throw new Exception($"Collection target range should not have member. Got {firstMember.Member.Name}");
 
                 if (firstMember.Index == null)
-                    return (RTLSignalTools.SizeOfValue(target).Size - 1, 0);
+                    return ToSerializedRangeResult(target, sizeOfTarget.Size - 1, 0);
 
                 var collection = (target as IEnumerable).OfType<object>().ToList();
                 if (firstMember.Index < 0 || firstMember.Index >= collection.Count)
@@ -226,7 +271,7 @@ namespace Quokka.RTL.Tools
                 var from = firstMember.Index.Value * collectionItemSize;
 
                 var collectionItemRange = SerializedRange(collectionItem, path.Skip(1).ToArray());
-                return (from + collectionItemRange.Item1, from + collectionItemRange.Item2);
+                return ToSerializedRangeResult(collectionItem, from + collectionItemRange.From, from + collectionItemRange.To);
             }
             else
             {
@@ -251,7 +296,7 @@ namespace Quokka.RTL.Tools
                     chainedRange.AddRange(path.Skip(1));
 
                     var collectionItemRange = SerializedRange(firstMemberValue, chainedRange.ToArray());
-                    return (from + collectionItemRange.Item1, from + collectionItemRange.Item2);
+                    return ToSerializedRangeResult(firstMemberValue, from + collectionItemRange.From, from + collectionItemRange.To);
                 }
                 else
                 {
@@ -259,7 +304,7 @@ namespace Quokka.RTL.Tools
                         throw new Exception($"Non-collection range should not have index, got {firstMember.Index}");
 
                     var memberRange = SerializedRange(firstMemberValue, path.Skip(1).ToArray());
-                    return (from + memberRange.Item1, from + memberRange.Item2);
+                    return ToSerializedRangeResult(firstMemberValue, from + memberRange.From, from + memberRange.To);
                 }
             }
         }
