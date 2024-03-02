@@ -494,7 +494,7 @@ namespace Quokka.RTL.RTLBitArrayTests
                 foreach (var idx in Enumerable.Range(0, Tier1Size))
                 {
                     var bits = Convert.ToString(idx, 2);
-                    var v = new RTLBitArray(RTLDataType.Unsigned, bits, 32);
+                    var v = new RTLBitArray(RTLDataType.Unsigned, RTLBitArrayInitType.MSB, bits, 32);
                 }
             }, 1000);
         }

@@ -36,8 +36,8 @@ namespace Quokka.RTL.RTLBitArrayTests
             {
                 // multiple F...F to itself
                 var op = string.Join("", Enumerable.Range(0, bytes).Select(b => Convert.ToString(0xFF, 2)));
-                var op1 = new RTLBitArray(RTLDataType.Unsigned, op, bytes * 8);
-                var op2 = new RTLBitArray(RTLDataType.Unsigned, op, bytes * 8);
+                var op1 = new RTLBitArray(RTLDataType.Unsigned, RTLBitArrayInitType.MSB, op, bytes * 8);
+                var op2 = new RTLBitArray(RTLDataType.Unsigned, RTLBitArrayInitType.MSB, op, bytes * 8);
 
                 var repeats = bytes * 2 - 1;
 
@@ -91,7 +91,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         [TestMethod]
         public void StringCtorTest()
         {
-            var source = new RTLBitArray("10000000");
+            var source = new RTLBitArray(RTLBitArrayInitType.MSB, "10000000");
 
             Assert.AreEqual((byte)0x80, (byte)source);
         }
@@ -99,7 +99,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         [TestMethod]
         public void BitsCtorTest()
         {
-            var source = new RTLBitArray(true, true, false, false, true, false, false, false);
+            var source = new RTLBitArray(RTLBitArrayInitType.MSB, true, true, false, false, true, false, false, false);
 
             Assert.AreEqual((byte)0xC8, (byte)source);
             Assert.AreEqual((short)0xC8, (short)source);
@@ -135,9 +135,11 @@ namespace Quokka.RTL.RTLBitArrayTests
             var high = (byte)0xC0;
             var low = (byte)0x0E;
 
-            var source = new RTLBitArray(high, low);
+            var fromMSBSource = new RTLBitArray(RTLBitArrayInitType.MSB, high, low);
+            Assert.AreEqual(0xC00E, (ushort)fromMSBSource);
 
-            Assert.AreEqual(0xC00E, (ushort)source);
+            var fromLSBSource = new RTLBitArray(RTLBitArrayInitType.LSB, low, high);
+            Assert.AreEqual(0xC00E, (ushort)fromMSBSource);
         }
 
         [TestMethod]
@@ -145,7 +147,7 @@ namespace Quokka.RTL.RTLBitArrayTests
         {
             var source = new RTLBitArray(Enumerable.Range(0, 8).Select(s => s % 2 == 0));
 
-            Assert.AreEqual((byte)0xAA, (byte)source);
+            Assert.AreEqual((byte)0x55, (byte)source);
         }
 
         [TestMethod]
@@ -209,10 +211,10 @@ namespace Quokka.RTL.RTLBitArrayTests
         [TestMethod]
         public void TypedCtor()
         {
-            var signed = new RTLBitArray(RTLDataType.Signed, "11111111");
+            var signed = new RTLBitArray(RTLDataType.Signed, RTLBitArrayInitType.MSB, "11111111");
             Assert.AreEqual((short)-1, (short)signed.Resized(16));
 
-            var unsigned = new RTLBitArray(RTLDataType.Unsigned, "11111111");
+            var unsigned = new RTLBitArray(RTLDataType.Unsigned, RTLBitArrayInitType.MSB, "11111111");
             Assert.AreEqual((short)255, (short)unsigned.Resized(16));
         }
 

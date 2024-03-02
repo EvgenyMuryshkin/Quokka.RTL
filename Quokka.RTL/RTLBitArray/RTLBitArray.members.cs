@@ -61,7 +61,7 @@ namespace Quokka.RTL
 
                 var range = LSB.Skip(skip).Take(take);
 
-                return msbFrom < msbTo ? new RTLBitArray(range.ToArray()) : new RTLBitArray(range.Reverse().ToArray());
+                return msbFrom < msbTo ? new RTLBitArray(range.Reverse().ToArray()) : new RTLBitArray(range.ToArray());
             }
         }
 

@@ -53,7 +53,7 @@ namespace Quokka.RTL
 
         public RTLBitArray Reversed()
         {
-            return new RTLBitArray(LSB).TypeChanged(DataType);
+            return new RTLBitArray(MSB).TypeChanged(DataType);
         }
 
         public bool And()

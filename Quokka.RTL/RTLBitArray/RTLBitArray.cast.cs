@@ -26,6 +26,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Unsigned,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString(value, 2),
                 8,
                 true);
@@ -39,6 +40,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Signed,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString((byte)value, 2),
                 8,
                 true);
@@ -52,6 +54,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Unsigned,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString((short)value, 2),
                 16,
                 true);
@@ -66,6 +69,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Signed,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString(value, 2),
                 16,
                 true);
@@ -80,6 +84,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Unsigned,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString((int)value, 2),
                 32,
                 true);
@@ -94,6 +99,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Signed,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString(value, 2),
                 32,
                 true);
@@ -108,6 +114,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Unsigned,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString((long)value, 2),
                 64,
                 true);
@@ -122,6 +129,7 @@ namespace Quokka.RTL
         {
             return new RTLBitArray(
                 RTLDataType.Signed,
+                RTLBitArrayInitType.MSB,
                 Convert.ToString(value, 2),
                 64,
                 true);
@@ -138,7 +146,7 @@ namespace Quokka.RTL
             var result = new byte[aligned];
             for (int i = 0; i < aligned; i++)
             {
-                result[i] = new RTLBitArray(bits.Take(8).Reverse());
+                result[i] = new RTLBitArray(bits.Take(8));
                 bits = bits.Skip(8);
             }
 

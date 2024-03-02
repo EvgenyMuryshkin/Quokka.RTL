@@ -48,7 +48,7 @@ namespace Quokka.RTL.Tests
 
     public class MemoryInitializerTupleBaseClass
     {
-        public (RTLBitArray, bool) BaseValue = (new RTLBitArray("110010"), true);
+        public (RTLBitArray, bool) BaseValue = (new RTLBitArray(RTLBitArrayInitType.MSB, "110010"), true);
     }
 
     public class MemoryInitializerTupleTopClass : MemoryInitializerTupleBaseClass
