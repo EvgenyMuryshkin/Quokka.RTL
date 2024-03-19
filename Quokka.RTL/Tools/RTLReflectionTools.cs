@@ -309,6 +309,47 @@ namespace Quokka.RTL.Tools
             }
         }
 
+        public static List<List<MemberInfo>> UnwrapOrderedMemberInfo(MemberInfo source)
+        {
+            switch (source)
+            {
+                case Type memberType:
+                    {
+                        if (RTLTypeCheck.IsSynthesizableObject(memberType))
+                        {
+                            var members = SerializableMembers(memberType, true);
+                            return members.SelectMany(m => UnwrapOrderedMemberInfo(m)).ToList();
+                        }
+
+                        if (RTLTypeCheck.IsTuple(memberType))
+                        {
+                            var members = SerializableMembers(memberType, true);
+                            members.Reverse();
+                            return members.SelectMany(m => UnwrapOrderedMemberInfo(m)).ToList();
+                        }
+                    }
+                    break;
+                case MemberInfo memberInfo:
+                    {
+                        var unwrapped = UnwrapOrderedMemberInfo(memberInfo.GetMemberType());
+                        if (unwrapped.Any())
+                        {
+                            return unwrapped.Select(m =>
+                            {
+                                var result = new List<MemberInfo>() { memberInfo };
+                                result.AddRange(m);
+                                return result;
+                            }).ToList();
+                        }
+                        else
+                        {
+                            return new List<List<MemberInfo>>() { new List<MemberInfo>() { memberInfo } };
+                        }
+                    }
+            }
+
+            return new List<List<MemberInfo>>();
+        }
 
         public static List<List<MemberInfo>> UnwrapMemberInfo(MemberInfo source)
         {
