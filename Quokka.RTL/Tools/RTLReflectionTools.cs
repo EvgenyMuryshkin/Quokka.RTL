@@ -241,6 +241,14 @@ namespace Quokka.RTL.Tools
             return new SerializedRangeResult(from, to);
         }
 
+        static SerializedRangeResult ToSerializedRangeResultExact(bool isRange, int from, int to)
+        {
+            if (isRange)
+                return new SerializedRangeResult(from, to);
+
+            return new SerializedRangeResult(from);
+        }
+
         public static SerializedRangeResult SerializedRange(object target, params SerializedRangeInfo[] path)
         {
             if (target == null) throw new NullReferenceException(nameof(target));
@@ -271,7 +279,7 @@ namespace Quokka.RTL.Tools
                 var from = firstMember.Index.Value * collectionItemSize;
 
                 var collectionItemRange = SerializedRange(collectionItem, path.Skip(1).ToArray());
-                return ToSerializedRangeResult(collectionItem, from + collectionItemRange.From, from + collectionItemRange.To);
+                return ToSerializedRangeResultExact(collectionItemRange.IsRange, from + collectionItemRange.From, from + collectionItemRange.To);
             }
             else
             {
@@ -296,7 +304,7 @@ namespace Quokka.RTL.Tools
                     chainedRange.AddRange(path.Skip(1));
 
                     var collectionItemRange = SerializedRange(firstMemberValue, chainedRange.ToArray());
-                    return ToSerializedRangeResult(firstMemberValue, from + collectionItemRange.From, from + collectionItemRange.To);
+                    return ToSerializedRangeResultExact(collectionItemRange.IsRange, from + collectionItemRange.From, from + collectionItemRange.To);
                 }
                 else
                 {
@@ -304,7 +312,7 @@ namespace Quokka.RTL.Tools
                         throw new Exception($"Non-collection range should not have index, got {firstMember.Index}");
 
                     var memberRange = SerializedRange(firstMemberValue, path.Skip(1).ToArray());
-                    return ToSerializedRangeResult(firstMemberValue, from + memberRange.From, from + memberRange.To);
+                    return ToSerializedRangeResultExact(memberRange.IsRange, from + memberRange.From, from + memberRange.To);
                 }
             }
         }

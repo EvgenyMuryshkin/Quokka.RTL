@@ -9,7 +9,7 @@ namespace Quokka.RTL.VHDL.Implementation
 			if (!obj.Indexes.Any())
 				return;
 
-			var indexes = obj.Indexes.Select(Raw).Distinct();
+			var indexes = obj.Indexes.Select(Raw);
 			var numeric = indexes.Select(i =>
 			{
 				var parsed = int.TryParse(i, out var value);
@@ -18,7 +18,7 @@ namespace Quokka.RTL.VHDL.Implementation
 
 			if (numeric.All(i => i.parsed) && numeric.Count == 2)
             {
-				if (numeric[0].value > numeric[1].value)
+				if (numeric[0].value >= numeric[1].value)
                 {
 					_builder.Append($"({string.Join(" downto ", indexes)})");
 				}

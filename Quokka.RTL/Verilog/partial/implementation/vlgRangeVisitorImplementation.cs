@@ -9,7 +9,7 @@ namespace Quokka.RTL.Verilog.Implementation
 			if (!obj.Indexes.Any())
 				return;
 
-			var indexes = obj.Indexes.Select(Raw).Distinct();
+			var indexes = obj.Indexes.Select(Raw);
 			_builder.Append($"[{string.Join(":", indexes)}]");
 		}
 	}

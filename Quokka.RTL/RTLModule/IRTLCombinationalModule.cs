@@ -11,7 +11,7 @@ namespace Quokka.RTL
         RTLModuleAnalizers Analizers { get; }
         Type InputsType { get; }
         object RawInputs { get; }
-        string ModuleName { get; }
+        //string ModuleName { get; }
         IEnumerable<MemberInfo> InputProps { get; }
         IEnumerable<MemberInfo> OutputProps { get; }
         IEnumerable<MemberInfo> InternalProps { get; }
