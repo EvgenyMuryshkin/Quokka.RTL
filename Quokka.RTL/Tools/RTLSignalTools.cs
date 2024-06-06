@@ -41,40 +41,60 @@ namespace Quokka.RTL.Tools
                         Size = a.Size
                     };
                 default:
-                {
-                    var valueType = value.GetType();
-                    if (value is IEnumerable valueList)
                     {
-                        return new RTLSignalInfo()
+                        var valueType = value.GetType();
+                        if (value is IEnumerable valueList)
                         {
-                            Type = valueType,
-                            Size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum(),
-                            DataType = RTLDataType.Unsigned
-                        };
-                    }
-                    else if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
-                    {
-                        return new RTLSignalInfo()
+                            var size = 0;
+                            var objectList = valueList.OfType<object>();
+                            var first = objectList.FirstOrDefault();
+
+                            if (first != null)
+                            {
+                                size = SizeOfValue(first).Size * objectList.Count();
+                                /*
+                                var firstType = first.GetType();
+                                if (firstType.IsNative())
+                                {
+                                    size = SizeOfValue(first).Size * objectList.Count();
+                                }
+                                else
+                                {
+                                    size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum();
+                                }
+                                */
+                            }
+
+                            return new RTLSignalInfo()
+                            {
+                                Type = valueType,
+                                Size = size,
+                                DataType = RTLDataType.Unsigned
+                            };
+                        }
+                        else if (RTLTypeCheck.IsSynthesizableObject(value.GetType()))
                         {
-                            Type = valueType,
-                            Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            DataType = RTLDataType.Unsigned
-                        };
-                    }
-                    else if (RTLTypeCheck.IsTuple(valueType))
-                    {
-                        return new RTLSignalInfo()
+                            return new RTLSignalInfo()
+                            {
+                                Type = valueType,
+                                Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
+                                DataType = RTLDataType.Unsigned
+                            };
+                        }
+                        else if (RTLTypeCheck.IsTuple(valueType))
                         {
-                            Type = valueType,
-                            Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
-                            DataType = RTLDataType.Unsigned
-                        };
+                            return new RTLSignalInfo()
+                            {
+                                Type = valueType,
+                                Size = RTLReflectionTools.SerializableMembers(valueType).Sum(m => SizeOfValue(m.GetValue(value)).Size),
+                                DataType = RTLDataType.Unsigned
+                            };
+                        }
+                        else
+                        {
+                            return SizeOf(valueType);
+                        }
                     }
-                    else
-                    {
-                        return SizeOf(valueType);
-                    }
-                }
             }
         }
 
