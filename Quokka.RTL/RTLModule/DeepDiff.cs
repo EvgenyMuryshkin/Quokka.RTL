@@ -98,6 +98,11 @@ namespace Quokka.RTL
                 return lhsComparable.IsEqual(rhsComparable);
             }
 
+            if ((lhs is RTLBitArray lba) && (rhs is RTLBitArray rba))
+            {
+                return lba.Equals(rba);
+            }
+
             // TODO: build code generator for type compare
 
             foreach (var prop in RTLModuleHelper.SignalProperties(lhs.GetType(), sort: false))
