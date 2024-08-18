@@ -44,6 +44,7 @@ public interface vhdFunctionImplementationBlockVisitorInterface : vhdVisitorInte
 public interface vhdFunctionInterfaceVisitorInterface : vhdVisitorInterface<vhdFunctionInterface> { }
 public interface vhdFunctionPortDeclarationVisitorInterface : vhdVisitorInterface<vhdFunctionPortDeclaration> { }
 public interface vhdFunctionTypeDeclarationsVisitorInterface : vhdVisitorInterface<vhdFunctionTypeDeclarations> { }
+public interface vhdFunctionVariablesVisitorInterface : vhdVisitorInterface<vhdFunctionVariables> { }
 public interface vhdGenericBlockVisitorInterface : vhdVisitorInterface<vhdGenericBlock> { }
 public interface vhdIdentifierVisitorInterface : vhdVisitorInterface<vhdIdentifier> { }
 public interface vhdIdentifierExpressionVisitorInterface : vhdVisitorInterface<vhdIdentifierExpression> { }

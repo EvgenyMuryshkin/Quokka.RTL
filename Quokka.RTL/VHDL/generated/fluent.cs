@@ -727,6 +727,31 @@ public partial class vhdFunctionTypeDeclarations
 		return this;
 	}
 }
+public partial class vhdFunctionVariables
+{
+	//vhdDefaultSignal
+	public vhdFunctionVariables WithDefaultSignal(vhdDefaultSignal obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionVariables WithDefaultSignal(vhdNetTypeSource NetType, String Name, vhdDataTypeSource DataType, Int32 Width, params String[] Initializer)
+	{
+		this.Children.Add(new vhdDefaultSignal(NetType, Name, DataType, Width, Initializer));
+		return this;
+	}
+	//vhdLogicSignal
+	public vhdFunctionVariables WithLogicSignal(vhdLogicSignal obj)
+	{
+		if (obj != null) Children.Add(obj);
+		return this;
+	}
+	public vhdFunctionVariables WithLogicSignal(vhdNetTypeSource NetType, String Name, params RTLBitArray[] Initializer)
+	{
+		this.Children.Add(new vhdLogicSignal(NetType, Name, Initializer));
+		return this;
+	}
+}
 public partial class vhdGenericBlock
 {
 	//vhdGenericBlock

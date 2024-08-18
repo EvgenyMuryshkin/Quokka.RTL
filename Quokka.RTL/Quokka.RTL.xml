@@ -1464,6 +1464,8 @@
             
              vhdFunctionTypeDeclarations
             
+             vhdFunctionVariables
+            
              vhdGenericBlock
             
              vhdIdentifier
@@ -2731,6 +2733,12 @@
             <summary>
             vhdArrayTypeDeclaration
             vhdSubTypeDeclaration
+            </summary>
+        </member>
+        <member name="T:Quokka.RTL.VHDL.vhdFunctionVariablesChild">
+            <summary>
+            vhdDefaultSignal
+            vhdLogicSignal
             </summary>
         </member>
         <member name="T:Quokka.RTL.VHDL.vhdGenericBlockChild">

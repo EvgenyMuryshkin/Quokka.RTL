@@ -63,6 +63,13 @@ namespace Quokka.VHDL
         }
 
         [TestMethod]
+        public void Compare()
+        {
+            var function = _generators.Compare(byte.MinValue, vhdCompareType.LessOrEqual, short.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+
+        [TestMethod]
         public void Resize_Bit()
         {
             var function = _generators.Resize(false, byte.MinValue);

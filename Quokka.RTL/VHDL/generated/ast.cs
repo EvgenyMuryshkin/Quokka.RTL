@@ -97,6 +97,8 @@ public abstract partial class vhdAbstractCollection : vhdAbstractObject
 	///
 	/// vhdFunctionTypeDeclarations
 	///
+	/// vhdFunctionVariables
+	///
 	/// vhdGenericBlock
 	///
 	/// vhdIdentifier
@@ -1175,7 +1177,7 @@ public partial class vhdDefaultNetType : vhdNetTypeSource
 	public vhdNetType NetType { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdDefaultSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
+public partial class vhdDefaultSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdFunctionVariablesChild, vhdProcessDeclarationsChild
 {
 	public vhdDefaultSignal() { }
 	public vhdDefaultSignal(vhdNetTypeSource NetType, String Name, vhdDataTypeSource DataType, Int32 Width, IEnumerable<String> Initializer)
@@ -1398,6 +1400,7 @@ public partial class vhdFunction : vhdAbstractObject, vhdArchitectureDeclaration
 	public vhdFunctionDeclaration Declaration { get; set; } = new vhdFunctionDeclaration();
 	public vhdFunctionTypeDeclarations TypeDeclarations { get; set; } = new vhdFunctionTypeDeclarations();
 	public vhdFunctionInterface Interface { get; set; } = new vhdFunctionInterface();
+	public vhdFunctionVariables Variables { get; set; } = new vhdFunctionVariables();
 	public vhdFunctionImplementation Implementation { get; set; } = new vhdFunctionImplementation();
 }
 [JsonObjectAttribute]
@@ -1520,6 +1523,27 @@ public partial class vhdFunctionTypeDeclarations : vhdAbstractCollection, IEnume
 	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
 	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
 	public void Add(vhdFunctionTypeDeclarationsChild child)
+	{
+		var typed = child as vhdAbstractObject;
+		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
+		Children.Add(typed);
+	}
+}
+/// <summary>
+/// vhdDefaultSignal
+/// vhdLogicSignal
+/// </summary>
+public interface vhdFunctionVariablesChild
+{
+}
+[JsonObjectAttribute]
+public partial class vhdFunctionVariables : vhdAbstractCollection, IEnumerable//<vhdFunctionVariablesChild>
+{
+	public vhdFunctionVariables() { }
+	// vhdAbstractObject collection
+	IEnumerator IEnumerable.GetEnumerator() => Children.GetEnumerator();
+	[Obsolete]public void Add(object obj) => Add(obj as vhdAbstractObject);
+	public void Add(vhdFunctionVariablesChild child)
 	{
 		var typed = child as vhdAbstractObject;
 		if (typed == null) throw new Exception($"Type of child object is not expected: {child?.GetType()}");
@@ -1655,7 +1679,7 @@ public partial class vhdLogicExpression : vhdExpression
 	public vhdExpression Rhs { get; set; }
 }
 [JsonObjectAttribute]
-public partial class vhdLogicSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdProcessDeclarationsChild
+public partial class vhdLogicSignal : vhdNet, vhdArchitectureDeclarationsChild, vhdFunctionVariablesChild, vhdProcessDeclarationsChild
 {
 	public vhdLogicSignal() { }
 	public vhdLogicSignal(vhdNetTypeSource NetType, String Name, IEnumerable<RTLBitArray> Initializer)

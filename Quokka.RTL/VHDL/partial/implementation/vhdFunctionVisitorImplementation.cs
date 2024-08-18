@@ -16,6 +16,10 @@ namespace Quokka.RTL.VHDL.Implementation
             };
 
             _builder.AppendLine($"function {obj.Declaration.Name}({Raw(obj.Interface)}) return {parts.StringJoin(" ")} is");
+            using (_builder.Indent())
+            {
+                Visit(obj.Variables);
+            }
             _builder.AppendLine("begin");
             using (_builder.Indent())
             {

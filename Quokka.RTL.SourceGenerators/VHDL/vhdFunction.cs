@@ -11,6 +11,9 @@
         public vhdFunctionInterface Interface { get; set; }
 
         [NoCtorInit]
+        public vhdFunctionVariables Variables { get; set; }
+
+        [NoCtorInit]
         public vhdFunctionImplementation Implementation { get; set; }
     }
 }

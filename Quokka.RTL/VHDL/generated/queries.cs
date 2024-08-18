@@ -557,6 +557,7 @@ public partial class vhdFunction
 		if (Declaration != null) result.AddRange(Declaration.SelfWithChildren(filter));
 		if (TypeDeclarations != null) result.AddRange(TypeDeclarations.SelfWithChildren(filter));
 		if (Interface != null) result.AddRange(Interface.SelfWithChildren(filter));
+		if (Variables != null) result.AddRange(Variables.SelfWithChildren(filter));
 		if (Implementation != null) result.AddRange(Implementation.SelfWithChildren(filter));
 		return result;
 	}
@@ -650,6 +651,24 @@ public partial class vhdFunctionTypeDeclarations
 	public IEnumerable<vhdSubTypeDeclaration> AsSubTypeDeclaration => Children.OfType<vhdSubTypeDeclaration>();
 	[JsonIgnore]
 	public IEnumerable<vhdTypeDeclaration> AsTypeDeclaration => Children.OfType<vhdTypeDeclaration>();
+	[JsonIgnore]
+	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
+	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)
+	{
+		if (filter != null && !filter(this)) return Enumerable.Empty<vhdAbstractObject>();
+		var result = new List<vhdAbstractObject>() { this };
+		if (Children != null) result.AddRange(Children.SelectMany(c => c.SelfWithChildren(filter)));
+		return result;
+	}
+}
+public partial class vhdFunctionVariables
+{
+	[JsonIgnore]
+	public IEnumerable<vhdDefaultSignal> AsDefaultSignal => Children.OfType<vhdDefaultSignal>();
+	[JsonIgnore]
+	public IEnumerable<vhdLogicSignal> AsLogicSignal => Children.OfType<vhdLogicSignal>();
+	[JsonIgnore]
+	public IEnumerable<vhdNet> AsNet => Children.OfType<vhdNet>();
 	[JsonIgnore]
 	public IEnumerable<vhdAbstractObject> AsAbstractObject => Children.OfType<vhdAbstractObject>();
 	public override IEnumerable<vhdAbstractObject> SelfWithChildren(Func<vhdAbstractObject, bool> filter = null)

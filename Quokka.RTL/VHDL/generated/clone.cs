@@ -430,6 +430,7 @@ public partial class vhdFunction
 		result.Declaration = Declaration?.UntypedClone() as vhdFunctionDeclaration;
 		result.TypeDeclarations = TypeDeclarations?.UntypedClone() as vhdFunctionTypeDeclarations;
 		result.Interface = Interface?.UntypedClone() as vhdFunctionInterface;
+		result.Variables = Variables?.UntypedClone() as vhdFunctionVariables;
 		result.Implementation = Implementation?.UntypedClone() as vhdFunctionImplementation;
 		return result;
 	}
@@ -506,6 +507,16 @@ public partial class vhdFunctionTypeDeclarations
 	public override vhdAbstractObject UntypedClone()
 	{
 		var result = new vhdFunctionTypeDeclarations();
+		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
+		return result;
+	}
+}
+public partial class vhdFunctionVariables
+{
+	public vhdFunctionVariables Clone() => UntypedClone() as vhdFunctionVariables;
+	public override vhdAbstractObject UntypedClone()
+	{
+		var result = new vhdFunctionVariables();
 		result.Children = Children.Select(i => i.UntypedClone() as vhdAbstractObject).ToList();
 		return result;
 	}

@@ -1092,6 +1092,9 @@ public partial class vhdFunctionPortDeclaration : vhdAbstractObject
 public partial class vhdFunctionTypeDeclarations : vhdAbstractCollection
 {
 }
+public partial class vhdFunctionVariables : vhdAbstractCollection
+{
+}
 public partial class vhdGenericBlock : vhdBlock
 {
 }

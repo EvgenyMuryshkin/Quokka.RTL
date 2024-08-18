@@ -162,6 +162,10 @@ public abstract class vhdFunctionTypeDeclarationsVisitorGeneratedImplementation 
 {
 	public vhdFunctionTypeDeclarationsVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public abstract class vhdFunctionVariablesVisitorGeneratedImplementation : vhdVisitorImplementation<vhdFunctionVariables>, vhdFunctionVariablesVisitorInterface
+{
+	public vhdFunctionVariablesVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public abstract class vhdGenericBlockVisitorGeneratedImplementation : vhdVisitorImplementation<vhdGenericBlock>, vhdGenericBlockVisitorInterface
 {
 	public vhdGenericBlockVisitorGeneratedImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -435,6 +439,10 @@ public partial class vhdFunctionTypeDeclarationsVisitorImplementation : vhdFunct
 {
 	public vhdFunctionTypeDeclarationsVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
 }
+public partial class vhdFunctionVariablesVisitorImplementation : vhdFunctionVariablesVisitorGeneratedImplementation
+{
+	public vhdFunctionVariablesVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
+}
 public partial class vhdGenericBlockVisitorImplementation : vhdGenericBlockVisitorGeneratedImplementation
 {
 	public vhdGenericBlockVisitorImplementation(vhdVisitorImplementationDeps deps) : base(deps) { }
@@ -597,6 +605,7 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 			case vhdFunctionInterface o: return vhdFunctionInterfaceVisitor(o);
 			case vhdFunctionPortDeclaration o: return vhdFunctionPortDeclarationVisitor(o);
 			case vhdFunctionTypeDeclarations o: return vhdFunctionTypeDeclarationsVisitor(o);
+			case vhdFunctionVariables o: return vhdFunctionVariablesVisitor(o);
 			case vhdGenericBlock o: return vhdGenericBlockVisitor(o);
 			case vhdIdentifier o: return vhdIdentifierVisitor(o);
 			case vhdIdentifierExpression o: return vhdIdentifierExpressionVisitor(o);
@@ -788,6 +797,10 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 	private vhdFunctionTypeDeclarationsVisitorInterface vhdFunctionTypeDeclarationsVisitor(vhdFunctionTypeDeclarations obj)
 	{
 		return vhdFunctionTypeDeclarationsVisitor(_deps, obj);
+	}
+	private vhdFunctionVariablesVisitorInterface vhdFunctionVariablesVisitor(vhdFunctionVariables obj)
+	{
+		return vhdFunctionVariablesVisitor(_deps, obj);
 	}
 	private vhdGenericBlockVisitorInterface vhdGenericBlockVisitor(vhdGenericBlock obj)
 	{
@@ -983,6 +996,8 @@ public partial class vhdVisitorFactoryImplementation : vhdVisitorFactoryInterfac
 		=> new vhdFunctionPortDeclarationVisitorImplementation(deps);
 	protected virtual vhdFunctionTypeDeclarationsVisitorInterface vhdFunctionTypeDeclarationsVisitor(vhdVisitorImplementationDeps deps, vhdFunctionTypeDeclarations obj)
 		=> new vhdFunctionTypeDeclarationsVisitorImplementation(deps);
+	protected virtual vhdFunctionVariablesVisitorInterface vhdFunctionVariablesVisitor(vhdVisitorImplementationDeps deps, vhdFunctionVariables obj)
+		=> new vhdFunctionVariablesVisitorImplementation(deps);
 	protected virtual vhdGenericBlockVisitorInterface vhdGenericBlockVisitor(vhdVisitorImplementationDeps deps, vhdGenericBlock obj)
 		=> new vhdGenericBlockVisitorImplementation(deps);
 	protected virtual vhdIdentifierVisitorInterface vhdIdentifierVisitor(vhdVisitorImplementationDeps deps, vhdIdentifier obj)

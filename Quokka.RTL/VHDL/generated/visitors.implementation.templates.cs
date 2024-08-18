@@ -240,6 +240,12 @@ public partial class vhdFunctionTypeDeclarationsVisitorImplementation
 	{
 	}
 }
+public partial class vhdFunctionVariablesVisitorImplementation
+{
+	public override void OnVisit(vhdFunctionVariables obj)
+	{
+	}
+}
 public partial class vhdGenericBlockVisitorImplementation
 {
 	public override void OnVisit(vhdGenericBlock obj)

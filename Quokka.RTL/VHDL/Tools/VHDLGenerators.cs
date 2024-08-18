@@ -26,6 +26,71 @@ namespace Quokka.RTL.VHDL.Tools
             );
         }
 
+        public vhdFunction Compare(RTLBitArray lhs, vhdCompareType compareType, RTLBitArray rhs)
+        {
+            var lhsType = Subtype(lhs);
+            var rhsType = Subtype(rhs);
+            var maxWidth = Math.Max(lhs.Size, rhs.Size);
+            var result = new vhdFunction()
+            {
+                Declaration =
+                {
+                    Name = $"compare_{lhs.DataType}{lhs.Size}_{compareType}_{rhs.DataType}{rhs.Size}".ToLower(),
+                    DataType = vhdDataType.StdLogic,
+                    Width = 1
+                },
+                TypeDeclarations =
+                {
+                    lhsType,
+                    rhsType
+                },
+                Interface =
+                {
+                    new vhdFunctionCustomPortDeclaration("lhs", lhsType.Name),
+                    new vhdFunctionCustomPortDeclaration("rhs", rhsType.Name),
+                },
+                Variables =
+                {
+                    new vhdDefaultSignal(vhdNetType.Variable, "lhsSigned", Map(RTLDataType.Signed), maxWidth + 1),
+                    new vhdDefaultSignal(vhdNetType.Variable, "rhsSigned", Map(RTLDataType.Signed), maxWidth + 1),
+                    new vhdDefaultSignal(vhdNetType.Variable, "result", Map(RTLDataType.StdLogic), 1),
+                },
+                Implementation =
+                {
+                    new vhdAssignExpression(
+                        "lhsSigned",
+                        vhdAssignType.Variable,
+                        new vhdProcedureCallExpression(
+                            "signed",
+                            new vhdProcedureCallExpression("resize", "lhs", $"{maxWidth + 1}")
+                        )
+                    ),
+                    new vhdAssignExpression(
+                        "rhsSigned",
+                        vhdAssignType.Variable,
+                        new vhdProcedureCallExpression(
+                            "signed",
+                            new vhdProcedureCallExpression("resize", "rhs", $"{maxWidth + 1}")
+                        )
+                    ),
+                    new vhdIf()
+                    {
+                        new vhdConditionalStatement(new vhdCompareExpression("lhsSigned", compareType, "rhsSigned"))
+                        {
+                            new vhdAssignExpression("result", vhdAssignType.Variable, "'1'")
+                        },
+                        new vhdConditionalStatement()
+                        {
+                            new vhdAssignExpression("result", vhdAssignType.Variable, "'0'")
+                        }
+                    },
+                    new vhdReturnExpression("result")
+                }
+            };
+
+            return result;
+        }
+
         public vhdFunction Ternary(RTLBitArray whenTrue, RTLBitArray whenFalse)
         {
             var whenTrueType = Subtype(whenTrue);
