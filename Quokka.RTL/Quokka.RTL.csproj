@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.7.571</Version>
+    <Version>0.1.8.595</Version>
     <NeutralLanguage>en-AU</NeutralLanguage>
     <PackageReleaseNotes>Explicit MSB initialization, cleanup ctor usage, memory buffers export as state and internals</PackageReleaseNotes>
     <Authors>Evgeny Muryshkin</Authors>
@@ -28,12 +28,17 @@
     <DocumentationFile>C:\code\Quokka.RTL\Quokka.RTL\Quokka.RTL.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MemoryTemplates\Intel\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Verilog\generated\" />
   </ItemGroup>
   <ItemGroup>

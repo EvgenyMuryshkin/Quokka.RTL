@@ -9,6 +9,7 @@ namespace Quokka.RTL
     public interface IRTLCombinationalModule : IRTLModuleControlFlow, IRTLMembersProvider
     {
         RTLModuleAnalizers Analizers { get; }
+        IEnumerable<IRTLModuleValidator> Validators(IRTLClassFactory classFactory);
         Type InputsType { get; }
         object RawInputs { get; }
         //string ModuleName { get; }
@@ -20,7 +21,7 @@ namespace Quokka.RTL
         List<RTLModuleDetails> ModuleDetails { get; }
 
         void PopulateSnapshot(VCDSignalsSnapshot snapshot, RTLModuleSnapshotConfig config = null);
-        void Setup();
+        void Setup(bool isTopLevel = true);
 
         bool OnRelatedObjectCreating(object data);
         bool DeepEquals(object lhs, object rhs);

@@ -90,13 +90,13 @@ namespace Quokka.RTL
             }
         }
 
-        public virtual void Setup()
+        public virtual void Setup(bool isTopLevel = true)
         {
             Initialize();
 
             foreach (var child in Modules)
             {
-                child.Setup();
+                child.Setup(false);
             }
 
             Schedule(() => new TInput());
@@ -107,6 +107,8 @@ namespace Quokka.RTL
         protected Func<TInput> InputsFactory;
 
         public virtual RTLModuleAnalizers Analizers => null;
+        public virtual IEnumerable<IRTLModuleValidator> Validators(IRTLClassFactory classFactory)
+            => Enumerable.Empty<IRTLModuleValidator>();
 
         protected virtual void OnSchedule(Func<TInput> inputsFactory)
         {

@@ -3,6 +3,7 @@ using Quokka.RTL.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 
@@ -63,6 +64,22 @@ namespace Quokka.RTL.Tools
                                     size = valueList.OfType<object>().Select(o => SizeOfValue(o).Size).Sum();
                                 }
                                 */
+                            }
+
+                            return new RTLSignalInfo()
+                            {
+                                Type = valueType,
+                                Size = size,
+                                DataType = RTLDataType.Unsigned
+                            };
+                        }
+                        else if (value is IRTLMemoryBlock memoryBlock)
+                        {
+                            var size = 0;
+                            var first = memoryBlock.FirstOrDefault();
+                            if (first != null)
+                            {
+                                size = SizeOfValue(first).Size * memoryBlock.Length;
                             }
 
                             return new RTLSignalInfo()
@@ -165,6 +182,9 @@ namespace Quokka.RTL.Tools
             // TODO: should not really be there
             if (type.IsArray)
                 return SizeOf(type.GetElementType());
+
+            if (type.IsRTLMemoryBlock())
+                return SizeOf(type.GetGenericArguments()[0]);
 
             if (RTLReflectionTools.TryGetNullableType(type, out var actualType))
                 return SizeOf(actualType);

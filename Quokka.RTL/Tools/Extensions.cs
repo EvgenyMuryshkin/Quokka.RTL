@@ -41,7 +41,8 @@ namespace System
         public static bool IsConstant(this MemberInfo memberInfo) => RTLTypeCheck.IsConstant(memberInfo);
         public static bool IsStruct(this Type type) => type != null && type.IsValueType && !type.IsEnum && !type.IsPrimitive;
         public static bool IsRTLBitArray(this Type type) => RTLTypeCheck.IsRTLBitArray(type);
-        public static bool IsList(this Type type) => RTLTypeCheck.IsList(type);
+        internal static bool IsList(this Type type) => RTLTypeCheck.IsList(type);
+        public static bool IsRTLMemoryBlock(this Type type) => RTLTypeCheck.IsRTLMemoryBlock(type);
         public static bool IsCollection(this Type type) => RTLTypeCheck.IsCollection(type);
         public static IEnumerable<object> AsEnumerableOfObjects(this object source) => RTLTypeCheck.AsEnumerableOfObjects(source);
         public static Type GetCollectionItemType(this Type type) => RTLReflectionTools.GetCollectionItemType(type);

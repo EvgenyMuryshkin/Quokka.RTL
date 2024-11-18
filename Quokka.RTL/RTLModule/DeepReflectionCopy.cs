@@ -13,7 +13,12 @@ namespace Quokka.RTL
                 return null;
 
             var valueType = value.GetType();
-            if (RTLModuleHelper.IsSynthesizableArrayType(valueType))
+            if (valueType.IsRTLMemoryBlock())
+            {
+                var memoryBlock = value as IRTLMemoryBlock;
+                return memoryBlock.Clone();
+            }
+            else if (RTLModuleHelper.IsSynthesizableArrayType(valueType))
             {
                 var elementType = valueType.GetElementType();
                 var array = value as Array;

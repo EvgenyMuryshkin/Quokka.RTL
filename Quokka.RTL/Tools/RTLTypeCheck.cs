@@ -42,25 +42,33 @@ namespace Quokka.RTL.Tools
             return false;
         }
 
-        public static bool IsCollection(Type type) => type != null && (type.IsArray || type.IsList());
         public static IEnumerable<object> AsEnumerableOfObjects(object source)
         {
             if (source == null)
                 throw new NullReferenceException("AsEnumerableOfObjects.source");
+
+            var list = new List<object>();
+            if (source is IRTLMemoryBlock rtlMemoryBlock)
+            {
+                return rtlMemoryBlock.AsEnumerableOfObjects();
+            }
 
             var sourceType = source.GetType();
 
             if (sourceType.IsArray)
             {
                 var arr = (Array)source;
-                foreach (var item in arr)
-                    yield return item;
+                return (arr as IEnumerable).OfType<object>();
+
+                //foreach (var item in arr)
+                //    yield return item;
 
             }
             else if (sourceType.IsList())
             {
-                foreach (var item in source as IEnumerable)
-                    yield return item;
+                return (source as IEnumerable).OfType<object>();
+                //foreach (var item in source as IEnumerable)
+                //    yield return item;
             }
             else
             {
@@ -70,7 +78,12 @@ namespace Quokka.RTL.Tools
 
         public static bool IsRTLBitArray(Type type) => type != null && typeof(RTLBitArray).IsAssignableFrom(type);
         public static bool IsConstant(MemberInfo memberInfo) => memberInfo is FieldInfo f && f.IsInitOnly/* && f.GetRawConstantValue() != null*/;
-        public static bool IsList(Type type) => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+        internal static bool IsList(Type type) 
+            => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+        public static bool IsRTLMemoryBlock(Type type) 
+            => type != null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(RTLMemoryBlock<>);
+        public static bool IsCollection(Type type) 
+            => type != null && (type.IsArray || type.IsList() || type.IsRTLMemoryBlock());
 
         public static bool IsTuple(Type type)
         {

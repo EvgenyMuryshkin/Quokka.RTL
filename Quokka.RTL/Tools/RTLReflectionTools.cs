@@ -80,6 +80,9 @@ namespace Quokka.RTL.Tools
             if (type.IsList())
                 return type.GetGenericArguments()[0];
 
+            if (type.IsRTLMemoryBlock())
+                return type.GetGenericArguments()[0];
+
             return null;
         }
 
@@ -270,7 +273,7 @@ namespace Quokka.RTL.Tools
                 if (firstMember.Index == null)
                     return ToSerializedRangeResult(target, sizeOfTarget.Size - 1, 0);
 
-                var collection = (target as IEnumerable).OfType<object>().ToList();
+                var collection = target.AsEnumerableOfObjects().ToList();
                 if (firstMember.Index < 0 || firstMember.Index >= collection.Count)
                     throw new IndexOutOfRangeException($"Index: {firstMember.Index}, collection size: {collection.Count}");
 

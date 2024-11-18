@@ -27,9 +27,9 @@ namespace Quokka.RTL
         object IRTLSynchronousModule.RawState => State;
         public TState NextState = new TState();
 
-        public override void Setup()
+        public override void Setup(bool isTopLevel = true)
         {
-            base.Setup();
+            base.Setup(isTopLevel);
             PipelineProps = RTLModuleHelper.PipelineProperties(GetType());
 
             // store default state for reset logic
