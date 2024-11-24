@@ -94,7 +94,7 @@ namespace Quokka.RTL
             internalInit(RTLDataType.Unsigned, lsbBits.ToArray());
         }
 
-        public RTLBitArray(RTLDataType type, RTLBitArrayInitType initType, string bitString, int size)
+        public RTLBitArray(RTLBitArrayInitType initType, RTLDataType type, string bitString, int size)
         {
             FromBinaryString(
                 type,
@@ -124,13 +124,13 @@ namespace Quokka.RTL
             _fromCast = fromCast;
         }
 
-        public RTLBitArray(RTLDataType dataType, RTLBitArrayInitType initType, string bitString)
-            : this(dataType, initType, bitString, bitString.Length)
+        public RTLBitArray(RTLBitArrayInitType initType, RTLDataType dataType, string bitString)
+            : this(initType, dataType, bitString, bitString.Length)
         {
         }
 
         public RTLBitArray(RTLBitArrayInitType initType, string bitString) 
-            : this(RTLDataType.Unsigned, initType, bitString, bitString.Length)
+            : this(initType, RTLDataType.Unsigned, bitString, bitString.Length)
         {
         }
     }
