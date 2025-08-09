@@ -91,19 +91,20 @@ namespace Quokka.RTL.VHDL.Tools
             return result;
         }
 
-        public vhdFunction Ternary(RTLBitArray whenTrue, RTLBitArray whenFalse)
+        public vhdFunction Ternary(RTLBitArray result, RTLBitArray whenTrue, RTLBitArray whenFalse)
         {
+            var resultType = Subtype(result);
             var whenTrueType = Subtype(whenTrue);
             var whenFalseType = Subtype(whenFalse);
 
-            var result = new vhdFunction()
+            var function = new vhdFunction()
             {
                 Declaration =
                 {
-                    Name = $"ternary_{whenTrue.DataType}_{whenTrue.Size}".ToLower(),
-                    DataType = Map(whenTrue.DataType),
-                    Width = whenTrue.Size,
-                    CustomType = whenTrueType.Name
+                    Name = $"ternary_{resultType.DataType}{resultType.Width}_{whenTrueType.DataType}{whenTrueType.Width}_{whenFalseType.DataType}{whenFalseType.Width}".ToLower(),
+                    DataType = Map(result.DataType),
+                    Width = result.Size,
+                    CustomType = resultType.Name
                 },
                 TypeDeclarations =
                 {
@@ -132,7 +133,7 @@ namespace Quokka.RTL.VHDL.Tools
                 }
             };
 
-            return result;
+            return function;
         }
 
         public vhdFunction ToBoolean(RTLBitArray source)
@@ -192,7 +193,7 @@ namespace Quokka.RTL.VHDL.Tools
             var sourceType = Subtype(source);
             var targetType = Subtype(target);
 
-            var result = new vhdFunction()
+            var function = new vhdFunction()
             {
                 Declaration =
                 {
@@ -214,26 +215,41 @@ namespace Quokka.RTL.VHDL.Tools
 
             if (source.Size == 1)
             {
-                result.Implementation.Add(
-                    new vhdReturnExpression(
-                    new vhdAggregate()
-                        {
-                            new vhdAggregateBitConnection(0, nameof(source)),
-                            new vhdAggregateOthersConnection(false)
-                        }
-                    )
-                );
+                if (source.DataType == RTLDataType.StdLogic)
+                {
+                    function.Implementation.Add(
+                        new vhdReturnExpression(
+                            new vhdAggregate()
+                            {
+                                new vhdAggregateBitConnection(0, nameof(source)),
+                                new vhdAggregateOthersConnection(false)
+                            }
+                        )
+                    );
+                }
+                else
+                {
+                    function.Implementation.Add(
+                        new vhdReturnExpression(
+                            new vhdAggregate()
+                            {
+                                new vhdAggregateBitConnection(0, new vhdIndexedExpression(nameof(source), new vhdRange("0"))),
+                                new vhdAggregateOthersConnection(false)
+                            }
+                        )
+                    );
+                }
             }
             else
             {
-                result.Implementation.Add(
+                function.Implementation.Add(
                     new vhdReturnExpression(
                         new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString())
                     )
                 );
             }
 
-            return result;
+            return function;
         }
     }
 }

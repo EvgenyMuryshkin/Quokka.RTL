@@ -58,7 +58,7 @@ namespace Quokka.VHDL
         [TestMethod]
         public void Ternary()
         {
-            var function = _generators.Ternary(byte.MinValue, byte.MinValue);
+            var function = _generators.Ternary(byte.MinValue, byte.MinValue, byte.MinValue);
             var code = vhdVHDLWriter.WriteObject(function);
         }
 
@@ -73,6 +73,13 @@ namespace Quokka.VHDL
         public void Resize_Bit()
         {
             var function = _generators.Resize(false, byte.MinValue);
+            var code = vhdVHDLWriter.WriteObject(function);
+        }
+
+        [TestMethod]
+        public void Resize_StdLogic()
+        {
+            var function = _generators.Resize(new RTLBitArray(false).TypeChanged(RTL.Tools.RTLDataType.StdLogic), byte.MinValue);
             var code = vhdVHDLWriter.WriteObject(function);
         }
 

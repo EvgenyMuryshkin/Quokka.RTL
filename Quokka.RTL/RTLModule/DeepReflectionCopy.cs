@@ -7,16 +7,18 @@ namespace Quokka.RTL
 {
     public class DeepReflectionCopy
     {
-        public static object DeepValueCopy(object value, Action<Type> unsupported)
+        public static T DeepValueCopy<T>(T value, Action<Type> unsupported)
         {
             if (value == null)
-                return null;
+                return default(T);
+
+            Func<object, T> returnResult = (s) => (T)s;
 
             var valueType = value.GetType();
             if (valueType.IsRTLMemoryBlock())
             {
                 var memoryBlock = value as IRTLMemoryBlock;
-                return memoryBlock.Clone();
+                return returnResult(memoryBlock.Clone());
             }
             else if (RTLModuleHelper.IsSynthesizableArrayType(valueType))
             {
@@ -35,12 +37,12 @@ namespace Quokka.RTL
                         result.SetValue(DeepValueCopy(array.GetValue(i), unsupported), i);
                     }
                 }
-                return result;
+                return returnResult(result);
             }
             else if(valueType.IsArray)
             {
                 unsupported(valueType);
-                return null;
+                return default(T);
             }
             else if (valueType.IsStruct())
             {
@@ -52,12 +54,12 @@ namespace Quokka.RTL
             }
             else if (value is RTLBitArray bitArray)
             {
-                return new RTLBitArray(bitArray);
+                return returnResult(new RTLBitArray(bitArray));
             }
             else if (valueType.IsGenericType)
             {
                 unsupported(valueType);
-                return null;
+                return default(T); ;
             }
             else if (valueType.IsClass)
             {
@@ -74,8 +76,19 @@ namespace Quokka.RTL
             else
             {
                 unsupported(valueType);
-                return null;
+                return default(T);
             }
+        }
+
+        public static T DeepValueCopy<T>(T value)
+        {
+            return DeepValueCopy(
+                value,
+                (valueType) =>
+                {
+                    throw new Exception($"Unsupported value type in DeepValueCopy: {valueType}");
+                }
+            );
         }
 
         public static T DeepCopy<T>(T source, T result = default(T))
@@ -99,12 +112,16 @@ namespace Quokka.RTL
             {
                 var value = prop.GetValue(source);
 
-                prop.SetValue(result, DeepValueCopy(
-                    value, 
-                    (valueType) =>
-                    {
-                        throw new Exception($"Unsupported value type in DeepReflectionCopy: {type.Name}.{prop.Name}[{valueType}]");
-                    }));
+                prop.SetValue(
+                    result, 
+                    DeepValueCopy(
+                        value, 
+                        (valueType) =>
+                        {
+                            throw new Exception($"Unsupported value type in DeepReflectionCopy: {type.Name}.{prop.Name}[{valueType}]");
+                        }
+                    )
+                );
             }
 
             return result;

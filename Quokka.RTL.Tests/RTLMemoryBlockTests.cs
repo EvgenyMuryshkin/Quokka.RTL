@@ -5,7 +5,7 @@ namespace Quokka.RTL.Tests
 {
     public class RTLMemoryBlockState
     {
-        public RTLMemoryBlock<byte>  Buff = new RTLMemoryBlock<byte>(10);
+        public RTLMemoryBlock<byte> Buff = new RTLMemoryBlock<byte>(10);
     }
     [TestClass]
     public class RTLMemoryBlockTests
@@ -71,14 +71,14 @@ namespace Quokka.RTL.Tests
         public void DeepCopyTest()
         {           
             var state = new RTLMemoryBlockState();
-            state.Buff[1] = new RTLBitArray(int.MaxValue);
+            state.Buff[1] = new RTLBitArray(byte.MaxValue);
 
-            var state1 = DeepReflectionCopy.DeepCopy(state);
-            Assert.AreEqual<int>(int.MaxValue, state1.Buff[1]);
+            var state1 = DeepReflectionCopy.DeepValueCopy(state);
+            Assert.AreEqual<byte>(byte.MaxValue, state1.Buff[1]);
 
             state.Buff.Commit();
-            var state2 = DeepReflectionCopy.DeepCopy(state);
-            Assert.AreEqual<int>(int.MaxValue, state2.Buff[1]);
+            var state2 = DeepReflectionCopy.DeepValueCopy(state);
+            Assert.AreEqual<byte>(byte.MaxValue, state2.Buff[1]);
         }
     }
 }

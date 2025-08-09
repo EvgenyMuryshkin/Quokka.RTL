@@ -165,6 +165,11 @@ namespace Quokka.RTL.Tools
                 ;
         }
 
+        public static bool IsRTLOptionalInitializer(MemberInfo member)
+        {
+            return member.GetCustomAttribute<RTLOptionalInitializerAttribute>() != null;
+        }
+
         public static bool TryGetNullableType(Type type, out Type actualType)
         {
             actualType = null;

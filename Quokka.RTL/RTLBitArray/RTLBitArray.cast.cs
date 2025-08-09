@@ -152,5 +152,68 @@ namespace Quokka.RTL
 
             return result;
         }
+
+        public static RTLBitArray FromValue(object value)
+        {
+            var valueType = value.GetType();
+            if (valueType.IsEnum)
+            {
+                var initializer = RTLSignalTools.RawMemoryElementInitializer(value);
+                return new RTLBitArray(RTLBitArrayInitType.MSB, initializer);
+            }
+
+            switch (value)
+            {
+                case bool v: return new RTLBitArray(v);
+                case sbyte v: return new RTLBitArray(v);
+                case byte v: return new RTLBitArray(v);
+                case short v: return new RTLBitArray(v);
+                case ushort v: return new RTLBitArray(v);
+                case int v: return new RTLBitArray(v);
+                case uint v: return new RTLBitArray(v);
+                case long v: return new RTLBitArray(v);
+                case ulong v: return new RTLBitArray(v);
+                case RTLBitArray v: return (RTLBitArray)v.Clone();
+                default: throw new Exception($"Cannot convert object of type '{value?.GetType()?.Name}' to RTLBitArray");
+            }
+        }
+
+        public object ToValue(Type type)
+        {
+            var value = this;
+            var instance = Activator.CreateInstance(type);
+
+            if (type.IsEnum)
+            {
+                var underlyingType = type.GetEnumUnderlyingType();
+                var underlyingValue = ToValue(underlyingType);
+                var values = Enum.GetValues(type).AsEnumerableOfObjects().ToList();
+                var matchingValue = values.Where(v =>
+                {
+                    var unveryingTypeValue = (IComparable)Convert.ChangeType(v, underlyingType);
+                    return unveryingTypeValue.Equals(underlyingValue);
+                }).FirstOrDefault();
+
+                if (matchingValue == null)
+                    throw new Exception($"Cannot convert RTLBitArray to enum of type {type.Name}");
+
+                return Convert.ChangeType(matchingValue, type);
+            }
+
+            switch (instance)
+            {
+                case bool v: return (bool)value;
+                case sbyte v: return (sbyte)value;
+                case byte v: return (byte)value;
+                case short v: return (short)value;
+                case ushort v: return (ushort)value;
+                case int v: return (int)value;
+                case uint v: return (uint)value;
+                case long v: return (long)value;
+                case ulong v: return (ulong)value;
+                case RTLBitArray v: return this.Clone();
+                default: throw new Exception($"Cannot convert RTLBitArray to object of type '{type.Name}'");
+            }
+        }
     }
 }

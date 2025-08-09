@@ -3,10 +3,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quokka.RTL;
 namespace Quokka.RTL.RTLBitArrayTests
 {
+	enum CastTestEnum
+	{
+		Zero,
+		One,
+		Two,
+		Three
+	}
+
 	[TestClass]
 	public class Cast
 	{
-		[TestMethod]
+        [TestMethod]
+		public void EnumCast()
+		{
+			var bitArray = RTLBitArray.FromValue(CastTestEnum.Two);
+			Assert.AreEqual("10", bitArray.AsBinaryString());
+
+			var enumValue = bitArray.ToValue(typeof(CastTestEnum));
+			Assert.AreEqual(CastTestEnum.Two, enumValue);
+        }
+
+        [TestMethod]
 		public void BoolToBool()
 		{
 			var op1 = new bool[] { true, false };

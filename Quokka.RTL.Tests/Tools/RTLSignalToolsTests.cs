@@ -84,9 +84,63 @@ namespace Quokka.RTL.Tests
         public ClassWithTuple ClassWithTuple = new ClassWithTuple(2, 3, 8);
     }
 
+
+    public enum DefaultEnum
+    {
+        Zero,
+        One
+    }
+
+    public enum ByteEnum : byte
+    {
+        Zero,
+        One
+    }
+
+    [EnumAutoSize]
+    public enum AutoSizeEnum1
+    {
+        Zero,
+        One
+    }
+
+    [EnumAutoSize]
+    public enum AutoSizeEnum2
+    {
+        Zero,
+        One,
+        Two
+    }
+
+    [EnumAutoSize]
+    public enum AutoSizeEnum3
+    {
+        Zero,
+        One,
+        Two,
+        Ten = 10
+    }
+
     [TestClass]
     public class RTLSignalToolsTests
     {
+        [TestMethod]
+        public void SizeOfEnum()
+        {
+            var sizeOfDefaultEnum = RTLSignalTools.SizeOfValue(DefaultEnum.Zero);
+            var sizeOfByte = RTLSignalTools.SizeOfValue(ByteEnum.One);
+            var sizeOfAuto1 = RTLSignalTools.SizeOfValue(AutoSizeEnum1.Zero);
+            var sizeOfAuto2 = RTLSignalTools.SizeOfValue(AutoSizeEnum2.Zero);
+            var sizeOfAuto3 = RTLSignalTools.SizeOfValue(AutoSizeEnum3.Zero);
+        }
+
+        [TestMethod]
+        public void EnumMemoryInitializer()
+        {
+            var init = RTLSignalTools.MemoryElementInitializer(AutoSizeEnum3.Ten);
+            Assert.AreEqual("bin:1010", init);
+        }
+
         [TestMethod]
         public void SizeOfClassWithTuple()
         {

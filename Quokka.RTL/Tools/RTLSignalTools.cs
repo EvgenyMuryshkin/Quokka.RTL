@@ -192,7 +192,7 @@ namespace Quokka.RTL.Tools
             throw exceptionFormatter();
         }
 
-        static string RawMemoryElementInitializer(object value)
+        public static string RawMemoryElementInitializer(object value)
         {
             if (value == null) throw new NullReferenceException(nameof(value));
 
@@ -210,7 +210,19 @@ namespace Quokka.RTL.Tools
                 case RTLBitArray b: return b.AsBinaryString();
                 default:
                     var valueType = value.GetType();
-                    if (RTLTypeCheck.IsSynthesizableObject(valueType))
+                    if (valueType.IsEnum)
+                    {
+                        var sizeOf = RTLSignalTools.SizeOfValue(value);
+                        switch (sizeOf.DataType)
+                        {
+                            case RTLDataType.Unsigned:
+                                
+                                return new RTLBitArray((ulong)Convert.ChangeType(value, typeof(ulong))).Resized(sizeOf.Size).AsBinaryString();
+                            case RTLDataType.Signed:
+                                return new RTLBitArray((long)Convert.ChangeType(value, typeof(long))).Resized(sizeOf.Size).AsBinaryString();
+                        }
+                    }
+                    else if (RTLTypeCheck.IsSynthesizableObject(valueType))
                     {
                         var orderedMembers = RTLReflectionTools.SerializableMembers(valueType);
                         var combinedInitialier = string.Join(

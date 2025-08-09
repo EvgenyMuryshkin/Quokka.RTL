@@ -42,15 +42,29 @@ namespace Quokka.RTL
         }
 
         internal void FromBinaryString(RTLDataType dataType, string msbBitString, int size)
-        {
+        {           
             var bits = new bool[size];
             var chars = msbBitString.ToCharArray();
             var sourceLength = chars.Length;
             var offset = sourceLength - 1;
             for (int i = 0; i < sourceLength; i++, offset--)
             {
-                bits[offset] = chars[i] != '0';
+                switch (chars[i])
+                {
+                    case '0': bits[offset] = false;  break;
+                    case '1': bits[offset] = true; break;
+                    default: throw new ArgumentOutOfRangeException($"Unsupported value in bit string: {chars[i]}"); break;
+                }
             }
+
+            //if (dataType == RTLDataType.Signed)
+            //{
+            //    for (int i = sourceLength; i < size; i++)
+            //    {
+            //        bits[i] = bits[sourceLength - 1];
+            //    }
+            //}
+
             internalInit(dataType, bits);
 
             //msbBitString = msbBitString.PadLeft(size, '0');
