@@ -97,6 +97,14 @@ namespace Quokka.RTL.VHDL.Tools
             var whenTrueType = Subtype(whenTrue);
             var whenFalseType = Subtype(whenFalse);
 
+            vhdReturnExpression returnWhenTrue = new vhdReturnExpression("whenTrue");
+            if (result.DataType != whenTrue.DataType)
+                returnWhenTrue = new vhdReturnExpression(new vhdProcedureCallExpression(resultType.Name, "whenTrue"));
+
+            vhdReturnExpression returnWhenFalse = new vhdReturnExpression("whenFalse");
+            if (result.DataType != whenFalse.DataType)
+                returnWhenFalse = new vhdReturnExpression(new vhdProcedureCallExpression(resultType.Name, "whenFalse"));
+
             var function = new vhdFunction()
             {
                 Declaration =
@@ -123,11 +131,11 @@ namespace Quokka.RTL.VHDL.Tools
                     {
                         new vhdConditionalStatement("condition")
                         {
-                            new vhdReturnExpression("whenTrue")
+                            returnWhenTrue
                         },
                         new vhdConditionalStatement()
                         {
-                            new vhdReturnExpression("whenFalse")
+                            returnWhenFalse
                         }
                     }
                 }
@@ -197,7 +205,7 @@ namespace Quokka.RTL.VHDL.Tools
             {
                 Declaration =
                 {
-                    Name = $"resize_{source.DataType}_{source.Size}_{target.Size}".ToLower(),
+                    Name = $"resize_{source.DataType}{source.Size}_{target.DataType}{target.Size}".ToLower(),
                     DataType = Map(source.DataType),
                     Width = target.Size,
                     CustomType = targetType.Name
@@ -240,13 +248,25 @@ namespace Quokka.RTL.VHDL.Tools
                     );
                 }
             }
-            else
+            else if (source.DataType == target.DataType)
             {
                 function.Implementation.Add(
                     new vhdReturnExpression(
                         new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString())
                     )
                 );
+            }
+            else
+            {
+                function.Implementation.Add(
+                    new vhdReturnExpression(
+                        new vhdProcedureCallExpression(
+                            $"{target.DataType}".ToLower(),
+                            new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString())
+                        )
+                    )
+                );
+
             }
 
             return function;
