@@ -33,6 +33,15 @@ namespace Quokka.RTL.Tools
             switch (value)
             {
                 case string s:
+                    if (s == "0")
+                    {
+                        return new RTLSignalInfo()
+                        {
+                            Type = value.GetType(),
+                            Size = 1,
+                            DataType = RTLDataType.Unsigned
+                        };
+                    }
                     throw new ArgumentOutOfRangeException($"String value does not have RTL size: {value}");
                 case RTLBitArray a:
                     return new RTLSignalInfo()
