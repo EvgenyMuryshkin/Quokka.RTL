@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -225,7 +226,7 @@ namespace Quokka.RTL.Tools
                         switch (sizeOf.DataType)
                         {
                             case RTLDataType.Unsigned:
-                                
+
                                 return new RTLBitArray((ulong)Convert.ChangeType(value, typeof(ulong))).Resized(sizeOf.Size).AsBinaryString();
                             case RTLDataType.Signed:
                                 return new RTLBitArray((long)Convert.ChangeType(value, typeof(long))).Resized(sizeOf.Size).AsBinaryString();
@@ -235,7 +236,7 @@ namespace Quokka.RTL.Tools
                     {
                         var orderedMembers = RTLReflectionTools.SerializableMembers(valueType);
                         var combinedInitialier = string.Join(
-                            "", 
+                            "",
                             orderedMembers
                                 .Select(m => RawMemoryElementInitializer(m.GetValue(value)))
                                 .Reverse()
@@ -263,6 +264,25 @@ namespace Quokka.RTL.Tools
                                 .Select(m => RawMemoryElementInitializer(m.GetValue(value)))
                         );
                         return combinedInitialier;
+                    }
+                    else if (value is string str)
+                    {
+                        if (str.StartsWith("hex:"))
+                        {
+                            var hex = str.Substring(4);
+                            if (hex.StartsWith("0x"))
+                                hex = hex.Substring(2);
+                            var parts = hex.Select(c => int.Parse($"{c}", NumberStyles.HexNumber)).ToArray();
+                            var bits = parts.Select(p => new RTLBitArray((byte)p).Resized(4).AsBinaryString());
+                            var preResult = string.Join("", bits);
+                            preResult = preResult.TrimStart('0');
+
+                            return preResult.Any() ? preResult: "0";
+                        }
+                        if (str.StartsWith("bin:"))
+                        {
+                            return str.Substring(4);
+                        }
                     }
 
                     throw new Exception($"MemoryElementInitializer: unsupported value: value - {value}");

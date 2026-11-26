@@ -64,6 +64,17 @@ namespace Microsoft.CodeAnalysis
             return RecursiveParent<T>(node.Parent);
         }
 
+        public static List<SyntaxNode> PathFromParent<T>(this SyntaxNode node, List<SyntaxNode> currentPath = null) where T : SyntaxNode
+        {
+            if (node == null || node.Parent == null)
+                return null;
+
+            if (node.Parent is T)
+                return [node.Parent, ..currentPath];
+
+            return PathFromParent<T>(node.Parent, [node, ..currentPath ?? []]);
+        }
+
         public static string CallerStackDump(this SyntaxNode node)
         {
             var stack = node.CallerStack();

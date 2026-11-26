@@ -178,8 +178,8 @@ namespace Quokka.RTL.Tests
             var nonIndexed = new NotIndexedClass();
             var nonIndexedMember = typeof(NotIndexedClass).GetMember("Value")[0];
 
-            Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(null, null));
-            Assert.ThrowsException<NullReferenceException>(() => RTLReflectionTools.SerializedRange(nonIndexed, null));
+            Assert.Throws<NullReferenceException>(() => RTLReflectionTools.SerializedRange(null, null));
+            Assert.Throws<NullReferenceException>(() => RTLReflectionTools.SerializedRange(nonIndexed, null));
             var range = RTLReflectionTools.SerializedRange(nonIndexed, nonIndexedMember).FromTo();
             Assert.AreEqual(31, range.Item1);
             Assert.AreEqual(0, range.Item2);

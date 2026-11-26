@@ -221,32 +221,30 @@ namespace Quokka.RTL.VHDL.Tools
                 }
             };
 
-            if (source.Size == 1)
+
+            if (source.DataType == RTLDataType.StdLogic && target.DataType == RTLDataType.StdLogic)
             {
-                if (source.DataType == RTLDataType.StdLogic)
-                {
-                    function.Implementation.Add(
-                        new vhdReturnExpression(
-                            new vhdAggregate()
-                            {
-                                new vhdAggregateBitConnection(0, nameof(source)),
-                                new vhdAggregateOthersConnection(false)
-                            }
-                        )
-                    );
-                }
-                else
-                {
-                    function.Implementation.Add(
-                        new vhdReturnExpression(
-                            new vhdAggregate()
-                            {
-                                new vhdAggregateBitConnection(0, new vhdIndexedExpression(nameof(source), new vhdRange("0"))),
-                                new vhdAggregateOthersConnection(false)
-                            }
-                        )
-                    );
-                }
+                function.Implementation.Add(
+                    new vhdReturnExpression(nameof(source))
+                );
+            }
+            else if (source.DataType == RTLDataType.StdLogic) // target is vector
+            {
+                function.Implementation.Add(
+                    new vhdReturnExpression(
+                        new vhdAggregate()
+                        {
+                            new vhdAggregateBitConnection(0, nameof(source)),
+                            new vhdAggregateOthersConnection(false)
+                        }
+                    )
+                );
+            }
+            else if (target.DataType == RTLDataType.StdLogic) // source is vector
+            {
+                function.Implementation.Add(
+                    new vhdReturnExpression(new vhdIndexedExpression(nameof(source), new vhdRange("0")))
+                );
             }
             else if (source.DataType == target.DataType)
             {
@@ -261,8 +259,8 @@ namespace Quokka.RTL.VHDL.Tools
                 function.Implementation.Add(
                     new vhdReturnExpression(
                         new vhdProcedureCallExpression(
-                            $"{target.DataType}".ToLower(),
-                            new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString())
+                            $"{target.DataType}".ToLower(), // convert
+                            new vhdProcedureCallExpression("resize", nameof(source), target.Size.ToString()) // resized value
                         )
                     )
                 );

@@ -67,7 +67,7 @@ namespace Quokka.RTL.Tests
         {
             var module = new MissingTestModule();
             module.Setup();
-            Assert.ThrowsException<Exception>(() => module.Reset());
+            Assert.Throws<Exception>(() => module.Reset());
         }
 
         [TestMethod]

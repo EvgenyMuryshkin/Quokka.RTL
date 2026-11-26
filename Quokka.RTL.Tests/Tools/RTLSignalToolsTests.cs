@@ -167,7 +167,17 @@ namespace Quokka.RTL.Tests
             Assert.AreEqual(32, RTLSignalTools.SizeOfValue(uint.MinValue).Size);
             Assert.AreEqual(20, RTLSignalTools.SizeOfValue(new RTLBitArray().Resized(20)).Size);
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => RTLSignalTools.SizeOfValue(""));
+            Assert.Throws<ArgumentOutOfRangeException>(() => RTLSignalTools.SizeOfValue(""));
+        }
+
+        [TestMethod]
+        public void RawMemoryElementInitializerTest()
+        {
+            var act = RTLSignalTools.RawMemoryElementInitializer("bin:010101");
+            Assert.AreEqual("010101", act);
+
+            act = RTLSignalTools.RawMemoryElementInitializer("hex:3fD");
+            Assert.AreEqual("1111111101", act);
         }
     }
 }

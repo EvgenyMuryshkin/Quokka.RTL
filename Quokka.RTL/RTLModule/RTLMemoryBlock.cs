@@ -83,8 +83,11 @@ namespace Quokka.RTL
             _override[index] = this[index];
         }
 
-        internal RTLMemoryBlock(IEnumerable<T> source, bool _marker)
+        internal RTLMemoryBlock(IEnumerable<T> source, IDictionary<int,T> overrides)
         {
+            if (source == null) source = [];
+            if (overrides == null) overrides = new Dictionary<int,T>();
+
             var typeOfT = typeof(T);
             if (typeOfT.IsValueType)
             {
@@ -98,6 +101,8 @@ namespace Quokka.RTL
             {
                 _buffer = source.Select(s => DeepJSONCopy.DeepCopy(s)).ToArray();
             }
+
+            _override = overrides.ToDictionary(k => k.Key, v => v.Value);
         }
 
         public T this[int index]
@@ -185,7 +190,7 @@ namespace Quokka.RTL
 
         public object Clone()
         {
-            return new RTLMemoryBlock<T>(_buffer, true);
+            return new RTLMemoryBlock<T>(_buffer, _override);
         }
     }
 }

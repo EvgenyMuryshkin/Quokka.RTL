@@ -65,7 +65,7 @@ namespace Quokka.RTL
 
                 var lsbSources = initType == RTLBitArrayInitType.LSB
                     ? sources
-                    : sources.Reverse();
+                    : sources.AsEnumerable().Reverse();
 
                 var lsbBits = lsbSources
                     .SelectMany(source => source.LSB)

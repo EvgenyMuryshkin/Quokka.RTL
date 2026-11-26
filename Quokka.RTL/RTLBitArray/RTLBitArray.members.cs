@@ -15,7 +15,7 @@ namespace Quokka.RTL
         public RTLDataType DataType { get; private set; } = RTLDataType.Unsigned;
 
         public int Size => _data.Length;
-        public IEnumerable<bool> MSB => LSB.Reverse();
+        public IEnumerable<bool> MSB => LSB.AsEnumerable().Reverse();
         public bool[] LSB
         {
             get
